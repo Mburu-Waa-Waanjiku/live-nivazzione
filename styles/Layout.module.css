@@ -1,0 +1,138 @@
+  .navbar
+  {  
+  display: flex;
+  color: white;
+  left: 0px;
+  width: 100%;
+  height: 55px;
+  line-height: 40px;
+  background-color: #222;    
+  }
+  .brand
+   {
+    fontWeight: ;
+    fontSize: 1.5rem;
+    color: white;
+  }
+  .grow
+   {
+    flexGrow: 1,
+  }
+  .main
+   {
+    minHeight: 50vh;
+  }
+  .footer 
+  {
+    marginTop: 10;
+    textAlign: center;
+  }
+  .section
+   {
+    marginTop: 10;
+    marginBottom: 10;
+  }
+  .form
+   {
+    width: 100%;
+    maxWidth: 800;
+    margin: 0 auto;
+  }
+  .navbarButton
+   {
+    color: #ffffff;
+    textTransform: initial;
+  }
+  .transparentBackgroud
+   {
+    backgroundColor: transparent;
+  }
+  .error 
+  {
+    color: #f04040;
+  }
+  .fullWidth
+  {
+    width: 100%;
+  }
+  .reviewForm {
+    maxWidth: 800;
+    width: 100%;
+  }
+  .reviewItem 
+  {
+    marginRight: 1rem;
+    borderRight: 1px #808080 solid;
+    paddingRight: 1rem;
+  }
+  .toolbar 
+  {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .menuButton { padding: 0; }
+  .mt1 { marginTop: 1rem; }
+  /* search*/
+  .searchSection 
+  {
+    display:flex;
+    /*[theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },*/
+  }
+  @media screen and (max-width:650px){
+.searchSection
+{
+  display: none; 
+}
+}
+  .searchForm 
+  {
+    color: #ffffff;
+    padding-top: 3px;
+  }
+  .searchInput 
+  {
+    paddingLeft: 5;
+    background-color:#6a6b6c ;
+    border-radius: 10px;
+    padding-left: 10px;
+    /*::placeholder: {
+      color: '#606060',
+    },*/
+  }
+  .iconButton 
+  {
+    padding: 5; 
+    borderRadius: 0 5px 5px 0;
+    /*'& span': {
+      color: '#000000',
+    },*/
+  }
+
+  .sort 
+  {
+    marginRight: 5;
+  }
+
+  .fullContainer { height: 100vh; }
+  .mapInputBox {
+    position: absolute;
+    display: flex;
+    left: 0;
+    right: 0;
+    margin: 10px auto;
+    width: 300;
+    height: 40;
+    /*'& input': {
+      width: 250,
+    },*/
+  }
+  .flex
+  {
+    padding-top: 8px;
+    display: flex;
+    color: white;
+    padding-right: 15px;
+  }
