@@ -19,7 +19,7 @@ import ProductItem from '../components/ProductItem';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { Pagination } from '@material-ui/lab';
-import Tabsbottom from '../components/tabsbottom';
+import Tabsbottom from '../components/Tabsbottom';
 import { Store } from '../utils/Store';
 import layoutStyles from '../styles/Layout.module.css'
 

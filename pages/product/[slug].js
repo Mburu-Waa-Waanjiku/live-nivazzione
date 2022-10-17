@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useContext, useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import Product from '../../models/Product';
-import Tabsbottom from '../../components/tabsbottom';
+import Tabsbottom from '../../components/Tabsbottom';
 import db from '../../utils/db';
 import { Store } from '../../utils/Store';
 import ClearIcon from '@mui/icons-material/Clear';

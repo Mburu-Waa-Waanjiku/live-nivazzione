@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Tabsbottom from '../components/tabsbottom';
+import Tabsbottom from '../components/Tabsbottom';
 import Layout from '../components/Layout';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import { useContext } from 'react';
