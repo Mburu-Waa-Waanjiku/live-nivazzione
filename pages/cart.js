@@ -7,9 +7,9 @@ import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
-import Tabsbottom from '../components/tabsbottom';
+import Tabsbottom from '../components/Tabsbottom';
 import useStyles from '../utils/styles';
-
+ 
 function CartScreen() {
   const classes = useStyles();
   const router = useRouter();
