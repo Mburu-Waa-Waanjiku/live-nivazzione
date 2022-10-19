@@ -450,7 +450,8 @@ const useStyles = makeStyles((theme) => ({
     cursor:'pointer',
   },
   sizeLg: {
-    fontSize: 25
+    fontSize: '25 !important',
+    color: 'white !important',
   },
 
 }));
