@@ -249,7 +249,7 @@ export default function Layout({ title, description, children }) {
                     className={classes.navbarButton}
                   >
                     <Badge
-                        badgeContent="✓"
+                        badgeContent=""
                         classes={{ badge: classes.badge }}
                       >
                         <AccountCircle className={classes.sizeLg}/>
@@ -290,7 +290,7 @@ export default function Layout({ title, description, children }) {
               ) : (
                 <NextLink  href="/login" passHref>
                   <Link>
-                    <Typography className={classes.cartnlgo} component="span"><AccountCircle className={classes.sizeLg}/></Typography>
+                    <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'action.inactive'}} className={classes.sizeLg}/></Typography>
                   </Link>
                 </NextLink>
 
