@@ -12,11 +12,7 @@
 {
     color: black;
 }
-.tabb button.css-1t4lqmc-MuiButtonBase-root-MuiTab-root
-{
-  padding: 1px 10px;
-  min-width: 0px;
-}
+
 .tabb span.css-1aquho2-MuiTabs-indicator
 {
   display: none;
@@ -900,13 +896,6 @@ div.swiper-button-next:after, div.swiper-button-prev:after
 {
   text-align: -webkit-center;
 }
-
-
-.css-heg063-MuiTabs-flexContainer
-{
-  justify-content: space-evenly;
-}
-
 
 .react-swipeable-view-container
 {

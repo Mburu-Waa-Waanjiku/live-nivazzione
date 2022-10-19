@@ -32,11 +32,11 @@ export default function Tabsbottom() {
          
           <Tabs className={tabsStyles.bottomnav} sx={{"& .MuiTabs-flexContainer": {justifyContent:"space-evenly"},}} classes={{ indicator:classes.ndicatenone}} value={history !== "/b" ? history : false} fullWidth   >
             
-            <Tab value={routes[0]} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
+            <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         
-            <Tab value={routes[1]} onClick={() => router.push("/search")} icon={<SearchIcon sx={{ fontSize: 28 }} />}  />
+            <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/search")} icon={<SearchIcon sx={{ fontSize: 28 }} />}  />
             
-            <Tab value={routes[2]} onClick={() => router.push("/cart")} icon={cart.cartItems.length > 0 ? (
+            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/cart")} icon={cart.cartItems.length > 0 ? (
                       <Badge
                         classes={{ badge: classes.badge }}
                         badgeContent={cart.cartItems.length}
@@ -47,7 +47,7 @@ export default function Tabsbottom() {
                       <ShoppingBasketIcon sx={{ fontSize: 28 }} />
                     )}  />
                                  
-            <Tab value={routes[3]} onClick={() => router.push("/me")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />               
+            <Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/me")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />               
             
           </Tabs>
          </div>
