@@ -2,33 +2,45 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
-    backgroundColor: '#222',
-    position: 'sticky',
-    top: '-60px',
+    backgroundColor: '#222 !important',
+    position: 'sticky !important',
+    top: '-60px !important',
     '& a': {
-      color: '#ffffff',
-      marginLeft: 10,
-      marginTop: 2,
+      color: '#ffffff !important',
+      marginLeft: '10px !important',
+      marginTop: '2px !important',
  
     }, 
   },
   brand: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-       display: 'flex',
-       fontWeight: 'bold',
-       fontSize: '1.6rem',}
+       display: 'flex !important',
+       fontWeight: 'bold !important',
+       fontSize: '1.6rem !important',}
   },
   cartnlg: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'flex',}
   },
+  cartnlgo: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      paddingTop:4}
+  },
+  carton: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      paddingTop: '4px',}
+  },
   smbrand: {
     fontWeight: 'bold !important',
     position: 'absolute !important',
     fontSize: '1.5rem !important',
-    transform: 'translate(80%, -50%) !important',
+    transform: 'translate(100%, -50%) !important',
     [theme.breakpoints.up('sm')]: {
       display: 'none !important',}
   },
@@ -222,6 +234,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     height: 70,
   },
+  categGallAbs: {
+    position: 'absolute',
+  },
   hmStyle: {
     display:'none',
     height: 45,
@@ -395,9 +410,48 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
   },
   badge: {
-    color:'white',
-    backgroundColor:'#30d04a',
+    color: 'white',
+    border: '3px solid #222',
+    width: '4px',
+    fontSize: '10px',
+    backgroundColor: '#30d04a',
   },
-  
+  badgeLg: {
+    color: 'white',
+    border: '2px solid white',
+    width: '4px',
+    fontSize: '10px',
+    backgroundColor: '#30d04a',
+  },
+  sScreen: {
+    margin: '5px 10px',
+    padding: '1px 10px',
+    borderRadius: '5px',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },
+  sfScreen: {
+    margin: '5px 10px',
+    padding: '1px 10px',
+    borderRadius: '5px',
+    backgroundColor: '#e7e5e4',
+    position: 'absolute',
+    zIndex: '1300',
+    top: '60px',
+    cursor: 'pointer',
+  },
+  ftrStatusx: {
+    display: 'initial',
+    padding: '0px 6px',
+    borderRadius: '5px',
+    float: 'right',
+    marginTop: '3px',
+    fontSize: '15px',
+    backgroundColor: '#a8a29e',
+    cursor:'pointer',
+  },
+  sizeLg: {
+    fontSize: 25
+  },
+
 }));
 export default useStyles;

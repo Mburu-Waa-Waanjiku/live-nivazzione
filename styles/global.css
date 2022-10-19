@@ -634,10 +634,10 @@ width: 90px;
     {
       padding: 20px 0px 20px 23px;
     }
-        .name-profile{
+    .name-profile{
       padding-bottom: 40px;
       margin-top: 20px;
-      margin-left: 10px;
+      text-align: center;
     }
     
     .profile{
@@ -929,12 +929,15 @@ span.swiper-pagination-bullet {
     background-color: #dc2626;
 }
 .pending {
-    margin-left: 20px;
+    margin: 0 0 0 20px;
     padding: 5px 10px;
     background-color: #222;
     color: white;
     font-weight: bold;
     border-radius: 10px;
+}
+.prof {
+    margin: 10px 0 0 0;
 }
 .pending-btn {
     margin-top: 8px;

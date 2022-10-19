@@ -30,12 +30,15 @@ export default function ShippingScreen() {
   } = useForm();
 
   const { state, dispatch } = useContext(Store);
-  const { cart } = state;
+  const { cart, userInfo } = state;
   const { shippingAddress } = cart;
   const router = useRouter();
   
 
   useEffect(() => {
+    if (!userInfo) {
+      router.push('/login?redirect=/shipping');
+    }
     setValue('fullName', shippingAddress.fullName);
     setValue('address', shippingAddress.address);
     setValue('city', shippingAddress.city);

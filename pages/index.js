@@ -240,7 +240,7 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
 
             <TabPanel className={classes.padTab} value="2">
                <TabContext  value={categ} >
-                 <Tabs classes={{root:classes.categGall}} value={categ} sx={{"& .MuiTabs-flexContainer": {display: "inline-flex", margin:"4px", position:"fixed", top:"30px", zIndex:1200},}} onChange={handleBack}>
+                 <Tabs classes={{root:classes.categGallAbs}} value={categ} sx={{"& .MuiTabs-flexContainer": {display: "inline-flex", margin:"4px", position:"fixed", top:"30px", zIndex:1200},}} onChange={handleBack}>
                    <Tab classes={{ root: classes.roundedTabShadow }} value="back"  iconPosition="start" icon={<ArrowBackIosIcon sx={{fontSize:10}} />}/>
                  </Tabs>
                </TabContext>

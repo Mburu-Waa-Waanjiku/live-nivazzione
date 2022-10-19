@@ -22,7 +22,12 @@ function Me() {
                         <div className="me-common-1">
                             <AccountCircle sx={{ color: 'action.active'}} />
                         </div>
-                        {userInfo ? (<div>{userInfo.name}</div>) : (<Link href="/login"> Login </Link>)}
+                        {userInfo ? (<div className="mb-1.5">{userInfo.name}</div>) : (<div className="mb-1.5"><Link href="/login"> Login </Link></div>)}
+                        <div className="pending inline prof">
+                            <Link href="/profile">
+                                Update Profile
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

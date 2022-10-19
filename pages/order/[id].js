@@ -142,7 +142,7 @@ function Order({ params }) {
       }
     }
 
-  }, [order, successPay, successDeliver, orderId, router, userInfo, setValue]);
+  }, [order, successPay, successDeliver, orderId, router, userInfo]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   
   async function deliverOrderHandler() {

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -165,6 +166,7 @@ export default function Layout({ title, description, children }) {
                   >
                     <Typography>Shopping by category</Typography>
                     <IconButton
+                      sx={{"&.MuiIconButton-root": {padding:0},}}
                       aria-label="close"
                       onClick={sidebarCloseHandler}
                     >
@@ -219,13 +221,13 @@ export default function Layout({ title, description, children }) {
               className="invisible"
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
-              ></Switch>
+              ></Switch> 
               <NextLink href="/cart" passHref>
                 <Link>
-                  <Typography className={classes.cartnlg} component="span">
+                  <Typography className={classes.carton} component="span">
                     {cart.cartItems.length > 0 ? (
                       <Badge
-                        color="secondary"
+                        classes={{ badge: classes.badge }}
                         badgeContent={cart.cartItems.length}
                       >
                         <ShoppingBasketIcon/>
@@ -246,7 +248,12 @@ export default function Layout({ title, description, children }) {
                     onClick={loginClickHandler}
                     className={classes.navbarButton}
                   >
-                    {userInfo.name}
+                    <Badge
+                        badgeContent="✓"
+                        classes={{ badge: classes.badge }}
+                      >
+                        <AccountCircle className={classes.sizeLg}/>
+                      </Badge>
                   </Button>
                   <Menu
                     id="simple-menu"
@@ -256,7 +263,7 @@ export default function Layout({ title, description, children }) {
                     onClose={loginMenuCloseHandler}
                   >
                     <MenuItem
-                      onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                      onClick={(e) => loginMenuCloseHandler(e, '/me')}
                     >
                       Profile
                     </MenuItem>
@@ -283,7 +290,7 @@ export default function Layout({ title, description, children }) {
               ) : (
                 <NextLink  href="/login" passHref>
                   <Link>
-                    <Typography className={classes.cartnlg} component="span">Login</Typography>
+                    <Typography className={classes.cartnlgo} component="span"><AccountCircle className={classes.sizeLg}/></Typography>
                   </Link>
                 </NextLink>
 

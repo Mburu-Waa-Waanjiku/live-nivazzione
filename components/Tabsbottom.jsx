@@ -30,7 +30,7 @@ export default function Tabsbottom() {
     <div className="tabb">
        <div className={tabsStyles.backgcoverticalcenter}>
          
-          <Tabs className={tabsStyles.bottomnav} sx={{"& .MuiTabs-flexContainer": {justifyContent:"space-evenly"},}} classes={{ indicator:classes.ndicatenone}} value={history !== "/b" ? history : false} fullWidth   >
+          <Tabs className={tabsStyles.bottomnav} sx={{"& .MuiTabs-flexContainer": {justifyContent:"space-evenly"},"& .MuiTab-root.Mui-selected": {color:"black"},}} classes={{ indicator:classes.ndicatenone}} value={history !== "/b" ? history : false} fullWidth   >
             
             <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         
@@ -38,7 +38,7 @@ export default function Tabsbottom() {
             
             <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/cart")} icon={cart.cartItems.length > 0 ? (
                       <Badge
-                        classes={{ badge: classes.badge }}
+                        classes={{ badge: classes.badgeLg }}
                         badgeContent={cart.cartItems.length}
                       >
                         <ShoppingBasketIcon sx={{ fontSize: 28 }} />
