@@ -21,6 +21,7 @@ import Layout from '../components/Layout';
 import PhotoIcon from '@mui/icons-material/PhotoTwoTone';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardRounded';
 import useStyles from '../utils/styles';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -55,6 +56,10 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
      setValue('2');
      setCateg(newCateg);
  };
+ const handleBack = (event, newCateg) => {
+     setValue('1');
+     setCateg(newCateg);
+ };
    
 
   return (
@@ -65,19 +70,8 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
         </div>
         <TabContext value={value}>
           <Tabs  value={value} classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
-            <Tab label="home" value="1" sx={{fontWeight:900, fontSize:16, minHeight: 38,  }}/>
-            <Tab label="Gallery" value="2" sx={{fontWeight: 900,fontSize:16, minHeight: 38,  }}  icon={<PhotoIcon sx={{ animation: "spin 5s linear infinite",
-                                                       "@keyframes spin": {
-                                                          "0%": {
-                                                           transform: "rotate(-30deg)",
-                                                         },
-                                                         "100%": {
-                                                           transform: "rotate(0deg)",
-                                                         },
-                                                        },
-                                                       fontSize: 28,
-                                                       
-                                                    }} />} iconPosition="end" />
+            <Tab value="1" />
+            <Tab value="2" />
             
           </Tabs>
 
@@ -109,7 +103,6 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                       spaceBetween={10}           
                       loop={false}
                       centeredSlides={false}
-                      pagination={{ clickable: true }}
                 
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
@@ -163,7 +156,8 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                     <Tab value="Suits" label="Suits"/>
                     <Tab value="Skirts" label="Skirts"/>
                     <Tab value="Shorts" label="shorts"/>
-                 
+                    <Tab className={classes.ndicatenone} value="back" label="shorts"/>
+
                   </Tabs>
              </TabContext>
               <div className="home-ft">Flush sale </div>
@@ -189,7 +183,6 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                       spaceBetween={10}           
                       loop={false}
                       centeredSlides={false}
-                      pagination={{ clickable: true }}
                 
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
@@ -246,11 +239,13 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
             </TabPanel>
 
             <TabPanel className={classes.padTab} value="2">
-              <div className={classes.fullWidth}>
-                <Image width={2600} height={340} alt="" src={banner[5].image[0]}></Image>
-              </div>
+               <TabContext  value={categ} >
+                 <Tabs classes={{root:classes.categGall}} value={categ} sx={{"& .MuiTabs-flexContainer": {display: "inline-flex", margin:"4px", position:"fixed", top:"30px", zIndex:1200},}} onChange={handleBack}>
+                   <Tab classes={{ root: classes.roundedTabShadow }} value="back"  iconPosition="start" icon={<ArrowBackIosIcon sx={{fontSize:10}} />}/>
+                 </Tabs>
+               </TabContext>
                <TabContext value={categ}>
-                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: 2, inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 80, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
+                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: 2, inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
                     <Tab value="Ankara"  label="Ankara" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                     <Tab value="Pants" label="Pants" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
                     <Tab value="Bags" label="Bags" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(253, 134, 112)",},}}/>

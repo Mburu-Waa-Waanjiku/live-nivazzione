@@ -206,6 +206,7 @@ export default function Layout({ title, description, children }) {
                 />
                 <IconButton
                   type="submit"
+                  sx={{"&.MuiIconButton-root": {padding:0},}}
                   className={classes.iconButton}
                   aria-label="search"
                 >

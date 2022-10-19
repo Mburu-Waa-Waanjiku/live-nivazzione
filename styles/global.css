@@ -901,9 +901,7 @@ div.swiper-button-next:after, div.swiper-button-prev:after
   text-align: -webkit-center;
 }
 
-.css-69z67c-MuiTabs-scroller {
-      height: 38px;
-  }
+
 .css-heg063-MuiTabs-flexContainer
 {
   justify-content: space-evenly;
@@ -915,10 +913,7 @@ div.swiper-button-next:after, div.swiper-button-prev:after
   height: 100%;
 }
 
-span.css-1aquho2-MuiTabs-indicator
-{
-  background-color: #222;
-}
+
 
 span.swiper-pagination-bullet {
     width: 20px;

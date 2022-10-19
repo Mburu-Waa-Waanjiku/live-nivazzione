@@ -30,7 +30,7 @@ export default function Tabsbottom() {
     <div className="tabb">
        <div className={tabsStyles.backgcoverticalcenter}>
          
-          <Tabs className={tabsStyles.bottomnav} value={history !== "/b" ? history : false} fullWidth   >
+          <Tabs className={tabsStyles.bottomnav} sx={{"& .MuiTabs-flexContainer": {justifyContent:"space-evenly"},}} classes={{ indicator:classes.ndicatenone}} value={history !== "/b" ? history : false} fullWidth   >
             
             <Tab value={routes[0]} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         

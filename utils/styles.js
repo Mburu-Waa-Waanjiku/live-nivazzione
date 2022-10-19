@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
       color: '#ffffff',
       marginLeft: 10,
       marginTop: 2,
-
+ 
     }, 
   },
   brand: {
@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',}
   },
   smbrand: {
-    fontWeight: 'bold',
-    position: 'absolute',
-    fontSize: '1.5rem',
-    transform: 'translate(80%, -50%)',
+    fontWeight: 'bold !important',
+    position: 'absolute !important',
+    fontSize: '1.5rem !important',
+    transform: 'translate(80%, -50%) !important',
     [theme.breakpoints.up('sm')]: {
-      display: 'none',}
+      display: 'none !important',}
   },
   smseach: {
     marginTop: 5,
@@ -121,11 +121,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   iconButton: {
-    backgroundColor: '#222',
-    padding: 5,
-    borderRadius: '0 5px 5px 0',
+    backgroundColor: '#222 !important',
+    padding: '5px !important',
+    borderRadius: '0 5px 5px 0 !important',
     '& span': {
-      color: 'white',
+      color: 'white !important',
     },
   },
   sort: {
@@ -217,11 +217,13 @@ const useStyles = makeStyles((theme) => ({
     gap: 15,
   },
   categGall: {
+    marginTop: '10px',
     color: 'black',
     backgroundColor: 'white',
-    height: 60,
+    height: 70,
   },
   hmStyle: {
+    display:'none',
     height: 45,
     backgroundColor: 'white',
   },
@@ -243,11 +245,15 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
   },
   catehgallbty: {
-    height: 55,
+    paddingTop: 10,
+    height: 65,
   },
   ndicatenone: {
     display: 'none',
   }, 
+  ndicateflex: {
+    display: 'inline-flex',
+  },
   ndicatetrue: {
     display: "block",
   },
@@ -273,6 +279,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor : '#f1f5f9 !important',
     },
     
+  },
+  roundedTabShadow: {
+    backgroundColor: 'white !important',
+    boxShadow: '0 2px 5px 1px rgb(64 60 67 / 50%)',
+    borderRadius: '80px !important',
+    minHeight: '40px !important',
+    minWidth: '40px !important'
   },
   roundedTab: {
     borderRadius: '80px !important',
