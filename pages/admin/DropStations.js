@@ -218,7 +218,7 @@ function AdminBanners() {
                             
                             <TableCell>
                               <NextLink
-                                href={`/admin/dropstation/${dropstation._id}`}
+                                href={`/admin/dropstation/${locations._id}`}
                                 passHref
                               >
                                 <Button size="small" variant="contained">
@@ -226,7 +226,7 @@ function AdminBanners() {
                                 </Button>
                               </NextLink>{' '}
                               <Button
-                                onClick={() => deleteHandler(dropstation._id)}
+                                onClick={() => deleteHandler(locations._id)}
                                 size="small"
                                 variant="contained"
                               >
