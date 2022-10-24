@@ -2,8 +2,8 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import React, { useEffect, useContext, useReducer, useState } from 'react';
-import {
+import React, { useEffect, useContext, useReducer from 'react';
+import { 
   Grid,
   List,
   ListItem,
@@ -13,8 +13,6 @@ import {
   ListItemText,
   TextField,
   CircularProgress,
-  Checkbox,
-  FormControlLabel,
 } from '@material-ui/core';
 import { getError } from '../../../utils/error';
 import { Store } from '../../../utils/Store';
@@ -53,20 +51,20 @@ function reducer(state, action) {
   }
 }
 
-function UserEdit({ params }) {
-  const userId = params.id;
+function LocationEdit({ params }) {
+  const locationId = params.id;
   const { state } = useContext(Store);
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, loadingUpdate }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
   } = useForm();
-  const [isAdmin, setIsAdmin] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
   const classes = useStyles();
@@ -79,42 +77,51 @@ function UserEdit({ params }) {
       const fetchData = async () => {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
-          const { data } = await axios.get(`/api/admin/users/${userId}`, {
+          const { data } = await axios.get(`/api/admin/locations/${locationId}`, {
             headers: { authorization: `Bearer ${userInfo.token}` },
           });
-          setIsAdmin(data.isAdmin);
           dispatch({ type: 'FETCH_SUCCESS' });
-          setValue('name', data.name);
+          setValue('town', data.town);
+          setValue('dropstation', data.dropstation);
+          setValue('price', data.price);
         } catch (err) {
           dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
         }
       };
       fetchData();
     }
-  }, [ router, setValue, userId, userInfo]);
+  }, [ locationId, router, setValue, userInfo]);
+  
 
-  const submitHandler = async ({ name }) => {
+  const submitHandler = async ({
+          town,
+          dropstation,
+          price,
+          
+  }) => {
     closeSnackbar();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
-        `/api/admin/users/${userId}`,
+        `/api/admin/locations/${locationId}`,
         {
-          name,
-          isAdmin,
+          town,
+          dropstation,
+          price,
         },
         { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
-      enqueueSnackbar('User updated successfully', { variant: 'success' });
-      router.push('/admin/users');
+      enqueueSnackbar('Location updated successfully', { variant: 'success' });
+      router.push('/admin/DropStations');
     } catch (err) {
       dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
+  
   return (
-    <Layout title={`Edit User ${userId}`}>
+    <Layout title={`Edit Product ${locationId}`}>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -130,17 +137,17 @@ function UserEdit({ params }) {
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/products" passHref>
-                <ListItem selected button component="a">
+                <ListItem button component="a">
                   <ListItemText primary="Products"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/banners" passHref>
-                <ListItem selected button component="a">
+                <ListItem button component="a">
                   <ListItemText primary="Banners"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/categorythumbnails" passHref>
-                <ListItem selected button component="a">
+                <ListItem button component="a">
                   <ListItemText primary="Thumbnails"></ListItemText>
                 </ListItem>
               </NextLink>
@@ -149,7 +156,7 @@ function UserEdit({ params }) {
                   <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
-              <NextLink href="/admin/DropStation" passHref>
+              <NextLink href="/admin/DropStations" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="DropStations"></ListItemText>
                 </ListItem>
@@ -162,7 +169,7 @@ function UserEdit({ params }) {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Edit User {userId}
+                  Edit Locarion {locationId}
                 </Typography>
               </ListItem>
               <ListItem>
@@ -179,7 +186,7 @@ function UserEdit({ params }) {
                   <List>
                     <ListItem>
                       <Controller
-                        name="name"
+                        name="town"
                         control={control}
                         defaultValue=""
                         rules={{
@@ -189,27 +196,60 @@ function UserEdit({ params }) {
                           <TextField
                             variant="outlined"
                             fullWidth
-                            id="name"
-                            label="Name"
-                            error={Boolean(errors.name)}
-                            helperText={errors.name ? 'Name is required' : ''}
+                            id="town"
+                            label="town"
+                            error={Boolean(errors.town)}
+                            helperText={errors.name ? 'Town is required' : ''}
                             {...field}
                           ></TextField>
                         )}
                       ></Controller>
                     </ListItem>
                     <ListItem>
-                      <FormControlLabel
-                        label="Is Admin"
-                        control={
-                          <Checkbox
-                            onClick={(e) => setIsAdmin(e.target.checked)}
-                            checked={isAdmin}
-                            name="isAdmin"
-                          />
-                        }
-                      ></FormControlLabel>
+                      <Controller
+                        name="dropstation"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="dropstation"
+                            label="Drop Station"
+                            error={Boolean(errors.dropstation)}
+                            helperText={errors.dropstation ? 'Drop Station is required' : ''}
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
                     </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="price"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="price"
+                            label="Transport price"
+                            error={Boolean(errors.price)}
+                            helperText={
+                              errors.pice ? 'Price is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+
                     <ListItem>
                       <Button
                         variant="contained"
@@ -238,4 +278,5 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-export default dynamic(() => Promise.resolve(UserEdit), { ssr: false });
+export default dynamic(() => Promise.resolve(LocationEdit), { ssr: false });
+ 

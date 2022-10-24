@@ -29,7 +29,7 @@ function reducer(state, action) {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
-      state;
+      state; 
   }
 }
 
@@ -68,7 +68,7 @@ function AdminDashboard() {
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
             <List>
-              <NextLink href="/admin/dashboard" passHref>
+<NextLink href="/admin/dashboard" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Admin Dashboard"></ListItemText>
                 </ListItem>
@@ -83,9 +83,24 @@ function AdminDashboard() {
                   <ListItemText primary="Products"></ListItemText>
                 </ListItem>
               </NextLink>
+              <NextLink href="/admin/banners" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Banners"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/categorythumbnails" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Thumbnails"></ListItemText>
+                </ListItem>
+              </NextLink>
               <NextLink href="/admin/users" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Users"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/DropStations" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="DropStations"></ListItemText>
                 </ListItem>
               </NextLink>
             </List>

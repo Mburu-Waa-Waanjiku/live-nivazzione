@@ -18,7 +18,6 @@ import Newpost from '../components/Newpost';
 import axios from 'axios';
 import Tabsbottom from '../components/Tabsbottom';
 import Layout from '../components/Layout';
-import PhotoIcon from '@mui/icons-material/PhotoTwoTone';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardRounded';
 import useStyles from '../utils/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';

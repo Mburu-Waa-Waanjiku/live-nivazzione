@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Button,
   Card,
-  List,
+  List, 
   ListItem,
 } from '@material-ui/core';
 import axios from 'axios';
@@ -107,7 +107,7 @@ function PlaceOrder() {
               <ListItem>
                 {shippingAddress.fullName}, {shippingAddress.address},{' '}
                 {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                {shippingAddress.country}
+                {shippingAddress.price}, {shippingAddress.dropstation},{' '}
               </ListItem>
             </List>
           </Card>

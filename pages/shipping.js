@@ -4,8 +4,10 @@ import Cookies from 'js-cookie';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+import Location from '../models/Location';
+import db from '../utils/db';
 import useStyles from '../utils/styles';
-import {
+ import {
   Button,
   FormControl,
   FormControlLabel,
@@ -17,7 +19,8 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
-export default function ShippingScreen() {
+export default function ShippingScreen(props) {
+  const {locations} = props;
   const classes = useStyles();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -27,6 +30,7 @@ export default function ShippingScreen() {
     register,
     formState: { errors },
     setValue,
+    control,
   } = useForm();
 
   const { state, dispatch } = useContext(Store);
@@ -42,14 +46,15 @@ export default function ShippingScreen() {
     setValue('fullName', shippingAddress.fullName);
     setValue('address', shippingAddress.address);
     setValue('city', shippingAddress.city);
+    setValue('price', shippingAddress.price);
+    setValue('dropstation', shippingAddress.dropstation);
     setValue('postalCode', shippingAddress.postalCode);
-    setValue('country', shippingAddress.country);
   }, [setValue, shippingAddress]);
 
-  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+  const submitHandler = ({ fullName, address, city, dropstation, price, postalCode}) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullName, address, city, postalCode, country },
+      payload: { fullName, dropstation, address, city, postalCode, price},
     });
     Cookies.set(
       'cart',
@@ -58,8 +63,10 @@ export default function ShippingScreen() {
         shippingAddress: {
           fullName,
           address,
+          price,
           city,
           postalCode,
+          dropstation,
         },
       })
     );
@@ -72,7 +79,7 @@ export default function ShippingScreen() {
       router.push('/placeorder');
     }
   };
-  
+  const [city, setCity] = useState("Nairobi");
 
   return (
     <Layout title="Shipping Address">
@@ -115,14 +122,62 @@ export default function ShippingScreen() {
         </div>
         <div className="mb-4">
           <label htmlFor="city">City/Town</label>
-          <input
-            className="w-full"
-            id="city"
-            placeholder="Post office Location Nearest to You"
-            {...register('city', {
-              required: 'Please enter city',
-            })}
-          />
+          <select
+              {...register('city')}
+              placeholder="City"
+              control={control}
+              value={city}
+              className={classes.fullWidth}
+              onChange={(e) => setCity(e.target.value)}
+          >
+            {locations.map((location) => (
+              <option key={location.town} value={location.town}>
+                {location.town}
+              </option>
+            ))}  
+          </select>
+          {errors.city && (
+            <div className="text-red-500 ">{errors.city.message}</div>
+          )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="city">Drop Station< /label>
+          
+          <select
+              {...register('dropstation')}
+              placeholder="dropstation"
+              control={control}
+              defaultvalue=""
+              value={city}
+              className={classes.fullWidth}
+              onChange={(e) => setCity(e.target.value)}
+          >
+            {locations.map((location) => (
+              <option key={location.town} value={location.dropstation}>
+                {location.dropstation}
+              </option>
+            ))}  
+          </select>
+          {errors.city && (
+            <div className="text-red-500 ">{errors.city.message}</div>
+          )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="city">Price</label>
+          <select
+              {...register('price')}
+              placeholder="Price"
+              control={control}
+              value={city}
+              className={classes.fullWidth}
+              onChange={(e) => setCity(e.target.value)}
+          >
+            {locations.map((location) => (
+              <option key={location.town} value={location.price}>
+                {location.price}
+              </option>
+            ))}  
+          </select>
           {errors.city && (
             <div className="text-red-500 ">{errors.city.message}</div>
           )}
@@ -189,6 +244,15 @@ export default function ShippingScreen() {
     </Layout>
   );
 }
-
+export async function getServerSideProps() {
+  await db.connect();
+    const locations = await Location.find().lean();
+  await db.disconnect();
+  return{
+    props: {
+      locations: locations.map(db.convertDocToObj),
+    },
+  };
+}
 ShippingScreen.auth = true;
 

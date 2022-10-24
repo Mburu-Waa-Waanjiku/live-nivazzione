@@ -340,20 +340,36 @@ const handleseeRev = () => {
 
   );
 }
+export async function getStaticPaths() {
+  await db.connect();
+  const products = await Product.find({}, {slug: 1}).lean();
+  await db.disconnect();
+  
+  const paths = products.map((product) => ({params : {slug: product.slug }}));
+  return {
+    paths,
+    fallback: 'blocking',
+  }  
+}
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const { params } = context;
   const { slug } = params;
 
+  await db.connect();
   const product = await Product.findOne({ slug }, '-reviews').lean();
   const similar = await Product.find({slug}).distinct('distinctCateg');
   const similarProds = await Product.find({distinctCateg: similar} , '-reviews').lean();
-  
+
   await db.disconnect();
+
+
   return {
-    props: {
-      similarProds: similarProds.map(db.convertDocToObj),
-      product: db.convertDocToObj(product),
-    },
-  };
+  props: { 
+          product: product && db.convertDocToObj(product),
+          similarProds: similarProds.map(db.convertDocToObj),
+
+  },
+ };
 }
+
