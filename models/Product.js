@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema(
     isOnoffer: { type: Boolean, required: true, default: false },
     newprice: { type: Number},
     discount: { type: Number},    
-    isNew: { type: Boolean, required: true, default: false },
+    isNeww: { type: Boolean, required: true, default: false },
     featuredImage: { type: Array },
     isFeatured: { type: Boolean, required: true, default: false },
   },

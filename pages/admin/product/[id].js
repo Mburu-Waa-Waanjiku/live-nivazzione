@@ -413,7 +413,7 @@ function ProductEdit({ params }) {
                         control={control}
                         defaultValue=""
                         rules={{
-                          required: true,
+                          required: false,
                         }} 
                         render={({ field }) => (
                           <TextField
