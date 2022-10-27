@@ -3,13 +3,12 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: '#222 !important',
-    position: 'sticky !important',
-    top: '-60px !important',
+    position: 'fixed !important',
+    top: 0,
     '& a': {
       color: '#ffffff !important',
       marginLeft: '10px !important',
       marginTop: '2px !important',
- 
     }, 
   },
   brand: {
@@ -30,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       paddingTop:4}
   },
+  cartnsch: {
+      display: 'flex',
+      paddingTop:8,
+  },
   carton: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -40,23 +43,23 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold !important',
     position: 'absolute !important',
     fontSize: '1.5rem !important',
-    transform: 'translate(100%, -50%) !important',
+    transform: 'translate(-20%, -50%) !important',
     [theme.breakpoints.up('sm')]: {
       display: 'none !important',}
   },
   smseach: {
-    marginTop: 5,
-    height: 45,
+    margin: '5px 0',
+    height: 35,
     display: 'flex',
     width: '100%',
-    borderRadius: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'white',
     alignItems:'center',
+    borderBottom: '1px solid grey',
+    borderTop: '1px solid grey',
     zIndex: 10,
-    justifyContent:'center',
+    justifyContent:'space-between',
     position: 'sticky',
-    top: 0,
-
+    transition: 'top 0.6s',
     [theme.breakpoints.up('sm')]: {
       display: 'none',}
   },
@@ -92,6 +95,34 @@ const useStyles = makeStyles((theme) => ({
   fullWidth: {
     width: '100%',
   },
+  reviewBody: {
+    padding: 30,
+    backgroundColor: '#f1f5f9',
+  },
+  reviewAllBody: {
+    transitionProperty: 'all',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 1, 1)',
+    transitionDuration: '2000ms',
+    transitionDelay: '75ms',
+    width: '100vw',
+    backgroundColor: 'white',
+    top: 0,
+    left: 0,
+    zIndex: 1300,
+    position: 'fixed',
+    height: '100vh',
+  },
+  reviewTopTab: {
+    padding: 10,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bolder',
+    borderBottom: '2px solid #ececec',
+  },
+  addRev: {
+    position: 'fixed',
+    bottom: 0,
+  },
   reviewForm: {
     maxWidth: 800,
     width: '100%',
@@ -101,6 +132,15 @@ const useStyles = makeStyles((theme) => ({
     borderRight: '1px #808080 solid',
     paddingRight: '1rem',
   },
+  reviewSeeMore: {
+    textAlign: 'right',
+    [theme.breakpoints.up('sm')]: {
+      width: '100%',
+      padding: '10px',
+      textAlign: 'right',
+      fontWeight: 'bolder',
+      }
+  },
   toolbar: {
     justifyContent: 'space-between',
   },
@@ -108,21 +148,16 @@ const useStyles = makeStyles((theme) => ({
   mt1: { marginTop: '1rem' },
   // search
   searchSection: {
-    transform: 'translate(0%, 180%)',
-    zIndex: 15,
-    [theme.breakpoints.up('sm')]: {
+      zIndex: 15,
       display: 'flex',
-      transform: 'translate(0%, 0%)',
-
-    },
+      flexGrow:1,
+      justifyContent:'center',
   },
-  
   searchForm: {
     border: '1px solid #6a6b6c',
-    backgroundColor: '#6a6b6c',
-    borderRadius: 20,
+    backgroundColor: 'white',
     overflow: 'hidden',
-    height: 30,
+    height: 25,
 
   },
   searchInput: {
@@ -132,10 +167,13 @@ const useStyles = makeStyles((theme) => ({
       color: 'white',
     },
   },
+  inpttxt: {
+    padding: '0 7px',
+  },
   iconButton: {
     backgroundColor: '#222 !important',
-    padding: '5px !important',
-    borderRadius: '0 5px 5px 0 !important',
+    padding: '2px 5px !important',
+    borderRadius: ' 0 !important',
     '& span': {
       color: 'white !important',
     },
@@ -246,7 +284,7 @@ const useStyles = makeStyles((theme) => ({
     display:'grid !important',
     gap: 10,
     gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridTemplateRows: '1fr 1fr 1fr ',
+    gridTemplateRows: '1fr 1fr',
     [theme.breakpoints.up('sm')]: {
        gap: 15,
     },
@@ -304,6 +342,7 @@ const useStyles = makeStyles((theme) => ({
   },
   roundedTab: {
     borderRadius: '80px !important',
+    padding: '0 20px',
   },
   categMain: {
     flexGrow: '1 !important',
@@ -322,10 +361,10 @@ const useStyles = makeStyles((theme) => ({
   categPic: {
     padding: 0,
     backgroundColor: '#f1f5f9',
-    border: '10px solid #f1f5f9',
     borderRadius: 50,
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
+    overflow: 'hidden',
     marginRight: '0 !important',
     [theme.breakpoints.up('sm')]: {
       justifyItems: 'center',
@@ -378,37 +417,6 @@ const useStyles = makeStyles((theme) => ({
   padTab: {
     padding: '0 !important',
   },
-  revBorder: {
-    border: '1px solid rgb(0, 0, 0.3)',
-    borderRadius: 5,
-    height:'150px',
-    overflow: 'hidden',
-    '& ::-webkit-scrollbar': {
-       display:'none',                
-    },
-  },
-  revBorderLess: {
-    border: '1px solid rgb(0, 0, 0.3)',
-    borderRadius: 5,
-    overflow: 'hidden',
-    height: '700px',
-    '& ::-webkit-scrollbar': {
-       display:'block',                
-    },
-  },
-  seemorewrapp: {
-    display: 'flex',
-    alignItems:'center',
-    justifyContent:'center',
-  },
-  seemore: {
-    display: 'inline-block',
-    padding: '5px 20px',
-    color: 'white',
-    backgroundColor: 'black',
-    transform: 'translate(0%, -50%)',
-    borderRadius: 20,
-  },
   badge: {
     color: 'white',
     border: '3px solid #222',
@@ -453,6 +461,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '25 !important',
     color: 'white !important',
   },
-
+  textSml: {
+   fontSize: '0.875rem !important',
+    lineHeight: '1.25rem !important',
+    display: 'flex',
+    flexGrow: 1,
+  },
+  textSmla: {
+   fontSize: '1rem !important',
+    lineHeight: '1.25rem !important',
+    display: 'flex',
+    flexGrow: 1,
+  },
 }));
 export default useStyles;

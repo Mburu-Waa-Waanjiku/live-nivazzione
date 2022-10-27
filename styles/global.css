@@ -951,3 +951,7 @@ span.swiper-pagination-bullet {
     position: initial !important;
 
 }
+.w-max {
+  max-width: 420px;
+  min-width: 50px;
+}

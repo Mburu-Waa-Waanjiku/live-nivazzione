@@ -2,6 +2,7 @@ import nc from 'next-connect';
 import Order from '../../../models/Order';
 import Product from '../../../models/Product';
 import User from '../../../models/User';
+import Location from '../../../models/Location';
 import { isAuth, isAdmin } from '../../../utils/auth';
 import db from '../../../utils/db';
 import { onError } from '../../../utils/error';
@@ -10,12 +11,13 @@ const handler = nc({
   onError,
 });
 handler.use(isAuth, isAdmin);
-
+ 
 handler.get(async (req, res) => {
   await db.connect();
   const ordersCount = await Order.countDocuments();
   const productsCount = await Product.countDocuments();
   const usersCount = await User.countDocuments();
+  const locationsCount = await Location.countDocuments();
   const ordersPriceGroup = await Order.aggregate([
     {
       $group: {
@@ -35,7 +37,7 @@ handler.get(async (req, res) => {
     },
   ]);
   await db.disconnect();
-  res.send({ ordersCount, productsCount, usersCount, ordersPrice, salesData });
+  res.send({ ordersCount, productsCount, usersCount, locationsCount, ordersPrice, salesData });
 });
 
 export default handler;

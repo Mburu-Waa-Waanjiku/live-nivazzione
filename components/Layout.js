@@ -38,6 +38,7 @@ import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { useEffect } from 'react';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 
 export default function Layout({ title, description, children }) {
@@ -126,6 +127,17 @@ export default function Layout({ title, description, children }) {
     Cookies.remove('paymentMethod');
     router.push('/');
   };
+  const [searchClick, setSearchClick] = useState(false);
+  const [searchBtn, setSearchBtn] = useState(true);
+
+  const handleClickSearchf = () => {
+    setSearchClick(false);
+    setSearchBtn(true);
+  };
+  const handleSearchBtn = () => {
+    setSearchClick(true);
+    setSearchBtn(false);
+  }
   return (
     <div>
       <Head>
@@ -196,32 +208,16 @@ export default function Layout({ title, description, children }) {
                 <Link>
                   <Typography className={classes.smbrand}>NiVAZZi</Typography>
                 </Link>
-              </NextLink>  
-            <div className={classes.searchSection}>
-              <form onSubmit={submitHandler} className={classes.searchForm}>
-                
-                <InputBase
-                  name="query"
-                  className={classes.searchInput}
-                  placeholder="Search products"
-                  onChange={queryChangeHandler}
-                />
-                <IconButton
-                  type="submit"
-                  sx={{"&.MuiIconButton-root": {padding:0},}}
-                  className={classes.iconButton}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </form>
-            </div>
+            </NextLink>  
             <div className=" flex justify-center">
               <Switch
               className="invisible"
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
               ></Switch> 
+              <div>
+                <Typography className={classes.cartnsch} component="span"><SearchIcon onClick={handleSearchBtn} sx={{ color: 'white'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/></Typography>
+              </div>
               <NextLink href="/cart" passHref>
                 <Link>
                   <Typography className={classes.carton} component="span">
@@ -298,6 +294,28 @@ export default function Layout({ title, description, children }) {
             </div>
           </Toolbar>
         </AppBar>
+        <div className={classes.smseach} style={{top: searchClick ? '60px' : '0',}}>
+            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, height:"100%",padding: "5px"}} />
+            <div className={classes.searchSection}>
+              <form onSubmit={submitHandler} className={classes.searchForm}>
+                <InputBase
+                  name="query"
+                  classes={{ input: classes.inpttxt,}}
+                  className={classes.searchInput}
+                  placeholder="Search products"
+                  onChange={queryChangeHandler}
+                />
+                <IconButton
+                  type="submit"
+                  sx={{"&.MuiIconButton-root": {padding:0},}}
+                  className={classes.iconButton}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </form>
+            </div>
+        </div>
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
           <Typography>All rights reserved. NiVAZZi ©. </Typography>

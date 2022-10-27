@@ -98,11 +98,6 @@ function AdminDashboard() {
                   <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
-              <NextLink href="/admin/DropStations" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="DropStations"></ListItemText>
-                </ListItem>
-              </NextLink>
             </List>
           </Card>
         </Grid>
@@ -179,6 +174,23 @@ function AdminDashboard() {
                           <NextLink href="/admin/users" passHref>
                             <Button size="small" color="primary">
                               View users
+                            </Button>
+                          </NextLink>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                    <Grid item md={3}>
+                      <Card raised>
+                        <CardContent>
+                          <Typography variant="h1">
+                            {summary.locationsCount}
+                          </Typography>
+                          <Typography>Drop Station Locations</Typography>
+                        </CardContent>
+                        <CardActions>
+                          <NextLink href="/admin/DropStations" passHref>
+                            <Button size="small" color="primary">
+                              View Drop Stations
                             </Button>
                           </NextLink>
                         </CardActions>

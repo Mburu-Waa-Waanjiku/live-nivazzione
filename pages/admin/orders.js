@@ -102,11 +102,6 @@ function AdminOrders() {
                   <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
-              <NextLink href="/admin/DropStations" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="DropStations"></ListItemText>
-                </ListItem>
-              </NextLink>
             </List>
           </Card>
         </Grid>

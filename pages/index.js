@@ -28,7 +28,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 
-const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits, oftrendy,  newdrops, offers, editorspicks }) => {
+const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwaistbeads, offingerrings, ofanclets }) => {
   const { state, dispatch } = useContext(Store);  
   const classes = useStyles();
 
@@ -64,11 +64,8 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
   return (
     <> 
       <Layout> 
-        <div className={classes.smseach}>
-          
-        </div>
         <TabContext value={value}>
-          <Tabs  value={value} classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
+          <Tabs className={classes.ndicatenone}  value={value} classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
             <Tab value="1" />
             <Tab value="2" />
             
@@ -145,18 +142,11 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                 <TabContext  value={categ} 
               >
                   <Tabs value={categ} classes={{ flexContainer: classes.categ, indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{"& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleBoth} variant="scrollable"  >
-                    <Tab value="Ankara" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Ankara" iconPosition="start" icon={<div><Image width={20} height={20} alt="ankara" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1664230129/sc8thwrdmtqqgccgxeai.png"/></div>} />
-                    <Tab value="Pants" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Pants" iconPosition="start" icon={<div><Image  width={20} height={20} alt="Pants" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1664230129/sc8thwrdmtqqgccgxeai.png"/></div>} />
-                    <Tab value="Bags" label="Bags"/>
-                    <Tab value="Shoes" label="Shoes"/>
-                    <Tab value="Trendy" label="Trendy"/>
-                    <Tab value="Dresses" label="Dresses"/>
-                    <Tab value="Outfit" label="Outfit"/>
-                    <Tab value="Suits" label="Suits"/>
-                    <Tab value="Skirts" label="Skirts"/>
-                    <Tab value="Shorts" label="shorts"/>
-                    <Tab className={classes.ndicatenone} value="back" label="shorts"/>
-
+                    <Tab value="Earrings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Nose & Earrings" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
+                    <Tab value="Anclets" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Anclets" iconPosition="start" icon={<div><Image  width={50} height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_north,h_500,q_100,w_500/v1666790299/1602473757eaefd843bc60307bfcdbfde68a678269_thumbnail_600x_ba2xc4.webp"/></div>} />
+                    <Tab value="Finger rings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Finger rings" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1666787251/a0265d90-0416-40a6-9f3d-d0f2086da42b1632576872688ShiningDivaSetof9GoldPlatedStylishRings7_n1ngnt.webp"/></div>}/>} />
+                    <Tab value="Waist beads" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Waist beads" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/c_crop,g_center,h_900,q_200,w_1300/v1666793858/1637744539a70818f7474c4c88e068910c1d310fc0_xrkmyx.webp"/></div>}/>} />
+                    <Tab value="Glam" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
                   </Tabs>
              </TabContext>
               <div className="home-ft">Flush sale </div>
@@ -203,7 +193,7 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                         <div className="inline ">
                           {product.isBurgain && (<div className="loves"> B </div>)}
                           <div className="">
-                            <div className={classes.prevprice}><s>Ksh.{product.prevprice}</s></div>
+                            <div className={classes.prevprice}><s>Ksh.{product.newprice}</s></div>
                             <div className={classes.price}>Ksh.{product.price}</div>
                           </div>
                         </div>
@@ -245,21 +235,15 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                </TabContext>
                <TabContext value={categ}>
                   <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: 2, inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
-                    <Tab value="Ankara"  label="Ankara" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
-                    <Tab value="Pants" label="Pants" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
-                    <Tab value="Bags" label="Bags" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(253, 134, 112)",},}}/>
-                    <Tab value="Shoes" label="Shoes" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(237, 208, 180)",},}}/>
-                    <Tab value="Trendy" label="Trendy" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
-                    <Tab value="Dresses" label="Dresses" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(136, 51, 80)",},}}/>
-                    <Tab value="Outfit" label="Outfit" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(195, 145, 113)",},}}/>
-                    <Tab value="Suits" label="Suits" classes={{ root: classes.roundedTab}}  sx={{"&.MuiTab-root": {backgroundColor: "rgb(101, 124, 147)",},}} />
-                    <Tab value="Skirts" label="Skirts" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(151, 112, 56)",},}} />
-                    <Tab value="Shorts" label="shorts" classes={{ root: classes.roundedTab }}  sx={{"&.MuiTab-root": {backgroundColor: "rgb(220, 181, 175)",},}}/>
-                 
+                    <Tab value="Earrings"  label="Nose & Earrings" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
+                    <Tab value="Anclets" label="Anclets" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
+                    <Tab value="Finger rings" label="Finger rings" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(253, 134, 112)",},}}/>
+                    <Tab value="Waist beads" label="Waist beads" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(237, 208, 180)",},}}/>
+                    <Tab value="Glam" label="Glam" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                   </Tabs>
-                  <TabPanel className={classes.padTab} value="Suits" >
+                  <TabPanel className={classes.padTab} value="Earrings" >
                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                       {ofsuits.map((product) => (
+                       {ofearrings.map((product) => (
                          <ProductItem
                            product={product}
                            key={product}
@@ -269,9 +253,9 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                      </div>
                   </TabPanel>
            
-                  <TabPanel className={classes.padTab} value="Ankara" >
+                  <TabPanel className={classes.padTab} value="Anclets" >
                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                       {ofankara.map((product) => (
+                       {ofanclets.map((product) => (
                          <ProductItem
                            product={product}
                            key={product}
@@ -282,9 +266,9 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                       </div>
                     </TabPanel>
 
-                    <TabPanel className={classes.padTab} value="Dresses" >
+                    <TabPanel className={classes.padTab} value="Finger rings" >
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                        {ofdresses.map((product) => (
+                        {offingerrings.map((product) => (
                          <ProductItem
                            product={product}
                            key={product}
@@ -293,10 +277,9 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                         ))}
                       </div>
                     </TabPanel>
-          
-                    <TabPanel className={classes.padTab} value="Bags">
+                    <TabPanel className={classes.padTab} value="Waist beads">
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                        {ofbags.map((product) => (
+                        {ofwaistbeads.map((product) => (
                          <ProductItem
                            product={product}
                            key={product}
@@ -305,32 +288,9 @@ const Home = ({ banner, ofshoes , ofbags, ofankara, ofdresses, ofpants, ofsuits,
                         ))}
                       </div>
                     </TabPanel>
-          
-                    <TabPanel className={classes.padTab} value="Pants">
+                    <TabPanel className={classes.padTab} value="Glam">
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                        {ofpants.map((product) => (
-                         <ProductItem
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                        ))}
-                      </div>
-                    </TabPanel>
-                    <TabPanel className={classes.padTab} value="Shoes">
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                        {ofshoes.map((product) => (
-                         <ProductItem
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                        ))}
-                      </div>
-                    </TabPanel> 
-                    <TabPanel className={classes.padTab} value="Trendy">
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                        {oftrendy.map((product) => (
+                        {ofglam.map((product) => (
                          <ProductItem
                            product={product}
                            key={product}
@@ -378,91 +338,62 @@ export async function getServerSideProps() {
       .sort({
          rating: -1,
       })
-      .limit(14);
-  const ofbags = await Product.find(
-    { category: 'Bags'},
+      .limit(20);
+  const ofearrings = await Product.find(
+    { category: 'Earrings'},
     '-reviews'
     )
       .lean()
       .sort({
          rating: -1,
       })
-      .limit(14);
-  const ofpants = await Product.find(
-    { category: 'Pants'},
+      .limit(20);
+  const ofanclets = await Product.find(
+    { category: 'Anclets'},
     '-reviews'
     )
       .lean()
       .sort({
          rating: -1,
       })
-      .limit(14);
-  const ofshoes = await Product.find(
-    { category: 'Shoes'},
+      .limit(20);
+  const offingerrings = await Product.find(
+    { category: 'Finger rings'},
     '-reviews'
     )
       .lean()
       .sort({
          rating: -1,
       })
-      .limit(14);
-  const oftrendy = await Product.find(
-    { category: 'Trendy'},
+      .limit(20);
+  const ofwaistbeads = await Product.find(
+    { category: 'Waist Beads'},
     '-reviews'
     )
       .lean()
       .sort({
          rating: -1,
       })
-      .limit(14);
-  const ofsuits = await Product.find(
-    { category: 'Suits'},
+      .limit(20);
+  const ofglam = await Product.find(
+    { category: 'Glam'},
     '-reviews'
     )
       .lean()
       .sort({
          rating: -1,
       })
-      .limit(14);
-  const ofoutfits = await Product.find(
-    { category: 'Outfit'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(14);
-  const ofankara = await Product.find(
-    { category: 'Ankara'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(14);
-  const ofdresses = await Product.find(
-    { category: 'Dresses'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(14);
+      .limit(20);
+  
   const banner = await Banner.find().lean();
   await db.disconnect();
   return {
     props: {
-      ofankara: ofankara.map(db.convertDocToObj),
-      ofbags: ofbags.map(db.convertDocToObj),
-      ofpants: ofpants.map(db.convertDocToObj),
-      ofsuits: ofsuits.map(db.convertDocToObj),
-      ofshoes: ofshoes.map(db.convertDocToObj),      
-      ofdresses: ofdresses.map(db.convertDocToObj),      
-      oftrendy: oftrendy.map(db.convertDocToObj),      
-      ofoutfits: ofoutfits.map(db.convertDocToObj),      
+      ofglam: ofglam.map(db.convertDocToObj),
+      ofwaistbeads: ofwaistbeads.map(db.convertDocToObj),      
+      offingerrings: offingerrings.map(db.convertDocToObj),      
+      ofanclets: ofanclets.map(db.convertDocToObj),      
+      ofearrings: ofearrings.map(db.convertDocToObj),      
       editorspicks: editorspicks.map(db.convertDocToObj),
       newdrops: newdrops.map(db.convertDocToObj),
       offers: offers.map(db.convertDocToObj),

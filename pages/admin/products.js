@@ -164,11 +164,6 @@ function AdminProdcuts() {
                   <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
-              <NextLink href="/admin/DropStations" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="DropStations"></ListItemText>
-                </ListItem>
-              </NextLink>
             </List>
           </Card>
         </Grid>
@@ -216,10 +211,10 @@ function AdminProdcuts() {
                           <TableCell>ACTIONS</TableCell>
                         </TableRow>
                       </TableHead>
-                      <TableBody>
+                      <TableBody> 
                         {products.map((product) => (
                           <TableRow key={product._id}>
-                            <TableCell><Image width={80} height={80} alt={product.name} src={product.image[0]}></Image></TableCell>
+                            <TableCell style={{padding: 0}}><Image width={200} height={290} alt={product.name} src={product.image[0]}></Image></TableCell>
                             <TableCell>
                               {product._id.substring(20, 24)}
                             </TableCell>

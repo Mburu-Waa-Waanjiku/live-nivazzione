@@ -228,11 +228,6 @@ function ProductEdit({ params }) {
                   <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
-              <NextLink href="/admin/DropStation" passHref>
-                <ListItem selected button component="a">
-                  <ListItemText primary="DropStations"></ListItemText>
-                </ListItem>
-              </NextLink>
             </List>
           </Card>
         </Grid>
