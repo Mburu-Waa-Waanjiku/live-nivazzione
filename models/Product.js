@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema(
     gender: { type: String, required: true },
     distinctCateg: { type: String, required: true }, 
     isOnoffer: { type: Boolean, required: true, default: false },
-    newprice: { type: Number},
+    prevprice: { type: Number},
     discount: { type: Number},    
     isNeww: { type: Boolean, required: true, default: false },
     featuredImage: { type: Array },
