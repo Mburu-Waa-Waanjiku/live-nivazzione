@@ -6,7 +6,7 @@ import useStyles from '../utils/styles';
 
 
 export default function ProductItem({ product, addToCartHandler }) {
-      const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <div className="card">

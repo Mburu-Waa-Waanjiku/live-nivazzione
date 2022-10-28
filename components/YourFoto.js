@@ -1,10 +1,35 @@
 import React from 'react';
+import Image from 'next/image';
+import useStyles from '../utils/styles';
+import Link from 'next/link';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 
-function  YourFoto() {
 
-	return ( 
+function YourFoto({product, addToCartHandler}) {
+	const classes = useStyles();
+
+	return (
 		<div>
-    </div>
+			<Link href={`/product/${product.slug}`}>
+                <Image
+                    width={364}
+                    height={484}
+                    src={product.image[0]}
+                    alt={product.name}
+                    className="shadow object-cover h-auto w-100"
+                />
+            </Link> 
+            <div className="heart-ck"  onClick={() => addToCartHandler(product)}>
+                <AiOutlineShoppingCart/>
+            </div>
+            <div className="inline ">
+                {product.isBurgain && (<div className="loves"> B </div>)}
+                <div className="">
+                    <div className={classes.prevprice}><s>Ksh.{product.newprice}</s></div>
+                    <div className={classes.price}>Ksh.{product.price}</div>
+                </div>
+            </div>
+		</div>
 	)
 }
 

@@ -141,8 +141,9 @@ export default function Layout({ title, description, children }) {
   return (
     <div>
       <Head>
-        <title>{title ? `${title} - NiVAZZi` : 'NiVAZZi '}</title>
+        <title>{title ? `${title} - shiglam` : 'shiglam '}</title>
         {description && <meta name="description" charset="UTF-8" content={description}></meta>}
+        <link rel="icon" href="/shiglam.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
       </Head>
       <ThemeProvider theme={theme}>
@@ -160,7 +161,7 @@ export default function Layout({ title, description, children }) {
               </IconButton>
               <NextLink href="/" passHref>
                 <Link>
-                  <Typography className={classes.brand}>NiVAZZi</Typography>
+                  <Typography className={classes.brand}>shiglam</Typography>
                 </Link>
               </NextLink>
             </Box>
@@ -206,7 +207,7 @@ export default function Layout({ title, description, children }) {
             </Drawer>
             <NextLink href="/" passHref>
                 <Link>
-                  <Typography className={classes.smbrand}>NiVAZZi</Typography>
+                  <Typography className={classes.smbrand}>shiglam</Typography>
                 </Link>
             </NextLink>  
             <div className=" flex justify-center">
@@ -295,7 +296,7 @@ export default function Layout({ title, description, children }) {
           </Toolbar>
         </AppBar>
         <div className={classes.smseach} style={{top: searchClick ? '60px' : '0',}}>
-            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, height:"100%",padding: "5px"}} />
+            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, height:"100%",padding: "2px"}} />
             <div className={classes.searchSection}>
               <form onSubmit={submitHandler} className={classes.searchForm}>
                 <InputBase
@@ -318,7 +319,7 @@ export default function Layout({ title, description, children }) {
         </div>
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
-          <Typography>All rights reserved. NiVAZZi ©. </Typography>
+          <Typography>All rights reserved. shiglam ©. </Typography>
         </footer>
       </ThemeProvider>
     </div>

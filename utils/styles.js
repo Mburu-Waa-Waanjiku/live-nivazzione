@@ -56,12 +56,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems:'center',
     borderBottom: '1px solid grey',
     borderTop: '1px solid grey',
-    zIndex: 10,
+    zIndex: 110,
     justifyContent:'space-between',
     position: 'sticky',
     transition: 'top 0.6s',
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',}
+
   },
   grow: {
     flexGrow: 1,
@@ -162,13 +161,13 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     paddingLeft: 10,
-    color: 'white',
+    color: '#222',
     '& ::placeholder': {
       color: 'white',
     },
   },
   inpttxt: {
-    padding: '0 7px',
+    padding: '0 7px !important',
   },
   iconButton: {
     backgroundColor: '#222 !important',
@@ -280,6 +279,7 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
     backgroundColor: 'white',
   },
+
   categ: {
     display:'grid !important',
     gap: 10,
@@ -290,10 +290,9 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('md')]: {
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
-    gridTemplateRows: '1fr 1fr',
+    gridTemplateRows: '1fr ',
     },
   },
-
   categRut: {
     height: 'auto',
   },
@@ -302,7 +301,7 @@ const useStyles = makeStyles((theme) => ({
     height: 65,
   },
   ndicatenone: {
-    display: 'none',
+    display: 'none !important',
   }, 
   ndicateflex: {
     display: 'inline-flex',
@@ -321,6 +320,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ndicateThick: {
     height: '3px !important',
+    backgroundColor:'#222',
   },
   wrapperCateg: {
     justifyContent: 'space-evenly !important',
@@ -472,6 +472,24 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '1.25rem !important',
     display: 'flex',
     flexGrow: 1,
+  },
+  mideaSmallBannerResp: {
+    width: '102.5vw',
+    marginTop: '17px',
+    position: 'relative',
+    left: '-4vh',
+    [theme.breakpoints.up('sm')]: {
+      marginTop: '65px',
+      width:'100%',
+      left: '0px !important',
+    },
+  },
+  mideaSmallDivResp: {
+    width: '95.5vw',
+    position: 'relative',
+    [theme.breakpoints.up('sm')]: {
+      width:'100%',
+    },
   },
 }));
 export default useStyles;

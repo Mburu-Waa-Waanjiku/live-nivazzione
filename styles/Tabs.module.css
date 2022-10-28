@@ -20,7 +20,7 @@
     border-radius: 25px;
     background-color: white;
     opacity: 1;
-    transition: top 0.6s;
+    transition: bottom 0.6s;
     left: 50%;
     transform: translate(-50%, 550%);
 }
