@@ -73,11 +73,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
 
             
             <TabPanel className={classes.padTab} value="1">
-               <div>
+               <div className={classes.mideaSmallBannerResp}>
                   <Image height={636} width={1560} alt="" src={banner[1].image[0]}></Image>
                </div>
               <div className="home-ft">Newly Dropped</div>
-              <div> 
+              <div className={classes.mideaSmallDivResp}> 
                <div className={classes.fullWidth}>
                  <Swiper                    
                     breakpoints={{
@@ -150,7 +150,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                   </Tabs>
              </TabContext>
               <div className="home-ft">Flush sale </div>
-              <div className={classes.fullWidth}>
+              <div className={classes.mideaSmallDivResp}>
                  <Swiper                    
                     breakpoints={{
                       100: {

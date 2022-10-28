@@ -24,7 +24,7 @@ import FilterListIcon from '@mui/icons-material/FilterListRounded';
 import { Store } from '../utils/Store';
 import layoutStyles from '../styles/Layout.module.css'
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 20;
 
 const prices = [
   {
@@ -122,9 +122,6 @@ export default function Search(props) {
   return (
     <>
     <Layout title="Search">
-        <div className={classes.smseach}>
-          
-        </div>
       <Grid className={layoutStyles.mt1} container spacing={1}>
         <Grid item md={9}>
           <Grid container justifyContent="space-between" alignItems="center">
@@ -217,7 +214,7 @@ export default function Search(props) {
               ) : null}
             </Grid>
           </Grid>
-          <Grid className={layoutStyles.mt1} container spacing={3}>
+          <div className="grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (
               <Grid item md={4} key={product.name}>
                 <ProductItem
@@ -226,7 +223,7 @@ export default function Search(props) {
                 />
               </Grid>
             ))}
-          </Grid>
+          </div>
           <Pagination
             className={layoutStyles.mt1}
             defaultPage={parseInt(query.page || '1')}

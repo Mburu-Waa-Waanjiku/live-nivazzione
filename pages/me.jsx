@@ -14,9 +14,8 @@ function Me() {
     const classes = useStyles();
 	return (
 		<Layout>
-            <div className={classes.smseach}>
-            </div>
-            <div className="">
+        <div className={classes.mideaSmallBannerResp}>
+            <div>
                 <div className="me-container">
                     <div className="name-profile">
                         <div className="me-common-1">
@@ -33,10 +32,12 @@ function Me() {
             </div>
             <div className="me-container-1">
                 <div className="me-container-1-a me-common-1">
-                    <div>Delivery address links</div>
+                    <div style={{fontSize:17, fontWeight: "bold"}}>My Orders</div>
                 </div>
                 <div className="me-container-1-b me-common-1">
-                    <ArrowForwardIosIcon/>
+                    <Link href="/order-history">
+                        <ArrowForwardIosIcon/>
+                    </Link>
                 </div>
             </div>
             <div className="me-container-3">
@@ -45,6 +46,7 @@ function Me() {
                     <div className="responsive"></div>
                 </div>
             </div>
+        </div>
             <Tabsbottom/>
 		</Layout>
 	)

@@ -16,7 +16,7 @@ import ProductItem from '../../components/ProductItem';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import { Typography, ListItem, List, TextField, Button, CircularProgress, Grid, } from '@material-ui/core';
-import { Navigation, FreeMode, Thumbs } from 'swiper';
+import { Navigation, FreeMode, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSnackbar } from 'notistack';
  
@@ -100,20 +100,19 @@ export default function ProductScreen(props) {
   return (
     <>
       <Layout title={product.name} description={product.description}>
-      <div className={classes.smseach}>
-          
-        </div>
-      <div className="pt-3 grid grid-cols-1 md:grid-cols-2 md:gap-3">
-        <div className="col-span-1 md:col-span-1">
-           <div layout="responsive" style={{maxWidth:380}} >
+      <div className="mt-9 grid grid-cols-1 md:grid-cols-12 md:gap-4">
+        <div className="col-span-1 md:col-span-5 md:col-start-2">
+           <div layout="responsive" style={{maxWidth:420}} >
            <>
              <Swiper
                style={{
                "--swiper-navigation-color": "#fff",
                "--swiper-pagination-color": "#fff",
              }}
-        
-                modules={[FreeMode, Navigation, Thumbs]}
+                pagination={{
+                  type: "fraction",
+                }}
+                modules={[Pagination, FreeMode, Navigation, Thumbs]}
                 spaceBetween={2}
                 slidesPerView={1.05}
                 loop={true}
@@ -123,7 +122,7 @@ export default function ProductScreen(props) {
             >
               {product.image?.map((item) => ( 
                 <SwiperSlide key={item} >
-                  <Image key={item} width={364} height={484} alt={product.name} className="g-images-child"
+                  <Image key={item} width={400} height={530} alt={product.name} className="g-images-child"
                     src={(item)}
                   />
                 </SwiperSlide >
@@ -131,7 +130,7 @@ export default function ProductScreen(props) {
              </Swiper>
              <Swiper
                spaceBetween={10}
-               slidesPerView={4}
+               slidesPerView={5}
                className="hidden sm:block"
                freeMode={true}
                watchSlidesProgress={true}
@@ -149,7 +148,7 @@ export default function ProductScreen(props) {
            </>
            </div>
         </div>
-        <div>
+        <div className="col-span-1 md:col-span-5 md:col-start-7">
         <div>
          <h3>{product.name}</h3>
          <div className="slug-gallery" style={{padding:"5px 0"}}>Ksh.{product.price}</div>
