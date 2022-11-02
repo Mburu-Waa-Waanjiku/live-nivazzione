@@ -63,6 +63,7 @@ function PlaceOrder() {
         {
           orderItems: cartItems,
           shippingAddress,
+          paymentMethod,
           itemsPrice,
           shippingPrice,
           taxPrice,
@@ -107,7 +108,7 @@ function PlaceOrder() {
                   Payment Method
                 </div>
               <div className="flex pl-8 pb-8 text-xs">
-                <div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
+                <div className="hidden">{paymentMethod}</div><div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
               </div>   
           </div>
           <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
