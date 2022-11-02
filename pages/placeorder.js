@@ -39,19 +39,17 @@ function PlaceOrder() {
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
-  const shippingPrice = itemsPrice > 200 ? 0 : 15;
-  const taxPrice = round2(itemsPrice * 0.15);
+  const shippingPrice = itemsPrice > 500 ? 0 : 15;
+  const taxPrice = round2(itemsPrice * 0.16);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
   useEffect(() => {
-    if (!shippingAddress.address) {
-      router.push('/shipping');
-    }
+    
     if (!paymentMethod) {
       router.push('/shipping');
     }
     if (cartItems.length === 0) {
-      router.push('/cart');
+      router.push(`/order/${data._id}`);
     }
   }, [cartItems.length, paymentMethod, router, shippingAddress.address]);
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
@@ -80,6 +78,7 @@ function PlaceOrder() {
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
       setLoading(false);
+      enqueueSnackbar('Order created succesfully', { variant: 'success' });
       router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
@@ -88,61 +87,48 @@ function PlaceOrder() {
   };
   return (
     <Layout title="Place Order">
-      <div className={classes.smseach}>
-          
-        </div>
-      <Typography className="text-center" component="h1" variant="h1">
-        Place Order
-      </Typography>
-
+        <h1 className=" mt-3 sm:mt-5  home-ft" style={{fontSize: 17}}>Confirm Order</h1>
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
+          <div style={{backgroundColor:"#f1f5f9",}}className={classes.section}>
             <List>
-              <ListItem>
-                <Typography component="h2" variant="h2">
-                  Shipping Address
-                </Typography>
-              </ListItem>
-              <ListItem>
-                {shippingAddress.fullName}, {shippingAddress.address},{' '}
-                {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                {shippingAddress.price}, {shippingAddress.dropstation},{' '}
-              </ListItem>
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
+                   User details
+                </div>
+              <div className="block pl-8 text-xs">
+                <div style={{display:"flex", color:"gray"}}><b>Name:</b><div className="ml-2">{shippingAddress.firstName} {shippingAddress.lastName}</div></div>
+                <div style={{display:"flex", color:"gray"}}><b>County:</b><div className="ml-2">{shippingAddress.county}</div></div> 
+                <div style={{display:"flex", color:"gray"}}><b>Delivey location:</b><div className="ml-2">{shippingAddress.dropstation}</div></div>
+                <div style={{display:"flex", color:"gray"}}><b>Phone Number:</b><div className="ml-2">{shippingAddress.phoneNumber}</div></div>
+              </div>
             </List>
-          </Card>
-          <Card className={classes.section}>
-            <List>
-              <ListItem>
-                <Typography component="h2" variant="h2">
+          </div>
+          <div style={{backgroundColor:"#f1f5f9"}}className={classes.section}>
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
                   Payment Method
-                </Typography>
-              </ListItem>
-              <ListItem>{paymentMethod}</ListItem>
-            </List>
-          </Card>
-          <Card className={classes.section}>
-            <List>
-              <ListItem>
-                <Typography component="h2" variant="h2">
-                  Order Items
-                </Typography>
-              </ListItem>
-              <ListItem>
-                
+                </div>
+              <div className="flex pl-8 pb-8 text-xs">
+                <div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
+              </div>   
+          </div>
+          <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+            <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+            </div>
+          </div>
+          <div className="grid justify-center" >
+              <div className="home-ft w-full justify-self-stretch">
+                Order Items
+              </div>  
                   <Swiper    
                     breakpoints={{
                       100: {
-                         width: 320,
                          slidesPerView: 1.7,
                        },
                       640: {
-                         width: 640,
-                         slidesPerView: 4,
+                         slidesPerView: 2.3,
                       }, 
                       1000: {
-                         width: 640,
-                         slidesPerView: 6,
+                         slidesPerView: 4,
                       },  
 
                     }}
@@ -153,7 +139,7 @@ function PlaceOrder() {
                       modules={[FreeMode, Navigation]}
                       spaceBetween={10}           
                       navigation={true}
-                 
+                      className="mt-3 mySwiper"
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
         
@@ -196,10 +182,7 @@ function PlaceOrder() {
                      ))
                     }
                   </Swiper>
-
-              </ListItem>
-            </List>
-          </Card>
+          </div>
         </Grid>
 
         <Grid item md={3} xs={12}>

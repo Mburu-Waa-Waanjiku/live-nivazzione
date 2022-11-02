@@ -24,7 +24,7 @@ function Me() {
                         {userInfo ? (<div className="mb-1.5">{userInfo.name}</div>) : (<div className="mb-1.5"><Link href="/login"> Login </Link></div>)}
                         <div className="pending inline prof">
                             <Link href="/profile">
-                                Update Profile
+                                Edit Profile
                             </Link>
                         </div>
                     </div>

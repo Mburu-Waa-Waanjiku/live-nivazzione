@@ -16,7 +16,7 @@ function YourFoto({product, addToCartHandler}) {
                     height={484}
                     src={product.image[0]}
                     alt={product.name}
-                    className="shadow object-cover h-auto w-100"
+                    className="shadow object-cover bg-gray-100 h-auto w-100"
                 />
             </Link> 
             <div className="heart-ck"  onClick={() => addToCartHandler(product)}>
@@ -25,7 +25,7 @@ function YourFoto({product, addToCartHandler}) {
             <div className="inline ">
                 {product.isBurgain && (<div className="loves"> B </div>)}
                 <div className="">
-                    <div className={classes.prevprice}><s>Ksh.{product.newprice}</s></div>
+                    <div className={classes.prevprice}><s>Ksh.{product.prevprice}</s></div>
                     <div className={classes.price}>Ksh.{product.price}</div>
                 </div>
             </div>

@@ -746,6 +746,19 @@ width: 90px;
 .mySwiper 
 {
   margin-top: 2px;
+  width: 60vw;
+}
+@media screen and (max-width:600px) {
+  .mySwiper 
+{
+  width: 90vw;
+}
+}
+@media screen and (min-width:960px) {
+  .mySwiper 
+{
+  width: 21vw;
+}
 }
 .home-swiper .swiper-slide span 
 {
@@ -956,4 +969,21 @@ span.swiper-pagination-bullet {
 .w-max {
   max-width: 420px;
   min-width: 50px;
+}
+div.css-96yce9 .SnackbarItem-variantError {
+    background-color: ghostwhite !important;
+    color: grey !important;
+}
+div.css-9l5vo-MuiCollapse-wrapperInner {
+    width: auto !important;
+    max-width: 350px !important;
+}
+div.css-smkl36-MuiCollapse-wrapper {
+    justify-content: center !important;
+}
+label.MuiFormControlLabel-root {
+  margin-right: 0px !important;
+}
+div.MuiPaper-rounded {
+    border-radius: 20px;
 }

@@ -1,7 +1,6 @@
 import axios from 'axios'; 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useContext, useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import Product from '../../models/Product';
@@ -14,6 +13,8 @@ import { getError } from '../../utils/error';
 import Rating from '@material-ui/lab/Rating';
 import ProductItem from '../../components/ProductItem';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
+import { FaTruckMoving } from 'react-icons/fa';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
 
 import { Typography, ListItem, List, TextField, Button, CircularProgress, Grid, } from '@material-ui/core';
 import { Navigation, FreeMode, Thumbs, Pagination } from 'swiper';
@@ -28,7 +29,6 @@ import 'swiper/css/scrollbar';
 
 
 export default function ProductScreen(props) {
-  const router = useRouter();
   const [showOverlay, setShowOverlay] = useState(false);
    const classes = useStyles();
 
@@ -94,7 +94,6 @@ export default function ProductScreen(props) {
     }
 
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
-    router.push('/cart');
   };
 
   return (
@@ -122,7 +121,7 @@ export default function ProductScreen(props) {
             >
               {product.image?.map((item) => ( 
                 <SwiperSlide key={item} >
-                  <Image key={item} width={400} height={530} alt={product.name} className="g-images-child"
+                  <Image key={item} width={400} height={530} alt={product.name} className="bg-gray-100 g-images-child"
                     src={(item)}
                   />
                 </SwiperSlide >
@@ -139,7 +138,7 @@ export default function ProductScreen(props) {
              >
                {product.image?.map((item) => ( 
                 <SwiperSlide key={item}>
-                  <Image key={item} width={364} height={484} alt={product.name} className="g-images-child"
+                  <Image key={item} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
                     src={(item)}
                   />
                 </SwiperSlide >
@@ -151,6 +150,7 @@ export default function ProductScreen(props) {
         <div className="col-span-1 md:col-span-5 md:col-start-7">
         <div>
          <h3>{product.name}</h3>
+         {product.isOnoffer && <div className="slug-gallery" style={{padding:"5px 0", fontSize:19, color:"orangered"}}><s>Ksh.{product.prevprice}</s></div>}
          <div className="slug-gallery" style={{padding:"5px 0"}}>Ksh.{product.price}</div>
          <div className={classes.textSml}>
            <b style={{flexGrow: "inherit"}}>Details</b>
@@ -161,12 +161,10 @@ export default function ProductScreen(props) {
          </div>
         <div className="pl-5">
           <div>  Brand: {product.brand}</div>
-          </div>
+          </div> 
         </div>
         <div className="mt-5">
           <div className="card bs p-5">
-            <div className="mb-2 font-bold font-sans flex justify-between">
-            </div>
             <div className="mb-2 flex justify-between">
               <div>Status</div>
               <div>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</div>
@@ -179,13 +177,36 @@ export default function ProductScreen(props) {
             </button>
           </div>
         </div>
+        <div className="bg-slate-100">
+          <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
+            Shipping 
+          </div>
+          <div className="flex justify-between mx-6 py-1">
+            <div className="flex">
+              <FaTruckMoving style={{fontSize:20}}/>
+              <div className="ml-3 self-center">Chek your shipping drop station</div>
+            </div>
+            <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:12}}/></div>
+          </div>
+          <div className="mx-6 my-3">
+            <Image width={500} height={83} alt="" className="bg-gray-100" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667233530/ezgif.com-gif-maker_1_fx3ey6.gif"></Image>
+          </div>
+        </div> 
+        <div className="bg-slate-100">
+          <div className=" mt-2 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
+            Return 
+          </div>
+          <div className="flex justify-start mx-6 py-1">
+            {product.isOnoffer ? (<div>This product cannot be returned due to promotional activities</div>) : (<div>This product can only be returned if it is defective on delivery</div>)}
+          </div>
+        </div> 
         </div>
       </div>
       {product.gallery.length > 0 && <div className="mt-5">
       <div className="slug-gallery">Style Gallery</div>
        <div className="g-images">
           {product.gallery?.map((item) => ( 
-            <Image key={item} width={182} height={242} alt="Style Gallery" className="g-images-child"
+            <Image key={item} width={182} height={242} alt="Style Gallery" className="bg-gray-100 g-images-child"
                   onClick={() => setShowOverlay(true)}
                   
                   src={(item)}
@@ -211,7 +232,7 @@ export default function ProductScreen(props) {
                                    slidesPerView={1}
                                    navigation={true}
                                    pagination={true}
-     
+                                   className="bg-gray-100"
                                    onSwiper={(swiper) => console.log(swiper)}
                                    onSlideChange={() => console.log('slide change')}
                                 >
@@ -226,6 +247,10 @@ export default function ProductScreen(props) {
                   }
        </div>
       </div>}
+      <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+        <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+        </div>
+      </div>
       <div className="mt-5">
          <div className="slug-gallery">Customer Reviews({product.numReviews}) </div>
       </div>
@@ -321,7 +346,10 @@ export default function ProductScreen(props) {
           )}
         </ListItem>
       </div>
-
+      <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+        <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+        </div>
+      </div>
       <div className="mt-4">
          <div className="slug-gallery">You May Also Like </div>
       </div>

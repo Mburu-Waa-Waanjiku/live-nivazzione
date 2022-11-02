@@ -11,7 +11,6 @@ import Tabsbottom from '../components/Tabsbottom';
 import useStyles from '../utils/styles';
  
 function CartScreen() {
-  const classes = useStyles();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
@@ -33,13 +32,10 @@ function CartScreen() {
   };
   return (
     <Layout title="Shopping Cart">
-      <div className={classes.smseach}>
-          
-      </div>
       <button
         onClick={() => router.back()}
         type="button"
-        className="cart-heading"
+        className="cart-heading mt-5 sm:mt-7"
         >
           <AiOutlineLeft />
           <span className="heading">Your Cart</span>
@@ -68,7 +64,6 @@ function CartScreen() {
                   <th className="p-5 text-center">Name</th>
                   <th className="p-5 text-right">Quantity</th>
                   <th className="p-5 text-right">Price</th>
-                  <th className="p-5 text-right">Size</th>
                   <th className="p-5 text-right">Burgainable</th>
                   <th className="p-5">Remove</th>
                 </tr>
@@ -104,7 +99,6 @@ function CartScreen() {
                       </select>
                     </td>
                     <td className="p-5 text-right">Ksh.{item.price}</td>
-                    <td align="center">S</td>
                     <td className="p-5 text-center">
                       {item.isBurgain ? (<div className="loves"> B </div>) : (<div><b>No offer</b></div>)}
                     </td>

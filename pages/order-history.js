@@ -97,7 +97,7 @@ function OrderHistory() {
                 {loading ? (
                   <CircularProgress />
                 ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
+                  <Typography className={classes.error}>Connection error</Typography>
                 ) : (
                   <TableContainer>
                     <Table>

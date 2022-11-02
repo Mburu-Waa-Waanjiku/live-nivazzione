@@ -269,7 +269,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '10px',
     color: 'black',
     backgroundColor: 'white',
-    height: 70,
+    height: 62,
+    width: '96vw',
+    left: '-4vw',
+    [theme.breakpoints.up('sm')]: {
+      width:'100%',
+      left: '0px !important',
+    },
   },
   categGallAbs: {
     position: 'absolute',
@@ -298,7 +304,7 @@ const useStyles = makeStyles((theme) => ({
   },
   catehgallbty: {
     paddingTop: 10,
-    height: 65,
+    height: 60,
   },
   ndicatenone: {
     display: 'none !important',
@@ -342,6 +348,7 @@ const useStyles = makeStyles((theme) => ({
   },
   roundedTab: {
     borderRadius: '80px !important',
+    minHeight: 40,
     padding: '0 20px',
   },
   categMain: {
@@ -479,7 +486,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     left: '-4vh',
     [theme.breakpoints.up('sm')]: {
-      marginTop: '65px',
+      marginTop: '22px',
       width:'100%',
       left: '0px !important',
     },

@@ -296,7 +296,7 @@ export default function Layout({ title, description, children }) {
           </Toolbar>
         </AppBar>
         <div className={classes.smseach} style={{top: searchClick ? '60px' : '0',}}>
-            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, height:"100%",padding: "2px"}} />
+            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:20, height:"100%",padding: "2px"}} />
             <div className={classes.searchSection}>
               <form onSubmit={submitHandler} className={classes.searchForm}>
                 <InputBase

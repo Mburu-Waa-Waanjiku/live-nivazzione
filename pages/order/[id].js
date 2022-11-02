@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { Store } from '../../utils/Store';
 import Link from 'next/link';
@@ -20,14 +21,13 @@ import {
 } from '@material-ui/core';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import useStyles from '../../utils/styles';
 import { useSnackbar } from 'notistack';
 import { getError } from '../../utils/error';
 import ClearIcon from '@mui/icons-material/Clear';
 import { usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, FreeMode, } from 'swiper';
+import { Navigation, FreeMode, Pagination} from 'swiper';
 import CopyAllIcon from '@mui/icons-material/CopyAllSharp';
 import copy from "copy-to-clipboard";
 
@@ -222,12 +222,13 @@ function Order({ params }) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const handlePay = () =>{
+    setIsChecked(current => !current);
+  };
   return (
     <Layout title={`Order ${orderId}`}>
-      <div className={classes.smseach}>
-          
-        </div>
-      
       {loading ? (
         <CircularProgress />
       ) : error ? (
@@ -235,138 +236,77 @@ function Order({ params }) {
       ) : (
         <Grid container spacing={1}>
           <Grid item md={9} xs={12}>
-            <Card className={classes.section}>
+            <div style={{backgroundColor:"#f1f5f9", marginTop:20}}className={classes.section}>
               <List>
-                <ListItem> 
-                  <Typography component="h2" variant="h2">
-                    Shipping Address
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                  {shippingAddress.fullName}, {shippingAddress.address},{' '}
-                  {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                  {shippingAddress.country}
-                  &nbsp;
-                  {shippingAddress.location && (
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
+                   My Order
+                </div>
+                <div className="block pl-8 text-xs">
+                  <div style={{display:"flex", color:"gray"}}>
+                    <b>Address:</b>
+                    <div className="ml-2">{shippingAddress.firstName} {shippingAddress.lastName}, {shippingAddress.county}, {shippingAddress.dropstation}, {shippingAddress.phoneNumber}</div></div>
+                  <div style={{display:"flex", color:"gray"}}>
+                    <b>Products:</b>
+                    <div className="ml-2 block">
+                      {orderItems.map((item) => (
+                        <div className="flex" key={item}>
+                          {item.name}, {item.quantity}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {shippingAddress.dropstation && (
                     <Link
                       variant="button"
                       target="_new"
-                      href={`https://maps.google.com?q=${shippingAddress.location.lat},${shippingAddress.location.lng}`}
+                      href={`https://maps.google.com?q=${shippingAddress.dropstation.lat},${shippingAddress.dropstation.lng}`}
                     >
                       Show On Map
                     </Link>
-                  )}
+                  )} 
+                </div>
+              </List>
+            </div>
+            <div style={{backgroundColor:"#f1f5f9", marginTop:20}}className={classes.section}>
+              <List>
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
+                   Payment
+                </div>
+                <ListItem><div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div></ListItem>
+                <ListItem className="text-xs" style={{color:"gray"}}>
+                  <b className="pl-4">Status:</b>{' '} {isPaid ? (<div className="payStatus"><b className="text-base pr-1">Paid</b>✓</div>) 
+                    : (<div className="flex pending">Pending Approval<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
                 </ListItem>
-                <ListItem>
-                  <b>Deliverey:</b>{' '}
+                <ListItem className="text-xs" style={{color:"gray"}}>
+                  <b className="pl-4">Approved at:</b>{' '} {isPaid ? (<div className="pending">{paidAt}</div>)
+                  :  (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
+                </ListItem>
+              </List>
+            </div>
+            <div style={{backgroundColor:"#f1f5f9", marginTop:20}}className={classes.section}>
+              <List>
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
+                   Delivery
+                </div>
+                <ListItem className="text-xs" style={{color:"gray"}}>
+                  <b className="pl-4" >Out For Delivery:</b>{' '}
                   {isDelivered
                     ? (<div className="payStatus">✓</div>)
                     : (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
                 </ListItem>
-                <ListItem>
-                  <b>Percel released at:</b>{' '}
+                <ListItem className="block pl-8 text-xs" style={{color:"gray"}}>
+                  <b className="pl-4">Percel released at:</b>{' '}
                   {isDelivered
                     ? (<div className="pending">{`${deliveredAt}`}</div>)
                     : (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
                 </ListItem>
               </List>
-            </Card>
-            <Card className={classes.section}>
-              <List>
-                <ListItem>
-                  <Typography component="h2" variant="h2">
-                    Payment Method
-                  </Typography>
-                </ListItem>
-                <ListItem>{paymentMethod}</ListItem>
-                <ListItem>
-                  <b className="mr-4">Status:</b>{' '} {isPaid ? (<div className="payStatus"><b className="text-base pr-1">Paid</b>✓</div>) 
-                    : (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
-                </ListItem>
-                <ListItem>
-                  <b>Approved at:</b>{' '} {isPaid ? (<div className="pending">{paidAt}</div>)
-                  :  (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
-                </ListItem>
-
-              </List>
-            </Card>
-            <Card className={classes.section}>
-              <List>
-                <ListItem>
-                  <Typography component="h2" variant="h2">
-                    Order Items
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                
-                  <Swiper    
-                    breakpoints={{
-                      100: {
-                         width: 320,
-                         slidesPerView: 1.7,
-                       },
-                      640: {
-                         width: 640,
-                         slidesPerView: 2.4,
-                      }, 
-                      1000: {
-                         width: 640,
-                         slidesPerView: 4,
-                      },  
-
-                    }}
-                    style={{
-                      "--swiper-navigation-color": "#fff",
-                      "--swiper-pagination-color": "#fff",
-                    }}
-                      modules={[FreeMode, Navigation]}
-                      spaceBetween={10}           
-                      navigation={true}
-                 
-                  onSwiper={(swiper) => console.log(swiper)}
-                  onSlideChange={() => console.log('slide change')}
-        
-                  >
-                    {orderItems.map((item) => (
-                      <SwiperSlide key={item._id}>
-                        <div style={{borderRadius:"10px",margin:"0 3px 5px 3px" , boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)"}}>
-                        <div className="gallery">
-                          <div>
-                              <Image
-                                src={item.image[0]}
-                                alt={item.name}
-                                width={372}
-                                height={484}
-                              ></Image>
-                          </div>
-                          <div className="btm-desc">
-                            <div className="descO lovesO">
-                              <div>
-                                <b style={{fontSize: "15px"}}>Qty:</b>{item.quantity}
-                              </div>
-                              <div style={{display:"flex"}}>
-                                {item.isBurgain && (<div className="loves"> B </div>)}
-                              </div>
-                              <div> 
-                                <Link className="card-link" href={`/product/${item.slug}`}>
-                                  {item.name}
-                                </Link>
-                              </div>
-                            </div>
-                            <div className="descO price">
-                              Ksh.{item.price}
-                            </div>
-                          </div>
-                        </div>
-                        </div>
-                       </SwiperSlide>
-                     ))
-                    }
-                  </Swiper>
-              </ListItem>
-              </List>
-            </Card>
-            <Card>
+            </div>
+            <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+              <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+              </div>
+            </div>            
+            <Card className="hidden">
               <List>
                 <ListItem>
                   <div style={{color:"#737373"}} className={classes.fullWidth}>
@@ -401,12 +341,56 @@ function Order({ params }) {
             </Card>
 
           </Grid>
-          <Grid item md={3} xs={12}>
-            <Card className={classes.section}>
+          <Grid item md={3} className="bg-slate-100" xs={12}>
+            <Card className={classes.section} style={{margin:15}}>
+              <div className="home-ft w-full justify-self-stretch">
+                Order Items
+              </div> 
+                  <Swiper    
+                    breakpoints={{
+                      100: {
+                         slidesPerView: 1.3,
+                       },
+                      640: {
+                         slidesPerView: 2.3,
+                      }, 
+                      960: {
+                         slidesPerView: 1.3,
+                      },  
+
+                    }}
+                    style={{
+                      "--swiper-navigation-color": "#fff",
+                      "--swiper-pagination-color": "#fff",
+                    }}
+                    pagination={{
+                      type: "fraction",
+                    }}
+                      modules={[Pagination, FreeMode, Navigation]}
+                      spaceBetween={10} 
+                      loop={true}          
+                      navigation={true}
+                      className="mt-3 mySwiper"
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log('slide change')}
+        
+                  >
+                    {orderItems.map((item) =>(
+                      <SwiperSlide key={item._id}>
+                        <Image
+                          src={item.image[0]}
+                          alt={item.name}
+                          width={600}
+                          height={888}
+                        ></Image>
+                       </SwiperSlide>
+                     ))
+                    }
+                  </Swiper>
               <List>
-                <ListItem>
-                  <Typography variant="h2">Order Summary</Typography>
-                </ListItem>
+                <div className="home-ft" style={{fontFamily:"Arial Black", textAlign:"center", fontSize:15}}>
+                   Order Summary
+                </div>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
@@ -469,7 +453,7 @@ function Order({ params }) {
                 )}
                 {userInfo.isAdmin && !order.oldTotalPrice && (  
                 <div>
-                <ListItem>
+                <ListItem style={{display:"none"}}>
                   <Button
                       className={isClicked ? classes.ndicatenone :classes.ndicatetrue}
                       style={{backgroundColor:"#222", color:"#30d04a"}}
@@ -560,23 +544,61 @@ function Order({ params }) {
                       <CircularProgress />
                     ) : (
                     <div className={classes.fullWidth}>
-                    <Link href="https://tujenge.io/collection-link/dc970740-461e-11ed-b7ad-edf3f1fc7b62">
                     <Button
                        fullWidth
                        variant="contained"
                        className={ classes.mpesa }
+                       onClick={() => setShowOverlay(true)}
                       >
                         m<Image height={50} width={50} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1663845421/enjigpi6eaag5naxfglf.png"></Image> pesa
                     </Button>
-                    </Link>
                     </div>
                     )} 
                   </ListItem>
                 )}
+                {showOverlay && 
+                  <div className="cart-wrapper">
+                    <div className="w-full h-full flex justify-center place-items-center">
+                      <div style={{width:"80vw", height:"fit-content", borderRadius:10, backgroundColor:"#f1f5f9"}}>
+                        <div className="p-10">
+                          <div style={{padding:10, backgroundColor:"#f1f5f9"}}>We will redirect you to another webpage(tujenge.io) for payment</div>  
+                          <div style={{padding:10, marginTop:10, backgroundColor:"#f1f5f9"}}>
+                            <p>Payment Approval takes 1 to 2 hours to be verified on your Order History</p>
+                            <p>However if delayed, you can always call us on +254105705441 or whatsapp us by clicking the whatsapp button at the bottom of the screen 😊 </p> 
+                            <p>Your order is delivered within 2 to 3 business days</p>
+                          </div>
+                          <label htmlFor="">
+                            <input
+                              type="checkbox"
+                              value={isChecked}
+                              onChange={handlePay}
+                            />
+                            I Agree
+                          </label>
+                            <Link href="https://tujenge.io/collection-link/1291f110-5a02-11ed-a9d8-8dc55ea47dd3">
+                          <Button
+                            fullWidth
+                            variant="contained"
+                            disabled={!isChecked}
+                            className={ classes.mpesa }
+                          >
+                              m<Image height={50} width={50} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1663845421/enjigpi6eaag5naxfglf.png"></Image> pesa
+                          </Button>
+                            </Link>
+                        </div>
+                      </div>
+                      <div className="absolute p-5" style={{bottom:0, right:0}}>
+                        <Link href="https://wa.me/message/LLYAJG6L323CP1">
+                          <i style={{color:"white", padding:"10px 11px", fontSize:"30px", borderRadius:"50px", margin:"4px", backgroundColor:"#30d04a"}} className="fa fa-whatsapp whatsapp-icon"></i>
+                        </Link>
+                      </div>
+                    </div> 
+                  </div>
+                }
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                   <ListItem>
                     {loadingDeliver && <CircularProgress />}
-                    <Button
+                    <Button 
                       style={{backgroundColor:"#222", color:"#30d04a"}}                    
                       fullWidth
                       variant="contained"

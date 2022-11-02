@@ -48,8 +48,8 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
   return (
     <> 
        <Layout>
-          <div className={classes.mideaSmallBannerResp}><Image width={2600} height={340} alt="" src={banner[5].image[0]}></Image> </div>
-          <div className="home-ft">NiVAZZi DEAlS AND OFFERS </div>
+          <div className="home-ft mt-2">SHIGLAM DEAlS </div>
+          <div className={classes.mideaSmallBannerResp} style={{marginTop:0, display:"none"}}><Image className="bg-gray-100" width={2600} height={340} alt="" src={banner[5].image[0]}></Image> </div>
         <TabContext value={value}>          
           <Tabs centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
               {categories &&

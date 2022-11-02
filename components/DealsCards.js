@@ -21,7 +21,7 @@ export default function ProductItem({ product, addToCartHandler }) {
             height={484}
             src={product.image && product.image[0]}
             alt={product.name}
-            className="shadow object-cover h-auto w-100"
+            className="shadow object-cover bg-gray-100 h-auto w-100"
           />
         </a>
       </Link>

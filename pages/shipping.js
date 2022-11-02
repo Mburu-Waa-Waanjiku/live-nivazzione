@@ -2,12 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import Layout from '../components/Layout';
+import Image from 'next/image';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
-import Location from '../models/Location';
-import db from '../utils/db';
-import useStyles from '../utils/styles';
- import {
+import {
   Button,
   FormControl,
   FormControlLabel,
@@ -15,15 +13,20 @@ import useStyles from '../utils/styles';
   ListItem,
   Radio,
   RadioGroup,
-  Typography,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
-export default function ShippingScreen(props) {
-  const {locations} = props;
-  const classes = useStyles();
+export default function ShippingScreen() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
+  const counties = ["Select your County", "Nairobi", "Kiambu", "Machakos", "Kajiado"];
+  const [county, setCounty] = useState("Select your County");
+  const [view, setView] = useState(false);
+
+  const handleCounty = (event) => {
+    setCounty(event.target.value);
+    setView(true);
+  };
 
   const {
     handleSubmit,
@@ -34,39 +37,34 @@ export default function ShippingScreen(props) {
   } = useForm();
 
   const { state, dispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { cart } = state;
   const { shippingAddress } = cart;
   const router = useRouter();
   
 
   useEffect(() => {
-    if (!userInfo) {
-      router.push('/login?redirect=/shipping');
-    }
-    setValue('fullName', shippingAddress.fullName);
-    setValue('address', shippingAddress.address);
-    setValue('city', shippingAddress.city);
-    setValue('price', shippingAddress.price);
+    setValue('firstName', shippingAddress.firstName);
+    setValue('lastName', shippingAddress.lastName);
+    setValue('county', shippingAddress.county);
     setValue('dropstation', shippingAddress.dropstation);
-    setValue('postalCode', shippingAddress.postalCode);
+    setValue('phoneNumber', shippingAddress.phoneNumber);
   }, [setValue, shippingAddress]);
 
-  const submitHandler = ({ fullName, address, city, dropstation, price, postalCode}) => {
+  const submitHandler = ({ firstName, county, dropstation, phoneNumber, lastName }) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullName, dropstation, address, city, postalCode, price},
+      payload: { firstName, county, dropstation, phoneNumber, lastName },
     });
     Cookies.set(
       'cart',
       JSON.stringify({
         ...cart,
         shippingAddress: {
-          fullName,
-          address,
-          price,
-          city,
-          postalCode,
+          firstName,
+          lastName,
+          county,
           dropstation,
+          phoneNumber,
         },
       })
     );
@@ -79,60 +77,57 @@ export default function ShippingScreen(props) {
       router.push('/placeorder');
     }
   };
-  const [city, setCity] = useState("Nairobi");
+  
 
   return (
     <Layout title="Shipping Address">
-      <div className={classes.smseach}>
-          
-        </div>
       <form
         className="mx-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <h1 className="mb-4 text-center text-xl">Shipping Address</h1>
-        <div className="mb-4">
-          <label htmlFor="fullName">Full Name</label>
+        <h1 className="mb-4 mt-3 sm:mt-5  home-ft" style={{textAlign:"left"}}>Shipping Address</h1>
+        <div className="flex justify-between gap-3">
+        <div className="w-5/12 mb-4 grow">
+          <label htmlFor="fullName">First Name</label>
           <input
-            className="w-full"
-            id="fullName"
-            placeholder="Payment transaction name e.g Mpesa name"
+            className="block w-full"
+            id="firstName"
             autoFocus
-            {...register('fullName', {
-              required: 'Please enter full name',
+            {...register('firstName', {
+              required: 'Please enter first name',
             })}
           />
-          {errors.fullName && (
-            <div className="text-red-500">{errors.fullName.message}</div>
+          {errors.firstName && (
+            <div className="text-red-500">{errors.firstName.message}</div>
           )}
         </div>
-        <div className="mb-4">
-          <label htmlFor="address">Address</label>
+        <div className="w-5/12 mb-4 grow">
+          <label htmlFor="fullName">Last Name</label>
           <input
-            className="w-full"
-            id="address"
-            {...register('address', {
-              required: 'Please enter address',
-              minLength: { value: 3, message: 'Address is more than 2 chars' },
+            className="block w-full"
+            id="lastName"
+            autoFocus
+            {...register('lastName', {
+              required: 'Please enter last name',
             })}
           />
-          {errors.address && (
-            <div className="text-red-500">{errors.address.message}</div>
+          {errors.lastName && (
+            <div className="text-red-500">{errors.lastName.message}</div>
           )}
         </div>
+        </div>
         <div className="mb-4">
-          <label htmlFor="city">City/Town</label>
+          <label htmlFor="county">County</label>
           <select
-              {...register('city')}
-              placeholder="City"
+              {...register('county')}
               control={control}
-              value={city}
-              className={classes.fullWidth}
-              onChange={(e) => setCity(e.target.value)}
+              value={county}
+              className="block w-full"
+              onChange={handleCounty}
           >
-            {locations.map((location) => (
-              <option key={location.town} value={location.town}>
-                {location.town}
+            {counties.map((counties) => (
+              <option key={counties} value={counties}>
+                {counties}
               </option>
             ))}  
           </select>
@@ -140,68 +135,37 @@ export default function ShippingScreen(props) {
             <div className="text-red-500 ">{errors.city.message}</div>
           )}
         </div>
-        <div className="mb-4">
-          <label htmlFor="city">Drop Station< /label>
-          
-          <select
-              {...register('dropstation')}
-              placeholder="dropstation"
-              control={control}
-              defaultvalue=""
-              value={city}
-              className={classes.fullWidth}
-              onChange={(e) => setCity(e.target.value)}
-          >
-            {locations.map((location) => (
-              <option key={location.town} value={location.dropstation}>
-                {location.dropstation}
-              </option>
-            ))}  
-          </select>
-          {errors.city && (
-            <div className="text-red-500 ">{errors.city.message}</div>
-          )}
-        </div>
-        <div className="mb-4">
-          <label htmlFor="city">Price</label>
-          <select
-              {...register('price')}
-              placeholder="Price"
-              control={control}
-              value={city}
-              className={classes.fullWidth}
-              onChange={(e) => setCity(e.target.value)}
-          >
-            {locations.map((location) => (
-              <option key={location.town} value={location.price}>
-                {location.price}
-              </option>
-            ))}  
-          </select>
-          {errors.city && (
-            <div className="text-red-500 ">{errors.city.message}</div>
-          )}
-        </div>
-        <div className="mb-4">
-          <label htmlFor="postalCode">Postal Code</label>
+        <div className="flex justify-between gap-3">
+        <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
+          <label htmlFor="dropstation">Delivery Location</label>
           <input
-            className="w-full"
-            id="postalCode"
-            {...register('postalCode', {
+            className="w-full block"
+            id="dropstation"
+            {...register('dropstation', {
+              required: 'Please enter Delivery Location',
+            })}
+          />
+          {errors.dropstation && (
+            <div className="text-red-500 ">{errors.dropstation.message}</div>
+          )}
+        </div>
+        <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <input
+            className="w-full block"
+            id="phoneNumber"
+            type="number"
+            {...register('phoneNumber', {
               required: 'Please enter postal code',
+              length: { value: 10, message: 'Phone number is 10 chars' },              
             })}
           />
-          {errors.postalCode && (
-            <div className="text-red-500 ">{errors.postalCode.message}</div>
+          {errors.phoneNumber && (
+            <div className="text-red-500 ">{errors.phoneNumber.message}</div>
           )}
         </div>
-        
-          <div className="mb-4 block text-center ">
-           <b>The percel is delivered to the Town/City post office nearest to you.</b>
-          </div>
-        <Typography className="mb-4 text-center" component="h1" variant="h2">
-          Payment Method
-        </Typography>
+        </div>
+        <h1 className="mb-4 mt-3 sm:mt-5  home-ft" style={{textAlign:"left"}}>Payment method</h1>
         <List>
           <ListItem>
             <FormControl component="fieldset">
@@ -217,11 +181,13 @@ export default function ShippingScreen(props) {
                   value="Equitel"
                   control={<Radio />}
                 ></FormControlLabel>
-                <FormControlLabel
-                  label="Mpesa"
-                  value="Mpesa"
-                  control={<Radio />}
-                ></FormControlLabel>
+                <div className="flex">
+                  <FormControlLabel
+                    value="Mpesa"
+                    control={<Radio />}
+                  ></FormControlLabel>
+                  <div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
+                </div>
                 <FormControlLabel
                   label="M-coop"
                   disabled
@@ -231,9 +197,6 @@ export default function ShippingScreen(props) {
               </RadioGroup>
             </FormControl>
           </ListItem>
-          <div className="mb-4 block text-center ">
-           <b>Only M-pesa payment is supported for now.</b>
-           </div>
           <ListItem>
             <Button fullWidth type="submit" variant="contained" color="primary">
               Continue
@@ -244,15 +207,6 @@ export default function ShippingScreen(props) {
     </Layout>
   );
 }
-export async function getServerSideProps() {
-  await db.connect();
-    const locations = await Location.find().lean();
-  await db.disconnect();
-  return{
-    props: {
-      locations: locations.map(db.convertDocToObj),
-    },
-  };
-}
+
 ShippingScreen.auth = true;
 

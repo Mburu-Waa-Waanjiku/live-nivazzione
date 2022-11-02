@@ -12,7 +12,7 @@ import Banner from '../models/Banner';
 import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
-import NextLink from 'next/link';
+import Link from 'next/link';
 import ProductItem from '../components/ProductItem';
 import Newpost from '../components/Newpost';
 import axios from 'axios';
@@ -74,7 +74,9 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
             
             <TabPanel className={classes.padTab} value="1">
                <div className={classes.mideaSmallBannerResp}>
-                  <Image height={636} width={1560} alt="" src={banner[1].image[0]}></Image>
+                 <Link href="offer/products&on&offer">
+                   <Image height={636} width={1560} className="bg-gray-100" alt="" src={banner[1].image[0]}></Image>
+                 </Link>
                </div>
               <div className="home-ft">Newly Dropped</div>
               <div className={classes.mideaSmallDivResp}> 
@@ -108,16 +110,16 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                    {newdrops.map((product) =>(
                       <SwiperSlide key={product}>
                         <Newpost/>
-                        <NextLink href={`/product/${product.slug}`} passHref >
+                        <Link href={`/product/${product.slug}`} >
                            <Image
                              width={364}
                              height={484}
                              src={product.image[0]}
                              alt={product.name}
-
-                             className="shadow object-cover h-auto w-100"
+       
+                             className="shadow object-cover h-auto w-100 bg-gray-100"
                            />
-                        </NextLink>
+                        </Link>
                        </SwiperSlide>
                      ))
                    }
@@ -125,11 +127,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                       
                       <div className={classes.header}>
                        <div>
-                        <NextLink href="/newproducts/newproducts" passHref>                                                 
+                        <Link href="/newproducts/newproducts">                                                 
                           <div className={classes.next}>
                             <ArrowForwardIcon  className={classes.arrow}/>
                           </div>
-                        </NextLink>                          
+                        </Link>                          
                         <div className={classes.text} >See More</div>
                        </div>
                       </div>
@@ -142,11 +144,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                 <TabContext  value={categ} 
               >
                   <Tabs value={categ} classes={{ flexContainer: classes.categ, indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{"& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleBoth} variant="scrollable"  >
-                    <Tab value="Earrings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Nose & Earrings" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
-                    <Tab value="Anclets" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Anclets" iconPosition="start" icon={<div><Image  width={50} height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_north,h_500,q_100,w_500/v1666790299/1602473757eaefd843bc60307bfcdbfde68a678269_thumbnail_600x_ba2xc4.webp"/></div>} />
-                    <Tab value="Finger rings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Finger rings" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1666787251/a0265d90-0416-40a6-9f3d-d0f2086da42b1632576872688ShiningDivaSetof9GoldPlatedStylishRings7_n1ngnt.webp"/></div>}/>} />
-                    <Tab value="Waist beads" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Waist beads" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/c_crop,g_center,h_900,q_200,w_1300/v1666793858/1637744539a70818f7474c4c88e068910c1d310fc0_xrkmyx.webp"/></div>}/>} />
-                    <Tab value="Glam" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
+                    <Tab value="Earrings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Nose & Earrings" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
+                    <Tab value="Anclets" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Anclets" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_north,h_500,q_100,w_500/v1666790299/1602473757eaefd843bc60307bfcdbfde68a678269_thumbnail_600x_ba2xc4.webp"/></div>} />
+                    <Tab value="Finger rings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Finger rings" iconPosition="start" icon={<div><Image width={50} className="bg-gray-100" alt=""  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1666787251/a0265d90-0416-40a6-9f3d-d0f2086da42b1632576872688ShiningDivaSetof9GoldPlatedStylishRings7_n1ngnt.webp"/></div>}/>} />
+                    <Tab value="Waist beads" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Waist beads" iconPosition="start" icon={<div><Image width={50} className="bg-gray-100" alt="" height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/c_crop,g_center,h_900,q_200,w_1300/v1666793858/1637744539a70818f7474c4c88e068910c1d310fc0_xrkmyx.webp"/></div>}/>} />
+                    <Tab value="Glam" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
                   </Tabs>
              </TabContext>
               <div className="home-ft">Flush sale </div>
@@ -180,20 +182,20 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
     
                    {offers.map((product) =>(
                       <SwiperSlide key={product}>
-                        <NextLink href={`/product/${product.slug}`} passHref>
+                        <Link href={`/product/${product.slug}`}>
                            <Image
                              width={364}
                              height={484}
                              src={product.image[0]}
                              alt={product.name}
 
-                             className="shadow object-cover h-auto w-100"
+                             className="shadow object-cover h-auto w-100 bg-gray-100"
                            />
-                        </NextLink> 
+                        </Link> 
                         <div className="inline ">
                           {product.isBurgain && (<div className="loves"> B </div>)}
                           <div className="">
-                            <div className={classes.prevprice}><s>Ksh.{product.newprice}</s></div>
+                            <div className={classes.prevprice}><s>Ksh.{product.prevprice}</s></div>
                             <div className={classes.price}>Ksh.{product.price}</div>
                           </div>
                         </div>
@@ -204,11 +206,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                    <SwiperSlide>
                       <div className={classes.header}>
                        <div>
-                        <NextLink href="/offer/products&on&offer" passHref>                                                 
+                        <Link href="/offer/products&on&offer" >                                                 
                           <div className={classes.next}>
                             <ArrowForwardIcon  className={classes.arrow}/>
                           </div>
-                        </NextLink>                          
+                        </Link>                          
                         <div className={classes.text} >See More</div>
                        </div>
                       </div>
@@ -234,7 +236,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                  </Tabs>
                </TabContext>
                <TabContext value={categ}>
-                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: 2, inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
+                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: 2, inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 55, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
                     <Tab value="Earrings"  label="Nose & Earrings" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                     <Tab value="Anclets" label="Anclets" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
                     <Tab value="Finger rings" label="Finger rings" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(253, 134, 112)",},}}/>
@@ -242,7 +244,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                     <Tab value="Glam" label="Glam" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                   </Tabs>
                   <TabPanel className={classes.padTab} value="Earrings" >
-                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                     <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                        {ofearrings.map((product) => (
                          <ProductItem
                            product={product}
@@ -254,7 +256,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                   </TabPanel>
            
                   <TabPanel className={classes.padTab} value="Anclets" >
-                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                     <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                        {ofanclets.map((product) => (
                          <ProductItem
                            product={product}
@@ -264,10 +266,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                        ))}
                       </div>
+                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
 
                     <TabPanel className={classes.padTab} value="Finger rings" >
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                      <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                         {offingerrings.map((product) => (
                          <ProductItem
                            product={product}
@@ -276,9 +279,10 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                         ))}
                       </div>
+                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
                     <TabPanel className={classes.padTab} value="Waist beads">
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                      <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                         {ofwaistbeads.map((product) => (
                          <ProductItem
                            product={product}
@@ -287,9 +291,10 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                         ))}
                       </div>
+                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
                     <TabPanel className={classes.padTab} value="Glam">
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                      <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                         {ofglam.map((product) => (
                          <ProductItem
                            product={product}
@@ -298,6 +303,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                         ))}
                       </div>
+                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
                </TabContext >             
             </TabPanel>
