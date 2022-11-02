@@ -11,7 +11,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import useStyles from '../../utils/styles';
 import { getError } from '../../utils/error';
 import Rating from '@material-ui/lab/Rating';
-import ProductItem from '../../components/ProductItem';
+import ProductNocart from '../../components/ProductNocart';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { FaTruckMoving } from 'react-icons/fa';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
@@ -72,7 +72,7 @@ export default function ProductScreen(props) {
       const { data } = await axios.get(`/api/products/${product._id}/reviews`);
       setReviews(data);
     } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      enqueueSnackbar('Could not load reviews properly', { variant: 'error' });
     }
   };
   useEffect(() => {
@@ -355,11 +355,11 @@ export default function ProductScreen(props) {
       </div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
          {similarProds.map((product) => (
-                            <ProductItem
+                            <ProductNocart
                              product={product}
                              key={product.slug}
                              addToCartHandler={addToCartHandler}
-                             ></ProductItem>
+                             ></ProductNocart>
                         ))}
       </div>
       <Tabsbottom/>

@@ -37,12 +37,15 @@ export default function ShippingScreen() {
   } = useForm();
 
   const { state, dispatch } = useContext(Store);
-  const { cart } = state;
-  const { shippingAddress } = cart;
+  const { userInfo, cart } = state;
+  const { cartItems, shippingAddress } = cart;
   const router = useRouter();
   
 
   useEffect(() => {
+    if (!userInfo) {
+      router.push('/login?redirect=/shipping');
+    }
     setValue('firstName', shippingAddress.firstName);
     setValue('lastName', shippingAddress.lastName);
     setValue('county', shippingAddress.county);

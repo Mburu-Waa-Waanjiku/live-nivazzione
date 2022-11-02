@@ -49,7 +49,7 @@ function CartScreen() {
           </div>
             <h3>Your shopping bag is empty</h3>
               <button
-                type="button" className="btn" onClick={() => router.back()}
+                type="button" className="btn" onClick={() => router.push('/')}
               >
                 Continue Shopping
               </button>

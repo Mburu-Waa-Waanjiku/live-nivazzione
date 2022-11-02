@@ -14,6 +14,7 @@ import YourFoto from '../../components/YourFoto';
 import axios from 'axios';
 import useStyles from '../../utils/styles';
 import Layout from '../../components/Layout';
+import Tabsbottom from '../../components/Tabsbottom';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -118,7 +119,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
             </TabPanel>
         </TabContext>
           
-       
+        <Tabsbottom/>
     </Layout>
          </>
   

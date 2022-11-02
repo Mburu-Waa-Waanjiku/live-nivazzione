@@ -49,9 +49,9 @@ function PlaceOrder() {
       router.push('/shipping');
     }
     if (cartItems.length === 0) {
-      router.push(`/order/${data._id}`);
+      router.push(`/cart`);
     }
-  }, [cartItems.length, paymentMethod, router, shippingAddress.address]);
+  }, []);
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const placeOrderHandler = async () => {

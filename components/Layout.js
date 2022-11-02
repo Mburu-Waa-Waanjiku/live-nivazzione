@@ -86,7 +86,7 @@ export default function Layout({ title, description, children }) {
       const { data } = await axios.get(`/api/products/categories`);
       setCategories(data);
     } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      enqueueSnackbar('Could not load categories', { variant: 'error' });
     }
   };
 

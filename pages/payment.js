@@ -1,100 +1,262 @@
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import { Store } from '../utils/Store';
+import dynamic from 'next/dynamic';
 import Layout from '../components/Layout';
-import CheckoutWizard from '../components/CheckoutWizard';
-import useStyles from '../utils/styles';
+import { Store } from '../utils/Store';
+import Link from 'next/link';
+import Image from 'next/image';
 import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  List,
-  ListItem,
-  Radio,
-  RadioGroup,
+  Grid,
   Typography,
+  CircularProgress,
+  Button,
+  Card,
+  List, 
+  ListItem,
 } from '@material-ui/core';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import useStyles from '../utils/styles';
 import { useSnackbar } from 'notistack';
+import { getError } from '../utils/error';
+import Cookies from 'js-cookie';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, FreeMode, } from 'swiper';
 
-export default function Payment() {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+function PlaceOrder() {
   const classes = useStyles();
   const router = useRouter();
-  const [paymentMethod, setPaymentMethod] = useState('');
   const { state, dispatch } = useContext(Store);
   const {
-    cart: { shippingAddress },
+    userInfo,
+    cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.456 => 123.46
+  const itemsPrice = round2(
+    cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
+  );
+  const shippingPrice = itemsPrice > 500 ? 0 : 15;
+  const taxPrice = round2(itemsPrice * 0.16);
+  const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+
   useEffect(() => {
-    if (!shippingAddress.address) {
-      router.push('/shipping');
-    } else {
-      setPaymentMethod(Cookies.get('paymentMethod') || '');
-    }
-  }, [router, shippingAddress.address]);
-  const submitHandler = (e) => {
-    closeSnackbar();
-    e.preventDefault();
+    
     if (!paymentMethod) {
-      enqueueSnackbar('Payment method is required', { variant: 'error' });
-    } else {
-      dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethod });
-      Cookies.set('paymentMethod', paymentMethod);
-      router.push('/placeorder');
+      router.push('/shipping');
+    }
+    if (cartItems.length === 0) {
+      router.push(`/order/${data._id}`);
+    }
+  }, [cartItems.length, paymentMethod, router, shippingAddress.address]);
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+  const placeOrderHandler = async () => {
+    closeSnackbar();
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderItems: cartItems,
+          shippingAddress,
+          paymentMethod,
+          itemsPrice,
+          shippingPrice,
+          taxPrice,
+          totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'CART_CLEAR' });
+      Cookies.remove('cartItems');
+      setLoading(false);
+      enqueueSnackbar('Order created succesfully', { variant: 'success' });
+      router.push(`/order/${data._id}`);
+    } catch (err) {
+      setLoading(false);
+      enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
   return (
-    <Layout title="Payment Method">
-      <CheckoutWizard activeStep={2}></CheckoutWizard>
-      <form className={classes.form} onSubmit={submitHandler}>
-        <Typography component="h1" variant="h1">
-          Payment Method
-        </Typography>
-        <List>
-          <ListItem>
-            <FormControl component="fieldset">
-              <RadioGroup
-                aria-label="Payment Method"
-                name="paymentMethod"
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              >
-                <FormControlLabel
-                  label="PayPal"
-                  value="PayPal"
-                  control={<Radio />}
-                ></FormControlLabel>
-                <FormControlLabel
-                  label="Mpesa"
-                  value="Mpasa"
-                  control={<Radio />}
-                ></FormControlLabel>
-                <FormControlLabel
-                  label="Cash"
-                  value="Cash"
-                  control={<Radio />}
-                ></FormControlLabel>
-              </RadioGroup>
-            </FormControl>
-          </ListItem>
-          <ListItem>
-            <Button fullWidth type="submit" variant="contained" color="primary">
-              Continue
-            </Button>
-          </ListItem>
-          <ListItem>
-            <Button
-              fullWidth
-              type="button"
-              variant="contained"
-              onClick={() => router.push('/shipping')}
-            >
-              Back
-            </Button>
-          </ListItem>
-        </List>
-      </form>
+    <Layout title="Place Order">
+        <h1 className=" mt-3 sm:mt-5  home-ft" style={{fontSize: 17}}>Confirm Order</h1>
+      <Grid container spacing={1}>
+        <Grid item md={9} xs={12}>
+          <div style={{backgroundColor:"#f1f5f9",}}className={classes.section}>
+            <List>
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
+                   User details
+                </div>
+              <div className="block pl-8 text-xs">
+                <div style={{display:"flex", color:"gray"}}><b>Name:</b><div className="ml-2">{shippingAddress.firstName} {shippingAddress.lastName}</div></div>
+                <div style={{display:"flex", color:"gray"}}><b>County:</b><div className="ml-2">{shippingAddress.county}</div></div> 
+                <div style={{display:"flex", color:"gray"}}><b>Delivey location:</b><div className="ml-2">{shippingAddress.dropstation}</div></div>
+                <div style={{display:"flex", color:"gray"}}><b>Phone Number:</b><div className="ml-2">{shippingAddress.phoneNumber}</div></div>
+              </div>
+            </List>
+          </div>
+          <div style={{backgroundColor:"#f1f5f9"}}className={classes.section}>
+                <div className="home-ft ml-8" style={{fontFamily:"Arial Black", textAlign:"left", fontSize:15}}>
+                  Payment Method
+                </div>
+              <div className="flex pl-8 pb-8 text-xs">
+                <div className="hidden">{paymentMethod}</div><div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
+              </div>   
+          </div>
+          <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+            <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+            </div>
+          </div>
+          <div className="grid justify-center" >
+              <div className="home-ft w-full justify-self-stretch">
+                Order Items
+              </div>  
+                  <Swiper    
+                    breakpoints={{
+                      100: {
+                         slidesPerView: 1.7,
+                       },
+                      640: {
+                         slidesPerView: 2.3,
+                      }, 
+                      1000: {
+                         slidesPerView: 4,
+                      },  
+
+                    }}
+                    style={{
+                      "--swiper-navigation-color": "#fff",
+                      "--swiper-pagination-color": "#fff",
+                    }}
+                      modules={[FreeMode, Navigation]}
+                      spaceBetween={10}           
+                      navigation={true}
+                      className="mt-3 mySwiper"
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log('slide change')}
+        
+                  >
+                    {cartItems.map((item) =>(
+                      <SwiperSlide key={item._id}>
+                        <div style={{borderRadius:"10px",margin:"0 3px 5px 3px" , boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)"}}>
+                        <div className="gallery">
+                          <div>
+                            <Link href={`/product/${item.slug}`}>
+                              <Image
+                                src={item.image[0]}
+                                alt={item.name}
+                                width={372}
+                                height={484}
+                              ></Image>
+                            </Link>
+                          </div>
+                          <div className="btm-desc">
+                            <div className="descO lovesO">
+                              <div>
+                                <b style={{fontSize: "15px"}}>Qty:</b>{item.quantity}
+                              </div>
+                              <div style={{display:"flex"}}>
+                                {item.isBurgain && (<div className="loves"> B </div>)}
+                              </div>
+                              <div> 
+                                <Link className="card-link" href={`/product/${item.slug}`}>
+                                  {item.name}
+                                </Link>
+                              </div>
+                            </div>
+                            <div className="descO price">
+                              Ksh.{item.price}
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                       </SwiperSlide>
+                     ))
+                    }
+                  </Swiper>
+          </div>
+        </Grid>
+
+        <Grid item md={3} xs={12}>
+          <Card className={classes.section}>
+            <List>
+              <ListItem>
+                <Typography variant="h2">Order Summary</Typography>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Items:</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">Ksh.{itemsPrice}</Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Tax:</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">Ksh.{taxPrice}</Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Shipping:</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">Ksh.{shippingPrice}</Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>
+                      <strong>Total:</strong>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">
+                      <strong>Ksh.{totalPrice}</strong>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Button
+                  onClick={placeOrderHandler}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  Place Order
+                </Button>
+              </ListItem>
+              {loading && (
+                <ListItem>
+                  <CircularProgress />
+                </ListItem>
+              )}
+            </List>
+          </Card>
+        </Grid>
+      </Grid>
+
     </Layout>
   );
 }
+
+export default dynamic(() => Promise.resolve(PlaceOrder), { ssr: false });
