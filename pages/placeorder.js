@@ -63,7 +63,6 @@ function PlaceOrder() {
         {
           orderItems: cartItems,
           shippingAddress,
-          paymentMethod,
           itemsPrice,
           shippingPrice,
           taxPrice,

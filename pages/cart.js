@@ -79,6 +79,7 @@ function CartScreen() {
                             alt={item.name[0]}
                             width={94}
                             height={121}
+                            className="bg-gray-100"
                           ></Image>
                         </a>
                       </Link>
