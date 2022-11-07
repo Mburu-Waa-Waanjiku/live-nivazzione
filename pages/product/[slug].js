@@ -387,7 +387,7 @@ export async function getStaticProps(context) {
   await db.connect();
   const product = await Product.findOne({ slug }, '-reviews').lean();
   const similar = await Product.find({slug}).distinct('distinctCateg');
-  const similarProds = await Product.find({distinctCateg: similar} , '-reviews').lean();
+  const similarProds = await Product.find({slug: similar} , '-reviews').lean();
 
   await db.disconnect();
 

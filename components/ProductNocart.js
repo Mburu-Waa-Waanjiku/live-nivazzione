@@ -20,7 +20,7 @@ export default function ProductNocart({ product, addToCartHandler }) {
           />
         </a>
       </Link>
-      <div className="heart-ck" style={{height:27, backgroundColor:"tensparent"}}>
+      <div className="heart-ck" style={{height:27, backgroundColor: 'transparent'}}>
       </div>
       <div className="flex ">
        {product.isBurgain && (<div className="loves"> B </div>)}

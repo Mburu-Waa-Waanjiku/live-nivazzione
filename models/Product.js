@@ -29,7 +29,7 @@ const productSchema = new mongoose.Schema(
     reviews: [reviewSchema],
     isEditorsChoice: { type: Boolean, required: true, default: false },
     gender: { type: String, required: true },
-    distinctCateg: { type: String, required: true }, 
+    distinctCateg: { type: Array, required: true }, 
     isOnoffer: { type: Boolean, required: true, default: false },
     prevprice: { type: Number},
     discount: { type: Number},    
