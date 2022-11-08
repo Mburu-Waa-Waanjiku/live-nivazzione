@@ -202,7 +202,7 @@ function AdminProdcuts() {
                       <TableHead>
                         <TableRow>
                           <TableCell>Image</TableCell>
-                          <TableCell>ID</TableCell>
+                          <TableCell>SLUG</TableCell>
                           <TableCell>NAME</TableCell>
                           <TableCell>PRICE</TableCell>
                           <TableCell>CATEGORY</TableCell>
@@ -216,7 +216,7 @@ function AdminProdcuts() {
                           <TableRow key={product._id}>
                             <TableCell style={{padding: 0}}><Image width={200} height={290} alt={product.name} src={product.image[0]}></Image></TableCell>
                             <TableCell>
-                              {product._id.substring(20, 24)}
+                              {product.slug}
                             </TableCell>
                             <TableCell>{product.name}</TableCell>
                             <TableCell>Ksh.{product.price}</TableCell>

@@ -48,7 +48,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
   
   return (
     <> 
-       <Layout>
+       <Layout title="SHIGLAM BLACKFRIDAY SALE and OFFERS get NEW and LATEST products at SHIGLAM KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2....">
           <div className="home-ft mt-2">SHIGLAM DEAlS </div>
           <div className={classes.mideaSmallBannerResp} style={{marginTop:0, display:"none"}}><Image className="bg-gray-100" width={2600} height={340} alt="" src={banner[5].image[0]}></Image> </div>
         <TabContext value={value}>          

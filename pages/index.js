@@ -63,7 +63,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
 
   return (
     <> 
-      <Layout> 
+      <Layout title="SHIGLAMblackfriday Exclusive discounts and the latest trends at SHIGLAM KENYA — Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more. ✓ Free Shipping On Orders ..."> 
         <TabContext value={value}>
           <Tabs className={classes.ndicatenone}  value={value} classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
             <Tab value="1" />

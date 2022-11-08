@@ -47,7 +47,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
   
   return (
     <> 
-       <Layout>
+       <Layout title="SHIGLAM DAILYDROPS get NEW and LATEST trends at SHIGLAM KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2....">
           <div className={classes.mideaSmallBannerResp}><Image width={2600} height={284} alt="" src={banner[4].image[0]}></Image> </div>
           <div className="home-ft">NEW PRODUCTS</div>
         <TabContext value={value}>          

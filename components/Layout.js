@@ -143,6 +143,7 @@ export default function Layout({ title, description, children }) {
       <Head>
         <title>{title ? `${title} - shiglam` : 'shiglam '}</title>
         {description && <meta name="description" charset="UTF-8" content={description}></meta>}
+        <meta name="google-site-verification" content="tK9s0pQ66YNPGPxWplFwgCSa8dlOmhBlJLmRr_ZLLTM" />
         <link rel="icon" href="/shiglam.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
       </Head>
