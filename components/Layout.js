@@ -86,7 +86,7 @@ export default function Layout({ title, description, children }) {
       const { data } = await axios.get(`/api/products/categories`);
       setCategories(data);
     } catch (err) {
-      enqueueSnackbar('Could not load categories', { variant: 'error' });
+      console.log(err);
     }
   };
 
@@ -99,11 +99,7 @@ export default function Layout({ title, description, children }) {
     router.push(`/search?query=${query}`);
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const darkModeChangeHandler = () => {
+   const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
     const newDarkMode = !darkMode;
     Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
@@ -204,6 +200,14 @@ export default function Layout({ title, description, children }) {
                     </ListItem>
                   </NextLink>
                 ))}
+                {categories.length === 0 && 
+                  <ListItem 
+                    style={{color: "orangered", fontWeight:1000}}
+                    button
+                    >
+                      <ListItemText primary="Could not fetching categories 😥">
+                      </ListItemText>
+                  </ListItem>}
               </List>
             </Drawer>
             <NextLink href="/" passHref>

@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import Layout from '../components/Layout';
 import Image from 'next/image';
 import { Store } from '../utils/Store';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Button,
@@ -19,7 +20,7 @@ import { useSnackbar } from 'notistack';
 export default function ShippingScreen() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
-  const counties = ["Select your County", "Nairobi", "Kiambu", "Machakos", "Kajiado"];
+  const counties = ["Nairobi", "Kiambu", "Machakos", "Kajiado"];
   const [county, setCounty] = useState("Select your County");
   const [view, setView] = useState(false);
 
@@ -105,7 +106,7 @@ export default function ShippingScreen() {
           )}
         </div>
         <div className="w-5/12 mb-4 grow">
-          <label htmlFor="fullName">Last Name</label>
+          <label htmlFor="Last Name">Last Name</label>
           <input
             className="block w-full"
             id="lastName"
@@ -133,6 +134,10 @@ export default function ShippingScreen() {
                 {counties}
               </option>
             ))}  
+            <option disabled style={{color: 'green', display:'block'}}>
+              <div>None is your county?? </div> 
+              <div>VISIT us on Whatsapp 👇👇 for customized delivery🛍️ 😊</div>
+            </option>            
           </select>
           {errors.city && (
             <div className="text-red-500 ">{errors.city.message}</div>
@@ -157,6 +162,7 @@ export default function ShippingScreen() {
           <input
             className="w-full block"
             id="phoneNumber"
+            placeorder="0723194065"
             type="number"
             {...register('phoneNumber', {
               required: 'Please enter postal code',
@@ -205,6 +211,11 @@ export default function ShippingScreen() {
               Continue
             </Button>
           </ListItem>
+          <div className="fixed p-5" style={{bottom:'2vh', right:'2vh'}}>
+            <Link href="https://wa.me/message/LLYAJG6L323CP1">
+              <i style={{color:"white", padding:"10px 11px", fontSize:"40px", borderRadius:"50px", margin:"4px", backgroundColor:"#30d04a"}} className="fa fa-whatsapp whatsapp-icon"></i>
+            </Link>
+          </div>
         </List>
       </form>
     </Layout>

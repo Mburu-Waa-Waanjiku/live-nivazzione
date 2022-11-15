@@ -115,7 +115,7 @@ function AdminDashboard() {
                       <Card raised>
                         <CardContent>
                           <Typography variant="h1">
-                            ${summary.ordersPrice}
+                            Ksh.{summary.ordersPrice}
                           </Typography>
                           <Typography>Sales</Typography>
                         </CardContent>

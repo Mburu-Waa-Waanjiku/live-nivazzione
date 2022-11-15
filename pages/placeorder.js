@@ -39,12 +39,18 @@ function PlaceOrder() {
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
+  const bundleRate = 15 * cartItems.length /1000;
+  const ratePrice = itemsPrice * bundleRate
+  const bundlePrice = round2(itemsPrice - ratePrice);
   const shippingPrice = itemsPrice > 500 ? 0 : 15;
   const taxPrice = round2(itemsPrice * 0.16);
-  const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+  const oldTotalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+  const totalPrice = cartItems.length > 2 ? round2(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
 
   useEffect(() => {
-    
+    if (!shippingAddress.dropstation) {
+      router.push('/shipping');
+    }
     if (!paymentMethod) {
       router.push('/shipping');
     }
@@ -55,7 +61,40 @@ function PlaceOrder() {
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const placeOrderHandler = async () => {
+    if (cartItems.length > 2) {
     closeSnackbar();
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderItems: cartItems,
+          shippingAddress,
+          paymentMethod,
+          itemsPrice,
+          bundlePrice,
+          shippingPrice,
+          taxPrice,
+          oldTotalPrice,
+          totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'CART_CLEAR' });
+      Cookies.remove('cartItems');
+      setLoading(false);
+      enqueueSnackbar('Order created succesfully', { variant: 'success' });
+      router.push(`/order/${data._id}`);
+    } catch (err) {
+      setLoading(false);
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+   }else {
+     closeSnackbar();
     try {
       setLoading(true);
       const { data } = await axios.post(
@@ -84,7 +123,13 @@ function PlaceOrder() {
       setLoading(false);
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
+   }; 
   };
+  const [show, setShow] = useState(false);
+  const [circular, setCircular] = useState(false);
+  const handleShow = () => {
+     setShow(true);
+ };
   return (
     <Layout title="Place Order">
         <h1 className=" mt-3 sm:mt-5  home-ft" style={{fontSize: 17}}>Confirm Order</h1>
@@ -197,14 +242,35 @@ function PlaceOrder() {
                     <Typography>Items:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">Ksh.{itemsPrice}</Typography>
+                    <Typography align="right" style={{display: !show ? "block" : "none"}}>Ksh.{itemsPrice}</Typography>
+                    <Typography align="right" style={{display: !show ? "none" : "block", fontWeight:"bold", color:"orangered"}}><s>Ksh.{itemsPrice}</s></Typography>
                   </Grid>
                 </Grid>
               </ListItem>
+              {!show && cartItems.length > 2 && <ListItem>
+                <Button
+                  onClick={handleShow}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  Get a bundle price 🎁
+                </Button>
+              </ListItem>}
+              {show && <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography><strong>Bundle price:</strong></Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right"><strong>Ksh.{bundlePrice}</strong></Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>}
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
-                    <Typography>Tax:</Typography>
+                    <Typography>Vat:</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography align="right">Ksh.{taxPrice}</Typography>
@@ -230,12 +296,41 @@ function PlaceOrder() {
                   </Grid>
                   <Grid item xs={6}>
                     <Typography align="right">
-                      <strong>Ksh.{totalPrice}</strong>
+                      <strong style={{display: !show ? "block" : "none"}}>Ksh.{oldTotalPrice}</strong>
+                      <strong style={{display: !show ? "none" : "block", fontWeight:"bold", color:"orangered"}}><s>Ksh.{oldTotalPrice}</s></strong>
                     </Typography>
                   </Grid>
                 </Grid>
               </ListItem>
-              <ListItem>
+
+              {show && 
+              <div>
+                <ListItem>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography>
+                        <strong>Total:</strong>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography align="right">
+                        <strong>Ksh.{totalPrice}</strong>
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    onClick={placeOrderHandler}
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Place Order
+                 </Button>
+                </ListItem>
+              </div>}
+              {cartItems.length < 3 && <ListItem>
                 <Button
                   onClick={placeOrderHandler}
                   variant="contained"
@@ -244,7 +339,7 @@ function PlaceOrder() {
                 >
                   Place Order
                 </Button>
-              </ListItem>
+              </ListItem>}
               {loading && (
                 <ListItem>
                   <CircularProgress />

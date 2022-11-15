@@ -132,7 +132,10 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '1rem',
   },
   reviewSeeMore: {
-    textAlign: 'right',
+    display: 'inline-block',
+    padding: '5px',
+    float: 'right',
+    fontWeight: 'bolder',
     [theme.breakpoints.up('sm')]: {
       width: '100%',
       padding: '10px',

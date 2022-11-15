@@ -81,6 +81,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                  </Link>
                </div>
               <div className="home-ft">Newly Dropped</div>
+                <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
+                  <Link href="/newproducts/newproducts">                                                 
+                    <Image height={457} width={1480} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
+                  </Link>
+                </div>
               <div className={classes.mideaSmallDivResp}> 
                <div className={classes.fullWidth}>
                  <Swiper                    
@@ -125,19 +130,6 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                        </SwiperSlide>
                      ))
                    }
-                   <SwiperSlide>
-                      
-                      <div className={classes.header}>
-                       <div>
-                        <Link href="/newproducts/newproducts">                                                 
-                          <div className={classes.next}>
-                            <ArrowForwardIcon  className={classes.arrow}/>
-                          </div>
-                        </Link>                          
-                        <div className={classes.text} >See More</div>
-                       </div>
-                      </div>
-                   </SwiperSlide>
                  </Swiper>
                </div>
               </div>
@@ -153,7 +145,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                     <Tab value="Glam" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
                   </Tabs>
              </TabContext>
-              <div className="home-ft">Flush sale </div>
+              <div className="home-ft">Flash sale </div>
               <div className={classes.mideaSmallDivResp}>
                  <Swiper                    
                     breakpoints={{

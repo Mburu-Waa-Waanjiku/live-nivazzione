@@ -348,7 +348,7 @@ export default function ProductScreen(props) {
           )}
         </ListItem>
       </div>
-      <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+      <div className={classes.mideaSmallBannerResp} style={{marginTop: 30}}>
         <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
         </div>
       </div>

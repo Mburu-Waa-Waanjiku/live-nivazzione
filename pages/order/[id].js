@@ -100,6 +100,7 @@ function Order({ params }) {
     paymentMethod,
     orderItems,
     itemsPrice,
+    bundlePrice,
     taxPrice,
     shippingPrice,
     totalPrice,
@@ -391,20 +392,30 @@ function Order({ params }) {
                 <div className="home-ft" style={{fontFamily:"Arial Black", textAlign:"center", fontSize:15}}>
                    Order Summary
                 </div>
-                <ListItem>
+                {!bundlePrice && <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
                       <Typography>Items:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">Ksh.{itemsPrice}</Typography>
+                      <Typography align="right" >Ksh.{itemsPrice}</Typography>
                     </Grid>
                   </Grid>
-                </ListItem>
+                </ListItem>}
+                {bundlePrice && <ListItem>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography><strong>Bundle price:</strong></Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography align="right"><strong>Ksh.{bundlePrice}</strong></Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>}
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Tax:</Typography>
+                      <Typography>Vat:</Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="right">Ksh.{taxPrice}</Typography>
@@ -421,6 +432,20 @@ function Order({ params }) {
                     </Grid>
                   </Grid>
                 </ListItem>
+                {oldTotalPrice && <ListItem>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography>
+                        <strong>Total:</strong>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography align="right">
+                        <strong style={{fontWeight:"bold", color:"orangered"}}><s>Ksh.{oldTotalPrice}</s></strong>
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>}
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
@@ -435,22 +460,6 @@ function Order({ params }) {
                     </Grid>
                   </Grid>
                 </ListItem>
-                {order.oldTotalPrice && (  
-                <ListItem>
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <Typography style={{color:"red"}}>
-                        <strong>Undiscounted:</strong>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography align="right" style={{color:"red"}}>
-                        <strong><s>Ksh.{oldTotalPrice}</s></strong>
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-                )}
                 {userInfo.isAdmin && !order.oldTotalPrice && (  
                 <div>
                 <ListItem style={{display:"none"}}>
