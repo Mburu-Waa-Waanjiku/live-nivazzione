@@ -256,7 +256,7 @@ function Order({ params }) {
                       ))}
                     </div>
                   </div>
-                  {shippingAddress.dropstation && (
+                  {userInfo.isAdmin && shippingAddress.dropstation && (
                     <Link
                       variant="button"
                       target="_new"
@@ -573,7 +573,7 @@ function Order({ params }) {
                           <div style={{padding:10, backgroundColor:"#f1f5f9"}}>We will redirect you to another webpage(tujenge.io) for payment</div>  
                           <div style={{padding:10, marginTop:10, backgroundColor:"#f1f5f9"}}>
                             <p>Payment Approval takes 1 to 2 hours to be verified on your Order History</p>
-                            <p>However if delayed, you can always call us on +254105705441 or whatsapp us by clicking the whatsapp button at the bottom of the screen 😊 </p> 
+                            <p>However if confirmation is delayed, you can always call us on +254105705441 or whatsapp us by clicking the whatsapp button at the bottom of the screen 😊 </p> 
                             <p>Your order is delivered within 2 to 3 business days</p>
                           </div>
                           <label htmlFor="">

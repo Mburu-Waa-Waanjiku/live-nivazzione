@@ -32,7 +32,7 @@ export default function ProductScreen(props) {
   const [showOverlay, setShowOverlay] = useState(false);
    const classes = useStyles();
 
-  const { product, similarProds } = props;
+  const { product, similarProds, Reviews } = props;
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   const { enqueueSnackbar } = useSnackbar();
@@ -60,24 +60,12 @@ export default function ProductScreen(props) {
       );
       setLoading(false);
       enqueueSnackbar('Review submitted successfully', { variant: 'success' });
-      fetchReviews();
+      setShowOverlay(false)
     } catch (err) {
       setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      enqueueSnackbar('Please fill both the comment & rating 🙂', { variant: 'error' });
     }
   };
-
-  const fetchReviews = async () => {
-    try {
-      const { data } = await axios.get(`/api/products/${product._id}/reviews`);
-      setReviews(data);
-    } catch (err) {
-      enqueueSnackbar('Could not load reviews properly', { variant: 'error' });
-    }
-  };
-  useEffect(() => {
-    fetchReviews();
-  }, []);
 
   if (!product) {
     return <Layout title="Produt Not Found">Produt Not Found</Layout>;
@@ -257,8 +245,8 @@ export default function ProductScreen(props) {
          <div className="slug-gallery">Customer Reviews({product.numReviews}) </div>
       </div>
       <div className={classes.reviewBody}>
-      {reviews.length === 0 && <ListItem>No reviews yet</ListItem>}
-        {reviews.slice(-2).map((review, index) => (
+      {Reviews.length === 0 && <ListItem>No reviews yet</ListItem>}
+        {Reviews.slice(-2).map((review, index) => (
           <ListItem key={index}>
             <Grid container>
               <Grid item className={classes.reviewItem}>
@@ -275,12 +263,12 @@ export default function ProductScreen(props) {
           </ListItem>
         ))}
       </div>
-      {reviews.length > 2 ? (<div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>See More</div>) : (<div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>Add a review</div>)}
+      {Reviews.length > 2 ? (<div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>See More</div>) : (<div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>Add a review</div>)}
       <div className={showOverlay ? classes.reviewAllBody : classes.ndicatenone}>
          <div className={classes.reviewTopTab}>
           <ArrowBackIosIcon onClick={() => setShowOverlay(false)} sx={{fontSize:10, float:"left",}} /> Reviews
          </div>
-         {reviews.map((review) => (
+         {Reviews.map((review) => (
           <ListItem key={review._id}>
             <Grid container>
               <Grid item className={classes.reviewItem}>
@@ -388,6 +376,7 @@ export async function getStaticProps(context) {
 
   await db.connect();
   const product = await Product.findOne({ slug }, '-reviews').lean();
+  const Reviews = await Product.find({ slug }).distinct('reviews');
   const similar = await Product.find({slug}).distinct('distinctCateg');
   const similarProds = await Product.find({slug: similar} , '-reviews').lean();
 
@@ -397,9 +386,9 @@ export async function getStaticProps(context) {
   return {
   props: { 
           product: product && db.convertDocToObj(product),
+          Reviews: Reviews.map(db.convertRevDocToObj), 
           similarProds: similarProds.map(db.convertDocToObj),
 
   },
  };
 }
-

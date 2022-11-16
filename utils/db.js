@@ -39,6 +39,14 @@ function convertDocToObj(doc) {
   doc.updatedAt = doc.updatedAt.toString();
   return doc;
 }
+function convertRevDocToObj(doc) {
+  doc._id = doc._id.toString();
+  doc.createdAt = doc.createdAt.toString();
+  doc.user = doc.user.toString();
+  doc.updatedAt = doc.updatedAt.toString();
+  doc.rating = doc.rating.toString();
+  return doc;
+}
 
-const db = { connect, disconnect, convertDocToObj };
+const db = { connect, disconnect, convertDocToObj, convertRevDocToObj };
 export default db;

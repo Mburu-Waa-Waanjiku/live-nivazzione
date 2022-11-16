@@ -86,8 +86,8 @@ export default function Layout({ title, description, children }) {
       const { data } = await axios.get(`/api/products/categories`);
       setCategories(data);
     } catch (err) {
-      console.log(err);
-    }
+            console.log(err);   
+          }
   };
 
   const [query, setQuery] = useState('');
@@ -99,7 +99,11 @@ export default function Layout({ title, description, children }) {
     router.push(`/search?query=${query}`);
   };
 
-   const darkModeChangeHandler = () => {
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
     const newDarkMode = !darkMode;
     Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');

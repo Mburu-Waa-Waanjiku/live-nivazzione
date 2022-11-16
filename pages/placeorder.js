@@ -175,7 +175,7 @@ function PlaceOrder() {
                       1000: {
                          slidesPerView: 4,
                       },  
-
+ 
                     }}
                     style={{
                       "--swiper-navigation-color": "#fff",
@@ -184,7 +184,7 @@ function PlaceOrder() {
                       modules={[FreeMode, Navigation]}
                       spaceBetween={10}           
                       navigation={true}
-                      className="mt-3 mySwiper"
+                      className="mt-3 mySwiperP"
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
         
@@ -319,7 +319,7 @@ function PlaceOrder() {
                     </Grid>
                   </Grid>
                 </ListItem>
-                <ListItem>
+                {cartItems.length > 2 && <ListItem>
                   <Button
                     onClick={placeOrderHandler}
                     variant="contained"
@@ -328,7 +328,7 @@ function PlaceOrder() {
                   >
                     Place Order
                  </Button>
-                </ListItem>
+                </ListItem>}
               </div>}
               {cartItems.length < 3 && <ListItem>
                 <Button

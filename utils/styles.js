@@ -352,7 +352,7 @@ const useStyles = makeStyles((theme) => ({
   roundedTab: {
     borderRadius: '80px !important',
     minHeight: 40,
-    padding: '0 20px',
+    padding: '0 20px !important',
   },
   categMain: {
     flexGrow: '1 !important',

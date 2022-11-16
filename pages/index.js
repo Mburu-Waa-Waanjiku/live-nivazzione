@@ -60,7 +60,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
      setCateg(newCateg);
  };
    
-
+ 
   return (
     <> 
       <Layout title="SHIGLAMblackfriday, SHIGLAM KENYA ,Latest trends SHIGLAM KENYA, Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more."
@@ -108,6 +108,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                       spaceBetween={10}           
                       loop={false}
                       centeredSlides={false}
+                      navigation={true}
                 
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
@@ -134,7 +135,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                </div>
               </div>
               
-              <div className="home-ft">Categories</div>
+              <div className="home-ft">Categories</div> 
                 <TabContext  value={categ} 
               >
                   <Tabs value={categ} classes={{ flexContainer: classes.categ, indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{"& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleBoth} variant="scrollable"  >
@@ -230,7 +231,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                  </Tabs>
                </TabContext>
                <TabContext value={categ}>
-                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: 2, inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 55, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
+                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: "16px !important", inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 55, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
                     <Tab value="Earrings"  label="Nose & Earrings" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                     <Tab value="Anclets" label="Anclets" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
                     <Tab value="Finger rings" label="Finger rings" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(253, 134, 112)",},}}/>
@@ -340,7 +341,7 @@ export async function getServerSideProps() {
       })
       .limit(20);
   const ofearrings = await Product.find(
-    { category: 'Earrings'},
+    { category: 'Earrings', isEditorsChoice: true },
     '-reviews'
     )
       .lean()
