@@ -66,7 +66,18 @@ export default function Tabsbottom() {
                       <ShoppingBasketIcon sx={{ fontSize: 28 }} />
                     )}  />
                                  
-            {userInfo ? (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/me")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/login")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
+            {userInfo ? (<Tab 
+                            value={routes[3]} 
+                            sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} 
+                            onClick={() => router.push("/me")} 
+                            icon={<Badge
+                                    classes={{ badge: classes.badgel }}
+                                    badgeContent=''
+                                  >
+                                    <PersonIcon 
+                                      sx={{ fontSize: 28 }} />
+                                  </Badge>
+                                 } />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/login")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
             
           </Tabs>
          </div>

@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
-    backgroundColor: '#222 !important',
+    backgroundColor: 'black !important',
     position: 'fixed !important',
     top: 0,
     '& a': {
@@ -47,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       display: 'none !important',}
   },
+  smbrandh: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'none !important',}
+  },
   smseach: {
     margin: '5px 0',
     height: 35,
@@ -79,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
     maxWidth: 800,
-    margin: '0 auto',
+    margin: '30px 0',
   },
   navbarButton: {
     color: '#ffffff',
@@ -328,8 +332,8 @@ const useStyles = makeStyles((theme) => ({
     borderTop: '10px solid rgb(186, 202, 188)',
   },
   ndicateThick: {
-    height: '3px !important',
-    backgroundColor:'#222',
+    height: '4px !important',
+    backgroundColor:'#222 !important',
   },
   wrapperCateg: {
     justifyContent: 'space-evenly !important',
@@ -429,10 +433,19 @@ const useStyles = makeStyles((theme) => ({
   },
   badge: {
     color: 'white',
-    border: '3px solid #222',
+    border: '3px solid black',
     width: '4px',
     fontSize: '10px',
     backgroundColor: '#30d04a',
+  },
+  badgel: {
+    color: 'white',
+    border: '3px solid transparent',
+    backgroundColor: '#30d04a',
+    height: '7px',
+    minWidth: '7px',
+    padding: '0 0px',
+    transform: 'scale(1) translate(-120%, 350%)',
   },
   badgeLg: {
     color: 'white',

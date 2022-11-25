@@ -50,8 +50,8 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
        <Layout title="SHIGLAM DAILYDROPS, Get NEW and LATEST trends at SHIGLAM KENYA, Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam."
                content="SHIGLAM DAILYDROPS Get NEW and LATEST trends at SHIGLAM KENYA - Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
        >
-          <div className={classes.mideaSmallBannerResp}><Image width={2600} height={284} alt="" src={banner[4].image[0]}></Image> </div>
-          <div className="home-ft">NEW PRODUCTS</div>
+          <div className={classes.mideaSmallBannerResp} style={{marginTop:0, display:"none"}}><Image width={2600} height={284} alt="" src={banner[4].image[0]}></Image> </div>
+          <div className="home-ft mt-3">NEW PRODUCTS</div>
         <TabContext value={value}>          
           <Tabs centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
               {categories &&

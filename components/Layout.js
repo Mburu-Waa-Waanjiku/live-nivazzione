@@ -256,7 +256,7 @@ export default function Layout({ title, description, children }) {
                   >
                     <Badge
                         badgeContent=""
-                        classes={{ badge: classes.badge }}
+                        classes={{ badge: classes.badgel }}
                       >
                         <AccountCircle className={classes.sizeLg}/>
                       </Badge>

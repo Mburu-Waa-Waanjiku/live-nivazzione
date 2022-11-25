@@ -60,6 +60,25 @@ function PlaceOrder() {
   }, []);
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
+  const updateStockHandler = async () => {
+    try {
+      const { data } = await axios.post(
+        '/api/products/updateStock',
+        {
+          orderItems: cartItems,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        } 
+      );
+      dispatch({ type: 'UPDATE_STOCK' });
+      console.log('stock updated successfuly');
+    } catch (err) {
+      console.log('error updating  stock');
+    }
+  };
   const placeOrderHandler = async () => {
     if (cartItems.length > 2) {
     closeSnackbar();
@@ -82,12 +101,12 @@ function PlaceOrder() {
           headers: {
             authorization: `Bearer ${userInfo.token}`,
           },
-        }
+        } 
       );
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
       setLoading(false);
-      enqueueSnackbar('Order created succesfully', { variant: 'success' });
+      enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
       router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
@@ -129,7 +148,11 @@ function PlaceOrder() {
   const [circular, setCircular] = useState(false);
   const handleShow = () => {
      setShow(true);
- };
+  };
+  const allHundler = () => {
+     placeOrderHandler();
+     updateStockHandler();
+  };
   return (
     <Layout title="Place Order">
         <h1 className=" mt-3 sm:mt-5  home-ft" style={{fontSize: 17}}>Confirm Order</h1>
@@ -142,7 +165,7 @@ function PlaceOrder() {
                 </div>
               <div className="block pl-8 text-xs">
                 <div style={{display:"flex", color:"gray"}}><b>Name:</b><div className="ml-2">{shippingAddress.firstName} {shippingAddress.lastName}</div></div>
-                <div style={{display:"flex", color:"gray"}}><b>County:</b><div className="ml-2">{shippingAddress.county}</div></div> 
+                <div style={{display:"flex", color:"gray"}}><b>Your Area:</b><div className="ml-2">{shippingAddress.county}</div></div> 
                 <div style={{display:"flex", color:"gray"}}><b>Delivey location:</b><div className="ml-2">{shippingAddress.dropstation}</div></div>
                 <div style={{display:"flex", color:"gray"}}><b>Phone Number:</b><div className="ml-2">{shippingAddress.phoneNumber}</div></div>
               </div>
@@ -321,7 +344,7 @@ function PlaceOrder() {
                 </ListItem>
                 {cartItems.length > 2 && <ListItem>
                   <Button
-                    onClick={placeOrderHandler}
+                    onClick={allHundler}
                     variant="contained"
                     color="primary"
                     fullWidth
@@ -332,7 +355,7 @@ function PlaceOrder() {
               </div>}
               {cartItems.length < 3 && <ListItem>
                 <Button
-                  onClick={placeOrderHandler}
+                  onClick={allHundler}
                   variant="contained"
                   color="primary"
                   fullWidth

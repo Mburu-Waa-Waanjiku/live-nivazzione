@@ -91,24 +91,21 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                  <Swiper                    
                     breakpoints={{
                       100: {
-                         navigation: false,
                          slidesPerView: 2.8,
                        },
                       640: {
                          slidesPerView: 4.3,
-                         navigation: true,
                       }, 
                       1000: {
                          slidesPerView: 6.3,
-                         navigation: true,
                       },             
                     }}
       
                       modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
                       spaceBetween={10}           
                       loop={false}
+                      navigation= {true}
                       centeredSlides={false}
-                      navigation={true}
                 
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
@@ -151,25 +148,22 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                  <Swiper                    
                     breakpoints={{
                       100: {
-                         navigation: false,
-                         slidesPerView: 2.3,
+                         slidesPerView: 2.8,
                        },
                       640: {
                          slidesPerView: 4.3,
-                         navigation: false,
                       }, 
                       1000: {
                          slidesPerView: 6.3,
-                         navigation: true,
-                      },  
-
+                      },             
                     }}
       
                       modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
                       spaceBetween={10}           
                       loop={false}
+                      navigation= {true}
                       centeredSlides={false}
-                
+
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
         
@@ -199,29 +193,72 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                      ))
                    }
                    <SwiperSlide>
-                      <div className={classes.header}>
-                       <div>
-                        <Link href="/offer/products&on&offer" >                                                 
-                          <div className={classes.next}>
-                            <ArrowForwardIcon  className={classes.arrow}/>
-                          </div>
-                        </Link>                          
-                        <div className={classes.text} >See More</div>
-                       </div>
-                      </div>
+                     <Link href="/offer/products&on&offer">
+                       <Image
+                          width={364}
+                          height={484}
+                          src="https://res.cloudinary.com/dddx5qpji/image/upload/v1668954945/Untitled0_tbldbw.png"
+                          alt=""
+                          className="shadow object-cover h-auto w-100 bg-gray-100"
+                       />
+                     </Link> 
                    </SwiperSlide>
                  </Swiper>
               </div>
-               <div className="home-ft">Editors Picks#</div>
-                    <div className="grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4">
+              <div className="home-ft">Editors Picks#</div>
+                <div className={classes.mideaSmallDivResp}>
+                  <Swiper 
+                    className={classes.cartnlg}
+                    breakpoints={{
+                      100: {
+                         slidesPerView: 2.3,
+                       },
+                      640: {
+                         slidesPerView: 3.6,
+                      }, 
+                      1000: {
+                         slidesPerView: 5.6,
+                      },  
+
+                    }}
+      
+                      modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
+                      spaceBetween={10}           
+                      loop={false}
+                      centeredSlides={false}
+                      navigation={true}
+
+                    onSwiper={(swiper) => console.log(swiper)}
+                    onSlideChange={() => console.log('slide change')}
+        
+                   >
                         {editorspicks.map((product) => (
-                            <ProductItem
-                             product={product}
-                             key={product.slug}
-                             addToCartHandler={addToCartHandler}
-                             ></ProductItem>
+                          <SwiperSlide key={product}>
+                            <Link href={`/product/${product.slug}`}>
+                              <Image
+                                width={364}
+                                height={484}
+                                src={product.image[0]}
+                                alt={product.name}
+
+                                className="shadow object-cover h-auto w-100 bg-gray-100"
+                              />
+                            </Link> 
+                          </SwiperSlide>
                         ))}
-                    </div>
+                  </Swiper>
+                </div>
+                <div className={classes.smbrandh}>
+                  <div className="grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4">
+                    {editorspicks.map((product) => (
+                      <ProductItem
+                        product={product}
+                        key={product.slug}
+                        addToCartHandler={addToCartHandler}
+                        ></ProductItem>
+                    ))}
+                  </div>
+                </div>
             </TabPanel>
 
             <TabPanel className={classes.padTab} value="2">
@@ -261,7 +298,6 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                        ))}
                       </div>
-                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
 
                     <TabPanel className={classes.padTab} value="Finger rings" >
@@ -274,7 +310,6 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                         ))}
                       </div>
-                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
                     <TabPanel className={classes.padTab} value="Waist beads">
                       <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -362,7 +397,7 @@ export async function getServerSideProps() {
     { category: 'Finger rings'},
     '-reviews'
     )
-      .lean()
+      .lean() 
       .sort({
          rating: -1,
       })

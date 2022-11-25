@@ -157,7 +157,7 @@ export default function ProductScreen(props) {
           <div className="card bs p-5">
             <div className="mb-2 flex justify-between">
               <div>Status</div>
-              <div>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</div>
+              <div>{product.countInStock > 0 ? 'In stock' : 'Out of Stock'}</div>
             </div>
             <button
               className="primary-button w-full"
@@ -358,19 +358,8 @@ export default function ProductScreen(props) {
 
   );
 }
-export async function getStaticPaths() {
-  await db.connect();
-  const products = await Product.find({}, {slug: 1}).lean();
-  await db.disconnect();
-  
-  const paths = products.map((product) => ({params : {slug: product.slug }}));
-  return {
-    paths,
-    fallback: 'blocking',
-  }  
-}
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const { params } = context;
   const { slug } = params;
 
