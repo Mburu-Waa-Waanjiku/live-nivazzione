@@ -16,7 +16,7 @@ export default function ProductNocart({ product, addToCartHandler }) {
             src={product.image && product.image[0]}
             alt={product.name}
             className="shadow bg-gray-100 object-cover h-auto w-100"
-            style={{borderRadius:10, overflow:"hidden"}}
+            style={{borderRadius:10, backgroundColor: '#f3f4f6', overflow:"hidden"}}
           />
         </a>
       </Link>

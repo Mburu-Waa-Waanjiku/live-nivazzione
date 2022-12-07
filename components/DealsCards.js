@@ -4,7 +4,6 @@ import React from 'react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import useStyles from '../utils/styles';
 
-
 export default function ProductItem({ product, addToCartHandler }) {
   const classes = useStyles();
 

@@ -26,16 +26,31 @@ import {
   InputBase,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import CancelIcon from '@material-ui/icons/Cancel';
+import {
+  faYoutube,
+  faFacebook,
+  faTwitter,
+  faInstagram
+} from "@fortawesome/free-brands-svg-icons";
 import SearchIcon from '@material-ui/icons/Search';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useStyles from '../utils/styles';
 import { Store } from '../utils/Store';
+import Image from 'next/image';
 import { getError } from '../utils/error';
 import Cookies from 'js-cookie';
+import Tabs from "@mui/material/Tabs"; 
+import Tab from "@mui/material/Tab";
+import TabPanel from '@mui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
+import { useStateContext } from '../utils/StateContext';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
+import ProductNocart from './ProductNocart'; 
 import { useEffect } from 'react';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
@@ -43,6 +58,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();
+  const { searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
   const theme = createMuiTheme({
@@ -70,38 +86,57 @@ export default function Layout({ title, description, children }) {
   });
   const classes = useStyles();
 
-  const [sidbarVisible, setSidebarVisible] = useState(false);
-  const sidebarOpenHandler = () => {
-    setSidebarVisible(true);
-  };
-  const sidebarCloseHandler = () => {
-    setSidebarVisible(false);
-  };
-
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
-  const fetchCategories = async () => {
+  const fetchProducts = async () => {
     try {
-      const { data } = await axios.get(`/api/products/categories`);
-      setCategories(data);
+      const { data } = await axios.get(`/api/products`);
+      setProducts(data);
     } catch (err) {
             console.log(err);   
           }
   };
-
-  const [query, setQuery] = useState('');
-  const queryChangeHandler = (e) => {
-    setQuery(e.target.value);
+  
+  const [filteredData, setFilteredData] = useState({
+    products: [],
+    isSearch: false,
+    resultFound: false,
+  });
+  
+  const debounce = (func, wait) => {
+    let timerId;
+    return (...args) => {
+      if (timerId) clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        func(...args);
+      }, wait);
+    };
   };
-  const submitHandler = (e) => {
-    e.preventDefault();
-    router.push(`/search?query=${query}`);
+  
+  const filterData = () => {
+    let fData = [];
+    let resultFound = false;
+    if (search) {
+      fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search) != -1)];
+      if (fData.length > 0) {
+        resultFound = true;
+      }
+    }
+    setFilteredData({
+      ...fData,
+      products: [...fData],
+      isSearch: search.trim().length > 0,
+      resultFound: resultFound,
+    });
   };
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    fetchProducts();
+    filterData();
+  }, [search]);
 
   const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
@@ -127,17 +162,7 @@ export default function Layout({ title, description, children }) {
     Cookies.remove('paymentMethod');
     router.push('/');
   };
-  const [searchClick, setSearchClick] = useState(false);
-  const [searchBtn, setSearchBtn] = useState(true);
 
-  const handleClickSearchf = () => {
-    setSearchClick(false);
-    setSearchBtn(true);
-  };
-  const handleSearchBtn = () => {
-    setSearchClick(true);
-    setSearchBtn(false);
-  }
   return (
     <div>
       <Head>
@@ -152,14 +177,16 @@ export default function Layout({ title, description, children }) {
         <AppBar position="static" className={classes.navbar}>
           <Toolbar className={classes.toolbar}>
             <Box className="flex" alignItems="center">
-              <IconButton
-                edge="start"
-                aria-label="open drawer"
-                onClick={sidebarOpenHandler}
-                className={classes.menuButton}
-              >
-                <MenuIcon className={classes.navbarButton} />
-              </IconButton>
+              <div >
+                <IconButton
+                  edge="start"
+                  aria-label="open drawer"
+                  onClick={sidebarOpenHandler}
+                  className={classes.menuButton}
+                >
+                  <MenuIcon className={classes.navbarButton} />
+                </IconButton>
+              </div>
               <NextLink href="/" passHref>
                 <Link>
                   <Typography className={classes.brand}>shiglam</Typography>
@@ -189,29 +216,15 @@ export default function Layout({ title, description, children }) {
                   </Box>
                 </ListItem>
                 <Divider light />
-                {categories.map((category) => (
-                  <NextLink
-                    key={category}
-                    href={`/search?category=${category}`}
-                    passHref
-                  >
-                    <ListItem
-                      button
-                      component="a"
-                      onClick={sidebarCloseHandler}
-                    >
-                      <ListItemText primary={category}></ListItemText>
-                    </ListItem>
-                  </NextLink>
-                ))}
-                {categories.length === 0 && 
-                  <ListItem 
-                    style={{color: "orangered", fontWeight:1000}}
-                    button
-                    >
-                      <ListItemText primary="Could not fetching categories 😥">
-                      </ListItemText>
-                  </ListItem>}
+                <TabContext value={categ}>
+                  <Tabs value={categ} classes={{ indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{ "& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleAppbar} variant="scrollable" orientation="vertical"  >
+                    <Tab value="Earrings" style={{margin: '20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Nose & Earrings" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
+                    <Tab value="Anclets" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Anclets" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_north,h_500,q_100,w_500/v1666790299/1602473757eaefd843bc60307bfcdbfde68a678269_thumbnail_600x_ba2xc4.webp"/></div>} />
+                    <Tab value="Finger rings" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Finger rings" iconPosition="start" icon={<div><Image width={50} className="bg-gray-100" alt=""  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1666787251/a0265d90-0416-40a6-9f3d-d0f2086da42b1632576872688ShiningDivaSetof9GoldPlatedStylishRings7_n1ngnt.webp"/></div>}/>} />
+                    <Tab value="Waist beads" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Waist beads" iconPosition="start" icon={<div><Image width={50} className="bg-gray-100" alt="" height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/c_crop,g_center,h_900,q_200,w_1300/v1666793858/1637744539a70818f7474c4c88e068910c1d310fc0_xrkmyx.webp"/></div>}/>} />
+                    <Tab value="Glam" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
+                  </Tabs>
+                </TabContext>
               </List>
             </Drawer>
             <NextLink href="/" passHref>
@@ -225,7 +238,7 @@ export default function Layout({ title, description, children }) {
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
               ></Switch> 
-              <div>
+              <div >
                 <Typography className={classes.cartnsch} component="span"><SearchIcon onClick={handleSearchBtn} sx={{ color: 'white'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/></Typography>
               </div>
               <NextLink href="/cart" passHref>
@@ -299,36 +312,147 @@ export default function Layout({ title, description, children }) {
                     <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
                   </Link>
                 </NextLink>
-
+ 
               )}
             </div>
           </Toolbar>
         </AppBar>
-        <div className={classes.smseach} style={{top: searchClick ? '60px' : '0',}}>
-            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:20, height:"100%",padding: "2px"}} />
+        <div className={classes.smseachbg} 
+             style={{position: "fixed", zIndex: 1110, top: 0, right: searchClick ? '0' : '-100vw', background: 'white',  width: "100vw", height: "100vh"}}
+          >
+          <div className={classes.reviewTopTab}>
+            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, float:"left",}} /> Search
+          </div>
+          <div className={classes.smseach} style={{top: '50px', padding: 40}}>
             <div className={classes.searchSection}>
-              <form onSubmit={submitHandler} className={classes.searchForm}>
                 <InputBase
-                  name="query"
                   classes={{ input: classes.inpttxt,}}
                   className={classes.searchInput}
-                  placeholder="Search products"
-                  onChange={queryChangeHandler}
+                  placeholder="Search..."
+                  onChange={(e) => debounce((v) => {
+                    setSearch(v);
+                    }, 10)(e.target.value)}
                 />
                 <IconButton
                   type="submit"
                   sx={{"&.MuiIconButton-root": {padding:0},}}
                   className={classes.iconButton}
                   aria-label="search"
-                >
+                 >
                   <SearchIcon />
                 </IconButton>
-              </form>
             </div>
+          </div>
+          <div className="flex place-content-center w-full h-full">
+            <div style={{overflowX: 'auto',height: '76%', margin: 20, display: "grid", gridTemplateColumns: 'repeat(3, minmax(0px, 300px))', gap: 10, gridAutoRows: '1fr' }}>
+              {filteredData.isSearch && !filteredData.resultFound && (
+                <p>No results found..</p>
+              )}
+              {filteredData.products.map((product) => {
+                return (
+                  <ProductNocart
+                    product={product}
+                    key={product.slug}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
-          <Typography>All rights reserved. shiglam ©. </Typography>
+          <div className={classes.smbrandh}>
+            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px'}}>
+              <Typography style={{fontWeight: 'bolder', fontSize: 14}}>About shiglam</Typography>
+              <Typography style={{ alignSelf: 'right'}}>
+                <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
+              </Typography>
+            </ListItem>
+            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px'}}>
+              <Typography style={{fontWeight: 'bolder', fontSize: 14}}>Help desk</Typography>
+              <Typography style={{ alignSelf: 'right'}}>
+                <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
+              </Typography>
+            </ListItem>
+            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px'}}>
+              <Typography style={{fontWeight: 'bolder', fontSize: 14}}>Return policy</Typography>
+              <Typography style={{ alignSelf: 'right'}}>
+                <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
+              </Typography>
+            </ListItem>
+            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px 30px 30px'}}>
+              <Typography style={{fontWeight: 'bolder', fontSize: 14}}>Shipping</Typography>
+              <Typography style={{ alignSelf: 'right'}}>
+                <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
+              </Typography>
+            </ListItem>
+          </div>
+          <div className={classes.cartnlg}>
+            <div className="footerbc">
+              <div>
+                <div className="home-ft" style={{fontSize: 11}}>
+                  Shiglam Info
+                </div>
+                <div className="footerdivs">
+                  About Us
+                </div>
+                <div className="footerdivs">
+                  Be our Rocking Customer
+                </div>
+              </div>
+              <div>
+                <div className="home-ft" style={{fontSize: 11}}>
+                  Help Desk
+                </div>
+                <div className="footerdivs">
+                  Shipping Info
+                </div>
+                <div className="footerdivs">
+                  FAQ
+                </div>
+                <div className="footerdivs">
+                  Order Tracking
+                </div>
+              </div>
+              <div>
+                <div className="home-ft" style={{fontSize: 11}}>
+                  Customer Care
+                </div>
+                <div  className="footerdivs">
+                  Contacts Info
+                </div>
+                <div className="footerdivs">
+                  Return Policy
+                </div>
+              </div>
+              <div>
+                <div className="home-ft" style={{fontSize: 11}}>
+                  Payment Method
+                </div>
+                <div className="home-ft" ><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
+              </div>
+            </div>
+          </div>
+          <div style={{display: 'flex', placeContent: 'center'}}>
+            <div style={{display: 'flex', gap: 10, padding: '0 20px 20px 20px'}}>
+              <a href=""
+                className=" social">
+                <FontAwesomeIcon icon={faYoutube} />
+              </a>
+              <a href=""
+                className=" social">
+                <FontAwesomeIcon icon={faFacebook}  />
+              </a>
+              <a href="" className=" social">
+                <FontAwesomeIcon icon={faTwitter}  />
+              </a>
+              <a href=""
+                className=" social">
+                <FontAwesomeIcon icon={faInstagram}  />
+              </a>
+            </div>
+          </div>
+          <Typography style={{color: '#666',fontSize: 11, fontWeight:100, fontFamily: 'Roboto,Arial'}}>All rights reserved. shiglam ©. </Typography>
         </footer>
       </ThemeProvider>
     </div>

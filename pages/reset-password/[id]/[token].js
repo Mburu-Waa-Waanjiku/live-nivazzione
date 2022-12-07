@@ -60,6 +60,8 @@ function Profile() {
   };
   return (
     <Layout title="Profile">
+        <div className="margintopFix">
+        </div>
                 <form
                   onSubmit={handleSubmit(submitHandler)}
                   className={classes.form}

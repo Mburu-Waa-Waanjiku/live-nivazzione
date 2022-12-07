@@ -68,6 +68,7 @@ function OrderHistory() {
   }, [router, userInfo]);
   return (
     <Layout title="Order History">
+      <div className="margintopFix">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -143,6 +144,7 @@ function OrderHistory() {
           </Card>
         </Grid>
       </Grid>
+      </div>
     </Layout>
   );
 }

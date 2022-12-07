@@ -35,7 +35,7 @@ function PlaceOrder() {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.456 => 123.46
+  const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
@@ -155,7 +155,7 @@ function PlaceOrder() {
   };
   return (
     <Layout title="Place Order">
-        <h1 className=" mt-3 sm:mt-5  home-ft" style={{fontSize: 17}}>Confirm Order</h1>
+        <h1 className=" mt-3 sm:mt-5  home-ft margintopFix" style={{fontSize: 17}}>Confirm Order</h1>
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
           <div style={{backgroundColor:"#f1f5f9",}}className={classes.section}>

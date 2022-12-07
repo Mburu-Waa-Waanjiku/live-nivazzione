@@ -230,6 +230,8 @@ function Order({ params }) {
   };
   return (
     <Layout title={`Order ${orderId}`}>
+      <div className="margintopFix">
+      </div>
       {loading ? (
         <CircularProgress />
       ) : error ? (

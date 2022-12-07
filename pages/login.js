@@ -52,6 +52,7 @@ export default function Login() {
   };
   return (
     <Layout title="Login">
+      <div className="margintopFix">
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Login
@@ -133,6 +134,7 @@ export default function Login() {
           </ListItem>
         </List>
       </form>
+      </div>
     </Layout>
   );
 }

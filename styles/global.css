@@ -25,11 +25,6 @@
   height: 0px;
 }
 
-::-webkit-scrollbar {
-  }
-   
-
-
 @media screen and (max-width:310px )
 {
   div.loves
@@ -1019,4 +1014,98 @@ label.MuiFormControlLabel-root {
 }
 div.MuiPaper-rounded {
     border-radius: 20px;
+}
+.social {
+  font-size: 15px;
+  padding: 3px 6px;
+  background-color: black;
+  color: white;
+  border-radius: 25px;
+}
+.footerbc {
+  padding: 40px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(180px, 1000px));
+}
+.footerdivs {
+  color: #666;
+  font-size:11px;
+  font-weight: 400;
+  font-family: Roboto,Arial;
+}
+.salesticker {
+    color: black;
+    width: 25px;
+    height: 40px;
+    padding: 6px 4px 4px 4px;
+    z-index: 2;
+    position: absolute;
+    font-size: 9px;
+    font-weight: bolder;
+    background-color: #ffdf00;
+}
+.homesalesticker {
+    z-index: 2;
+    top: -10px;
+    left: -20px;
+    position: absolute;
+}
+.homesalestickerPercent {
+    z-index: 3;
+    color: white;
+    top: -44px;
+    left: 18px;
+    position: relative;
+    font-size: 11px;
+    font-weight: bolder;
+}
+.margintopFix {
+  margin-top: 60px;
+}
+@media screen and (min-width: 600px){
+.margintopFix
+{
+  margin-top: 70px;
+}
+.bannermarquee {
+  transform: translateX(80%) !important;
+}
+.swing {
+  marginTop: 22px;
+  width: 40vw !important;
+  top: 0 !important;
+  left: 0px !important;
+}
+}
+.swing {
+  width: 70vw ;
+  marginTop: 17px;
+  position: absolute;
+  top: 0;
+  left: -10vw ;
+}
+.bannermarquee {
+  transform: translateX(94%);
+}
+.bannerOfferRtt {
+  position: absolute;
+  top: -100px;
+  left: 40px;
+  z-index: 10;
+  animation: SWING 2s infinite linear;
+}
+.bannerOfferRtt span {
+  top: 82px;
+}
+@keyframes SWING {
+  0% {
+    transform: rotate(-25deg);
+  }
+  50% {
+    transform: rotate(45deg);
+  }
+  100% {
+    transform: rotate(-25deg);
+  }
 }

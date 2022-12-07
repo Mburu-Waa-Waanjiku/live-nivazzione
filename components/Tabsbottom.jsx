@@ -7,6 +7,7 @@ import {
 import { Store } from '../utils/Store';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useStateContext } from '../utils/StateContext';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import tabsStyles from '../styles/Tabs.module.css';
 import Tabs from "@mui/material/Tabs";
@@ -18,7 +19,8 @@ import useStyles from '../utils/styles';
 import { debounce } from '../utils/helpers';
 
 export default function Tabsbottom() {
- const classes = useStyles();
+  const classes = useStyles();
+  const { searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn } = useStateContext();
 
   const router = useRouter();
   const { state } = useContext(Store);
@@ -53,7 +55,7 @@ export default function Tabsbottom() {
             
             <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         
-            <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/search")} icon={<SearchIcon sx={{ fontSize: 28 }} />}  />
+            <Tab value={handleClickSearchf} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleClickSearchf} icon={<SearchIcon sx={{ fontSize: 28 }} />}  />
             
             <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/cart")} icon={cart.cartItems.length > 0 ? (
                       <Badge

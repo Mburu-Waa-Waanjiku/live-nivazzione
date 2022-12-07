@@ -18,15 +18,15 @@ handler.post(async (req, res) => {
   const newProduct = new Product({
     name: 'sample name',
     slug: 'sample-slug-' + Math.random(),
-    image: ['/images/shirt1.jpg', '/images/shirt2.jpg', '/images/shirt1.jpg'],
-    gallery: ['/images/shirt1.jpg', '/images/shirt2.jpg' ],
+    image: ['/images/shirt1.jpg'],
     price: 0,
     category: 'sample category',
     brand: 'sample brand',
+    distinctCateg: ['1', '2', '3', '4', '5', '6'],
     countInStock: 0,
+    initialStock: 1,
     description: 'sample description',
     gender: 'sample gender',
-    distinctCateg: 'distinct type',
     rating: 4.5,
     numReviews: 0,
   }); 

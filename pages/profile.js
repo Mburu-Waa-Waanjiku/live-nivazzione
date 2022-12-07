@@ -67,7 +67,7 @@ function Profile() {
   };
   return (
     <Layout title="Profile">
-      <div className={classes.smseach}>
+      <div className="margintopFix">
           
         </div>
       <Grid container spacing={1}>

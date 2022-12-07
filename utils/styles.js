@@ -52,19 +52,18 @@ const useStyles = makeStyles((theme) => ({
       display: 'none !important',}
   },
   smseach: {
-    margin: '5px 0',
     height: 35,
     display: 'flex',
     width: '100%',
     backgroundColor: 'white',
     alignItems:'center',
-    borderBottom: '1px solid grey',
-    borderTop: '1px solid grey',
     zIndex: 110,
     justifyContent:'space-between',
     position: 'sticky',
-    transition: 'top 0.6s',
 
+  },
+  smseachbg: {
+    transition: 'right 0.3s',
   },
   grow: {
     flexGrow: 1,
@@ -74,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
   footer: {
     marginTop: 10,
+    backgroundColor: '#f1f1f1',
     textAlign: 'center',
   },
   section: {
@@ -119,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     textAlign: 'center',
     fontSize: 20,
+    top: 0,
     fontWeight: 'bolder',
     borderBottom: '2px solid #ececec',
   },
@@ -168,9 +169,10 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     paddingLeft: 10,
+    border: '1px solid black',
     color: '#222',
     '& ::placeholder': {
-      color: 'white',
+      color: 'grey',
     },
   },
   inpttxt: {
@@ -245,10 +247,10 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translate(0%, 40%)',
   },
   text: { textAlign: 'center' },
-  price: { fontSize: 14, fontWeight: 'bold'},
-  prevprice: { fontSize: 14, 
-              fontWeight: 'bold',
-              color: 'red'
+  price: { fontSize: 14, color: 'orangered', fontWeight: 1000},
+  prevprice: { fontSize: 12,
+               lineHeight: 1.6,
+               fontWeight: 600,
             },  
   fullContainer: { height: '100vh',
                    '& ::-webkit-scrollbar': {
@@ -397,7 +399,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     zIndex: 2,
     top: 0,
-    backgroundColor: '#ffdf00',
+    backgroundColor: '#5ad133',
     color: 'black',
     fontWeight: 'bolder',
     width: 18,
@@ -411,11 +413,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     backgroundColor: '#00C949',
     color: 'white',
-    width: 26,
+    width: 35,
     lineHeight: '5px',
     height: 20,
     padding: '8px 4px 4px 4px',
-    fontSize: 8,
+    fontSize: 12,
   },
   globalgrid : {
     display: 'grid !important',
@@ -430,6 +432,10 @@ const useStyles = makeStyles((theme) => ({
   },
   padTab: {
     padding: '0 !important',
+    marginTop: 58,
+    [theme.breakpoints.up('sm')]: {
+      marginTop: 66,
+          },
   },
   badge: {
     color: 'white',

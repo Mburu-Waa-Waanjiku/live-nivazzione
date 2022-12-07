@@ -16,11 +16,14 @@ import Link from 'next/link';
 import ProductItem from '../components/ProductItem';
 import Newpost from '../components/Newpost';
 import axios from 'axios';
+import NewBanner from '../components/NewBanner';
 import Tabsbottom from '../components/Tabsbottom';
+import OffersHome from '../components/OffersHome';
 import Layout from '../components/Layout';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardRounded';
 import useStyles from '../utils/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
+import { useStateContext } from '../utils/StateContext';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -29,7 +32,8 @@ import 'swiper/css/scrollbar';
 
 
 const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwaistbeads, offingerrings, ofanclets }) => {
-  const { state, dispatch } = useContext(Store);  
+  const { state, dispatch } = useContext(Store);
+  const { value, setValue, handleChange, categ, setCateg, handleCateg, handleBoth, handleBack } = useStateContext();
   const classes = useStyles();
 
   const addToCartHandler = async (product) => {
@@ -42,23 +46,6 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
- 
- const [value, setValue] = useState('1');
- const handleChange = (event, newValue) => {
-        setValue(newValue)
-  };
- const [categ, setCateg] = useState('Ankara');
- const handleCateg = (event, newCateg) => {
-        setCateg(newCateg)
-  };
- const handleBoth = (event, newCateg) => {
-     setValue('2');
-     setCateg(newCateg);
- };
- const handleBack = (event, newCateg) => {
-     setValue('1');
-     setCateg(newCateg);
- };
    
  
   return (
@@ -76,14 +63,19 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
             
             <TabPanel className={classes.padTab} value="1">
                <div className={classes.mideaSmallBannerResp}>
-                 <Link href="offer/products&on&offer">
-                   <Image height={636} width={1560} className="bg-gray-100" alt="" src={banner[1].image[0]}></Image>
+                 <Link href="/offer">
+                   <Image height={718} width={1560} className="bg-gray-100" alt="" src={banner[1].image[0]}></Image>
                  </Link>
                </div>
               <div className="home-ft">Newly Dropped</div>
                 <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
-                  <Link href="/newproducts/newproducts">                                                 
-                    <Image height={457} width={1480} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
+                  <Link href="/newproducts/newproducts">  
+                    <div>                                               
+                      <Image height={457} width={1480} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
+                      <NewBanner
+                       newdrops={newdrops}
+                      />
+                    </div>
                   </Link>
                 </div>
               <div className={classes.mideaSmallDivResp}> 
@@ -114,7 +106,9 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
     
                    {newdrops.map((product) =>(
                       <SwiperSlide key={product}>
-                        <Newpost/>
+                        <div className={classes.newpostb} style={{height: 9}}>
+                          NEW
+                        </div>
                         <Link href={`/product/${product.slug}`} >
                            <Image
                              width={364}
@@ -144,6 +138,19 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                   </Tabs>
              </TabContext>
               <div className="home-ft">Flash sale </div>
+                <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
+                  <Link href="/offer"> 
+                    <div>                                                
+                      <Image height={457} width={1480} className="bg-gray-100" style={{top: 50}} alt="" src={banner[0].image[0]}></Image>
+                      <div className="swing">
+                        <div  className="bannerOfferRtt">
+                          <Image height={500} width={650} alt="" src="/TDCTUVUY-removebg-preview.png">
+                          </Image>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
               <div className={classes.mideaSmallDivResp}>
                  <Swiper                    
                     breakpoints={{
@@ -163,6 +170,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                       loop={false}
                       navigation= {true}
                       centeredSlides={false}
+                       style={{padding: 10}}
 
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
@@ -171,25 +179,11 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
     
                    {offers.map((product) =>(
                       <SwiperSlide key={product}>
-                        <Link href={`/product/${product.slug}`}>
-                           <Image
-                             width={364}
-                             height={484}
-                             src={product.image[0]}
-                             alt={product.name}
-
-                             className="shadow object-cover h-auto w-100 bg-gray-100"
-                           />
-                        </Link> 
-                        <div className="inline ">
-                          {product.isBurgain && (<div className="loves"> B </div>)}
-                          <div className="">
-                            <div className={classes.prevprice}><s>Ksh.{product.prevprice}</s></div>
-                            <div className={classes.price}>Ksh.{product.price}</div>
-                          </div>
-                        </div>
-                        
-                       </SwiperSlide>
+                        <OffersHome
+                           product={product}
+                           key={product}
+                        />                         
+                      </SwiperSlide>
                      ))
                    }
                    <SwiperSlide>

@@ -45,6 +45,7 @@ export default function passReset() {
   };
   return (
     <Layout title="Login">
+      <div className="margintopFix">
       {!divSc && <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Reset Password
@@ -104,6 +105,7 @@ export default function passReset() {
           </div>
         </div>
       </div>}
+      </div>
     </Layout>
   );
 }

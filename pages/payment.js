@@ -87,7 +87,7 @@ function PlaceOrder() {
   };
   return (
     <Layout title="Place Order">
-        <h1 className=" mt-3 sm:mt-5  home-ft" style={{fontSize: 17}}>Confirm Order</h1>
+        <h1 className=" mt-3 sm:mt-5  home-ft margintopFix" style={{fontSize: 17}}>Confirm Order</h1>
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
           <div style={{backgroundColor:"#f1f5f9",}}className={classes.section}>

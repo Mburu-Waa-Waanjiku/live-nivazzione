@@ -31,7 +31,7 @@ function reducer(state, action) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true, error: '' };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, products: action.payload, error: '' };
+      return { ...state, loading: false, rcustomers: action.payload, error: '' };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     case 'CREATE_REQUEST':
@@ -53,18 +53,18 @@ function reducer(state, action) {
   }
 }
 
-function AdminProdcuts() {
+function AdminRcustomers() {
   const { state } = useContext(Store);
   const router = useRouter();
   const classes = useStyles();
   const { userInfo } = state;
 
   const [
-    { loading, error, products, loadingCreate, successDelete, loadingDelete },
+    { loading, error, rcustomers, loadingCreate, successDelete, loadingDelete },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
-    products: [],
+    rcustomers: [],
     error: '',
   });
 
@@ -75,7 +75,7 @@ function AdminProdcuts() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/admin/products`, {
+        const { data } = await axios.get(`/api/admin/rcustomers`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -98,38 +98,38 @@ function AdminProdcuts() {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
       const { data } = await axios.post(
-        `/api/admin/products`,
+        `/api/admin/rcustomers`,
         {},
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       dispatch({ type: 'CREATE_SUCCESS' });
-      enqueueSnackbar('Product created successfully', { variant: 'success' });
-      router.push(`/admin/product/${data.product._id}`);
+      enqueueSnackbar('Rocking Customer was created successfully', { variant: 'success' });
+      router.push(`/admin/rcustomer/${data.rcustomer._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
-  const deleteHandler = async (productId) => {
+  const deleteHandler = async (rcustomerId) => {
     if (!window.confirm('Are you sure?')) {
       return;
     }
     try {
       dispatch({ type: 'DELETE_REQUEST' });
-      await axios.delete(`/api/admin/products/${productId}`, {
+      await axios.delete(`/api/admin/rcustomers/${rcustomerId}`, {
         headers: { authorization: `Bearer ${userInfo.token}` },
       });
       dispatch({ type: 'DELETE_SUCCESS' });
-      enqueueSnackbar('Product deleted successfully', { variant: 'success' });
+      enqueueSnackbar('Rocking Customer was deleted successfully', { variant: 'success' });
     } catch (err) {
       dispatch({ type: 'DELETE_FAIL' });
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
   return (
-    <Layout title="Products">
+    <Layout title="Rockin Customers">
       <div className="margintopFix">
       </div>
       <Grid container spacing={1}>
@@ -147,7 +147,7 @@ function AdminProdcuts() {
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/products" passHref>
-                <ListItem selected button component="a">
+                <ListItem button component="a">
                   <ListItemText primary="Products"></ListItemText>
                 </ListItem>
               </NextLink>
@@ -171,11 +171,11 @@ function AdminProdcuts() {
                 <Grid container alignItems="center">
                   <Grid item xs={6}>
                     <Typography component="h1" variant="h1">
-                      Products
+                      Thumbnails
                     </Typography>
                     {loadingDelete && <CircularProgress />}
                   </Grid>
-                  <Grid style={{position: 'fixed', top: 90, zIndex: 20, right: 40}} align="right" item xs={6}>
+                  <Grid align="right" item xs={6}>
                     <Button
                       onClick={createHandler}
                       color="primary"
@@ -198,31 +198,24 @@ function AdminProdcuts() {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Image</TableCell>
+                          <TableCell>IMAGE</TableCell>                          
                           <TableCell>SLUG</TableCell>
-                          <TableCell>NAME</TableCell>
-                          <TableCell>PRICE</TableCell>
-                          <TableCell>CATEGORY</TableCell>
-                          <TableCell>COUNT</TableCell>
-                          <TableCell>RATING</TableCell>
-                          <TableCell>ACTIONS</TableCell>
-                        </TableRow>
+                          <TableCell>INSTA LINK</TableCell>
+                           
+                        </TableRow>        
                       </TableHead>
-                      <TableBody> 
-                        {products.map((product) => (
-                          <TableRow key={product._id}>
-                            <TableCell style={{padding: 0}}><Image width={200} height={290} alt={product.name} src={product.image[0]}></Image></TableCell>
+                      <TableBody>
+                        {rcustomers.map((rcustomer) => (
+                          <TableRow key={rcustomer._id}>
+                            <TableCell><Image width={80} height={80} alt={rcustomer.name} src={rcustomer.image}></Image></TableCell>                            
                             <TableCell>
-                              {product.slug}
+                              {rcustomer.slug}
                             </TableCell>
-                            <TableCell>{product.name}</TableCell>
-                            <TableCell>Ksh.{product.price}</TableCell>
-                            <TableCell>{product.category}</TableCell>
-                            <TableCell>{product.countInStock}</TableCell>
-                            <TableCell>{product.rating}</TableCell>
+                            <TableCell>{rcustomer.instaLink}</TableCell>
+                            
                             <TableCell>
                               <NextLink
-                                href={`/admin/product/${product._id}`}
+                                href={`/admin/rcustomer/${rcustomer._id}`}
                                 passHref
                               >
                                 <Button size="small" variant="contained">
@@ -230,7 +223,7 @@ function AdminProdcuts() {
                                 </Button>
                               </NextLink>{' '}
                               <Button
-                                onClick={() => deleteHandler(product._id)}
+                                onClick={() => deleteHandler(rcustomer._id)}
                                 size="small"
                                 variant="contained"
                               >
@@ -252,4 +245,4 @@ function AdminProdcuts() {
   );
 }
 
-export default dynamic(() => Promise.resolve(AdminProdcuts), { ssr: false });
+export default dynamic(() => Promise.resolve(AdminRcustomers), { ssr: false });

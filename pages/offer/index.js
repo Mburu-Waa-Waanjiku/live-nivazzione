@@ -10,7 +10,7 @@ import db from '../../utils/db';
 import Product from '../../models/Product';
 import Banner from '../../models/Banner';
 import Image from 'next/image';
-import DealsCards from '../../components/DealsCards';
+import YourFoto from '../../components/YourFoto';
 import axios from 'axios';
 import useStyles from '../../utils/styles';
 import Layout from '../../components/Layout';
@@ -27,9 +27,10 @@ import 'swiper/css/scrollbar';
 const Newproducts = (props) => {
 const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofanclets} = props;
  const { state, dispatch } = useContext(Store);
+
  const classes = useStyles();
 
- const addToCartHandler = async (product) => {
+  const addToCartHandler = async (product) => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
@@ -47,10 +48,11 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
   
   return (
     <> 
-       <Layout title="SHIGLAM DAILYDROPS, Get NEW and LATEST trends at SHIGLAM KENYA, Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam."
-               content="SHIGLAM DAILYDROPS Get NEW and LATEST trends at SHIGLAM KENYA - Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
+       <Layout title="SHIGLAM BLACKFRIDAY, SALE and OFFERS, SHIGLAM OFFERS KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES "
+               content="SHIGLAM BLACKFRIDAY SALE and OFFERS get NEW and LATEST products at SHIGLAM KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
        >
-        <div className=" margintopFix home-ft mt-3">NEW PRODUCTS</div>
+          <div className="margintopFix home-ft mt-2">SHIGLAM DEAlS </div>
+          <div className={classes.mideaSmallBannerResp} style={{marginTop:0, display:"none"}}><Image className="bg-gray-100" width={2600} height={340} alt="" src={banner[5].image[0]}></Image> </div>
         <TabContext value={value}>          
           <Tabs centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
               {categories &&
@@ -63,7 +65,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
             <TabPanel className={classes.padTab} value="Earrings" >
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                {ofearrings.map((product) => (
-                         <DealsCards
+                         <YourFoto
                            product={product}
                            key={product}
                            addToCartHandler={addToCartHandler}
@@ -75,7 +77,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
             <TabPanel className={classes.padTab} value="Anclets">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                {ofanclets.map((product) => (
-                         <DealsCards
+                         <YourFoto
                            product={product}
                            key={product}
                            addToCartHandler={addToCartHandler}
@@ -87,7 +89,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
             <TabPanel className={classes.padTab} value="Finger rings">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                {offingerrings.map((product) => (
-                         <DealsCards
+                         <YourFoto
                            product={product}
                            key={product}
                            addToCartHandler={addToCartHandler}
@@ -98,7 +100,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
             <TabPanel className={classes.padTab} value="Waist beads">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                {ofwaistbeads.map((product) => (
-                         <DealsCards
+                         <YourFoto
                            product={product}
                            key={product}
                            addToCartHandler={addToCartHandler}
@@ -109,7 +111,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
             <TabPanel className={classes.padTab} value="Glam">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                {ofglam.map((product) => (
-                         <DealsCards
+                         <YourFoto
                            product={product}
                            addToCartHandler={addToCartHandler}
                            key={product}
@@ -120,7 +122,6 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
         </TabContext>
           
         <Tabsbottom/>
-
     </Layout>
          </>
   
@@ -134,7 +135,7 @@ export async function getServerSideProps() {
   const categories = await Product.find({isNeww: true}).distinct('category');
   
   const ofearrings = await Product.find(
-    { isNeww: true, category: 'Earrings'},
+    { isOnoffer: true, category: 'Earrings'},
     '-reviews'
     )
       .lean()
@@ -143,7 +144,7 @@ export async function getServerSideProps() {
       })
       .limit(20);
   const ofanclets = await Product.find(
-    { isNeww: true, category: 'Anclets'},
+    { isOnoffer: true, category: 'Anclets'},
     '-reviews'
     )
       .lean()
@@ -152,7 +153,7 @@ export async function getServerSideProps() {
       })
       .limit(20);
   const offingerrings = await Product.find(
-    { isNeww: true, category: 'Finger rings'},
+    { isOnoffer: true, category: 'Finger rings'},
     '-reviews'
     )
       .lean()
@@ -161,7 +162,7 @@ export async function getServerSideProps() {
       })
       .limit(20);
   const ofwaistbeads = await Product.find(
-    { isNeww: true, category: 'Waist Beads'},
+    { isOnoffer: true, category: 'Waist Beads'},
     '-reviews'
     )
       .lean()
@@ -170,7 +171,7 @@ export async function getServerSideProps() {
       })
       .limit(20);
   const ofglam = await Product.find(
-    { isNeww: true, category: 'Glam'},
+    { isOnoffer: true, category: 'Glam'},
     '-reviews'
     )
       .lean()

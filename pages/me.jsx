@@ -14,6 +14,7 @@ function Me() {
     const classes = useStyles();
 	return (
 		<Layout>
+        <div className="margintopFix">
         <div className={classes.mideaSmallBannerResp}>
             <div>
                 <div className="me-container">
@@ -46,6 +47,7 @@ function Me() {
                     <div className="responsive"></div>
                 </div>
             </div>
+        </div>
         </div>
             <Tabsbottom/>
 		</Layout>

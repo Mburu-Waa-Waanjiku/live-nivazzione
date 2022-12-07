@@ -115,6 +115,8 @@ function UserEdit({ params }) {
   };
   return (
     <Layout title={`Edit User ${userId}`}>
+      <div className="margintopFix">
+      </div>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -137,11 +139,6 @@ function UserEdit({ params }) {
               <NextLink href="/admin/banners" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Banners"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/categorythumbnails" passHref>
-                <ListItem selected button component="a">
-                  <ListItemText primary="Thumbnails"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/users" passHref>

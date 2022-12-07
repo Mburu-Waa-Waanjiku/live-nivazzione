@@ -92,11 +92,21 @@ function ProductEdit({ params }) {
           setIsNeww(data.isNeww);
           setIsBurgain(data.isBurgain);
           setValue('gender', data.gender);
-          setValue('distinctCateg', data.distinctCateg);
-          setValue('image', data.image);
+          setValue('distinctCateg1', data.distinctCateg[0]);
+          setValue('distinctCateg2', data.distinctCateg[1]);
+          setValue('distinctCateg3', data.distinctCateg[2]);
+          setValue('distinctCateg4', data.distinctCateg[3]);
+          setValue('distinctCateg5', data.distinctCateg[4]);
+          setValue('distinctCateg6', data.distinctCateg[5]);
+          setValue('image0', data.image[0]);
+          setValue('image1', data.image[1]);
+          setValue('image2', data.image[2]);
           setValue('gallery', data.gallery);
           setValue('featuredImage', data.featuredImage);
           setIsFeatured(data.isFeatured);
+          setIsCollectn(data.isCollectn);
+          setValue('initialStock', data.initialStock);
+          setValue('collectionType', data.collectionType);
           setValue('category', data.category);
           setValue('brand', data.brand);
           setValue('countInStock', data.countInStock);
@@ -135,14 +145,23 @@ function ProductEdit({ params }) {
           name,
           slug,
           category,
-          image,
+          image0,
+          image1,
+          image2,
           gallery,
           prevprice,
           discount,
           gender,
-          distinctCateg,
+          distinctCateg1,
+          distinctCateg2,
+          distinctCateg3,
+          distinctCateg4,
+          distinctCateg5,
+          distinctCateg6,
           price,
           brand,
+          initialStock,
+          collectionType,
           countInStock,
           description,
           featuredImage,
@@ -157,22 +176,32 @@ function ProductEdit({ params }) {
           name,
           slug,
           category,
-          image,
+          image0,
+          image1,
+          image2,
           gallery,
           prevprice,
           discount,
           gender,
           isEditorsChoice,
-          distinctCateg,
+          distinctCateg1,
+          distinctCateg2,
+          distinctCateg3,
+          distinctCateg4,
+          distinctCateg5,
+          distinctCateg6,
           price,
           brand,
+          initialStock,
           countInStock,
+          collectionType,
           description,
           featuredImage,
           isFeatured,
           isNeww,
           isBurgain,
           isOnoffer,
+          isCollectn,
           
         },
         { headers: { authorization: `Bearer ${userInfo.token}` } }
@@ -191,9 +220,12 @@ function ProductEdit({ params }) {
   const [isEditorsChoice, setIsEditorsChoice] = useState(false);
   const [isNeww, setIsNeww] = useState(false);
   const [isBurgain, setIsBurgain] = useState(false);
+  const [isCollectn, setIsCollectn] = useState(false);
   
   return (
     <Layout title={`Edit Product ${productId}`}>
+      <div className="margintopFix">
+      </div>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -216,11 +248,6 @@ function ProductEdit({ params }) {
               <NextLink href="/admin/banners" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Banners"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/categorythumbnails" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="Thumbnails"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/users" passHref>
@@ -274,7 +301,7 @@ function ProductEdit({ params }) {
                     </ListItem>
                     <ListItem>
                       <Controller
-                        name="image"
+                        name="image0"
                         control={control}
                         defaultValue=""
                         rules={{
@@ -284,8 +311,44 @@ function ProductEdit({ params }) {
                           <TextField
                             variant="outlined"
                             fullWidth
-                            id="image"
-                            label="Image"
+                            id="image0"
+                            label="Image1"
+                            error={Boolean(errors.image)}
+                            helperText={errors.image ? 'Image is required' : ''}
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="image1"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="image1"
+                            label="Image2"
+                            error={Boolean(errors.image)}
+                            helperText={errors.image ? 'Image is required' : ''}
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="image2"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="image2"
+                            label="Image3"
                             error={Boolean(errors.image)}
                             helperText={errors.image ? 'Image is required' : ''}
                             {...field}
@@ -335,7 +398,6 @@ function ProductEdit({ params }) {
                         } 
                       ></FormControlLabel>
                     </ListItem>
-                    
                     <ListItem>
                       <FormControlLabel
                         label="Is EdditorsChoice"
@@ -525,6 +587,41 @@ function ProductEdit({ params }) {
                       {loadingUpload && <CircularProgress />}
                     </ListItem>
                     <ListItem>
+                      <FormControlLabel
+                        label="Is Collection"
+                        control={
+                          <Checkbox
+                            onClick={(e) => setIsCollectn(e.target.checked)}
+                            checked={isCollectn}
+                            name="isCollectn"
+                          />
+                        } 
+                      ></FormControlLabel>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="collectionType"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="collectionType"
+                            label="Collection Type"
+                            error={Boolean(errors.collectionType)}
+                            helperText={
+                              errors.collectionType ? 'collectionType is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
                       <Controller
                         name="category"
                         control={control}
@@ -549,7 +646,7 @@ function ProductEdit({ params }) {
                     </ListItem>
                     <ListItem>
                       <Controller
-                        name="distinctCateg"
+                        name="distinctCateg1"
                         control={control}
                         defaultValue=""
                         rules={{
@@ -559,8 +656,119 @@ function ProductEdit({ params }) {
                           <TextField
                             variant="outlined"
                             fullWidth
-                            id="distinctCateg"
-                            label="Distinct Category"
+                            id="distinctCateg1"
+                            label="Similar prod 1"
+                            error={Boolean(errors.distinctCateg)}
+                            helperText={
+                              errors.category ? 'Distinct Category is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="distinctCateg2"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="distinctCateg2"
+                            label="Similar prod 2"
+                            error={Boolean(errors.distinctCateg)}
+                            helperText={
+                              errors.category ? 'Distinct Category is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem><ListItem>
+                      <Controller
+                        name="distinctCateg3"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="distinctCateg3"
+                            label="Similar prod 3"
+                            error={Boolean(errors.distinctCateg)}
+                            helperText={
+                              errors.category ? 'Distinct Category is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem><ListItem>
+                      <Controller
+                        name="distinctCateg4"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="distinctCateg4"
+                            label="Similar prod 4"
+                            error={Boolean(errors.distinctCateg)}
+                            helperText={
+                              errors.category ? 'Distinct Category is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem><ListItem>
+                      <Controller
+                        name="distinctCateg5"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="distinctCateg5"
+                            label="Similar prod 5"
+                            error={Boolean(errors.distinctCateg)}
+                            helperText={
+                              errors.category ? 'Distinct Category is required' : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem><ListItem>
+                      <Controller
+                        name="distinctCateg6"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="distinctCateg6"
+                            label="Similar prod 6"
                             error={Boolean(errors.distinctCateg)}
                             helperText={
                               errors.category ? 'Distinct Category is required' : ''
@@ -586,6 +794,31 @@ function ProductEdit({ params }) {
                             label="Brand"
                             error={Boolean(errors.brand)}
                             helperText={errors.brand ? 'Brand is required' : ''}
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="initialStock"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="initialStock"
+                            label="Starting stock"
+                            error={Boolean(errors.initialStock)}
+                            helperText={
+                              errors.initialStock
+                                ? 'Starting stock is required'
+                                : ''
+                            }
                             {...field}
                           ></TextField>
                         )}

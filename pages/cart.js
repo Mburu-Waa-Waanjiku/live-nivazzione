@@ -35,7 +35,7 @@ function CartScreen() {
       <button
         onClick={() => router.back()}
         type="button"
-        className="cart-heading mt-5 sm:mt-7"
+        className="cart-heading mt-5 sm:mt-7 margintopFix"
         >
           <AiOutlineLeft />
           <span className="heading">Your Cart</span>
@@ -64,7 +64,6 @@ function CartScreen() {
                   <th className="p-5 text-center">Name</th>
                   <th className="p-5 text-right">Quantity</th>
                   <th className="p-5 text-right">Price</th>
-                  <th className="p-5 text-right">Burgainable</th>
                   <th className="p-5">Remove</th>
                 </tr>
               </thead>
@@ -100,9 +99,6 @@ function CartScreen() {
                       </select>
                     </td>
                     <td className="p-5 text-right">Ksh.{item.price}</td>
-                    <td className="p-5 text-center">
-                      {item.isBurgain ? (<div className="loves"> B </div>) : (<div><b>No offer</b></div>)}
-                    </td>
                     <td style={{color:"#30d04a"}} className="p-5 text-center ">
                       <button onClick={() => removeItemHandler(item)}>
                         <div style={{padding:"0px 8px", borderRadius:"5px", fontWeight:"bold", backgroundColor:"black", fontSize:"20px"}} >×</div>

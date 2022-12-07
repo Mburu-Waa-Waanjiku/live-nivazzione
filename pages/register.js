@@ -57,6 +57,8 @@ export default function Register() {
   };
   return (
     <Layout title="Register">
+      <div className="margintopFix">
+      </div>
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Register

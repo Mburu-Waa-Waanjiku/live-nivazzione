@@ -18,7 +18,6 @@ body {
   box-sizing: border-box;
 }
 
-input,
 select,
 textarea {
   @apply rounded border p-2  outline-none ring-slate-100  focus:ring;

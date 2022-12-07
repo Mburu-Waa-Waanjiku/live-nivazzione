@@ -141,7 +141,7 @@ export default function ShippingScreen() {
   return (
     <Layout title="Shipping Address">
       <form
-        className="mx-auto max-w-screen-md"
+        className="mx-auto max-w-screen-md margintopFix"
         onSubmit={handleSubmit(submitHandler)}
       >
         <h1 className="mb-4 mt-3 sm:mt-5  home-ft" style={{textAlign:"left"}}>Shipping Address</h1>

@@ -64,11 +64,13 @@ function AdminDashboard() {
   }, [router, userInfo]);
   return (
     <Layout title="Admin Dashboard">
+      <div className="margintopFix">
+      </div>
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
             <List>
-<NextLink href="/admin/dashboard" passHref>
+              <NextLink href="/admin/dashboard" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Admin Dashboard"></ListItemText>
                 </ListItem>
@@ -86,11 +88,6 @@ function AdminDashboard() {
               <NextLink href="/admin/banners" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Banners"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/categorythumbnails" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="Thumbnails"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/admin/users" passHref>
@@ -183,14 +180,14 @@ function AdminDashboard() {
                       <Card raised>
                         <CardContent>
                           <Typography variant="h1">
-                            {summary.locationsCount}
+                            {summary.rcustomerCount}
                           </Typography>
-                          <Typography>Drop Station Locations</Typography>
+                          <Typography>Rocking Customers</Typography>
                         </CardContent>
                         <CardActions>
-                          <NextLink href="/admin/DropStations" passHref>
+                          <NextLink href="/admin/rcustomers" passHref>
                             <Button size="small" color="primary">
-                              View Drop Stations
+                              View Rocking Customers
                             </Button>
                           </NextLink>
                         </CardActions>
