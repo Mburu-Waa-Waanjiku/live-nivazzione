@@ -16,6 +16,7 @@ import Link from 'next/link';
 import ProductItem from '../components/ProductItem';
 import Newpost from '../components/Newpost';
 import axios from 'axios';
+import { CgBolt } from 'react-icons/cg';
 import NewBanner from '../components/NewBanner';
 import Tabsbottom from '../components/Tabsbottom';
 import OffersHome from '../components/OffersHome';
@@ -106,9 +107,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
     
                    {newdrops.map((product) =>(
                       <SwiperSlide key={product}>
-                        <div className={classes.newpostb} style={{height: 9}}>
-                          NEW
-                        </div>
+                        <div className={classes.newpost} style={{backgroundColor: '#ffdf00'}}>NEW<CgBolt style={{fontSize:16}} /></div>
                         <Link href={`/product/${product.slug}`} >
                            <Image
                              width={364}
