@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ProductItem from '../components/ProductItem';
+import BestSeller from '../components/BestSeller';
 import Newpost from '../components/Newpost';
 import axios from 'axios';
 import { CgBolt } from 'react-icons/cg';
@@ -32,7 +33,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 
-const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwaistbeads, offingerrings, ofanclets }) => {
+const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwaistbeads, offingerrings, ofanclets }) => {
   const { state, dispatch } = useContext(Store);
   const { value, setValue, handleChange, categ, setCateg, handleCateg, handleBoth, handleBack } = useStateContext();
   const classes = useStyles();
@@ -136,6 +137,44 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                     <Tab value="Glam" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
                   </Tabs>
              </TabContext>
+              <div className="home-ft">Best Sellers </div>
+                <div className={classes.mideaSmallDivResp} style={{marginTop:0}}>
+                  <Swiper                    
+                    breakpoints={{
+                      100: {
+                         slidesPerView: 2.8,
+                       },
+                      640: {
+                         slidesPerView: 4.3,
+                      }, 
+                      1000: {
+                         slidesPerView: 6.3,
+                      },             
+                    }}
+      
+                      modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
+                      spaceBetween={10}           
+                      loop={false}
+                      navigation= {true}
+                      centeredSlides={false}
+                      style={{padding: 10}}
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log('slide change')}
+        
+                 >
+    
+                   {topselling.map((product) =>(
+                      <SwiperSlide key={product}>
+                        <BestSeller
+                          product={product}
+                          key={product}
+                          addToCartHandler={addToCartHandler}
+                        />                         
+                      </SwiperSlide>
+                     ))
+                   }
+                 </Swiper>
+                </div>
               <div className="home-ft">Flash sale </div>
                 <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
                   <Link href="/offer"> 
@@ -303,6 +342,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
                           />
                         ))}
                       </div>
+                      <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                     </TabPanel>
                     <TabPanel className={classes.padTab} value="Waist beads">
                       <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -341,33 +381,7 @@ const Home = ({ banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwa
 };
 export async function getServerSideProps() {
   await db.connect();
-  const newdrops = await Product.find(
-    { isNeww: true },
-    '-reviews'
-    )
-      .lean()
-      .sort({
-        rating: -1,
-      })
-      .limit(14);
-  const offers = await Product.find(
-    {  isOnoffer: true  },
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(14);
-  const editorspicks = await Product.find(
-    {  isEditorsChoice: true  },
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
+  const products = await Product.find({}, '-reviews').lean();
   const ofearrings = await Product.find(
     { category: 'Earrings', isEditorsChoice: true },
     '-reviews'
@@ -416,16 +430,23 @@ export async function getServerSideProps() {
   
   const banner = await Banner.find().lean();
   await db.disconnect();
+
+  const newdrops = [...products.filter((product) => product.isNeww)];
+  const offers = [...products.filter((product) => product.isOnoffer)];
+  const editorspicks = [...products.filter((product) => product.isEditorsChoice)];
+  const topselling = [...products.filter((product) => product.initialStock - product.countInStock > 5 ).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];  
+
   return {
     props: {
+      topselling: topselling.map(db.convertDocToObj),
       ofglam: ofglam.map(db.convertDocToObj),
       ofwaistbeads: ofwaistbeads.map(db.convertDocToObj),      
       offingerrings: offingerrings.map(db.convertDocToObj),      
       ofanclets: ofanclets.map(db.convertDocToObj),      
       ofearrings: ofearrings.map(db.convertDocToObj),      
-      editorspicks: editorspicks.map(db.convertDocToObj),
-      newdrops: newdrops.map(db.convertDocToObj),
-      offers: offers.map(db.convertDocToObj),
+      editorspicks: editorspicks.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
+      newdrops: newdrops.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
+      offers: offers.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
       banner: banner.map(db.convertDocToObj),
     },
   };

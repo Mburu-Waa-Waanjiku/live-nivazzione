@@ -249,10 +249,10 @@ export default function Layout({ title, description, children }) {
                         classes={{ badge: classes.badge }}
                         badgeContent={cart.cartItems.length}
                       >
-                        <ShoppingBasketIcon/>
+                          <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519277/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview-removebg-preview_2_rvuqqi.png"></Image>
                       </Badge>
                     ) : (
-                      <ShoppingBasketIcon/>
+                        <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519277/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview-removebg-preview_2_rvuqqi.png"></Image>
                     )}
                   </Typography>
                 </Link>
@@ -439,14 +439,14 @@ export default function Layout({ title, description, children }) {
                 className=" social">
                 <FontAwesomeIcon icon={faYoutube} />
               </a>
-              <a href=""
+              <a href="https://www.facebook.com/profile.php?id=100088268062076"
                 className=" social">
                 <FontAwesomeIcon icon={faFacebook}  />
               </a>
               <a href="" className=" social">
                 <FontAwesomeIcon icon={faTwitter}  />
               </a>
-              <a href=""
+              <a href="https://www.instagram.com/shiglam_ke/"
                 className=" social">
                 <FontAwesomeIcon icon={faInstagram}  />
               </a>

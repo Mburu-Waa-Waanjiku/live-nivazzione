@@ -17,6 +17,7 @@ import PersonIcon from '@mui/icons-material/PersonOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import useStyles from '../utils/styles';
 import { debounce } from '../utils/helpers';
+import Image from 'next/image';
 
 export default function Tabsbottom() {
   const classes = useStyles();
@@ -62,10 +63,10 @@ export default function Tabsbottom() {
                         classes={{ badge: classes.badgeLg }}
                         badgeContent={cart.cartItems.length}
                       >
-                        <ShoppingBasketIcon sx={{ fontSize: 28 }} />
+                        <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519287/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview_2_rlvbxk.png"></Image>
                       </Badge>
                     ) : (
-                      <ShoppingBasketIcon sx={{ fontSize: 28 }} />
+                        <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519287/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview_2_rlvbxk.png"></Image>
                     )}  />
                                  
             {userInfo ? (<Tab 

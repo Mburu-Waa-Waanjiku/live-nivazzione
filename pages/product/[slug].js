@@ -174,9 +174,8 @@ export default function ProductScreen(props) {
           <div className="flex justify-between mx-6 py-1">
             <div className="flex">
               <FaTruckMoving style={{fontSize:20}}/>
-              <div className="ml-3 self-center">Chek your shipping drop station</div>
+              <div className="ml-3 self-center">Our shipping is done by Pickup Mtaan & it takes from same day to 3 days max.</div>
             </div>
-            <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:12}}/></div>
           </div>
           <div className="mx-6 my-3">
             <Image width={500} height={83} alt="" className="bg-gray-100" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667233530/ezgif.com-gif-maker_1_fx3ey6.gif"></Image>
@@ -187,7 +186,7 @@ export default function ProductScreen(props) {
             Return 
           </div>
           <div className="flex justify-start mx-6 py-1">
-            {product.isOnoffer ? (<div>This product cannot be returned due to promotional activities</div>) : (<div>This product can only be returned if it is defective on delivery</div>)}
+            {product.isOnoffer ? (<div>This product is not eligible to be returned due to promotional activities.</div>) : (<div>This product can only be returned if it is defective on delivery</div>)}
           </div>
         </div> 
         </div>
