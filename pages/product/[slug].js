@@ -87,7 +87,7 @@ export default function ProductScreen(props) {
   return (
     <>
       <Layout title={product.name} description={product.description}
-              content="Get {product.name} and more at from as low as {product.price}"
+              content="Get {product.name} and more from as low as {product.price}"
       >
       <div className="margintopFix mt-9 grid grid-cols-1 md:grid-cols-12 md:gap-4">
         <div className="col-span-1 md:col-span-5 md:col-start-2">
