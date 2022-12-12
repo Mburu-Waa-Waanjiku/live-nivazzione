@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'; 
 import Layout from '../../components/Layout';
 import { Store } from '../../utils/Store';
 import Link from 'next/link';
 import Image from 'next/image'; 
 import db from '../../utils/db';
-import Categorythumbnail from '../../models/Categorythumbnail';
 import {
   Grid,
   IconButton,
@@ -50,6 +49,14 @@ function reducer(state, action) {
       return { ...state, loadingUpdate: false, errorUpdate: '' };
     case 'UPDATE_FAIL':
       return { ...state, loadingUpdate: false, errorUpdate: action.payload };
+    case 'PENDING_REQUEST':
+      return { ...state, loadingPending: true };
+    case 'PENDING_SUCCESS':
+      return { ...state, loadingPending: false, successPending: true };
+    case 'PENDING_FAIL':
+      return { ...state, loadingPending: false, errorPay: action.payload };
+    case 'PENDING_RESET':
+      return { ...state, loadingPending: false, successPending: false, errorPay: '' };
     case 'PAY_REQUEST':
       return { ...state, loadingPay: true };
     case 'PAY_SUCCESS':
@@ -79,7 +86,6 @@ function reducer(state, action) {
 function Order({ params }) {
   
   const orderId = params.id;
-  const [{ isPending }] = usePayPalScriptReducer();
   const classes = useStyles();
   const router = useRouter();
   const { state } = useContext(Store);
@@ -88,7 +94,7 @@ function Order({ params }) {
   
 
   const [
-    { loading, error, order, successPay, loadingDeliver, successDeliver },
+    { loading, error, order, successPending, successPay, loadingDeliver, successDeliver },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
@@ -105,6 +111,7 @@ function Order({ params }) {
     shippingPrice,
     totalPrice,
     oldTotalPrice,
+    isPending,
     isPaid,
     paidAt,
     isDelivered,
@@ -178,6 +185,20 @@ function Order({ params }) {
     } catch (err) {
       dispatch({ type: 'PAY_FAIL', payload: getError(err) });
       enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  }
+  async function pendingOrderHandler() {
+    try {
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/pending`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: 'PENDING_SUCCESS', payload: data });
+     } catch (err) {
+      console.log('error updating  pending');
     }
   }
 
@@ -268,12 +289,20 @@ function Order({ params }) {
                 </div>
                 <ListItem><div style={{display:"flex", color:"gray"}}><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div></ListItem>
                 <ListItem className="text-xs" style={{color:"gray"}}>
-                  <b className="pl-4">Status:</b>{' '} {isPaid ? (<div className="payStatus"><b className="text-base pr-1">Paid</b>✓</div>) 
-                    : (<div className="flex pending">Pending Approval<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
+                  <b className="pl-4">
+                    Status:
+                  </b>
+                  {' '} {isPaid && <div className="payStatus"><b className="text-base pr-1">Paid</b>✓</div>}
+                        {isPending && !isPaid && <div className="flex pending">Pending Approval<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
+                        {!isPaid && !isPending && <div className="flex pending">Not paid</div>}
                 </ListItem>
                 <ListItem className="text-xs" style={{color:"gray"}}>
-                  <b className="pl-4">Approved at:</b>{' '} {isPaid ? (<div className="pending">{paidAt}</div>)
-                  :  (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
+                  <b className="pl-4">
+                    Approved at:
+                  </b>
+                  {' '} {isPaid  && <div className="pending">{paidAt}</div>}
+                        {isPending && !isPaid && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
+                        {!isPending && !isPaid && <div className="flex pending">Not Approved</div>}
                 </ListItem>
               </List>
             </div>
@@ -283,16 +312,22 @@ function Order({ params }) {
                    Delivery
                 </div>
                 <ListItem className="text-xs" style={{color:"gray"}}>
-                  <b className="pl-4" >Out For Delivery:</b>{' '}
-                  {isDelivered
-                    ? (<div className="payStatus">✓</div>)
-                    : (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
+                  <b className="pl-4" >
+                    Out For Delivery:
+                  </b>
+                  {' '} {isDelivered && <div className="payStatus"><b className="text-base pr-1">Released</b>✓</div>}
+                        {!isDelivered && isPending && !isPaid && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
+                        {!isDelivered && isPaid && isPending && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
+                        {!isDelivered && !isPending && !isPaid && <div className="flex pending">Not Delivered</div>}
                 </ListItem>
                 <ListItem className="block pl-8 text-xs" style={{color:"gray"}}>
-                  <b className="pl-4">Percel released at:</b>{' '}
-                  {isDelivered
-                    ? (<div className="pending">{`${deliveredAt}`}</div>)
-                    : (<div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>)}
+                  <b className="pl-4">
+                    Percel released at:
+                  </b>
+                  {' '} {isDelivered && <div className="pending">{`${deliveredAt}`}</div>}
+                        {!isDelivered && isPending && !isPaid && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
+                        {!isDelivered && isPaid && isPending && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
+                        {!isDelivered && !isPending && !isPaid && <div className="flex pending">Not Released</div>}
                 </ListItem>
               </List>
             </div>
@@ -542,20 +577,16 @@ function Order({ params }) {
                 )}
                 {!isPaid && (
                   <ListItem>
-                    {isPending ? (
-                      <CircularProgress />
-                    ) : (
                     <div className={classes.fullWidth}>
-                    <Button
-                       fullWidth
-                       variant="contained"
-                       className={ classes.mpesa }
-                       onClick={() => setShowOverlay(true)}
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        className={ classes.mpesa }
+                        onClick={() => setShowOverlay(true)}
                       >
                         m<Image height={50} width={50} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1663845421/enjigpi6eaag5naxfglf.png"></Image> pesa
-                    </Button>
+                      </Button>
                     </div>
-                    )} 
                   </ListItem>
                 )}
                 {showOverlay && 
@@ -567,26 +598,28 @@ function Order({ params }) {
                           <div style={{padding:10, marginTop:10, backgroundColor:"#f1f5f9"}}>
                             <p>Payment Approval takes 1 to 2 hours to be verified on your Order History</p>
                             <p>However if confirmation is delayed, you can always call us on +254105705441 or whatsapp us by clicking the whatsapp button at the bottom of the screen 😊 </p> 
-                            <p>Your order is delivered between same day to 2 business days</p>
+                            <p>Your order is delivered between same day to 3 business days max</p>
                           </div>
                           <label htmlFor="">
                             <input
                               type="checkbox"
                               value={isChecked}
                               onChange={handlePay}
+                              style={{marginRight: 5}}
                             />
                             I Agree
                           </label>
-                            <Link href="https://tujenge.io/collection-link/1291f110-5a02-11ed-a9d8-8dc55ea47dd3">
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            disabled={!isChecked}
-                            className={ classes.mpesa }
-                          >
+                          <Link href="https://tujenge.io/collection-link/1291f110-5a02-11ed-a9d8-8dc55ea47dd3">
+                            <Button
+                              fullWidth
+                              variant="contained"
+                              disabled={!isChecked}
+                              className={ classes.mpesa }
+                              onClick={pendingOrderHandler}
+                            >
                               m<Image height={50} width={50} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1663845421/enjigpi6eaag5naxfglf.png"></Image> pesa
-                          </Button>
-                            </Link>
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                       <div className="absolute p-5" style={{bottom:0, right:0}}>
@@ -635,12 +668,10 @@ function Order({ params }) {
 
 export async function getServerSideProps({ params }) {
   await db.connect();
-  const categorythumbnails = await Categorythumbnail.find().lean();
 
   return { 
     props: { 
       params,
-      categorythumbnails: categorythumbnails.map(db.convertDocToObj),
 
    } };
 }

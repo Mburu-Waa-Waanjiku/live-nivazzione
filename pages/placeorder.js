@@ -36,16 +36,23 @@ function PlaceOrder() {
     cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
-  const itemsPrice = round2(
+  const itemsPrice = round0(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
   const bundleRate = 15 * cartItems.length /1000;
   const ratePrice = itemsPrice * bundleRate
-  const bundlePrice = round2(itemsPrice - ratePrice);
-  const shippingPrice = itemsPrice > 500 ? 0 : 15;
-  const taxPrice = round2(itemsPrice * 0.16);
-  const oldTotalPrice = round2(itemsPrice + shippingPrice + taxPrice);
-  const totalPrice = cartItems.length > 2 ? round2(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
+  const bundlePrice = round0(itemsPrice - ratePrice);
+  let shippingPrice;
+  if (itemsPrice < 699) {
+      shippingPrice = 100;
+    } else if (itemsPrice < 999 ) {
+        shippingPrice = 50
+      } else {
+          shippingPrice = 0
+      };
+  const taxPrice = 0;
+  const oldTotalPrice = round0(itemsPrice + shippingPrice + taxPrice);
+  const totalPrice = cartItems.length > 2 ? round0(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
 
   useEffect(() => {
     if (!shippingAddress.dropstation) {
@@ -270,7 +277,7 @@ function PlaceOrder() {
                   </Grid>
                 </Grid>
               </ListItem>
-              {!show && cartItems.length > 2 && <ListItem>
+              {!show && cartItems.length > 4 && <ListItem>
                 <Button
                   onClick={handleShow}
                   variant="contained"
@@ -293,7 +300,7 @@ function PlaceOrder() {
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
-                    <Typography>Vat:</Typography>
+                    <Typography>Vat (Items are Vat inclusive):</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography align="right">Ksh.{taxPrice}</Typography>
@@ -342,7 +349,7 @@ function PlaceOrder() {
                     </Grid>
                   </Grid>
                 </ListItem>
-                {cartItems.length > 2 && <ListItem>
+                {cartItems.length > 4 && <ListItem>
                   <Button
                     onClick={allHundler}
                     variant="contained"
@@ -353,7 +360,7 @@ function PlaceOrder() {
                  </Button>
                 </ListItem>}
               </div>}
-              {cartItems.length < 3 && <ListItem>
+              {cartItems.length < 5 && <ListItem>
                 <Button
                   onClick={allHundler}
                   variant="contained"

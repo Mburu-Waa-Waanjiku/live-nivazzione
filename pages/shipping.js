@@ -199,6 +199,15 @@ export default function ShippingScreen() {
           )}
         </div>
         <div className="flex justify-between gap-3">
+          <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
+            <label htmlFor="shippingPrice">Shipping Price</label>
+            <input
+              className="w-full block"
+              id="shippingPrice"
+              value= "KSh 100"
+              readonly="readonly"
+            />
+          </div>
         <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
           <label htmlFor="dropstation">Delivery Location</label>
           <select
@@ -673,6 +682,8 @@ export default function ShippingScreen() {
             <div className="text-red-500 ">{errors.dropstation.message}</div>
           )}
         </div>
+        </div>
+        <div className="flex justify-between gap-3">
         <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
           <label htmlFor="phoneNumber">Phone Number</label>
           <input

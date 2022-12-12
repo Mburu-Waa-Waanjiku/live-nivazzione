@@ -48,11 +48,38 @@ export const StateContext = ({ children }) => {
   const handleSearchBtn = () => {
     setSearchClick(true);
     setSearchBtn(false);
+  };
+
+  const [openinfos, setOpeninfos] = useState(false);
+  const handleOpeninfos = () => {
+    setOpeninfos(true);
+  }
+  const handleOpeninfosHelp = () => {
+    setOpeninfos(true);
+    router.push("/#helpDesk");
+  }
+  const handleOpeninfosReturn = () => {
+    setOpeninfos(true);
+    router.push("/#return");
+  }
+  const handleOpeninfosShipping = () => {
+    setOpeninfos(true);
+    router.push("/#shipping");
+  }
+  const handleCloseinfos = () => {
+    setOpeninfos(false);
   }
 
   return (
     <Context.Provider
       value={{
+        handleOpeninfosShipping,
+        handleOpeninfosReturn,
+        handleOpeninfosHelp,
+        openinfos,
+        setOpeninfos,
+        handleOpeninfos,
+        handleCloseinfos,
         searchClick,
         setSearchClick,
         searchBtn,
