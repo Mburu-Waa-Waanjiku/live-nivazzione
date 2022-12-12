@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Head from 'next/head';
+import HeadsetMicRounded from '@mui/icons-material/HeadsetMicRounded';
 import NextLink from 'next/link';
 import {
   AppBar,
@@ -54,11 +55,11 @@ import ProductNocart from './ProductNocart';
 import { useEffect } from 'react';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
-
+import FooterDocs from './FooterDocs';
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();
-  const { searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
+  const { openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
   const theme = createMuiTheme({
@@ -169,7 +170,7 @@ export default function Layout({ title, description, children }) {
         <title>{title ? `${title} - shiglam` : 'shiglam '}</title>
         {description && <meta name="description" charset="UTF-8" content={description}></meta>}
         <meta name="google-site-verification" content="tK9s0pQ66YNPGPxWplFwgCSa8dlOmhBlJLmRr_ZLLTM" />
-        <link rel="icon" href="/shiglam.png" />
+        <link rel="icon" href="/shiglama.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
       </Head>
       <ThemeProvider theme={theme}>
@@ -226,6 +227,20 @@ export default function Layout({ title, description, children }) {
                   </Tabs>
                 </TabContext>
               </List>
+              <div className="absolute flex bottom-0 w-full" style={{borderTop: '1px solid rgba(0, 0, 0, 0.08)'}}>
+                <div className="flex justify-evenly p-4 grow">
+                  <a href="tel:0704065652">
+                    <div className="flex grow justify-center">
+                      <HeadsetMicRounded style={{marginRight:10}}/>
+                    </div>
+                  </a>
+                  <Link href="https://wa.me/message/LLYAJG6L323CP1" >
+                    <div className="flex grow justify-center">
+                      <i style={{color:"black", marginRight:10, fontSize:"25px", }} className="fa fa-whatsapp whatsapp-icon"></i>
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </Drawer>
             <NextLink href="/" passHref>
                 <Link>
@@ -362,25 +377,25 @@ export default function Layout({ title, description, children }) {
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
           <div className={classes.smbrandh}>
-            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px'}}>
+            <ListItem onClick={handleOpeninfos} style={{justifyContent: 'space-between', padding: '10px 30px'}}>
               <Typography style={{fontWeight: 'bolder', fontSize: 14}}>About shiglam</Typography>
               <Typography style={{ alignSelf: 'right'}}>
                 <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
               </Typography>
             </ListItem>
-            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px'}}>
+            <ListItem onClick={handleOpeninfosHelp} style={{justifyContent: 'space-between', padding: '10px 30px'}}>
               <Typography style={{fontWeight: 'bolder', fontSize: 14}}>Help desk</Typography>
               <Typography style={{ alignSelf: 'right'}}>
                 <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
               </Typography>
             </ListItem>
-            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px'}}>
+            <ListItem onClick={handleOpeninfosReturn} style={{justifyContent: 'space-between', padding: '10px 30px'}}>
               <Typography style={{fontWeight: 'bolder', fontSize: 14}}>Return policy</Typography>
               <Typography style={{ alignSelf: 'right'}}>
                 <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
               </Typography>
             </ListItem>
-            <ListItem style={{justifyContent: 'space-between', padding: '10px 30px 30px 30px'}}>
+            <ListItem onClick={handleOpeninfosShipping} style={{justifyContent: 'space-between', padding: '10px 30px 30px 30px'}}>
               <Typography style={{fontWeight: 'bolder', fontSize: 14}}>Shipping</Typography>
               <Typography style={{ alignSelf: 'right'}}>
                 <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
@@ -452,6 +467,7 @@ export default function Layout({ title, description, children }) {
               </a>
             </div>
           </div>
+          {openinfos && <FooterDocs/>}
           <Typography style={{color: '#666',fontSize: 11, fontWeight:100, fontFamily: 'Roboto,Arial'}}>All rights reserved. shiglam ©. </Typography>
         </footer>
       </ThemeProvider>
