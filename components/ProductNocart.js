@@ -3,8 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { useStateContext } from '../utils/StateContext';
 
 export default function ProductNocart({ product, addToCartHandler }) {
+   
+  const { handleClickSearchf } = useStateContext();
+
+
   return (
     <div className="card">
     <div className="gallery">
@@ -13,6 +18,7 @@ export default function ProductNocart({ product, addToCartHandler }) {
           <Image
             width={364}
             height={484}
+            onClick={handleClickSearchf}
             src={product.image && product.image[0]}
             alt={product.name}
             className="shadow bg-gray-100 object-cover h-auto w-100"
