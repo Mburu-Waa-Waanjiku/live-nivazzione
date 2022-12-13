@@ -229,12 +229,12 @@ export default function Layout({ title, description, children }) {
               </List>
               <div className="absolute flex bottom-0 w-full" style={{borderTop: '1px solid rgba(0, 0, 0, 0.08)'}}>
                 <div className="flex justify-evenly p-4 grow">
-                  <a href="tel:0704065652">
+                  <a href="tel:0770097070">
                     <div className="flex grow justify-center">
                       <HeadsetMicRounded style={{marginRight:10}}/>
                     </div>
                   </a>
-                  <Link href="https://wa.me/message/LLYAJG6L323CP1" >
+                  <Link href="https://wa.me/254770097070?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20...." >
                     <div className="flex grow justify-center">
                       <i style={{color:"black", marginRight:10, fontSize:"25px", }} className="fa fa-whatsapp whatsapp-icon"></i>
                     </div>

@@ -57,12 +57,12 @@ function FooterDocs() {
                 Any worries? Our 24/7 customer service is always here to help. You can easily find out our friendly customer advisor by whatsapp or phone.
               </div>  
               <div className="flex justify-evenly my-6">
-                <a href="tel:0704065652">
+                <a href="tel:0770097070">
                   <div style={{display: 'inline-flex', lineHeight: 2, borderRadius: 3, padding: '5px 20px' , background: 'rgb(34, 34, 34)', color:'white'}}>
                     <HeadsetMicRounded style={{marginRight:10}}/> Contact Us
                   </div>
                 </a>
-                <Link href="https://wa.me/message/LLYAJG6L323CP1">
+                <Link href="https://wa.me/254770097070?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20....">
                   <div style={{display: 'inline-flex', lineHeight: 2, borderRadius: 3, padding: '5px 20px' , background: 'rgb(34, 34, 34)', color:'white'}}>
                       <i style={{color:"white", marginRight:10, fontSize:"25px", }} className="fa fa-whatsapp whatsapp-icon"></i> Whatsapp Us
                   </div>
