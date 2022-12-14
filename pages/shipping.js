@@ -739,7 +739,7 @@ export default function ShippingScreen() {
             </Button>
           </ListItem>
           <div className="fixed p-5" style={{bottom:'2vh', right:'2vh'}}>
-            <Link href="https://wa.me/message/LLYAJG6L323CP1">
+            <Link href="https://wa.me/message/E2RFFBWEGFSVN1">
               <i style={{color:"white", padding:"10px 11px", fontSize:"40px", borderRadius:"50px", margin:"4px", backgroundColor:"#30d04a"}} className="fa fa-whatsapp whatsapp-icon"></i>
             </Link>
           </div>

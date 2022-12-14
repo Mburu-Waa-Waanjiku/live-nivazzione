@@ -382,55 +382,14 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
 export async function getServerSideProps() {
   await db.connect();
   const products = await Product.find({}, '-reviews').lean();
-  const ofearrings = await Product.find(
-    { category: 'Earrings', isEditorsChoice: true },
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofanclets = await Product.find(
-    { category: 'Anclets'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const offingerrings = await Product.find(
-    { category: 'Finger rings'},
-    '-reviews'
-    )
-      .lean() 
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofwaistbeads = await Product.find(
-    { category: 'Waist Beads'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofglam = await Product.find(
-    { category: 'Glam'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  
   const banner = await Banner.find().lean();
   await db.disconnect();
-
+  
+  const ofglam = [...products.filter((product) => product.category.toLowerCase().indexOf('glam') != -1)];
+  const ofwaistbeads = [...products.filter((product) => product.category.toLowerCase().indexOf('waist beads') != -1)];  
+  const offingerrings = [...products.filter((product) => product.category.toLowerCase().indexOf('finger rings') != -1)];  
+  const ofanclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclets') != -1)];  
+  const ofearrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earrings') != -1)];  
   const newdrops = [...products.filter((product) => product.isNeww)];
   const offers = [...products.filter((product) => product.isOnoffer)];
   const editorspicks = [...products.filter((product) => product.isEditorsChoice)];
@@ -439,11 +398,11 @@ export async function getServerSideProps() {
   return {
     props: {
       topselling: topselling.map(db.convertDocToObj),
-      ofglam: ofglam.map(db.convertDocToObj),
-      ofwaistbeads: ofwaistbeads.map(db.convertDocToObj),      
-      offingerrings: offingerrings.map(db.convertDocToObj),      
-      ofanclets: ofanclets.map(db.convertDocToObj),      
-      ofearrings: ofearrings.map(db.convertDocToObj),      
+      ofglam: ofglam.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
+      ofwaistbeads: ofwaistbeads.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),      
+      offingerrings: offingerrings.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),      
+      ofanclets: ofanclets.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),      
+      ofearrings: ofearrings.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),      
       editorspicks: editorspicks.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
       newdrops: newdrops.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
       offers: offers.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
