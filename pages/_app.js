@@ -5,8 +5,8 @@ import { StateContext } from '../utils/StateContext';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
+import Script from "next/script";
 import { StoreProvider } from '../utils/Store';
-import { Analytics } from '@vercel/analytics/react';
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
@@ -23,8 +23,23 @@ function MyApp({ Component, pageProps }) {
      <StateContext>
       <StoreProvider>
         <PayPalScriptProvider deferLoading={true}>
+          <Script
+            strategy="lazyOnload"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+          />
+
+          <Script id="google-analytics" strategy="lazyOnload">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                page_path: window.location.pathname,
+              });
+            `}
+          </Script>
+
           <Component {...pageProps} />
-          <Analytics />
         </PayPalScriptProvider>
       </StoreProvider>
      </StateContext>

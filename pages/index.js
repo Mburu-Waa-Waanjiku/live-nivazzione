@@ -215,7 +215,7 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
         
                  >
     
-                   {offers.map((product) =>(
+                   {offers.slice(1, 10).map((product) =>(
                       <SwiperSlide key={product}>
                         <OffersHome
                            product={product}
@@ -225,7 +225,7 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
                      ))
                    }
                    <SwiperSlide>
-                     <Link href="/offer/products&on&offer">
+                     <Link href="/offer">
                        <Image
                           width={364}
                           height={484}
@@ -264,7 +264,7 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
                     onSlideChange={() => console.log('slide change')}
         
                    >
-                        {editorspicks.map((product) => (
+                        {editorspicks.slice(1, 10).map((product) => (
                           <SwiperSlide key={product}>
                             <Link href={`/product/${product.slug}`}>
                               <Image

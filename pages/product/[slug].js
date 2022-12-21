@@ -151,6 +151,7 @@ export default function ProductScreen(props) {
          </div>
         <div className="pl-5">
           <div>  Brand: {product.brand}</div>
+          <div> Description: {product.description}</div>
           </div> 
         </div>
         <div className="mt-5">
@@ -186,7 +187,7 @@ export default function ProductScreen(props) {
             Return 
           </div>
           <div className="flex justify-start mx-6 py-1">
-            {product.isOnoffer ? (<div>This product is not eligible to be returned due to promotional activities.</div>) : (<div>This product can only be returned if it is defective on delivery</div>)}
+            {product.isOnoffer ? (<div>This product is not eligible to be returned due to promotional activities.</div>) : (<div>This product can be returned if it is defective on delivery</div>)}
           </div>
         </div> 
         </div>
