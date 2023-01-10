@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import Link from 'next/link';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Tabsbottom from '../components/Tabsbottom';
@@ -32,14 +32,26 @@ function Me() {
                 </div>
             </div>
             <div className="me-container-1">
-                <div className="me-container-1-a me-common-1">
-                    <div style={{fontSize:17, fontWeight: "bold"}}>My Orders</div>
-                </div>
-                <div className="me-container-1-b me-common-1">
-                    <Link href="/order-history">
-                        <ArrowForwardIosIcon/>
-                    </Link>
-                </div>
+                <Link href="/order-history">
+                    <div>                
+                        <div className="me-container-1-a me-common-1">
+                            <div style={{fontSize:17, fontWeight: "bold"}}>My Orders</div>
+                        </div>
+                        <div className="me-container-1-b me-common-1">
+                            <ArrowForwardIosIcon/>
+                        </div>
+                    </div>
+                </Link>
+                <Link href="/myBag">
+                    <div>                
+                        <div className="me-container-1-a me-common-1">
+                            <div style={{fontSize:17, fontWeight: "bold"}}>My Bag</div>
+                        </div>
+                        <div className="me-container-1-b me-common-1">
+                            <ArrowForwardIosIcon/>
+                        </div>
+                    </div>
+                </Link>
             </div>
             <div className="me-container-3">
                 <div>

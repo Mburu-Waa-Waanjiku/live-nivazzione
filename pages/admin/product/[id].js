@@ -91,6 +91,7 @@ function ProductEdit({ params }) {
           setValue('discount', data.discount);
           setIsNeww(data.isNeww);
           setIsBurgain(data.isBurgain);
+          setIsEditorsChoice(data.isEditorsChoice);
           setValue('gender', data.gender);
           setValue('distinctCateg1', data.distinctCateg[0]);
           setValue('distinctCateg2', data.distinctCateg[1]);

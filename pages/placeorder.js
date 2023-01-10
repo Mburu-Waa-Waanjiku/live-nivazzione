@@ -21,6 +21,8 @@ import { getError } from '../utils/error';
 import Cookies from 'js-cookie';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, FreeMode, } from 'swiper';
+import { useStateContext } from '../utils/StateContext';
+import Pay from '../components/NormalOrderPay/Pay';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -29,12 +31,14 @@ import 'swiper/css/scrollbar';
 
 function PlaceOrder() {
   const classes = useStyles();
+  const { normalorderP, setNormalorderP, handleOpenNormalOP } = useStateContext();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
+
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const itemsPrice = round0(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
@@ -50,7 +54,7 @@ function PlaceOrder() {
       } else {
           shippingPrice = 0
       };
-  const taxPrice = 0;
+  const taxPrice = round0(itemsPrice * 7 /100);
   const oldTotalPrice = round0(itemsPrice + shippingPrice + taxPrice);
   const totalPrice = cartItems.length > 2 ? round0(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
 
@@ -156,10 +160,7 @@ function PlaceOrder() {
   const handleShow = () => {
      setShow(true);
   };
-  const allHundler = () => {
-     placeOrderHandler();
-     updateStockHandler();
-  };
+
   return (
     <Layout title="Place Order">
         <h1 className=" mt-3 sm:mt-5  home-ft margintopFix" style={{fontSize: 17}}>Confirm Order</h1>
@@ -272,8 +273,8 @@ function PlaceOrder() {
                     <Typography>Items:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right" style={{display: !show ? "block" : "none"}}>Ksh.{itemsPrice}</Typography>
-                    <Typography align="right" style={{display: !show ? "none" : "block", fontWeight:"bold", color:"orangered"}}><s>Ksh.{itemsPrice}</s></Typography>
+                    <Typography align="right" style={{display: !show ? "block" : "none"}}>KSh.{itemsPrice}</Typography>
+                    <Typography align="right" style={{display: !show ? "none" : "block", fontWeight:"bold", color:"orangered"}}><s>KSh.{itemsPrice}</s></Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -293,17 +294,17 @@ function PlaceOrder() {
                     <Typography><strong>Bundle price:</strong></Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right"><strong>Ksh.{bundlePrice}</strong></Typography>
+                    <Typography align="right"><strong>KSh.{bundlePrice}</strong></Typography>
                   </Grid>
                 </Grid>
               </ListItem>}
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
-                    <Typography>Vat (Items are Vat inclusive):</Typography>
+                    <Typography>Vat :</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">Ksh.{taxPrice}</Typography>
+                    <Typography align="right">KSh.{taxPrice}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -313,7 +314,7 @@ function PlaceOrder() {
                     <Typography>Shipping:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">Ksh.{shippingPrice}</Typography>
+                    <Typography align="right">KSh.{shippingPrice}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -326,8 +327,8 @@ function PlaceOrder() {
                   </Grid>
                   <Grid item xs={6}>
                     <Typography align="right">
-                      <strong style={{display: !show ? "block" : "none"}}>Ksh.{oldTotalPrice}</strong>
-                      <strong style={{display: !show ? "none" : "block", fontWeight:"bold", color:"orangered"}}><s>Ksh.{oldTotalPrice}</s></strong>
+                      <strong style={{display: !show ? "block" : "none"}}>KSh.{oldTotalPrice}</strong>
+                      <strong style={{display: !show ? "none" : "block", fontWeight:"bold", color:"orangered"}}><s>KSh.{oldTotalPrice}</s></strong>
                     </Typography>
                   </Grid>
                 </Grid>
@@ -344,14 +345,14 @@ function PlaceOrder() {
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="right">
-                        <strong>Ksh.{totalPrice}</strong>
+                        <strong>KSh.{totalPrice}</strong>
                       </Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 {cartItems.length > 4 && <ListItem>
                   <Button
-                    onClick={allHundler}
+                    onClick={handleOpenNormalOP}
                     variant="contained"
                     color="primary"
                     fullWidth
@@ -362,7 +363,7 @@ function PlaceOrder() {
               </div>}
               {cartItems.length < 5 && <ListItem>
                 <Button
-                  onClick={allHundler}
+                  onClick={handleOpenNormalOP}
                   variant="contained"
                   color="primary"
                   fullWidth
@@ -379,7 +380,7 @@ function PlaceOrder() {
           </Card>
         </Grid>
       </Grid>
-
+      {normalorderP && <Pay/>}
     </Layout>
   );
 }

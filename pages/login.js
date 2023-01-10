@@ -89,7 +89,7 @@ export default function Login() {
           </ListItem>
           <ListItem>
             <NextLink href={`/passReset?redirect=${redirect || '/'}`} passHref>
-              Forgot Password?
+              <Link>Forgot Password?</Link>
             </NextLink>
           </ListItem>
           <ListItem>

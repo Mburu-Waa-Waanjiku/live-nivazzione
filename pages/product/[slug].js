@@ -139,9 +139,9 @@ export default function ProductScreen(props) {
         </div>
         <div className="col-span-1 md:col-span-5 md:col-start-7">
         <div>
-         <h3>{product.name}</h3>
-         {product.isOnoffer && <div className="slug-gallery" style={{padding:"5px 0", fontSize:19, color:"orangered"}}><s>Ksh.{product.prevprice}</s></div>}
-         <div className="slug-gallery" style={{padding:"5px 0"}}>Ksh.{product.price}</div>
+         {product.name.length > 45 ? (<h3>{product.name.slice(0, 45).concat(" ", ".", " ", ".", " ", ".", " ", ".")}</h3>) : (<h3>{product.name}</h3>)}
+         {product.isOnoffer && <div className="slug-gallery" style={{padding:"10px 0 0 0 ", fontSize:19, color:"orangered"}}><s>Ksh.{product.prevprice}</s></div>}
+         <div className="slug-gallery" style={{padding:"10px 0"}}>Ksh.{product.price}</div>
          <div className={classes.textSml}>
            <b style={{flexGrow: "inherit"}}>Details</b>
            <div className="reviews">
@@ -150,8 +150,8 @@ export default function ProductScreen(props) {
            </div>
          </div>
         <div className="pl-5">
-          <div>  Brand: {product.brand}</div>
-          <div> Description: {product.description}</div>
+          <div className="mt-2 mb-2">  <b className="mr-1">Brand:</b> {product.brand}</div>
+          <div className="mb-2 flex"> <b className="mr-1">Description:</b> <p>{product.description}</p></div>
           </div> 
         </div>
         <div className="mt-5">
@@ -187,7 +187,7 @@ export default function ProductScreen(props) {
             Return 
           </div>
           <div className="flex justify-start mx-6 py-1">
-            {product.isOnoffer ? (<div>This product is not eligible to be returned due to promotional activities.</div>) : (<div>This product can be returned if it is defective on delivery</div>)}
+            {product.isOnoffer ? (<div>Products on promotion are not eligible to be returned.</div>) : (<div>This product can be returned if it is defective on delivery</div>)}
           </div>
         </div> 
         </div>
@@ -250,14 +250,18 @@ export default function ProductScreen(props) {
           <ListItem key={index}>
             <Grid container>
               <Grid item className={classes.reviewItem}>
-                <Typography>
-                  <strong>{review.name}</strong>
-                </Typography>
-                <Typography>{review.createdAt.substring(0, 10)}</Typography>
+                <div className="flex justify-between">
+                  <Typography>
+                    <strong>{review.name}</strong>
+                  </Typography>
+                  <div>
+                    <Rating value={review.rating} readOnly></Rating>
+                  </div>
+                </div>
+                <div className="pb-1"> <b>{review.createdAt.substring(0, 10)}</b> </div>
               </Grid>
               <Grid item>
-                <Rating value={review.rating} readOnly></Rating>
-                <Typography>{review.comment}</Typography>
+                {review.comment.length > 80 ? (<Typography>{review.comment.slice(0, 60).concat(" ", ".", " ", ".", " ", ".", " ", ".")}</Typography>) : (<Typography>{review.comment}</Typography>)}
               </Grid>
             </Grid>
           </ListItem>
@@ -368,7 +372,7 @@ export async function getServerSideProps(context) {
   const Reviews = await Product.find({ slug }).distinct('reviews');
   const similar = await Product.find({slug}).distinct('distinctCateg');
   const similarProds = await Product.find({slug: similar} , '-reviews').lean();
-
+  
   await db.disconnect();
 
 

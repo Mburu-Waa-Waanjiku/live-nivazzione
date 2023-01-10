@@ -10,22 +10,15 @@ import db from '../../utils/db';
 import Product from '../../models/Product';
 import Banner from '../../models/Banner';
 import Image from 'next/image';
-import YourFoto from '../../components/YourFoto';
 import axios from 'axios';
 import useStyles from '../../utils/styles';
 import Layout from '../../components/Layout';
 import Tabsbottom from '../../components/Tabsbottom';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-
-
+import Offers from '../../components/tabsinfinityscrolls/Offers';
 
 
 const Newproducts = (props) => {
-const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofanclets} = props;
+const { categories, banner} = props;
  const { state, dispatch } = useContext(Store);
 
  const classes = useStyles();
@@ -41,84 +34,31 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
 
- const [value, setValue] = useState("Earrings");
+ const [value, setValue] = useState("All");
  const handleChange = (event, newValue) => {
         setValue(newValue)
   };
   
   return (
     <> 
-       <Layout title="SHIGLAM BLACKFRIDAY, SALE and OFFERS, SHIGLAM OFFERS KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES "
-               content="SHIGLAM BLACKFRIDAY SALE and OFFERS get NEW and LATEST products at SHIGLAM KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
+       <Layout title="SHIGLAM OFFERS KENYA — Women's Fashon,  Jewelry , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES "
+               content="Get NEW and LATEST products at UNBELIEVABLE offers from SHIGLAM KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.1......"
        >
-          <div className="margintopFix home-ft mt-2">SHIGLAM DEAlS </div>
+          <div className="margintopFix home-ft">SHIGLAM DEALS </div>
           <div className={classes.mideaSmallBannerResp} style={{marginTop:0, display:"none"}}><Image className="bg-gray-100" width={2600} height={340} alt="" src={banner[5].image[0]}></Image> </div>
         <TabContext value={value}>          
-          <Tabs centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
+          <Tabs style={{display: 'none'}} centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
               {categories &&
-                    categories.map((category) => (
-                      <Tab label={category} key={category} value={category}>
-                        
-                      </Tab>
-                    ))}
+                categories.map((category) => (
+                <Tab label={category} key={category} value={category}>
+                </Tab>
+              ))}
+              <Tab label='All' value='All'>
+              </Tab>
           </Tabs>
-            <TabPanel className={classes.padTab} value="Earrings" >
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofearrings.map((product) => (
-                         <YourFoto
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
-          
-            <TabPanel className={classes.padTab} value="Anclets">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofanclets.map((product) => (
-                         <YourFoto
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
-          
-            <TabPanel className={classes.padTab} value="Finger rings">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {offingerrings.map((product) => (
-                         <YourFoto
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
-            <TabPanel className={classes.padTab} value="Waist beads">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofwaistbeads.map((product) => (
-                         <YourFoto
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel> 
-            <TabPanel className={classes.padTab} value="Glam">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofglam.map((product) => (
-                         <YourFoto
-                           product={product}
-                           addToCartHandler={addToCartHandler}
-                           key={product}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
+          <TabPanel style={{padding: 0}} value="All" >
+              <Offers />
+          </TabPanel>
         </TabContext>
           
         <Tabsbottom/>
@@ -133,61 +73,10 @@ export async function getServerSideProps() {
   
   const banner = await Banner.find().lean();
   const categories = await Product.find({isNeww: true}).distinct('category');
-  
-  const ofearrings = await Product.find(
-    { isOnoffer: true, category: 'Earrings'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofanclets = await Product.find(
-    { isOnoffer: true, category: 'Anclets'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const offingerrings = await Product.find(
-    { isOnoffer: true, category: 'Finger rings'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofwaistbeads = await Product.find(
-    { isOnoffer: true, category: 'Waist Beads'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofglam = await Product.find(
-    { isOnoffer: true, category: 'Glam'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  
+
   await db.disconnect();
   return {
-    props: {
-      ofglam: ofglam.map(db.convertDocToObj),
-      ofwaistbeads: ofwaistbeads.map(db.convertDocToObj),      
-      offingerrings: offingerrings.map(db.convertDocToObj),      
-      ofanclets: ofanclets.map(db.convertDocToObj),      
-      ofearrings: ofearrings.map(db.convertDocToObj),      
+    props: {      
       banner: banner.map(db.convertDocToObj),
       categories,
     },

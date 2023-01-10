@@ -15,21 +15,34 @@ import axios from 'axios';
 import useStyles from '../../utils/styles';
 import Layout from '../../components/Layout';
 import Tabsbottom from '../../components/Tabsbottom';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-
-
-
+import Loader from '../../components/Loader';
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useInfiniteQuery } from "react-query";
 
 const Newproducts = (props) => {
-const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofanclets} = props;
+const { categories, banner } = props;
  const { state, dispatch } = useContext(Store);
  const classes = useStyles();
 
- const addToCartHandler = async (product) => {
+ const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    "infiniteCharacters",
+    async ({ pageParam = 1 }) =>
+      await fetch(
+        `http://www.shiglam.com/api/products/newprods?page=${pageParam}`
+      ).then((result) => result.json()),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (pages.length < pages[0].maxPage) {
+          return pages.length + 1;
+        } else {
+          return undefined
+        }
+      },
+    }
+  );
+  
+
+  const addToCartHandler = async (product) => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
@@ -40,7 +53,7 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
 
- const [value, setValue] = useState("Earrings");
+ const [value, setValue] = useState("All");
  const handleChange = (event, newValue) => {
         setValue(newValue)
   };
@@ -50,80 +63,48 @@ const { categories, banner, ofearrings, ofglam, ofwaistbeads, offingerrings, ofa
        <Layout title="SHIGLAM DAILYDROPS, Get NEW and LATEST trends at SHIGLAM KENYA, Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam."
                content="SHIGLAM DAILYDROPS Get NEW and LATEST trends at SHIGLAM KENYA - Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
        >
-        <div className=" margintopFix home-ft mt-3">NEW PRODUCTS</div>
+        <div className=" margintopFix home-ft">NEW PRODUCTS</div>
         <TabContext value={value}>          
-          <Tabs centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
+          <Tabs style={{display: "none"}} centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
               {categories &&
                     categories.map((category) => (
                       <Tab label={category} key={category} value={category}>
                         
                       </Tab>
                     ))}
+              <Tab label="all" value="All">
+              </Tab>
           </Tabs>
-            <TabPanel className={classes.padTab} value="Earrings" >
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofearrings.map((product) => (
-                         <DealsCards
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
+            <TabPanel style={{padding: 0}} value="All" >
+              <div>
+                {status === "success" && (
+                  <InfiniteScroll
+                    dataLength={data?.pages.length * 16}
+                    next={fetchNextPage}
+                    hasMore={hasNextPage}
+                    loader={<Loader/>}
+                    >
+                      <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+                      {data?.pages.map((page) => (
+                        <>
+                          {page.newprods?.map((product) => (
+                            <DealsCards
+                              product={product}
+                              key={product}
+                              addToCartHandler={addToCartHandler}
+                            />
+                          ))}
+                        </>
+                      ))}
+                    </div>
+                  </InfiniteScroll>
+                )}
               </div>
             </TabPanel>
-          
-            <TabPanel className={classes.padTab} value="Anclets">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofanclets.map((product) => (
-                         <DealsCards
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
-          
-            <TabPanel className={classes.padTab} value="Finger rings">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {offingerrings.map((product) => (
-                         <DealsCards
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
-            <TabPanel className={classes.padTab} value="Waist beads">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofwaistbeads.map((product) => (
-                         <DealsCards
-                           product={product}
-                           key={product}
-                           addToCartHandler={addToCartHandler}
-                          />
-                    ))}
-              </div>
-            </TabPanel> 
-            <TabPanel className={classes.padTab} value="Glam">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-               {ofglam.map((product) => (
-                         <DealsCards
-                           product={product}
-                           addToCartHandler={addToCartHandler}
-                           key={product}
-                          />
-                    ))}
-              </div>
-            </TabPanel>
-        </TabContext>
-          
-        <Tabsbottom/>
-
-    </Layout>
-         </>
-  
+          </TabContext>
+          <Tabsbottom/>
+        </Layout>
+      </>
 )
  
 };
@@ -133,60 +114,11 @@ export async function getServerSideProps() {
   const banner = await Banner.find().lean();
   const categories = await Product.find({isNeww: true}).distinct('category');
   
-  const ofearrings = await Product.find(
-    { isNeww: true, category: 'Earrings'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofanclets = await Product.find(
-    { isNeww: true, category: 'Anclets'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const offingerrings = await Product.find(
-    { isNeww: true, category: 'Finger rings'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofwaistbeads = await Product.find(
-    { isNeww: true, category: 'Waist Beads'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
-  const ofglam = await Product.find(
-    { isNeww: true, category: 'Glam'},
-    '-reviews'
-    )
-      .lean()
-      .sort({
-         rating: -1,
-      })
-      .limit(20);
+  
   
   await db.disconnect();
   return {
-    props: {
-      ofglam: ofglam.map(db.convertDocToObj),
-      ofwaistbeads: ofwaistbeads.map(db.convertDocToObj),      
-      offingerrings: offingerrings.map(db.convertDocToObj),      
-      ofanclets: ofanclets.map(db.convertDocToObj),      
-      ofearrings: ofearrings.map(db.convertDocToObj),      
+    props: {      
       banner: banner.map(db.convertDocToObj),
       categories,
     },

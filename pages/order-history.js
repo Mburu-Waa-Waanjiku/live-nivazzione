@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import React, { useEffect, useContext, useReducer } from 'react';
+import Loader from '../components/Loader';
 import {
-  CircularProgress,
   Grid,
   List,
   ListItem,
@@ -96,7 +96,7 @@ function OrderHistory() {
               </ListItem>
               <ListItem>
                 {loading ? (
-                  <CircularProgress />
+                  <Loader />
                 ) : error ? (
                   <Typography className={classes.error}>Connection error</Typography>
                 ) : (

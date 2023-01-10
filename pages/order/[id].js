@@ -488,7 +488,7 @@ function Order({ params }) {
                     </Grid>
                   </Grid>
                 </ListItem>
-                {userInfo.isAdmin && !order.oldTotalPrice && (  
+                {userInfo?.isAdmin && !order.oldTotalPrice && (  
                 <div>
                 <ListItem style={{display:"none"}}>
                   <Button
@@ -582,7 +582,7 @@ function Order({ params }) {
                         fullWidth
                         variant="contained"
                         className={ classes.mpesa }
-                        onClick={() => setShowOverlay(true)}
+                        onClick={payOrderHandler}
                       >
                         m<Image height={50} width={50} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1663845421/enjigpi6eaag5naxfglf.png"></Image> pesa
                       </Button>

@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import '../styles/global.css';
+import '../styles/global3.css';
 import React from 'react';
 import { StateContext } from '../utils/StateContext';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -7,11 +8,17 @@ import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
 import Script from "next/script";
 import { StoreProvider } from '../utils/Store';
+import { ReactQueryDevtools } from "react-query/devtools";
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import { useState } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
 function MyApp({ Component, pageProps }) {
+
+  const [queryClient] = useState(() => new QueryClient());
+
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
@@ -38,8 +45,11 @@ function MyApp({ Component, pageProps }) {
               });
             `}
           </Script>
-
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <Component {...pageProps} />
+            </Hydrate>
+          </QueryClientProvider>
         </PayPalScriptProvider>
       </StoreProvider>
      </StateContext>
