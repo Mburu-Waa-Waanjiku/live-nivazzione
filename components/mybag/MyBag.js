@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'; 
 import dynamic from 'next/dynamic';
 import useStyles from '../../utils/styles';
 import Image from 'next/image';
@@ -23,9 +23,6 @@ function MyBag() {
   const { makeOrder, setMakeOrder, handleCollect, bag, setBag, handleCloseBag } = useStateContext();
 
   useEffect(() => {
-    if (!userInfo) {
-      router.push('/login');
-    }
     const fetchBags = async () => {
       try {
         dispatch({ type: 'FETCH_BAG' });
