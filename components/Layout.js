@@ -4,7 +4,7 @@ import Head from 'next/head';
 import HeadsetMicRounded from '@mui/icons-material/HeadsetMicRounded';
 import MyBag from './mybag/MyBag';
 import NextLink from 'next/link';
-import {
+import { 
   AppBar,
   Toolbar,
   Typography,
@@ -288,7 +288,7 @@ export default function Layout({ title, description, children }) {
                         classes={{ badge: classes.badge }}
                         badgeContent={cart.cartItems.length}
                       >
-                        <AiOutlineShoppingCart style={{ fontSize: 22}} />
+                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "white"}} />
                       </Badge>
                     ) : (
                         <AiOutlineShoppingCart style={{ fontSize: 22}} />
