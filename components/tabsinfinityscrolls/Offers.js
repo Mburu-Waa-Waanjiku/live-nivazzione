@@ -16,7 +16,7 @@ export default function Offers() {
     "infiniteCharacters",
     async ({ pageParam = 1 }) =>
       await fetch(
-        `http://www.shiglam.com/api/products/offers?page=${pageParam}`
+        `/api/products/offers?page=${pageParam}`
       ).then((result) => result.json()),
     {
       getNextPageParam: (lastPage, pages) => {

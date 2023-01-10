@@ -346,19 +346,21 @@ export default function Layout({ title, description, children }) {
                 </>
                 </div>
               ) : (
-                <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={handleCartopen}
-                    className={classes.navbarButton}
-                  >
-                  <NextLink  href="/login" passHref>
-                    <Link>
-                      <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
-                    </Link>
-                  </NextLink>
-                </Button>
- 
+                <div className={classes.cartnlg}>
+                  <>
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      className={classes.navbarButton}
+                     >
+                      <NextLink  href="/login" passHref>
+                        <Link>
+                          <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
+                        </Link>
+                      </NextLink>
+                    </Button>
+                  </>
+                </div>
               )}
             </div>
           </Toolbar>

@@ -15,7 +15,7 @@ export default function Glam() {
     "infiniteCharacters",
     async ({ pageParam = 1 }) =>
       await fetch(
-        `http://www.shiglam.com/api/products/glam?page=${pageParam}`
+        `/api/products/glam?page=${pageParam}`
       ).then((result) => result.json()),
     {
       getNextPageParam: (lastPage, pages) => {

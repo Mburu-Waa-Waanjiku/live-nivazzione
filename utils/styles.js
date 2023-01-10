@@ -498,7 +498,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw',
     marginTop: '2px',
     position: 'relative',
-    left: '-4vw',
+    left: '-4.3vw',
     [theme.breakpoints.up('sm')]: {
       marginTop: '22px',
       width:'100%',

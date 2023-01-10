@@ -15,7 +15,7 @@ export default function EditorsPics() {
     "infiniteCharacters",
     async ({ pageParam = 1 }) =>
       await fetch(
-        `http://www.shiglam.com/api/products/editorspics?page=${pageParam}`
+        `/api/products/editorspics?page=${pageParam}`
       ).then((result) => result.json()),
     {
       getNextPageParam: (lastPage, pages) => {

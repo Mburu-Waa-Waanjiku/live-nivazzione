@@ -15,7 +15,7 @@ export default function Earrings() {
     "infiniteCharacters",
     async ({ pageParam = 1 }) =>
       await fetch(
-        `http://www.shiglam.com/api/products/piercings?page=${pageParam}`
+        `/api/products/piercings?page=${pageParam}`
       ).then((result) => result.json()),
     {
       getNextPageParam: (lastPage, pages) => {
