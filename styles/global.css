@@ -1,12 +1,12 @@
 
 .body{
-      font-family: Muli,Arial,Helvetica,sans-serif!important;
-      position: relative;
-      top: 0px;
+      font-family     : Muli,Arial,Helvetica,sans-serif!important;
+      position        : relative;
+      top             : 0px;
     
       background-image: none;
-      margin:10px ;
-      backgrond-color: #f0f0f0;
+      margin          :10px ;
+      backgrond-color : #f0f0f0;
     }
 .tabb button.css-1t4lqmc-MuiButtonBase-root-MuiTab-root.Mui-selected 
 {
@@ -54,12 +54,11 @@
 .hero-banner-container{
  
   background-color: #dcdcdc;
-
-  position: relative;
+  position   : relative;
   padding-top: 10px;
-  height: 200px;
+  height     : 200px;
   line-height: 0.9; 
-  width: 100%;
+  width      : 100%;
   }
   .hero-banner-container .beats-solo{
   margin-top: 20px;
@@ -418,23 +417,7 @@ width: 90px;
   font-weight: 600;
 
 }
-.cart-heading
-{
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  gap: 2px;
-  margin-left: 10px;
-  border: none;
-  background-color: transparent;
-}
 
-.cart-heading .heading
-{
-  margin-left: 10px;
-}
 .cart-num-items
 {
   margin-left: 10px;
@@ -705,7 +688,8 @@ width: 90px;
     
     .me-container-1-b{
       padding: 11px;
-      float: right;
+      right: 0;
+      position: absolute;
       font-size: 30px;
     }
         .me-container-1-a {
@@ -860,6 +844,10 @@ width: 90px;
   width: 20.4166666%;
 }
 @media screen and (max-width:450px){
+.slug-gallery 
+{
+  font-size: 17px;
+}
 .g-images
 {
   display: flex;
@@ -1026,7 +1014,7 @@ div.MuiPaper-rounded {
   padding: 40px;
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(4, minmax(180px, 1000px));
+  grid-template-columns: repeat(4, minmax(132px, 1000px));
 }
 .footerdivs {
   color: #666;
@@ -1060,9 +1048,6 @@ div.MuiPaper-rounded {
     font-size: 11px;
     font-weight: bolder;
 }
-.margintopFix {
-  margin-top: 60px;
-}
 @media screen and (min-width: 600px){
 .margintopFix
 {
@@ -1071,43 +1056,9 @@ div.MuiPaper-rounded {
 .bannermarquee {
   transform: translateX(80%) !important;
 }
-.swing {
-  marginTop: 22px;
-  width: 40vw !important;
-  top: 0 !important;
-  left: 0px !important;
-}
-}
-.swing {
-  width: 70vw ;
-  marginTop: 17px;
-  position: absolute;
-  top: 0;
-  left: -10vw ;
 }
 .bannermarquee {
   transform: translateX(94%);
-}
-.bannerOfferRtt {
-  position: absolute;
-  top: -100px;
-  left: 40px;
-  z-index: 10;
-  animation: SWING 2s infinite linear;
-}
-.bannerOfferRtt span {
-  top: 82px;
-}
-@keyframes SWING {
-  0% {
-    transform: rotate(-25deg);
-  }
-  50% {
-    transform: rotate(45deg);
-  }
-  100% {
-    transform: rotate(-25deg);
-  }
 }
 .footerdocs {
    margin-top: 10px;

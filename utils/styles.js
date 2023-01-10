@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: 'black !important',
-    position: 'fixed !important',
+    position: 'sticky !important',
     top: 0,
     '& a': {
       color: '#ffffff !important',
@@ -133,8 +133,7 @@ const useStyles = makeStyles((theme) => ({
   },
   reviewItem: {
     marginRight: '1rem',
-    borderRight: '1px #808080 solid',
-    paddingRight: '1rem',
+    width: '100%',
   },
   reviewSeeMore: {
     display: 'inline-block',
@@ -298,13 +297,13 @@ const useStyles = makeStyles((theme) => ({
   categ: {
     display:'grid !important',
     gap: 10,
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gridTemplateRows: '1fr',
     [theme.breakpoints.up('sm')]: {
        gap: 15,
     },
     [theme.breakpoints.up('md')]: {
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
+    gridTemplateColumns: '1fr 1fr 1fr',
     gridTemplateRows: '1fr ',
     },
   },
@@ -339,7 +338,7 @@ const useStyles = makeStyles((theme) => ({
   },
   wrapperCateg: {
     justifyContent: 'space-evenly !important',
-    backgroundColor: 'white !important', 
+    backgroundColor: '#white !important', 
     display: 'flex !important',
     flexFlow: 'column !important',
     [theme.breakpoints.up('sm')]: {
@@ -430,13 +429,6 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: '1fr 1fr 1fr 1fr !important',
           },
   },
-  padTab: {
-    padding: '0 !important',
-    marginTop: 58,
-    [theme.breakpoints.up('sm')]: {
-      marginTop: 66,
-          },
-  },
   badge: {
     color: 'white',
     border: '3px solid black',
@@ -503,10 +495,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   mideaSmallBannerResp: {
-    width: '102.5vw',
-    marginTop: '17px',
+    width: '100vw',
+    marginTop: '2px',
     position: 'relative',
-    left: '-4vh',
+    left: '-4vw',
     [theme.breakpoints.up('sm')]: {
       marginTop: '22px',
       width:'100%',

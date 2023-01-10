@@ -19,6 +19,11 @@ const initialState = {
    userInfo: Cookies.get('userInfo')
     ? JSON.parse(Cookies.get('userInfo'))
     : null,
+   bagitems: Cookies.get('bagitems')
+    ? JSON.parse(Cookies.get('bagitems'))
+    : [],
+   loading: true,
+   error: '',
 
 };
 function reducer(state, action) {
@@ -88,7 +93,14 @@ function reducer(state, action) {
           paymentMethod: '',
         },
       };
-
+    case 'FETCH_BAG':
+      return { ...state, loading: true, error: ''};
+    case 'FETCH_BAG_SUCCESS':
+      return { ...state, bagitems: action.payload, loading: false, error: '' };
+    case 'EMPTY_BAG':
+      return { ...state, bagitems: [] };
+    case 'FETCH_BAG_FAIL':
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

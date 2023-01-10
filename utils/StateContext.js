@@ -69,10 +69,87 @@ export const StateContext = ({ children }) => {
   const handleCloseinfos = () => {
     setOpeninfos(false);
   }
-
+  const [cartopen, setCartopen] = useState(false);
+  const handleCartopen = () => {
+    setCartopen(true)
+  }
+  const handleCartclose = async () => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setCartopen(false)
+  }
+  const [openp4b, setOpenp4b] = useState(false);
+  const handleOpenp4b = () => {
+    setOpenp4b(true)
+  };
+  const handleClosep4b = () => {
+    setOpenp4b(false)
+  }
+  const [payp4b, setPayp4b] = useState(false);
+  const handleOpenPayp4b = () => {
+    setPayp4b(true)
+  };
+  const handleClosePayp4b = () => {
+    setPayp4b(false)
+  }
+  const [bag, setBag] = useState(false);
+  const handleOpenBag = () => {
+    setBag(true)
+  }
+  const handleCloseBag = () => {
+    setBag(false)
+  }
+  const [makeOrder, setMakeOrder] = useState(false);
+  const handleCollect = () => {
+    setMakeOrder(true)
+  }
+  const handleClosecollect = () => {
+    setMakeOrder(false)
+  }
+  const [collectpay, setCollectpay] = useState(false);
+  const handleOpenCP = () => {
+    setCollectpay(true)
+  }
+  const handleCloseCP = () => {
+    setCollectpay(false)
+  }
+  const [normalorderP, setNormalorderP] = useState(false);
+  const handleOpenNormalOP = () => {
+    setNormalorderP(true)
+  }
+  const handleCloseNormalOP = () => {
+    setNormalorderP(false)
+  } 
   return (
     <Context.Provider
       value={{
+        normalorderP,
+        setNormalorderP,
+        handleOpenNormalOP,
+        handleCloseNormalOP,
+        collectpay,
+        setCollectpay,
+        handleOpenCP,
+        handleCloseCP,
+        makeOrder,
+        setMakeOrder,
+        handleCollect,
+        handleClosecollect,
+        bag,
+        setBag,
+        handleOpenBag,
+        handleCloseBag,
+        payp4b,
+        setPayp4b,
+        handleOpenPayp4b,
+        handleClosePayp4b,
+        openp4b,
+        setOpenp4b,
+        handleOpenp4b,
+        handleClosep4b,
+        cartopen,
+        setCartopen,
+        handleCartopen,
+        handleCartclose,
         handleOpeninfosShipping,
         handleOpeninfosReturn,
         handleOpeninfosHelp,
