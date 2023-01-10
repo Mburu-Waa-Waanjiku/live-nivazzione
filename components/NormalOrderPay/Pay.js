@@ -11,7 +11,7 @@ import {
   List,
   ListItem,
 } from '@material-ui/core';
-import PaySuccess from '../paysuccess';
+import PaySuccess from '../PaySuccess';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
 import { useRouter } from 'next/router';
