@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Head from 'next/head';
 import HeadsetMicRounded from '@mui/icons-material/HeadsetMicRounded';
+import MyBag from './mybag/MyBag';
 import NextLink from 'next/link';
 import {
   AppBar,
@@ -27,6 +28,7 @@ import {
   InputBase,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { AiOutlineShopping } from 'react-icons/ai';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {
@@ -52,16 +54,17 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import ProductNocart from './ProductNocart'; 
+import Cart from './mycart/Cart';
 import { useEffect } from 'react';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import FooterDocs from './FooterDocs';
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();
-  const { openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
+  const { bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose, openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
   const { state, dispatch } = useContext(Store);
-  const { darkMode, cart, userInfo } = state;
+  const { darkMode, cart, userInfo, bagitems } = state;
   const theme = createMuiTheme({
     typography: {
       h1: {
@@ -178,7 +181,7 @@ export default function Layout({ title, description, children }) {
         <AppBar position="static" className={classes.navbar}>
           <Toolbar className={classes.toolbar}>
             <Box className="flex" alignItems="center">
-              <div >
+              <div>
                 <IconButton
                   edge="start"
                   aria-label="open drawer"
@@ -187,6 +190,24 @@ export default function Layout({ title, description, children }) {
                 >
                   <MenuIcon className={classes.navbarButton} />
                 </IconButton>
+              </div>
+              <div className={classes.cartnlg}>
+                <Button
+                  onClick={handleOpenBag}
+                  aria-label="open drawer"
+                  className={classes.menuButton}
+                > 
+                  {bagitems[0]?.orderItems.length > 0 ? (
+                    <Badge
+                      classes={{ badge: classes.badge }}
+                      badgeContent={bagitems[0]?.orderItems.length}
+                     >
+                      <AiOutlineShopping style={{ fontSize: 25, color: "white" }} />
+                    </Badge>
+                   ) : (
+                    <AiOutlineShopping style={{ fontSize: 25, color: "white" }} />
+                  )}
+                </Button>
               </div>
               <NextLink href="/" passHref>
                 <Link>
@@ -219,11 +240,9 @@ export default function Layout({ title, description, children }) {
                 <Divider light />
                 <TabContext value={categ}>
                   <Tabs value={categ} classes={{ indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{ "& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleAppbar} variant="scrollable" orientation="vertical"  >
-                    <Tab value="Earrings" style={{margin: '20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Nose & Earrings" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
-                    <Tab value="Anclets" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Anclets" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_north,h_500,q_100,w_500/v1666790299/1602473757eaefd843bc60307bfcdbfde68a678269_thumbnail_600x_ba2xc4.webp"/></div>} />
-                    <Tab value="Finger rings" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Finger rings" iconPosition="start" icon={<div><Image width={50} className="bg-gray-100" alt=""  height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1666787251/a0265d90-0416-40a6-9f3d-d0f2086da42b1632576872688ShiningDivaSetof9GoldPlatedStylishRings7_n1ngnt.webp"/></div>}/>} />
-                    <Tab value="Waist beads" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Waist beads" iconPosition="start" icon={<div><Image width={50} className="bg-gray-100" alt="" height={50} src="https://res.cloudinary.com/dddx5qpji/image/upload/c_crop,g_center,h_900,q_200,w_1300/v1666793858/1637744539a70818f7474c4c88e068910c1d310fc0_xrkmyx.webp"/></div>}/>} />
-                    <Tab value="Glam" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
+                    <Tab value="Piercings" style={{margin: '20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Piercing" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
+                    <Tab value="Jewelry" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Jewelry" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/c_thumb,w_200,g_face/v1673000081/offerbanner1_5_upiwk4.jpg"/></div>} />
+                    <Tab value="Glam" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} /> 
                   </Tabs>
                 </TabContext>
               </List>
@@ -234,7 +253,7 @@ export default function Layout({ title, description, children }) {
                       <HeadsetMicRounded style={{marginRight:10}}/>
                     </div>
                   </a>
-                  <Link href="https://wa.me/254770097070?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20...." >
+                  <Link href="https://wa.me/254770097070?text=Hello%20SHIGLAM,%20I'm%20Jane.I%20...." >
                     <div className="flex grow justify-center">
                       <i style={{color:"black", marginRight:10, fontSize:"25px", }} className="fa fa-whatsapp whatsapp-icon"></i>
                     </div>
@@ -253,25 +272,30 @@ export default function Layout({ title, description, children }) {
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
               ></Switch> 
-              <div >
+              <div>
                 <Typography className={classes.cartnsch} component="span"><SearchIcon onClick={handleSearchBtn} sx={{ color: 'white'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/></Typography>
               </div>
-              <NextLink href="/cart" passHref>
-                <Link>
+              <div className={classes.cartnlg}>
+                <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleCartopen}
+                    className={classes.navbarButton}
+                  >
                   <Typography className={classes.carton} component="span">
                     {cart.cartItems.length > 0 ? (
                       <Badge
                         classes={{ badge: classes.badge }}
                         badgeContent={cart.cartItems.length}
                       >
-                          <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519277/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview-removebg-preview_2_rvuqqi.png"></Image>
+                        <AiOutlineShoppingCart style={{ fontSize: 22}} />
                       </Badge>
                     ) : (
-                        <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519277/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview-removebg-preview_2_rvuqqi.png"></Image>
+                        <AiOutlineShoppingCart style={{ fontSize: 22}} />
                     )}
                   </Typography>
-                </Link>
-              </NextLink>
+                </Button>
+              </div>
               {userInfo ? (
                 <div className={classes.cartnlg}>
                 <>
@@ -322,18 +346,25 @@ export default function Layout({ title, description, children }) {
                 </>
                 </div>
               ) : (
-                <NextLink  href="/login" passHref>
-                  <Link>
-                    <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
-                  </Link>
-                </NextLink>
+                <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleCartopen}
+                    className={classes.navbarButton}
+                  >
+                  <NextLink  href="/login" passHref>
+                    <Link>
+                      <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
+                    </Link>
+                  </NextLink>
+                </Button>
  
               )}
             </div>
           </Toolbar>
         </AppBar>
         <div className={classes.smseachbg} 
-             style={{position: "fixed", zIndex: 1110, top: 0, right: searchClick ? '0' : '-100vw', background: 'white',  width: "100vw", height: "100vh"}}
+             style={{position: "fixed", zIndex: 1210, top: 0, left: searchClick ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
           >
           <div className={classes.reviewTopTab}>
             <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, float:"left",}} /> Search
@@ -358,6 +389,8 @@ export default function Layout({ title, description, children }) {
                 </IconButton>
             </div>
           </div>
+          <Cart/>
+          <MyBag/>
           <div className="flex place-content-center w-full h-full">
             <div style={{overflowX: 'auto',height: '76%', margin: 20, display: "grid", gridTemplateColumns: 'repeat(3, minmax(0px, 300px))', gap: 10, gridAutoRows: '1fr' }}>
               {filteredData.isSearch && !filteredData.resultFound && (

@@ -2,6 +2,7 @@ import React from 'react'
 import useStyles from '../utils/styles';
 import Link from 'next/link';
 import Image from 'next/image';
+import { CgBolt } from 'react-icons/cg';
 
 function OffersHome({product}) {
 	const classes = useStyles();
@@ -11,9 +12,7 @@ function OffersHome({product}) {
 
 	return (
 		<div>
-			<div>
-                <div className="homesalesticker"><Image height={62.5} width={75} src="/png-clipart-christmas-information-label-sale-sticker-holidays-label-removebg-preview.png"/><div className="homesalestickerPercent">{percent}% off</div></div>
-            </div>
+            <div className={classes.newpost} style={{backgroundColor: '#ffdf00'}}>{percent}%<CgBolt style={{fontSize:16}} /></div>
             <Link href={`/product/${product.slug}`}>
                 <Image
                     width={364}

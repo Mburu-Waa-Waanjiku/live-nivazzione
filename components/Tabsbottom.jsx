@@ -8,25 +8,25 @@ import { Store } from '../utils/Store';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useStateContext } from '../utils/StateContext';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 import tabsStyles from '../styles/Tabs.module.css';
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import HomeIcon from '@mui/icons-material/HomeOutlined';
 import PersonIcon from '@mui/icons-material/PersonOutlined';
-import SearchIcon from '@material-ui/icons/Search';
+import { AiOutlineShopping } from 'react-icons/ai';
 import useStyles from '../utils/styles';
 import { debounce } from '../utils/helpers';
 import Image from 'next/image';
 
 export default function Tabsbottom() {
   const classes = useStyles();
-  const { searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn } = useStateContext();
+  const { bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose } = useStateContext();
 
   const router = useRouter();
   const { state } = useContext(Store);
-  const { cart, userInfo } = state;
-  const routes = ["/", "/search", "/cart", "/me", "/"];
+  const { cart, userInfo, bagitems } = state;
+  const routes = ["/", "/myBag", "/cart", "/me", "/"];
   
   const history = router.pathname;
   
@@ -56,17 +56,26 @@ export default function Tabsbottom() {
             
             <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         
-            <Tab value={handleClickSearchf} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleClickSearchf} icon={<SearchIcon sx={{ fontSize: 28 }} />}  />
+            <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleOpenBag}  icon={bagitems[0]?.orderItems.length > 0 ? (
+                      <Badge
+                        classes={{ badge: classes.badgeLg }}
+                        badgeContent={bagitems[0]?.orderItems.length}
+                      >
+                      <AiOutlineShopping style={{ fontSize: 24 }}/>
+                      </Badge>
+                    ) : (
+                      <AiOutlineShopping style={{ fontSize: 24 }}/>
+                    )}  />
             
-            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/cart")} icon={cart.cartItems.length > 0 ? (
+            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={setCartopen} icon={cart.cartItems.length > 0 ? (
                       <Badge
                         classes={{ badge: classes.badgeLg }}
                         badgeContent={cart.cartItems.length}
                       >
-                        <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519287/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview_2_rlvbxk.png"></Image>
+                      <AiOutlineShoppingCart style={{ fontSize: 24 }}/>
                       </Badge>
                     ) : (
-                        <Image alt="" width={25} height={25} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1670519287/rebajas-de-navidad-logotipo-con-gorro-papa-noel-en-bolsa-de-la-compra-con-lineas-en-color-rojo-400-234428440-removebg-preview_2_rlvbxk.png"></Image>
+                      <AiOutlineShoppingCart style={{ fontSize: 24 }}/>
                     )}  />
                                  
             {userInfo ? (<Tab 
