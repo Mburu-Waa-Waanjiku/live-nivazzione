@@ -20,7 +20,7 @@ import 'swiper/css/scrollbar';
 export default function Pay4Bag() {
   const router = useRouter(); 
   const classes = useStyles();
-  const { openp4b, setOpenp4b, handleOpenp4b, handleClosep4b, payp4b, setPayp4b, handleOpenPayp4b } = useStateContext();
+  const { cartopen, setCartopen, handleCartopen, handleCartclose, openp4b, setOpenp4b, handleOpenp4b, handleClosep4b, payp4b, setPayp4b, handleOpenPayp4b } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { userInfo, cart } = state;
   const { cartItems } = cart;
@@ -33,6 +33,9 @@ export default function Pay4Bag() {
   useEffect(() => {
     if (!userInfo) {
       router.push('/login?redirect=/');
+      handleClosep4b();
+      handleCartclose();
+
     }
   }, []);
   
@@ -137,7 +140,7 @@ export default function Pay4Bag() {
           onClick={handleOpenPayp4b}
           variant="contained"
           color="primary"
-          style={{backgroundColor: "#222"}}
+          style={{backgroundColor: "#222", marginBottom: 20}}
          >
             PAY
         </Button>

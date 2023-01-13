@@ -150,7 +150,7 @@ function PaymentP4B() {
       if (!userInfo) {
         router.push('/login?redirect=/');
       }
-      setValue('amount', ItemsPrice);
+      setValue('amount', 1);
     }, []);
 
   return (
