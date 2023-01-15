@@ -57,7 +57,7 @@ export default function Register() {
   };
   return (
     <Layout title="Register">
-      <div className="margintopFix">
+      <div className="flex justify-center">
       </div>
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">

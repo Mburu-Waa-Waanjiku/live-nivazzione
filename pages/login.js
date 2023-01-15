@@ -47,12 +47,12 @@ export default function Login() {
       Cookies.set('userInfo', data);
       router.push(redirect || '/');
     } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      enqueueSnackbar("Problem Making a Connection");
     }
   };
   return (
     <Layout title="Login">
-      <div className="margintopFix">
+      <div className="flex justify-center">
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Login

@@ -98,7 +98,7 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
                </div>
               <div className="home-ft">Newly Dropped</div>
                 <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
-                  <Link href="/newproducts/newproducts">  
+                  <Link href="/newproducts">  
                     <div>                                               
                       <Image height={800} width={1600} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
                     </div>
@@ -200,7 +200,9 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
                 </div>
               <div className="home-ft">Flash sale </div>
                 <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
+                  <Link href="/offer">
                     <Image height={600} width={1600} className="bg-gray-100" alt="" src={banner[0].image[0]}></Image>
+                  </Link>
                 </div>
               <div className={classes.mideaSmallDivResp}>
                  <Swiper                    
@@ -259,18 +261,18 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
                  </Tabs>
                </TabContext>
                <TabContext value={categ}>
-                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: "16px !important", inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"sticky" ,top: 55, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
+                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: "16px !important", inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"fixed" ,top: 55, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
                     <Tab value="Piercings"  label="Piercings" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                     <Tab value="Jewelry" label="Jewelry" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
                     <Tab value="Glam" label="Glam" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
                   </Tabs>
-                  <TabPanel  style={{padding: 0}} value="Piercings" >
+                  <TabPanel  style={{padding: 0, marginTop: 85}} value="Piercings" >
                      <Piercing/>
                   </TabPanel>
-                  <TabPanel  style={{padding: 0}} value="Jewelry" >
+                  <TabPanel  style={{padding: 0, marginTop: 85}} value="Jewelry" >
                      <Jewelry/>
                   </TabPanel>
-                  <TabPanel  style={{padding: 0}} value="Glam">
+                  <TabPanel  style={{padding: 0, marginTop: 85}} value="Glam">
                     <Glam/>
                     <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
                   </TabPanel>

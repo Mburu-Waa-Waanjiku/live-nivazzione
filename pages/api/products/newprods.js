@@ -14,6 +14,7 @@ handler.get(async (req, res) => {
     )
       .lean()
       .sort({
+        createdAt: -1,
         rating: -1,
       })
       .limit(pageSize * curPage)  

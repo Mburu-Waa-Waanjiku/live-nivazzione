@@ -15,6 +15,7 @@ import ProductNocart from '../../components/ProductNocart';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { FaTruckMoving } from 'react-icons/fa';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { useRouter } from 'next/router';
 
 import { Typography, ListItem, List, TextField, Button, CircularProgress, Grid, } from '@material-ui/core';
 import { Navigation, FreeMode, Thumbs, Pagination } from 'swiper';
@@ -30,8 +31,9 @@ import 'swiper/css/scrollbar';
 
 export default function ProductScreen(props) {
   const [showOverlay, setShowOverlay] = useState(false);
-   const classes = useStyles();
-
+  const classes = useStyles();
+  const router = useRouter();
+ 
   const { product, similarProds, Reviews } = props;
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
@@ -91,13 +93,14 @@ export default function ProductScreen(props) {
       >
       <div className="margintopFix mt-9 grid grid-cols-1 md:grid-cols-12 md:gap-4">
         <div className="col-span-1 md:col-span-5 md:col-start-2">
-           <div layout="responsive" style={{maxWidth:420}} >
-           <>
+          <div layout="responsive" style={{maxWidth:420}} >
+            <div onClick={() => router.back()} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", top: 30, padding: 7 , borderRadius: 50, zIndex: 1200, left: 25 }}> <ArrowBackIosIcon sx={{fontSize:10}} /></div>
+            <>
              <Swiper
                style={{
                "--swiper-navigation-color": "#fff",
                "--swiper-pagination-color": "#fff",
-             }}
+                }}
                 pagination={{
                   type: "fraction",
                 }}
@@ -106,9 +109,9 @@ export default function ProductScreen(props) {
                 slidesPerView={1.05}
                 loop={true}
                 navigation={true}
-             onSwiper={(swiper) => console.log(swiper)}
-             onSlideChange={() => console.log('slide change')}
-            >
+              onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={() => console.log('slide change')}
+             >
               {product.image?.map((item) => ( 
                 <SwiperSlide key={item} >
                   <Image key={item} width={400} height={530} alt={product.name} className="bg-gray-100 g-images-child"

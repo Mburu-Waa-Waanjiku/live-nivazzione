@@ -292,17 +292,15 @@ function Order({ params }) {
                   <b className="pl-4">
                     Status:
                   </b>
-                  {' '} {isPaid && <div className="payStatus"><b className="text-base pr-1">Paid</b>✓</div>}
-                        {isPending && !isPaid && <div className="flex pending">Pending Approval<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
-                        {!isPaid && !isPending && <div className="flex pending">Not paid</div>}
+                  {' '} {isPaid && <div className="payStatus ml-3"><b className="text-sm pr-1">Paid</b></div>}
+                        {!isPaid && <div className="flex pending">Not paid</div>}
                 </ListItem>
                 <ListItem className="text-xs" style={{color:"gray"}}>
                   <b className="pl-4">
                     Approved at:
                   </b>
-                  {' '} {isPaid  && <div className="pending">{paidAt}</div>}
-                        {isPending && !isPaid && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
-                        {!isPending && !isPaid && <div className="flex pending">Not Approved</div>}
+                  {' '} {isPaid  && <div style={{backgroundColor: "green"}} className="pending">{paidAt}</div>}
+                        {!isPaid && <div className="flex pending">Not Approved</div>}
                 </ListItem>
               </List>
             </div>
@@ -315,19 +313,15 @@ function Order({ params }) {
                   <b className="pl-4" >
                     Out For Delivery:
                   </b>
-                  {' '} {isDelivered && <div className="payStatus"><b className="text-base pr-1">Released</b>✓</div>}
-                        {!isDelivered && isPending && !isPaid && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
-                        {!isDelivered && isPaid && isPending && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
-                        {!isDelivered && !isPending && !isPaid && <div className="flex pending">Not Delivered</div>}
+                  {' '} {isDelivered && <div className="payStatus ml-3"><b className="text-base pr-1">Released</b>✓</div>}
+                        {!isDelivered && <div className="flex pending">Currently In fulfillment</div>}
                 </ListItem>
                 <ListItem className="block pl-8 text-xs" style={{color:"gray"}}>
                   <b className="pl-4">
                     Percel released at:
                   </b>
-                  {' '} {isDelivered && <div className="pending">{`${deliveredAt}`}</div>}
-                        {!isDelivered && isPending && !isPaid && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
-                        {!isDelivered && isPaid && isPending && <div className="flex pending">Pending<div className="pending-btn"></div><div className="pending-btn"></div><div className="pending-btn"></div></div>}
-                        {!isDelivered && !isPending && !isPaid && <div className="flex pending">Not Released</div>}
+                  {' '} {isDelivered && <div style={{backgroundColor: "green"}} className="pending">{`${deliveredAt}`}</div>}
+                        {!isDelivered && <div className="flex pending">Awaiting Release</div>}
                 </ListItem>
               </List>
             </div>

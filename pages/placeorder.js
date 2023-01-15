@@ -48,9 +48,9 @@ function PlaceOrder() {
   const bundlePrice = round0(itemsPrice - ratePrice);
   let shippingPrice;
   if (itemsPrice < 699) {
-      shippingPrice = 100;
+      shippingPrice = 120;
     } else if (itemsPrice < 999 ) {
-        shippingPrice = 50
+        shippingPrice = 60
       } else {
           shippingPrice = 0
       };
@@ -244,7 +244,7 @@ function PlaceOrder() {
                               </div>
                               <div> 
                                 <Link className="card-link" href={`/product/${item.slug}`}>
-                                  {item.name}
+                                  {item.name.length > 25 ? (<p>{item.name.slice(0, 25).concat(" ", "."," ","."," ",".")}</p>) : (<p>{item.name}</p>)}
                                 </Link>
                               </div>
                             </div>
