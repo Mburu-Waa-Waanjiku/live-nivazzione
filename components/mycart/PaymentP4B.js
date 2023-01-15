@@ -134,7 +134,7 @@ function PaymentP4B() {
      await new Promise(resolve => setTimeout(resolve, 2000));
      updateStockHandler();
      placeP4BHandler();
-     router.push('/')
+     await router.push('/')
      await new Promise(resolve => setTimeout(resolve, 3000));
      handleClosePayp4b();
      handleClosep4b();
@@ -150,7 +150,7 @@ function PaymentP4B() {
       if (!userInfo) {
         router.push('/login?redirect=/');
       }
-      setValue('amount', 1);
+      setValue('amount', ItemsPrice);
     }, []);
 
   return (

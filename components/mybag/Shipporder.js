@@ -123,9 +123,9 @@ function Shipporder() {
   const itemsPrice = bagitems[0]?.itemsPrice;
   let shippingPrice;
   if (itemsPrice < 699) {
-      shippingPrice = 100;
+      shippingPrice = 120;
     } else if (itemsPrice < 999 ) {
-        shippingPrice = 50
+        shippingPrice = 60
       } else {
           shippingPrice = 0
       };
@@ -178,7 +178,7 @@ function Shipporder() {
      >
       <div className={classes.reviewTopTab} style={{zIndex: 1}}
        >
-        <ArrowBackIosIcon onClick={handleClosecollect} sx={{fontSize:10, float:"left",}} /> 
+        <ArrowBackIosIcon onClick={handleClosecollect} sx={{ float:"left" }} /> 
         <div className="flex justify-center">
           <div>
             Confirm Order
@@ -268,7 +268,7 @@ function Shipporder() {
                                     </div>
                                     <div> 
                                       <Link className="card-link" href={`/product/${item.slug}`}>
-                                        {item.name}
+                                        {item.name.length > 25 ? (<p>{item.name.slice(0, 25).concat(" ", "."," ","."," ",".")}</p>) : (<p>{item.name}</p>)}
                                       </Link>
                                     </div>
                                   </div>
@@ -425,7 +425,7 @@ function Shipporder() {
                   <input
                     className="w-full block"
                     id="shippingPrice"
-                    value= "KSh 100"
+                    value= "KSh 120"
                     readonly="readonly"
                   />
                 </div>

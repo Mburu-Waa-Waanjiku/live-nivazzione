@@ -43,7 +43,7 @@ function MyBag() {
      >
       <div className={classes.reviewTopTab} style={{zIndex: 1}}
        >
-        <ArrowBackIosIcon onClick={handleCloseBag} sx={{fontSize:10, float:"left",}} /> 
+        <ArrowBackIosIcon onClick={handleCloseBag} sx={{ float:"left",}} /> 
         <div className="flex justify-center">
           MyBag
           <div style={{position: "relative", height: 30}}>

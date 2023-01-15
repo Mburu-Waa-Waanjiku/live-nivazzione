@@ -40,7 +40,7 @@ export default function Glam() {
    console.log(data);
 	return (
 		<div>
-		  {status === "success" && (
+		  {status === "success" ? (
             <InfiniteScroll
               dataLength={data?.pages.length * 10}
               next={fetchNextPage}
@@ -61,6 +61,10 @@ export default function Glam() {
                 ))}
               </div>
             </InfiniteScroll>
+          ) : (
+          <div>
+            <Loader/>
+          </div>
           )}
 		</div>
 	)

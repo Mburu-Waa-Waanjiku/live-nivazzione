@@ -41,7 +41,7 @@ function Cart() {
       style={{position: "fixed", zIndex: 1210, top: 0, left: cartopen ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
       >
       <div className={classes.reviewTopTab}>
-        <ArrowBackIosIcon onClick={handleCartclose} sx={{fontSize:10, float:"left",}} /> 
+        <ArrowBackIosIcon onClick={handleCartclose} sx={{ float:"left" }} /> 
         My Cart 
         <span className="cart-num-items">({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                     items)
@@ -89,7 +89,7 @@ function Cart() {
                         </a>
                       </Link>
                     </td>
-                    <td className="p-5 text-right"><b>{item.name}</b></td>                    
+                    <td className="p-5 text-right">{item.name.length > 25 ? (<b>{item.name.slice(0, 25).concat(" ", "."," ","."," ",".")}</b>) : (<b>{item.name}</b>) }</td>                    
                     <td className="p-5 text-right">
                       <select
                         value={item.quantity}
@@ -105,7 +105,7 @@ function Cart() {
                       </select>
                     </td>
                     <td className="p-5 text-right">Ksh.{item.price}</td>
-                    <td style={{color:"#30d04a"}} className="p-5 text-center ">
+                    <td style={{color:"white"}} className="p-5 text-center ">
                       <button onClick={() => removeItemHandler(item)}>
                         <div style={{padding:"0px 8px", borderRadius:"5px", fontWeight:"bold", backgroundColor:"black", fontSize:"20px"}} >×</div>
                       </button>
@@ -127,7 +127,7 @@ function Cart() {
                 <div className="flex gap-x-9">
                   <button
                     onClick={checkoutHandler}
-                    className="primary-button w-full"
+                    className="primary-button w-full mr-4"
                     style={{backgroundColor: "#222"}}
                   >
                     Check Out

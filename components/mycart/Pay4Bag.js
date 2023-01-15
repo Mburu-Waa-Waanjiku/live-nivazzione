@@ -44,7 +44,7 @@ export default function Pay4Bag() {
       style={{position: "fixed", zIndex: 1210, top: 0, left: openp4b ? '0' : '100vw', background: 'white',  width: "100vw", height: "100vh"}}
       >
       <div style={{position: 'sticky'}} className={classes.reviewTopTab}>
-        <ArrowBackIosIcon onClick={handleClosep4b} sx={{fontSize:10, float:"left",}} /> 
+        <ArrowBackIosIcon onClick={handleClosep4b} sx={{ float:"left" }} /> 
         <div className="flex justify-center">
         Add To My
         <div style={{position: "relative", height: 30}}>
@@ -110,7 +110,7 @@ export default function Pay4Bag() {
                           </div>
                         <div> 
                           <Link className="card-link" href={`/product/${item.slug}`}>
-                            {item.name}
+                            {item.name.length > 25 ? (<p>{item.name.slice(0, 25).concat(" ", "."," ","."," ",".")}</p>) : (<p>{item.name}</p>)}
                           </Link>
                         </div>
                       </div>

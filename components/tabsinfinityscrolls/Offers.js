@@ -42,7 +42,7 @@ export default function Offers() {
    console.log(data);
 	return (
 		<div>
-		  {status === "success" && (
+		  {status === "success" ? (
             <InfiniteScroll
               dataLength={data?.pages.length * 16}
               next={fetchNextPage}
@@ -63,6 +63,10 @@ export default function Offers() {
                 ))}
               </div>
             </InfiniteScroll>
+          ) : (
+          <div>
+            <Loader/>
+          </div>
           )}
 		</div>
 	)

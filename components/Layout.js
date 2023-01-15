@@ -58,7 +58,10 @@ import Cart from './mycart/Cart';
 import { useEffect } from 'react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
-import FooterDocs from './FooterDocs';
+import dynamic from 'next/dynamic';
+const DynamicFooterDocs = dynamic(() => import('./FooterDocs'), {
+  loading: () => " ",
+})
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();
@@ -124,7 +127,7 @@ export default function Layout({ title, description, children }) {
     let fData = [];
     let resultFound = false;
     if (search) {
-      fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search) != -1)];
+      fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search.toLowerCase()) != -1)];
       if (fData.length > 0) {
         resultFound = true;
       }
@@ -142,11 +145,6 @@ export default function Layout({ title, description, children }) {
     filterData();
   }, [search]);
 
-  const darkModeChangeHandler = () => {
-    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
-    const newDarkMode = !darkMode;
-    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
-  };
   const [anchorEl, setAnchorEl] = useState(null);
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget);
@@ -240,7 +238,7 @@ export default function Layout({ title, description, children }) {
                 <Divider light />
                 <TabContext value={categ}>
                   <Tabs value={categ} classes={{ indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{ "& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleAppbar} variant="scrollable" orientation="vertical"  >
-                    <Tab value="Piercings" style={{margin: '20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Piercing" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
+                    <Tab onClick={sidebarCloseHandler} value="Piercings" style={{margin: '20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Piercing" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
                     <Tab value="Jewelry" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Jewelry" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/c_thumb,w_200,g_face/v1673000081/offerbanner1_5_upiwk4.jpg"/></div>} />
                     <Tab value="Glam" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} /> 
                   </Tabs>
@@ -267,11 +265,6 @@ export default function Layout({ title, description, children }) {
                 </Link>
             </NextLink>  
             <div className=" flex justify-center">
-              <Switch
-              className="invisible"
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch> 
               <div>
                 <Typography className={classes.cartnsch} component="span"><SearchIcon onClick={handleSearchBtn} sx={{ color: 'white'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/></Typography>
               </div>
@@ -306,12 +299,7 @@ export default function Layout({ title, description, children }) {
                     onClick={loginClickHandler}
                     className={classes.navbarButton}
                   >
-                    <Badge
-                        badgeContent=""
-                        classes={{ badge: classes.badgel }}
-                      >
-                        <AccountCircle className={classes.sizeLg}/>
-                      </Badge>
+                    <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-14px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
                   </Button>
                   <Menu
                     id="simple-menu"
@@ -502,7 +490,7 @@ export default function Layout({ title, description, children }) {
               </a>
             </div>
           </div>
-          {openinfos && <FooterDocs/>}
+          {openinfos && <DynamicFooterDocs/>}
           <Typography style={{color: '#666',fontSize: 11, fontWeight:100, fontFamily: 'Roboto,Arial'}}>All rights reserved. shiglam ©. </Typography>
         </footer>
       </ThemeProvider>

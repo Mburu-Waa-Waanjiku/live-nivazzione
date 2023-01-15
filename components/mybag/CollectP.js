@@ -40,9 +40,9 @@ function PaymentP4B() {
     const itemsPrice = bagitems[0]?.itemsPrice;
     let shippingPrice;
     if (itemsPrice < 699) {
-      shippingPrice = 100;
+      shippingPrice = 120;
     } else if (itemsPrice < 999 ) {
-        shippingPrice = 50
+        shippingPrice = 60
       } else {
           shippingPrice = 0
       };
@@ -102,7 +102,7 @@ function PaymentP4B() {
       );
       setLoading(false);
       enqueueSnackbar('Order created succesfully', { variant: 'success' });
-      router.push(`/order/${data._id}`);
+      await router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
       enqueueSnackbar(getError(err), { variant: 'error' });

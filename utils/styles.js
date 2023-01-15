@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold !important',
     position: 'absolute !important',
     fontSize: '1.5rem !important',
-    transform: 'translate(-20%, -50%) !important',
+    transform: 'translate(-50%, -50%) !important',
     [theme.breakpoints.up('sm')]: {
       display: 'none !important',}
   },
@@ -279,10 +279,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     height: 62,
     width: '96vw',
-    left: '-4vw',
     [theme.breakpoints.up('sm')]: {
       width:'100%',
-      left: '0px !important',
     },
   },
   categGallAbs: {
@@ -434,23 +432,14 @@ const useStyles = makeStyles((theme) => ({
     border: '3px solid black',
     width: '4px',
     fontSize: '10px',
-    backgroundColor: '#30d04a',
-  },
-  badgel: {
-    color: 'white',
-    border: '3px solid transparent',
-    backgroundColor: '#30d04a',
-    height: '7px !important',
-    minWidth: '7px !important',
-    padding: '0 0px !important',
-    transform: 'scale(1) translate(-120%, 350%) !important',
+    backgroundColor: ' #579fef',
   },
   badgeLg: {
     color: 'white',
     border: '2px solid white',
     width: '4px',
     fontSize: '10px',
-    backgroundColor: '#30d04a',
+    backgroundColor: '#579fef',
   },
   sScreen: {
     margin: '5px 10px',

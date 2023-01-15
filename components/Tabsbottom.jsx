@@ -82,14 +82,9 @@ export default function Tabsbottom() {
                             value={routes[3]} 
                             sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} 
                             onClick={() => router.push("/me")} 
-                            icon={<Badge
-                                    classes={{ badge: classes.badgel }}
-                                    badgeContent=''
-                                  >
-                                    <PersonIcon 
-                                      sx={{ fontSize: 28 }} />
-                                  </Badge>
-                                 } />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/login")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
+                            icon={
+                              <b onClick={() => router.push("/me")} style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-4px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
+                            } />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/login")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
             
           </Tabs>
          </div>

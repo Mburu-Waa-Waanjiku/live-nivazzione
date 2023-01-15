@@ -456,7 +456,7 @@ width: 90px;
   margin-bottom: 100px;
   text-transform: uppercase;
   background-color: black;
-  color: #30d04a;
+  color: white;
   cursor: pointer;
   -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
@@ -940,10 +940,10 @@ span.swiper-pagination-bullet {
 .payStatus {
     color: white;
     display: initial;
-    padding:0px 4px;
+    padding:2px 12px;
     border-radius: 5px;
     font-size: 20px;
-    background-color: #30d04a;
+    background-color: green;
 }
 .payStatusx {
     color: white;
@@ -963,14 +963,6 @@ span.swiper-pagination-bullet {
 }
 .prof {
     margin: 10px 0 0 0;
-}
-.pending-btn {
-    margin-top: 8px;
-    margin-left: 3px;
-    width: 5px;
-    height: 5px;
-    border-radius: 5px;
-    background-color: green;
 }
 .swiper-pagination {
     bottom: 18px !important;
@@ -1049,10 +1041,6 @@ div.MuiPaper-rounded {
     font-weight: bolder;
 }
 @media screen and (min-width: 600px){
-.margintopFix
-{
-  margin-top: 70px;
-}
 .bannermarquee {
   transform: translateX(80%) !important;
 }

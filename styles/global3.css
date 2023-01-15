@@ -1,3 +1,17 @@
+.themecolor {
+  background-color: #579fef ;
+}
+.infinite-scroll-component  {
+  overflow: hidden !important;
+ }
+ @media screen and (max-width:600px ) {
+  .swiper-button-next  {
+    display: none !important;
+  }
+  .swiper-button-prev  {
+    display: none !important;    
+  }
+ }
 .checkmark__circle {
   stroke-dasharray: 166;
   stroke-dashoffset: 166;
@@ -40,6 +54,3 @@
     transform: scale3d(1.1, 1.1, 1);
   }
 }
-.infinite-scroll-component  {
-  overflow: hidden !important;
- }
