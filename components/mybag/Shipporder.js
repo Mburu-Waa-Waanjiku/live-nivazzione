@@ -112,7 +112,7 @@ function Shipporder() {
     setValue,
     control,
   } = useForm();
-  const { makeOrder, setMakeOrder, handleCollect, handleClosecollect, collectpay, setCollectpay, handleOpenCP, handleCloseCP } = useStateContext();
+  const { login, setLogin, openLogin, closeLogin, makeOrder, setMakeOrder, handleCollect, handleClosecollect, collectpay, setCollectpay, handleOpenCP, handleCloseCP } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { userInfo, bagitems, cart } = state;
   const { shippingAddress } = cart;
@@ -134,7 +134,7 @@ function Shipporder() {
   const payout = round0(shippingPrice + taxPrice);
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login?redirect=/shipping');
+      openLogin();
     }
 
   }, []);

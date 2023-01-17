@@ -62,10 +62,13 @@ import dynamic from 'next/dynamic';
 const DynamicFooterDocs = dynamic(() => import('./FooterDocs'), {
   loading: () => " ",
 })
+const DynamicLogger = dynamic(() => import('./Logger'), {
+  loading: () => " ",
+})
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();
-  const { bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose, openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
+  const { login, setLogin, openLogin, bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose, openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo, bagitems } = state;
   const theme = createMuiTheme({
@@ -353,6 +356,7 @@ export default function Layout({ title, description, children }) {
             </div>
           </Toolbar>
         </AppBar>
+        {login && <DynamicLogger/>}
         <div className={classes.smseachbg} 
              style={{position: "fixed", zIndex: 1210, top: 0, left: searchClick ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
           >

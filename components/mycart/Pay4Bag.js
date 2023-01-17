@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { AiOutlineLeft, AiOutlineShopping } from 'react-icons/ai';
 import Link from 'next/link';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { Store } from '../../utils/Store';
 import { useRouter } from 'next/router';
 import useStyles from '../../utils/styles';
@@ -11,6 +11,7 @@ import { Button } from '@material-ui/core';
 import PaymentP4B from './PaymentP4B';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, FreeMode, } from 'swiper';
+import { useForm } from 'react-hook-form';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -20,22 +21,31 @@ import 'swiper/css/scrollbar';
 export default function Pay4Bag() {
   const router = useRouter(); 
   const classes = useStyles();
-  const { cartopen, setCartopen, handleCartopen, handleCartclose, openp4b, setOpenp4b, handleOpenp4b, handleClosep4b, payp4b, setPayp4b, handleOpenPayp4b } = useStateContext();
+  const { login, setLogin, openLogin, closeLogin, cartopen, setCartopen, handleCartopen, handleCartclose, openp4b, setOpenp4b, handleOpenp4b, handleClosep4b, payp4b, setPayp4b, handleOpenPayp4b } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { userInfo, cart } = state;
   const { cartItems } = cart;
+  const {
+    formState: { errors },
+  } = useForm();
+
+  const counties = ["Choose your Area", "CBD", "SOUTH B", "IMARA DAIMA", "KITENGELA", "LANGATA", "KAREN", "LAVINGTON", "ROASTERS", "JKUAT MAIN STAGE", "JUJA", "KAHAWA SUKARI", "GUMBA ESTATE", "KAHAWA WENDANI", "RUIRU BYPASS", "RUIRU NDANI", "ZIMMERMAN", "TRM", "KAHAWA WEST", "KASARANI", "UMOJA", "BURUBURU", "EMBAKASI/NYAYO ESTATE", "UTAWALA", "NGONG ROAD", "NGONG RACECOURSE", "SYOKIMAU", "MLOLONGO", "THINDIGUA", "KIAMBU", "KIRIGITI", "RUAKA", "MADARAKA","NAIROBI WEST", "LANGATA", "RONGAI", "KISERIAN", "JERICHO", "KOMAROCK", "DONHOLM", "FEDHA", "CHOKA", "RUAI", "JAMUHURI ESTATE", "WESTLANDS", "LORESHO", "KANGEMI", "UTHIRU", "KINOO", "KIKUYU", "TWO RIVERS MALL", "TMALL(LANGATA RD)"];
 
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const bagItemsPrice = round0(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
 
+  const [butttonP, setButtonP] = useState(false)
+  const [county, setCounty] = useState("CHOOSE A LOCATION");
+  const handleCounty = (event) => {
+    setCounty(event.target.value);
+    setButtonP(true)
+  };
+
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login?redirect=/');
-      handleClosep4b();
-      handleCartclose();
-
+      openLogin();
     }
   }, []);
   
@@ -55,7 +65,7 @@ export default function Pay4Bag() {
                   </div> 
         </div>
       </div>
-      <div style={{overflowX: 'auto', height: '90%'}}>
+      <div style={{overflowX: 'auto', height: '83%'}}>
       <div className="grid justify-center" >
         <div className="home-ft w-full justify-self-stretch">
           Order Items
@@ -134,17 +144,41 @@ export default function Pay4Bag() {
                   </div>
                 </div>
               </li>
+              <li>
+                <div className="mb-4">
+                  <select
+                      value={county}
+                      className="block w-full"
+                      onChange={handleCounty}
+                  >
+                    {counties.map((counties) => (
+                      <option key={counties} value={counties}>
+                        {counties}
+                      </option>
+                    ))}  
+                    <option disabled style={{color: 'green', display:'block'}}>
+                      <div>YOU'RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
+                      <div>VISIT us on Whatsapp 👇👇 for customized delivery🛍️ 😊</div>
+                    </option>            
+                  </select>
+                  {errors.county && (
+                    <div className="text-red-500 ">{errors.county.message}</div>
+                  )}
+                </div>
+              </li>
             </ul>
         </div>
-        <Button
-          onClick={handleOpenPayp4b}
-          variant="contained"
-          color="primary"
-          style={{backgroundColor: "#222", marginBottom: 20}}
-         >
-            PAY
-        </Button>
       </div>
+      </div>
+      <div style={{borderTop: "2px solid #ececec", backgroundColor: "white", zIndex: 1, position: "fixed", bottom: 0}} className=" w-full p-2 flex justify-center">
+        <button
+          onClick={handleOpenPayp4b}
+          className="primary-button "
+          disabled={!butttonP} 
+          style={{backgroundColor: "#222"}}
+         >
+          PAY      
+        </button>
       </div>   
       {payp4b && <PaymentP4B/>}   
     </div>

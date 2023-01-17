@@ -30,8 +30,8 @@ function Cart() {
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
   };
-  const checkoutHandler = () => {
-    router.push('/shipping');
+  const checkoutHandler = async () => {
+    await router.push('/shipping');
     handleCartclose();
   };
 

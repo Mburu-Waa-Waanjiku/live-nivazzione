@@ -83,7 +83,6 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
     maxWidth: 800,
-    margin: '30px 0',
   },
   navbarButton: {
     color: '#ffffff',

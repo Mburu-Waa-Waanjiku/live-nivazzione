@@ -118,10 +118,22 @@ export const StateContext = ({ children }) => {
   }
   const handleCloseNormalOP = () => {
     setNormalorderP(false)
+  }
+  const [login, setLogin] = useState(false);
+  const openLogin = () => {
+    setLogin(true)
   } 
+  const closeLogin = () => {
+    setLogin(false)
+  }
+
   return (
     <Context.Provider
       value={{
+        login,
+        setLogin,
+        openLogin,
+        closeLogin,
         normalorderP,
         setNormalorderP,
         handleOpenNormalOP,

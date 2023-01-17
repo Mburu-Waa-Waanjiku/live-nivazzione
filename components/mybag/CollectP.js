@@ -22,7 +22,7 @@ import LoaderPay from '../loaders/LoaderPay';
 function PaymentP4B() {
   
     const router = useRouter();
-    const { collectpay, setCollectpay, handleCloseCP, makeOrder, setMakeOrder, handleClosecollect, bag, setBag, handleCloseBag } = useStateContext();
+    const { login, setLogin, closeLogin, collectpay, setCollectpay, handleCloseCP, makeOrder, setMakeOrder, handleClosecollect, bag, setBag, handleCloseBag } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
@@ -105,7 +105,7 @@ function PaymentP4B() {
       await router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      enqueueSnackbar("Please Check Whether You Are Logged In");
     } 
   };
 
@@ -152,7 +152,6 @@ function PaymentP4B() {
      await new Promise(resolve => setTimeout(resolve, 2000));
      placeOrderHandler();
      clearMybag();
-     await new Promise(resolve => setTimeout(resolve, 3000));
      handleCloseCP();
      handleClosecollect();
      handleCloseBag();
@@ -164,7 +163,7 @@ function PaymentP4B() {
 
     useEffect(() => {
       if (!userInfo) {
-        router.push('/login?redirect=/');
+        openLogin();
       }
       setValue('amount', payout);
     }, []);

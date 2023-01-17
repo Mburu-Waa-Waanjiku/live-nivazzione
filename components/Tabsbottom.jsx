@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-import {
-  
+import {  
   Badge, 
-  
 } from '@material-ui/core';
 import { Store } from '../utils/Store';
 import { useState, useEffect } from 'react';
@@ -21,7 +19,7 @@ import Image from 'next/image';
 
 export default function Tabsbottom() {
   const classes = useStyles();
-  const { bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose } = useStateContext();
+  const { login, setLogin, openLogin, closeLogin, bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose } = useStateContext();
 
   const router = useRouter();
   const { state } = useContext(Store);
@@ -83,8 +81,8 @@ export default function Tabsbottom() {
                             sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} 
                             onClick={() => router.push("/me")} 
                             icon={
-                              <b onClick={() => router.push("/me")} style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-4px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
-                            } />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/login")} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
+                              <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-4px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
+                            } />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={openLogin} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
             
           </Tabs>
          </div>
