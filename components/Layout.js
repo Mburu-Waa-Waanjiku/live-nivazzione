@@ -287,7 +287,7 @@ export default function Layout({ title, description, children }) {
                         <AiOutlineShoppingCart style={{ fontSize: 22, color: "white"}} />
                       </Badge>
                     ) : (
-                        <AiOutlineShoppingCart style={{ fontSize: 22}} />
+                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "white"}} />
                     )}
                   </Typography>
                 </Button>
