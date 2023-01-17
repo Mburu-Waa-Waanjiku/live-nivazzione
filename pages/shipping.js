@@ -16,8 +16,11 @@ import {
   RadioGroup,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { useStateContext } from '../utils/StateContext';
 
 export default function ShippingScreen() {
+
+  const { login, setLogin, openLogin, closeLogin } = useStateContext();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
   const counties = ["Choose your Area", "CBD", "SOUTH B", "IMARA DAIMA", "KITENGELA", "LANGATA", "KAREN", "LAVINGTON", "ROASTERS", "JKUAT MAIN STAGE", "JUJA", "KAHAWA SUKARI", "GUMBA ESTATE", "KAHAWA WENDANI", "RUIRU BYPASS", "RUIRU NDANI", "ZIMMERMAN", "TRM", "KAHAWA WEST", "KASARANI", "UMOJA", "BURUBURU", "EMBAKASI/NYAYO ESTATE", "UTAWALA", "NGONG ROAD", "NGONG RACECOURSE", "SYOKIMAU", "MLOLONGO", "THINDIGUA", "KIAMBU", "KIRIGITI", "RUAKA", "MADARAKA","NAIROBI WEST", "LANGATA", "RONGAI", "KISERIAN", "JERICHO", "KOMAROCK", "DONHOLM", "FEDHA", "CHOKA", "RUAI", "JAMUHURI ESTATE", "WESTLANDS", "LORESHO", "KANGEMI", "UTHIRU", "KINOO", "KIKUYU", "TWO RIVERS MALL", "TMALL(LANGATA RD)"];
@@ -100,7 +103,7 @@ export default function ShippingScreen() {
 
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login?redirect=/shipping');
+      openLogin();
     }
     setValue('firstName', shippingAddress.firstName);
     setValue('lastName', shippingAddress.lastName);

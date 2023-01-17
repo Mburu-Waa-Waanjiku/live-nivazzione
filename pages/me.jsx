@@ -9,13 +9,15 @@ import { Store } from '../utils/Store';
 import useStyles from '../utils/styles';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useStateContext } from '../utils/StateContext';
 
 function Me() {
 	const { state, dispatch } = useContext(Store);
     const {userInfo } = state;
     const classes = useStyles();
     const router = useRouter();
-
+    const { login, setLogin, openLogin, closeLogin } = useStateContext();
+  
     const logoutClickHandler = () => {
       dispatch({ type: 'USER_LOGOUT' });
       Cookies.remove('userInfo');
@@ -51,9 +53,9 @@ function Me() {
                             </div>) : (
                             <div className="mt-2 mb-1.5">
                               <div className="pending inline prof">
-                                <Link href="/login"> 
+                                <a onClick={openLogin} style={{cursor: "pointer"}} > 
                                   Log In 
-                                </Link>
+                                </a>
                               </div>
                             </div>
                             )
