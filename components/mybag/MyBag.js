@@ -52,15 +52,15 @@ function MyBag() {
         </div>
       </div>
       <div style={{top: 0, overflowY: "auto", marginLeft: "10px", marginRight: 10, paddingTop: 10, height:"83%", overflowX: "hidden"}} className=" relative">
-          {bagitems.map((bag) => (
-            <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
-              {bag.orderItems?.map((images) => (
-                <div>
-                  <Image className="bg-gray-100" width={364} height={484} src={images.image[0]}/>
-                </div>
-              ))}
-            </div>
-          ))}
+        {bagitems.map((bag) => (
+          <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+            {bag.orderItems?.map((images) => (
+              <div>
+                <Image className="bg-gray-100" width={364} height={484} src={images.image[0]}/>
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
       <div style={{borderTop: "2px solid #ececec", backgroundColor: "white", zIndex: 1, position: "fixed", bottom: 0}} className=" w-full p-2 flex justify-center">
         <button
