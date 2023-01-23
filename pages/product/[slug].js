@@ -43,8 +43,6 @@ export default function ProductScreen(props) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
-
-
   
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -88,8 +86,11 @@ export default function ProductScreen(props) {
 
   return (
     <>
-      <Layout title={product.name} description={product.description}
-              content="Get {product.name} and more from as low as {product.price}"
+      <Layout title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
+        description={product.description}
+        socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
+        socialdesc={product.description}
+        socialimages={product.image[0]}
       >
       <div className="margintopFix mt-9 grid grid-cols-1 md:grid-cols-12 md:gap-4">
         <div className="col-span-1 md:col-span-5 md:col-start-2">
