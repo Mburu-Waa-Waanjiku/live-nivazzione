@@ -66,7 +66,7 @@ const DynamicLogger = dynamic(() => import('./Logger'), {
   loading: () => " ",
 })
 
-export default function Layout({ title, description, children }) {
+export default function Layout({ title, description, children, socialtitle, socialimages, socialdesc }) {
   const router = useRouter();
   const { login, setLogin, openLogin, bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose, openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
   const { state, dispatch } = useContext(Store);
@@ -174,6 +174,18 @@ export default function Layout({ title, description, children }) {
         <title>{title ? `${title} - shiglam` : 'shiglam '}</title>
         {description && <meta name="description" charset="UTF-8" content={description}></meta>}
         <meta name="google-site-verification" content="tK9s0pQ66YNPGPxWplFwgCSa8dlOmhBlJLmRr_ZLLTM" />
+        {socialtitle && <meta 
+          property="og:title" 
+          content={socialtitle}
+        />}
+        {socialdesc && <meta
+          property="og:description"
+          content={sociadesc}
+        />}
+        {socialimages && <meta
+          property="og:image"
+          content={sociaimages}
+        />}
         <link rel="icon" href="/shiglama.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
       </Head>

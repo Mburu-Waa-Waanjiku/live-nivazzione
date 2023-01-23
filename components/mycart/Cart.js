@@ -93,7 +93,7 @@ function Cart() {
               <Image
                 height={500} width={1500}
                 style={{ borderRadius: 10}}
-                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674117112/DHKJL_bdzxog.jpg"
+                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674467486/retyui_oa4bmj.png"
                 alt="Banner"
                 className="shadow object-cover h-auto w-100 bg-gray-100"
               />
@@ -102,7 +102,7 @@ function Cart() {
               <Image
                 height={500} width={1500}
                 style={{ borderRadius: 10}}
-                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674117112/4567_kevxzv.png"
+                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674466881/ertylm_q1ibj9.png"
                 alt="Banner"
                 className="shadow object-cover h-auto w-100 bg-gray-100"
               />
