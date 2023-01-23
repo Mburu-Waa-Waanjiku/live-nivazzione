@@ -180,11 +180,11 @@ export default function Layout({ title, description, children, socialtitle, soci
         />}
         {socialdesc && <meta
           property="og:description"
-          content={sociadesc}
+          content={socialdesc}
         />}
         {socialimages && <meta
           property="og:image"
-          content={sociaimages}
+          content={socialimages}
         />}
         <link rel="icon" href="/shiglama.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
