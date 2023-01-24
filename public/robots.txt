@@ -1,0 +1,12 @@
+# Block all crawlers for /admin
+User-agent: *
+Disallow: /admin
+Disallow: /api
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+Allow: /newproducts
+Allow: /offers
+Allow: /product
+Allow: /product/[slug]
