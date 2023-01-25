@@ -4,13 +4,10 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
-import { useContext } from 'react';
-import { Store } from '../../utils/Store';
 import db from '../../utils/db';
 import Product from '../../models/Product';
 import Banner from '../../models/Banner';
 import Image from 'next/image';
-import axios from 'axios';
 import useStyles from '../../utils/styles';
 import Layout from '../../components/Layout';
 import Tabsbottom from '../../components/Tabsbottom';
@@ -19,20 +16,8 @@ import Offers from '../../components/tabsinfinityscrolls/Offers';
 
 const Newproducts = (props) => {
 const { categories, banner} = props;
- const { state, dispatch } = useContext(Store);
 
  const classes = useStyles();
-
-  const addToCartHandler = async (product) => {
-    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
-      return;
-    }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
-  };
 
  const [value, setValue] = useState("All");
  const handleChange = (event, newValue) => {

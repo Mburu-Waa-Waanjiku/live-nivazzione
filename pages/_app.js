@@ -8,7 +8,6 @@ import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
 import Script from "next/script";
 import { StoreProvider } from '../utils/Store';
-import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core'

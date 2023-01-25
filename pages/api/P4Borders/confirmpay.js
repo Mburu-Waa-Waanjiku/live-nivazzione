@@ -1,11 +1,7 @@
 import nc from 'next-connect';
-import Order from '../../../models/Order';
 import db from '../../../utils/db';
 import onError from '../../../utils/error';
-import { isAuth } from '../../../utils/auth';
 import Transaction from '../../../models/Transaction';
-import Product from '../../../models/Product';
-import axios from 'axios';
 
 const handler = nc({
   onError,
@@ -31,7 +27,7 @@ handler.post(async (req, res ) => {
   } else {
     await db.disconnect();
     res.status(404).send({ message: 'Transaction Not Found' });
-  };
+  }
 
 });
 

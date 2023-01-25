@@ -9,7 +9,6 @@ import { Store } from '../../utils/Store';
 import db from '../../utils/db';
 import Product from '../../models/Product';
 import Banner from '../../models/Banner';
-import Image from 'next/image';
 import DealsCards from '../../components/DealsCards';
 import axios from 'axios';
 import useStyles from '../../utils/styles';
@@ -20,7 +19,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 
 const Newproducts = (props) => {
-const { categories, banner } = props;
+const { categories } = props;
  const { state, dispatch } = useContext(Store);
  const classes = useStyles();
 

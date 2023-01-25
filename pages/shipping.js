@@ -20,7 +20,7 @@ import { useStateContext } from '../utils/StateContext';
 
 export default function ShippingScreen() {
 
-  const { login, setLogin, openLogin, closeLogin } = useStateContext();
+  const { openLogin } = useStateContext();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
   const counties = ["Choose your Area", "CBD", "SOUTH B", "IMARA DAIMA", "KITENGELA", "LANGATA", "KAREN", "LAVINGTON", "ROASTERS", "JKUAT MAIN STAGE", "JUJA", "KAHAWA SUKARI", "GUMBA ESTATE", "KAHAWA WENDANI", "RUIRU BYPASS", "RUIRU NDANI", "ZIMMERMAN", "TRM", "KAHAWA WEST", "KASARANI", "UMOJA", "BURUBURU", "EMBAKASI/NYAYO ESTATE", "UTAWALA", "NGONG ROAD", "NGONG RACECOURSE", "SYOKIMAU", "MLOLONGO", "THINDIGUA", "KIAMBU", "KIRIGITI", "RUAKA", "MADARAKA","NAIROBI WEST", "LANGATA", "RONGAI", "KISERIAN", "JERICHO", "KOMAROCK", "DONHOLM", "FEDHA", "CHOKA", "RUAI", "JAMUHURI ESTATE", "WESTLANDS", "LORESHO", "KANGEMI", "UTHIRU", "KINOO", "KIKUYU", "TWO RIVERS MALL", "TMALL(LANGATA RD)"];
@@ -83,7 +83,7 @@ export default function ShippingScreen() {
     setCounty(event.target.value);
     setView(true);
   };
-  const handleDropstation =(evant) => {
+  const handleDropstation =(event) => {
     setDropstation(event.target.value);
   };
 
@@ -97,7 +97,7 @@ export default function ShippingScreen() {
 
   const { state, dispatch } = useContext(Store);
   const { userInfo, cart } = state;
-  const { cartItems, shippingAddress } = cart;
+  const { shippingAddress } = cart;
   const router = useRouter();
   
 
@@ -193,7 +193,7 @@ export default function ShippingScreen() {
               </option>
             ))}  
             <option disabled style={{color: 'green', display:'block'}}>
-              <div>YOU'RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
+              <div>YOU&apos;RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
               <div>VISIT us on Whatsapp 👇👇 for customized delivery🛍️ 😊</div>
             </option>            
           </select>
@@ -208,7 +208,7 @@ export default function ShippingScreen() {
               className="w-full block"
               id="shippingPrice"
               value= "KSh 100"
-              readonly="readonly"
+              readOnly="readonly"
             />
           </div>
         <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
@@ -273,15 +273,6 @@ export default function ShippingScreen() {
                    {LAVINGTON}
                   </option>
                 ))} 
-              </>
-            }
-            {county === 'PANGANI' && 
-              <>
-                {PANGANI.map((PANGANI) => (
-                  <option key={PANGANI} value={PANGANI}>
-                   {PANGANI}
-                  </option>
-                ))}
               </>
             }
             {county === 'ROASTERS' && 

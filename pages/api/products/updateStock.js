@@ -34,7 +34,7 @@ handler.post(async (req, res) => {
   await db.connect();
     if(newProductStocks.length == 1) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -48,7 +48,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 2) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -58,7 +58,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -72,7 +72,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 3) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -82,7 +82,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -92,7 +92,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -106,7 +106,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 4) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -116,7 +116,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -126,7 +126,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -136,7 +136,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -150,7 +150,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 5) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -160,7 +160,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -170,7 +170,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -180,7 +180,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -190,7 +190,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds5 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[4]._id,
         },
@@ -204,7 +204,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 6) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -214,7 +214,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -224,7 +224,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -234,7 +234,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -244,7 +244,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds5 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[4]._id,
         },
@@ -254,7 +254,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds6 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[5]._id,
         },
@@ -268,7 +268,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 7) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -278,7 +278,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -288,7 +288,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -298,7 +298,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -308,7 +308,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds5 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[4]._id,
         },
@@ -318,7 +318,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds6 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[5]._id,
         },
@@ -328,7 +328,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds7 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[6]._id,
         },
@@ -342,7 +342,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 8) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -352,7 +352,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -362,7 +362,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -372,7 +372,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -382,7 +382,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds5 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[4]._id,
         },
@@ -392,7 +392,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds6 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[5]._id,
         },
@@ -402,7 +402,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds7 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[6]._id,
         },
@@ -412,7 +412,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds8 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[7]._id,
         },
@@ -426,7 +426,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 9) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -436,7 +436,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -446,7 +446,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -456,7 +456,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -466,7 +466,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds5 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[4]._id,
         },
@@ -476,7 +476,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds6 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[5]._id,
         },
@@ -486,7 +486,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds7 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[6]._id,
         },
@@ -496,7 +496,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds8 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[7]._id,
         },
@@ -506,7 +506,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds9 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[8]._id,
         },
@@ -520,7 +520,7 @@ handler.post(async (req, res) => {
     res.status(201).send({message: 'updated'});
   } else if(newProductStocks.length == 10) {
 
-      const updatedProds1 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[0]._id,
         },
@@ -530,7 +530,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds2 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[1]._id,
         },
@@ -540,7 +540,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds3 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[2]._id,
         },
@@ -550,7 +550,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds4 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[3]._id,
         },
@@ -560,7 +560,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds5 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[4]._id,
         },
@@ -570,7 +570,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds6 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[5]._id,
         },
@@ -580,7 +580,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds7 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[6]._id,
         },
@@ -590,7 +590,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds8 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[7]._id,
         },
@@ -600,7 +600,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds9 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[8]._id,
         },
@@ -610,7 +610,7 @@ handler.post(async (req, res) => {
           },
         }
       );
-      const updatedProds10 = await Product.updateOne(
+      await Product.updateOne(
         {
           _id: newProductStocks[9]._id,
         },

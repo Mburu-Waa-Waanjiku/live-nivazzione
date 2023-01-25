@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import User from '../../../models/User';
 import db from '../../../utils/db';
 import { signToken } from '../../../utils/auth';
-import React from 'react';
 
 const handler = nc();
 

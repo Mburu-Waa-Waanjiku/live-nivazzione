@@ -24,7 +24,6 @@ import useStyles from '../../utils/styles';
 import { useSnackbar } from 'notistack';
 import { getError } from '../../utils/error';
 import ClearIcon from '@mui/icons-material/Clear';
-import { usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, FreeMode, Pagination} from 'swiper';
 import CopyAllIcon from '@mui/icons-material/CopyAllSharp';
@@ -94,7 +93,7 @@ function Order({ params }) {
   
 
   const [
-    { loading, error, order, successPending, successPay, loadingDeliver, successDeliver },
+    { loading, error, order, successPay, loadingDeliver, successDeliver },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
@@ -103,7 +102,6 @@ function Order({ params }) {
   });
   const {
     shippingAddress,
-    paymentMethod,
     orderItems,
     itemsPrice,
     bundlePrice,
@@ -111,7 +109,6 @@ function Order({ params }) {
     shippingPrice,
     totalPrice,
     oldTotalPrice,
-    isPending,
     isPaid,
     paidAt,
     isDelivered,
@@ -187,20 +184,6 @@ function Order({ params }) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   }
-  async function pendingOrderHandler() {
-    try {
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/pending`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      dispatch({ type: 'PENDING_SUCCESS', payload: data });
-     } catch (err) {
-      console.log('error updating  pending');
-    }
-  }
 
   const [isClicked, setIsClicked] = useState(false);
 
@@ -244,11 +227,7 @@ function Order({ params }) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const handlePay = () =>{
-    setIsChecked(current => !current);
-  };
+
   return (
     <Layout title={`Order ${orderId}`}>
       <div className="margintopFix">
@@ -583,47 +562,6 @@ function Order({ params }) {
                     </div>
                   </ListItem>
                 )}
-                {showOverlay && 
-                  <div className="cart-wrapper">
-                    <div className="w-full h-full flex justify-center place-items-center">
-                      <div style={{width:"80vw", height:"fit-content", borderRadius:10, backgroundColor:"#f1f5f9"}}>
-                        <div className="p-10">
-                          <div style={{padding:10, backgroundColor:"#f1f5f9"}}>We will redirect you to another webpage(tujenge.io) for payment</div>  
-                          <div style={{padding:10, marginTop:10, backgroundColor:"#f1f5f9"}}>
-                            <p>Payment Approval takes 1 to 2 hours to be verified on your Order History</p>
-                            <p>However if confirmation is delayed, you can always call us on +254105705441 or whatsapp us by clicking the whatsapp button at the bottom of the screen 😊 </p> 
-                            <p>Your order is delivered between same day to 3 business days max</p>
-                          </div>
-                          <label htmlFor="">
-                            <input
-                              type="checkbox"
-                              value={isChecked}
-                              onChange={handlePay}
-                              style={{marginRight: 5}}
-                            />
-                            I Agree
-                          </label>
-                          <Link href="https://tujenge.io/collection-link/1291f110-5a02-11ed-a9d8-8dc55ea47dd3">
-                            <Button
-                              fullWidth
-                              variant="contained"
-                              disabled={!isChecked}
-                              className={ classes.mpesa }
-                              onClick={pendingOrderHandler}
-                            >
-                              m<Image height={50} width={50} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1663845421/enjigpi6eaag5naxfglf.png"></Image> pesa
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                      <div className="absolute p-5" style={{bottom:0, right:0}}>
-                        <Link href="https://wa.me/message/LLYAJG6L323CP1">
-                          <i style={{color:"white", padding:"10px 11px", fontSize:"30px", borderRadius:"50px", margin:"4px", backgroundColor:"#30d04a"}} className="fa fa-whatsapp whatsapp-icon"></i>
-                        </Link>
-                      </div>
-                    </div> 
-                  </div>
-                }
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                   <ListItem>
                     {loadingDeliver && <CircularProgress />}

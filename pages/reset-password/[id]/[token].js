@@ -1,16 +1,11 @@
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import NextLink from 'next/link';
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
-  Grid,
   List,
   ListItem,
-  Typography,
-  Card,
   Button,
-  ListItemText,
   TextField,
 } from '@material-ui/core';
 import { getError } from '../../../utils/error';
@@ -22,19 +17,16 @@ import { useSnackbar } from 'notistack';
 import Cookies from 'js-cookie';
 
 function Profile() {
-  const { state, dispatch } = useContext(Store);
+  const { dispatch } = useContext(Store);
   const {
     handleSubmit,
     control,
     formState: { errors },
-    setValue,
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
   const { id } =router.query;
   const classes = useStyles();
-  const { userInfo } = state;
-  console.log(id);
 
   const submitHandler = async ({ password, confirmPassword }) => {
     closeSnackbar();

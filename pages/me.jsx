@@ -16,7 +16,7 @@ function Me() {
     const {userInfo } = state;
     const classes = useStyles();
     const router = useRouter();
-    const { login, setLogin, openLogin, closeLogin } = useStateContext();
+    const { openLogin } = useStateContext();
   
     const logoutClickHandler = () => {
       dispatch({ type: 'USER_LOGOUT' });

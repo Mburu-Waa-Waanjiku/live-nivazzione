@@ -8,6 +8,8 @@ const handler = nc({
   onError,
 });
 
+handler.use(isAuth);
+
 handler.delete(async (req, res) => {
   await db.connect();
   const bag = await Bag.findById(req.body.ID);

@@ -1,10 +1,7 @@
 import nc from 'next-connect';
-import bcrypt from 'bcryptjs';
 import User from '../../../models/User';
 import db from '../../../utils/db';
-import { signToken, isAuth } from '../../../utils/auth';
-import React from 'react';
-import jwt from 'jsonwebtoken';
+import { signToken } from '../../../utils/auth';
 
 const handler = nc();
 

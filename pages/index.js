@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from "react";
 import Tabs from "@mui/material/Tabs"; 
 import Tab from "@mui/material/Tab";
 import TabPanel from '@mui/lab/TabPanel';
@@ -13,16 +12,11 @@ import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Cart from '../components/mycart/Cart';
 import BestSeller from '../components/BestSeller';
-import Newpost from '../components/Newpost';
 import axios from 'axios';
-import { CgBolt } from 'react-icons/cg';
-import NewBanner from '../components/NewBanner';
 import Tabsbottom from '../components/Tabsbottom';
 import OffersHome from '../components/OffersHome';
 import Layout from '../components/Layout';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForwardRounded';
 import useStyles from '../utils/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { useStateContext } from '../utils/StateContext';
@@ -39,9 +33,9 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 
-const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, ofglam, ofwaistbeads, offingerrings, ofanclets }) => {
+const Home = ({topselling, banner, offers, newdrops }) => {
   const { state, dispatch } = useContext(Store);
-  const {  value, setValue, handleChange, categ, setCateg, handleCateg, handleBoth, handleBack } = useStateContext();
+  const {  value, handleChange, categ, handleCateg, handleBoth, handleBack } = useStateContext();
   const classes = useStyles();
 
   const addToCartHandler = async (product) => {
@@ -138,7 +132,7 @@ const Home = ({topselling, banner, ofearrings, editorspicks, offers, newdrops, o
                         <div className={classes.newpostb} style={{height: 9}}>
                           NEW
                         </div>
-                        <Link href={`/product/${product.slug}`} >
+                        <Link href={`${product.category}/${product.slug}`} >
                            <Image
                              width={364}
                              height={484}

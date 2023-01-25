@@ -3,7 +3,6 @@ import Order from '../../../../models/Order';
 import db from '../../../../utils/db';
 import onError from '../../../../utils/error';
 import { isAuth } from '../../../../utils/auth';
-import axios from 'axios';
 
 const handler = nc({
   onError,

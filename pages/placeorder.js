@@ -7,18 +7,13 @@ import Image from 'next/image';
 import {
   Grid,
   Typography,
-  CircularProgress,
   Button,
   Card,
   List, 
   ListItem,
 } from '@material-ui/core';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import useStyles from '../utils/styles';
-import { useSnackbar } from 'notistack';
-import { getError } from '../utils/error';
-import Cookies from 'js-cookie';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, FreeMode, } from 'swiper';
 import { useStateContext } from '../utils/StateContext';
@@ -31,11 +26,10 @@ import 'swiper/css/scrollbar';
 
 function PlaceOrder() {
   const classes = useStyles();
-  const { normalorderP, setNormalorderP, handleOpenNormalOP } = useStateContext();
+  const { normalorderP, handleOpenNormalOP } = useStateContext();
   const router = useRouter();
-  const { state, dispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const {
-    userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
 
@@ -53,7 +47,7 @@ function PlaceOrder() {
         shippingPrice = 60
       } else {
           shippingPrice = 0
-      };
+      }
   const taxPrice = round0(itemsPrice * 7 /100);
   const oldTotalPrice = round0(itemsPrice + shippingPrice + taxPrice);
   const totalPrice = cartItems.length > 2 ? round0(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
@@ -69,94 +63,7 @@ function PlaceOrder() {
       router.push(`/cart`);
     }
   }, []);
-  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
-  const updateStockHandler = async () => {
-    try {
-      const { data } = await axios.post(
-        '/api/products/updateStock',
-        {
-          orderItems: cartItems,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        } 
-      );
-      dispatch({ type: 'UPDATE_STOCK' });
-      console.log('stock updated successfuly');
-    } catch (err) {
-      console.log('error updating  stock');
-    }
-  };
-  const placeOrderHandler = async () => {
-    if (cartItems.length > 2) {
-    closeSnackbar();
-    try {
-      setLoading(true);
-      const { data } = await axios.post(
-        '/api/orders',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          bundlePrice,
-          shippingPrice,
-          taxPrice,
-          oldTotalPrice,
-          totalPrice,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        } 
-      );
-      dispatch({ type: 'CART_CLEAR' });
-      Cookies.remove('cartItems');
-      setLoading(false);
-      enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
-      router.push(`/order/${data._id}`);
-    } catch (err) {
-      setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
-    }
-   }else {
-     closeSnackbar();
-    try {
-      setLoading(true);
-      const { data } = await axios.post(
-        '/api/orders',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          shippingPrice,
-          taxPrice,
-          totalPrice,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-      dispatch({ type: 'CART_CLEAR' });
-      Cookies.remove('cartItems');
-      setLoading(false);
-      enqueueSnackbar('Order created succesfully', { variant: 'success' });
-      router.push(`/order/${data._id}`);
-    } catch (err) {
-      setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
-    }
-   }; 
-  };
   const [show, setShow] = useState(false);
-  const [circular, setCircular] = useState(false);
   const handleShow = () => {
      setShow(true);
   };
@@ -225,7 +132,7 @@ function PlaceOrder() {
                         <div style={{borderRadius:"10px",margin:"0 3px 5px 3px" , boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)"}}>
                         <div className="gallery">
                           <div>
-                            <Link href={`/product/${item.slug}`}>
+                            <Link href={`${item.category}/${item.slug}`}>
                               <Image
                                 src={item.image[0]}
                                 alt={item.name}
@@ -244,7 +151,7 @@ function PlaceOrder() {
                               </div>
                               <div> 
                                 <Link className="card-link" href={`/product/${item.slug}`}>
-                                  {item.name.length > 25 ? (<p>{item.name.slice(0, 25).concat(" ", "."," ","."," ",".")}</p>) : (<p>{item.name}</p>)}
+                                  {item.name.length > 25 ? (<p>{item.name.slice(0, 25).concat(" ", ". . .")}</p>) : (<p>{item.name}</p>)}
                                 </Link>
                               </div>
                             </div>
@@ -371,11 +278,6 @@ function PlaceOrder() {
                   Place Order
                 </Button>
               </ListItem>}
-              {loading && (
-                <ListItem>
-                  <CircularProgress />
-                </ListItem>
-              )}
             </List>
           </Card>
         </Grid>
