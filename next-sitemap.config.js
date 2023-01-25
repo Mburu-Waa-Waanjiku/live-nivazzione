@@ -13,7 +13,6 @@ const config = {
       },
     ],
     additionalSitemaps: [
-      `${siteUrl}/sitemap.xml`,
       `${siteUrl}/sitemap-0.xml`,
       `${siteUrl}/server-sitemap.xml`,
     ],
