@@ -61,7 +61,7 @@ const DynamicLogger = dynamic(() => import('./Logger'), {
   loading: () => " ",
 })
 
-export default function Layout({ title, description, children, socialtitle, socialimages, socialdesc }) {
+export default function Layout({ title, description, children, socialtitle, socialimages, socialdesc, scdinfo  }) {
   const router = useRouter();
   const { login, openLogin, handleOpenBag, handleCartopen, openinfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, searchClick, searchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ } = useStateContext();
   const { state, dispatch } = useContext(Store);

@@ -38,7 +38,7 @@ function BestSeller({product, addToCartHandler}) {
       },
       "offers": {
         "@type": "Offer",
-        "url": `https://shiglam.com/${product.category}/${product.slug}`,
+        "url": URL,
         "priceCurrency": "KES",
         "price": product.price,
         "priceValidUntil": "2023-2-14",
@@ -77,7 +77,8 @@ function BestSeller({product, addToCartHandler}) {
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const sales = product.initialStock - product.countInStock;
   const percent = round0(sales/product.initialStock * 100);
-  
+  const URL = `https://shiglam.com/${product.category}/${product.slug}`;
+
 	return (
 		<div className="card">
       <Head>
