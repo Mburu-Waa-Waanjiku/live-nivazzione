@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { AiOutlineLeft, AiOutlineShoppingCart, AiOutlineShopping } from 'react-icons/ai';
+import { AiOutlineShoppingCart, AiOutlineShopping } from 'react-icons/ai';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { Store } from '../../utils/Store';
@@ -11,7 +11,7 @@ import { useStateContext } from '../../utils/StateContext';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import Pay4Bag from './Pay4Bag';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
+import { FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -21,7 +21,7 @@ import 'swiper/css/scrollbar';
 function Cart() {
   const router = useRouter();
   const classes = useStyles();
-  const { openp4b, setOpenp4b, handleOpenp4b, handleClosep4b, cartopen, setCartopen, handleCartopen, handleCartclose } = useStateContext();
+  const { openp4b, handleOpenp4b, cartopen, handleCartclose } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -124,7 +124,7 @@ function Cart() {
                   {cartItems.map((item) => (
                     <tr key={item.slug} className="border-b">
                       <td className="pl-2">
-                        <Link href={`/product/${item.slug}`}>
+                        <Link href={`/${item.category}/${item.slug}`}>
                           <a className="flex items-center">
                             <Image
                               src={item.image[0]}

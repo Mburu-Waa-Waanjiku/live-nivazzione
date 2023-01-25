@@ -4,13 +4,10 @@ import {
   Typography,
   TextField,
   Button,
-  Link,
 } from '@material-ui/core';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import NextLink from 'next/link';
 import React, { useState, useContext, useEffect } from 'react';
-import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import useStyles from '../utils/styles';
 import Cookies from 'js-cookie';
@@ -18,12 +15,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 import { getError } from '../utils/error';
 import { useStateContext } from '../utils/StateContext';
-import Image from 'next/image';
 
 
 function Logger() {
   
-  const { login, setLogin, openLogin, closeLogin } = useStateContext();
+  const { closeLogin } = useStateContext();
   const [register, setRegister] = useState(false);
   const [passReset, setPassreset] = useState(false);
   const [divSc, setDivSc] = useState(false);
@@ -48,7 +44,6 @@ function Logger() {
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
-  const { redirect } = router.query; // login?redirect=/shipping
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   useEffect(() => {
@@ -305,9 +300,9 @@ function Logger() {
             	  	<div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
            	  	       A Link Has Been Sent To Your Email
            	  	    </div>
-           	  	    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-           	  	      <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-           	  	      <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+           	  	    <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+           	  	      <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+           	  	      <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
            	  	    </svg>
            	        <div className="mb-12">
             	    </div>

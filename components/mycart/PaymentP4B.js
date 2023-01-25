@@ -3,34 +3,26 @@ import { useStateContext } from '../../utils/StateContext';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
-import { AiOutlineShopping } from 'react-icons/ai';
 import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  List,
-  ListItem,
+  Button
 } from '@material-ui/core';
-import PaySuccess from '../PaySuccess';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
 import { useRouter } from 'next/router';
 import { getError } from '../../utils/error';
 import { useSnackbar } from 'notistack';
-import LoaderPay from '../loaders/LoaderPay';
 
 function PaymentP4B() {
   
     const router = useRouter();
     const { state, dispatch } = useContext(Store);
-    const { bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartclose, openp4b, setOpenp4b, handleClosep4b, payp4b, setPayp4b, handleClosePayp4b } = useStateContext();
+    const { handleOpenBag, handleCartclose, handleClosep4b, handleClosePayp4b } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
       register,
       formState: { errors },
       setValue,
-      control,
      } =  useForm();
      
     const {
@@ -44,11 +36,10 @@ function PaymentP4B() {
     
     const [confirming, setConfirming] = useState(false);
     const [completing, setCompleting] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const updateStockHandler = async () => {
     try {
-      const { data } = await axios.post(
+      await axios.post(
         '/api/products/updateStock',
         {
           orderItems: cartItems,
@@ -67,9 +58,9 @@ function PaymentP4B() {
     }
 
     const placeP4BHandler = async () => {
+      closeSnackbar();
       try {
-      setLoading(true);
-      const { data } = await axios.post(
+      await axios.post(
         '/api/P4Borders',
         {
           orderItems: cartItems,
@@ -83,10 +74,8 @@ function PaymentP4B() {
       );
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
-      setLoading(false);
       enqueueSnackbar('Your Bag has been updated succesfully', { variant: 'success' });
     } catch (err) {
-      setLoading(false);
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
     };
@@ -94,12 +83,13 @@ function PaymentP4B() {
     const [cphone, setCphone] = useState();
     const [camount, setCamount] = useState();
     const p4bPaymentHandler = async ({amount, phone}) => {
+      closeSnackbar();
       setCphone(phone);
       setCamount(amount);
 
        try {
         setConfirming(true);
-        const { data } = await axios.put(
+        await axios.put(
         '/api/P4Borders/pay',
         {
           amount,
@@ -116,9 +106,9 @@ function PaymentP4B() {
     }
     };
     const checkPayment = async () => {
-
+      closeSnackbar();
        try {
-        const { data } = await axios.post(
+        await axios.post(
         '/api/P4Borders/confirmpay',
         {
           phone: cphone,
@@ -166,9 +156,9 @@ function PaymentP4B() {
               <div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
                 Payment Succesfull
               </div>
-              <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
               </svg>
               <div className="mb-12">
               </div>
@@ -210,7 +200,7 @@ function PaymentP4B() {
                           <input
                             className="block w-full"
                             id="amount"
-                            readonly="readonly"
+                            readOnly="readonly"
                             autoFocus
                             {...register('amount', {
                               required: 'Please enter Amount',

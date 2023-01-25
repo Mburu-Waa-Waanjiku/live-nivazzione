@@ -13,7 +13,7 @@ function OffersHome({product}) {
 	return (
 		<div>
             <div className={classes.newpost} style={{backgroundColor: '#ffdf00'}}>{percent}%<CgBolt style={{fontSize:16}} /></div>
-            <Link href={`/product/${product.slug}`}>
+            <Link href={`${product.category}/${product.slug}`}>
                 <Image
                     width={364}
                     height={484}

@@ -15,11 +15,10 @@ import PersonIcon from '@mui/icons-material/PersonOutlined';
 import { AiOutlineShopping } from 'react-icons/ai';
 import useStyles from '../utils/styles';
 import { debounce } from '../utils/helpers';
-import Image from 'next/image';
 
 export default function Tabsbottom() {
   const classes = useStyles();
-  const { login, setLogin, openLogin, closeLogin, bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose } = useStateContext();
+  const { openLogin, handleOpenBag , handleCartopen } = useStateContext();
 
   const router = useRouter();
   const { state } = useContext(Store);
@@ -65,7 +64,7 @@ export default function Tabsbottom() {
                       <AiOutlineShopping style={{ fontSize: 24 }}/>
                     )}  />
             
-            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={setCartopen} icon={cart.cartItems.length > 0 ? (
+            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleCartopen} icon={cart.cartItems.length > 0 ? (
                       <Badge
                         classes={{ badge: classes.badgeLg }}
                         badgeContent={cart.cartItems.length}

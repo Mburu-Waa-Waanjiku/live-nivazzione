@@ -2,10 +2,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useStateContext } from '../utils/StateContext';
 
-export default function ProductNocart({ product, addToCartHandler }) {
+export default function ProductNocart({ product }) {
    
   const { handleClickSearchf } = useStateContext();
 
@@ -13,7 +12,7 @@ export default function ProductNocart({ product, addToCartHandler }) {
   return (
     <div className="card">
     <div className="gallery">
-      <Link href={`/product/${product.slug}`}>
+      <Link href={`${product.category}/${product.slug}`}>
         <a>
           <Image
             width={364}

@@ -1,18 +1,13 @@
-import axios from 'axios';
 import dynamic from 'next/dynamic';
 import useStyles from '../../utils/styles';
 import Image from 'next/image';
-import { AiOutlineShopping } from 'react-icons/ai';
 import { useStateContext } from '../../utils/StateContext';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import React, { useState, useEffect, useContext, useReducer } from 'react';
-import Loader from '../Loader';
+import React, { useState, useEffect, useContext } from 'react';
 import CollectP from './CollectP';
 import {
   Grid,
   Typography,
-  CircularProgress,
   Button,
   Card,
   List, 
@@ -22,9 +17,7 @@ import {
   Radio,
   RadioGroup,
 } from '@material-ui/core';
-import { getError } from '../../utils/error';
 import { Store } from '../../utils/Store';
-import Layout from '../Layout';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import Cookies from 'js-cookie';
 import { useSnackbar } from 'notistack';
@@ -101,7 +94,7 @@ function Shipporder() {
     setCounty(event.target.value);
     setView(true);
   };
-  const handleDropstation =(evant) => {
+  const handleDropstation =(event) => {
     setDropstation(event.target.value);
   };
 
@@ -109,15 +102,12 @@ function Shipporder() {
     handleSubmit,
     register,
     formState: { errors },
-    setValue,
     control,
   } = useForm();
-  const { login, setLogin, openLogin, closeLogin, makeOrder, setMakeOrder, handleCollect, handleClosecollect, collectpay, setCollectpay, handleOpenCP, handleCloseCP } = useStateContext();
+  const { openLogin, makeOrder, handleClosecollect, collectpay, handleOpenCP } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { userInfo, bagitems, cart } = state;
   const { shippingAddress } = cart;
-
-  const router = useRouter();
    
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const itemsPrice = bagitems[0]?.itemsPrice;
@@ -128,7 +118,7 @@ function Shipporder() {
         shippingPrice = 60
       } else {
           shippingPrice = 0
-      };
+      }
   const taxPrice = round0(13 * itemsPrice / 100);
   const totalPrice = round0(itemsPrice + shippingPrice + taxPrice);
   const payout = round0(shippingPrice + taxPrice);
@@ -243,7 +233,7 @@ function Shipporder() {
                       onSlideChange={() => console.log('slide change')}
                      >
                         {bagitems.map((bag) =>(
-                          <div>
+                          <div key={bag._id}>
                            {bag.orderItems?.map((item) => ( 
                             <SwiperSlide key={item._id}>
                               <div style={{borderRadius:"10px",margin:"0 3px 5px 3px" , boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)"}}>
@@ -411,7 +401,7 @@ function Shipporder() {
                     </option>
                   ))}  
                   <option disabled style={{color: 'green', display:'block'}}>
-                    <div>YOU'RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
+                    <div>YOU&apos;RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
                     <div>VISIT us on Whatsapp 👇👇 for customized delivery🛍️ 😊</div>
                   </option>            
                 </select>
@@ -426,7 +416,7 @@ function Shipporder() {
                     className="w-full block"
                     id="shippingPrice"
                     value= "KSh 120"
-                    readonly="readonly"
+                    readOnly="readonly"
                   />
                 </div>
               <div className="w-5/12 mb-4 grow" style={{display: view ? "block" : "none"}}>
@@ -491,15 +481,6 @@ function Shipporder() {
                          {LAVINGTON}
                         </option>
                       ))} 
-                    </>
-                  }
-                  {county === 'PANGANI' && 
-                    <>
-                      {PANGANI.map((PANGANI) => (
-                        <option key={PANGANI} value={PANGANI}>
-                         {PANGANI}
-                        </option>
-                      ))}
                     </>
                   }
                   {county === 'ROASTERS' && 

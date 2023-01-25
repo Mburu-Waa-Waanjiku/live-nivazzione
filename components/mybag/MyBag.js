@@ -5,12 +5,9 @@ import Image from 'next/image';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { useStateContext } from '../../utils/StateContext';
 import { useRouter } from 'next/router';
-import React, { useEffect, useContext, useReducer } from 'react';
-import Loader from '../Loader';
-import { Button } from '@material-ui/core';
+import React, { useEffect, useContext } from 'react';
 import { getError } from '../../utils/error';
 import { Store } from '../../utils/Store';
-import Layout from '../Layout';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import Cookies from 'js-cookie';
 import Shipporder from './Shipporder';
@@ -19,8 +16,8 @@ function MyBag() {
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
   const classes = useStyles();
-  const { userInfo, loading, error, bagitems } = state;
-  const { makeOrder, setMakeOrder, handleCollect, bag, setBag, handleCloseBag } = useStateContext();
+  const { userInfo, bagitems } = state;
+  const { makeOrder, handleCollect, bag, handleCloseBag } = useStateContext();
 
   useEffect(() => {
     const fetchBags = async () => {
@@ -53,10 +50,10 @@ function MyBag() {
       </div>
       <div style={{top: 0, overflowY: "auto", marginLeft: "10px", marginRight: 10, paddingTop: 10, height:"83%", overflowX: "hidden"}} className=" relative">
         {bagitems.map((bag) => (
-          <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+          <div key={bag._id} className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
             {bag.orderItems?.map((images) => (
-              <div>
-                <Image className="bg-gray-100" width={364} height={484} src={images.image[0]}/>
+              <div key={images}>
+                <Image alt="" className="bg-gray-100" width={364} height={484} src={images.image[0]}/>
               </div>
             ))}
           </div>

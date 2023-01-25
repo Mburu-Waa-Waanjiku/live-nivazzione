@@ -3,33 +3,25 @@ import { useStateContext } from '../../utils/StateContext';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
-import { AiOutlineShopping } from 'react-icons/ai';
 import {
   Button,
-  FormControl,
-  FormControlLabel,
-  List,
-  ListItem,
 } from '@material-ui/core';
-import PaySuccess from '../PaySuccess';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
 import { useRouter } from 'next/router';
 import { getError } from '../../utils/error';
 import { useSnackbar } from 'notistack';
-import LoaderPay from '../loaders/LoaderPay';
 
 function Pay() {
   
     const router = useRouter();
-    const { normalorderP, setNormalorderP, handleCloseNormalOP } = useStateContext();
+    const { handleCloseNormalOP } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
       register,
       formState: { errors },
       setValue,
-      control,
      } =  useForm();
      
     const { state, dispatch } = useContext(Store);
@@ -50,21 +42,38 @@ function Pay() {
           shippingPrice = 50
         } else {
           shippingPrice = 0
-      };
+      }
     const taxPrice = round0(itemsPrice * 7 /100);
     const oldTotalPrice = round0(itemsPrice + shippingPrice + taxPrice);
     const totalPrice = cartItems.length > 2 ? round0(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
 
     const [confirming, setConfirming] = useState(false);
     const [completing, setCompleting] = useState(false);
-    const [loading, setLoading] = useState(false);
     
+    const updateStockHandler = async () => {
+      try {
+        await axios.post(
+          '/api/products/updateStock',
+          {
+            orderItems: cartItems,
+          },
+          {
+            headers: {
+              authorization: `Bearer ${userInfo.token}`,
+            },
+          } 
+        );
+        dispatch({ type: 'UPDATE_STOCK' });
+        console.log('stock updated successfuly');
+      } catch (err) {
+        console.log('error updating  stock');
+      }
+    };
 
     const placeOrderHandler = async () => {
     if (cartItems.length > 2) {
     closeSnackbar();
     try {
-      setLoading(true);
       const { data } = await axios.post(
         '/api/orders',
         {
@@ -88,17 +97,14 @@ function Pay() {
       );
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
-      setLoading(false);
       enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
       router.push(`/order/${data._id}`);
     } catch (err) {
-      setLoading(false);
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
    }else {
      closeSnackbar();
     try {
-      setLoading(true);
       const { data } = await axios.post(
         '/api/orders',
         {
@@ -120,14 +126,12 @@ function Pay() {
       );
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
-      setLoading(false);
       enqueueSnackbar('Order created succesfully', { variant: 'success' });
       router.push(`/order/${data._id}`);
     } catch (err) {
-      setLoading(false);
       enqueueSnackbar(getError(err), { variant: 'error' });
       }
-     }; 
+     }
     };
 
     const [cphone, setCphone] = useState();
@@ -138,7 +142,7 @@ function Pay() {
 
        try {
         setConfirming(true);
-        const { data } = await axios.put(
+        await axios.put(
         '/api/P4Borders/pay',
         {
           amount,
@@ -157,7 +161,7 @@ function Pay() {
     const checkPayment = async () => {
 
        try {
-        const { data } = await axios.post(
+        await axios.post(
         '/api/P4Borders/confirmpay',
         {
           phone: cphone,
@@ -171,6 +175,7 @@ function Pay() {
       );
      setCompleting(true); 
      await new Promise(resolve => setTimeout(resolve, 2000));
+     updateStockHandler();
      placeOrderHandler();
      await new Promise(resolve => setTimeout(resolve, 3000));
      handleCloseNormalOP();
@@ -200,9 +205,9 @@ function Pay() {
               <div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
                 Payment Succesfull
               </div>
-              <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
               </svg>
               <div className="mb-12">
               </div>
@@ -244,7 +249,7 @@ function Pay() {
                           <input
                             className="block w-full"
                             id="amount"
-                            readonly="readonly"
+                            readOnly="readonly"
                             autoFocus
                             {...register('amount', {
                               required: 'Please enter Amount',

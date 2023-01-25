@@ -10,7 +10,7 @@ import { FaTruckMoving } from 'react-icons/fa';
 import { BiBox } from 'react-icons/bi';
  
 function FooterDocs() {
-    const { openinfos, setOpeninfos, handleCloseinfos, handleOpeninfosHelp, handleOpeninfosReturn, handleOpeninfosShipping} = useStateContext();
+    const { openinfos, handleCloseinfos } = useStateContext();
 
     const classes = useStyles();
 	return (
@@ -24,12 +24,12 @@ function FooterDocs() {
           <div className="w-full p-3" style={{overflowX: 'auto', height: '90%' }}>
             <div>
               <div className="mt-3">
-                "FASHON IS CONFIDENCE. WE ARE A BRAND THAT BRINGS OUT YOUR FASHON PASSION AND MAKES THE BEYOND REACH PRODUCTS AVAILABLE, AFFORDABLE AND TURNS THEM TO YOUR STYLE. WHAT DO YOU CRAVE FOR ??"
+                &quot; FASHON IS CONFIDENCE. WE ARE A BRAND THAT BRINGS OUT YOUR FASHON PASSION AND MAKES THE BEYOND REACH PRODUCTS AVAILABLE, AFFORDABLE AND TURNS THEM TO YOUR STYLE. WHAT DO YOU CRAVE FOR ?? &quot;
                 <div style={{float: 'right', fontWeight: 600}}>— FOUNDER</div>
               </div>
               <div className="my-4 text-left text-lg font-medium"> About Us</div>
               <div style={{ textAlign: 'left', fontSize: '1rem', color: '#222222'}}>
-                shiglam has been dedicated to providing unique fashion products to consumers around Kenya since November 2022. shiglam has always held women's opinions close to its core and has forged close relationships with customers passionate about fashion, aesthetics, and lifestyle.
+                shiglam has been dedicated to providing unique fashion products to consumers around Kenya since November 2022. shiglam has always held women&apos;s opinions close to its core and has forged close relationships with customers passionate about fashion, aesthetics, and lifestyle.
               </div>
               <div className="footerdocs">
                 Since its establishment, shiglam has been spreading influence arround Kenya, spreading merry lifestyles.
@@ -75,15 +75,15 @@ function FooterDocs() {
               <div className="home-ft" ><Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png"></Image></div>
               <div id="shipping" className="flex mt-2"><FaTruckMoving style={{fontSize:23}}/> <div className="footerdocsinner" style={{marginTop: 1, marginLeft: 12}}>Fast Delivery</div></div>
               <div className="footerdocs">
-                Cooperating with <b>Pickup Mtaani</b>, a renowned logistics operators, we offer a different shipping options to fit every customer's need.
+                Cooperating with <b>Pickup Mtaani</b>, a renowned logistics operators, we offer a different shipping options to fit every customer&apos;s need.
               </div>
               <div id="return" className="flex mt-2"><BiBox style={{fontSize:23}}/><div className="footerdocsinner" style={{marginTop: 1, marginLeft: 12}}>Easy Return</div></div>
               <div className="footerdocs">
-                We strive to offer the best shopping experience. If you're not absolutely satisfied with your orders, we'll fix it or refund your purchase.
+                We strive to offer the best shopping experience. If you&apos;re not absolutely satisfied with your orders, we&apos;ll fix it or refund your purchase.
               </div>
               <div className="flex justify-center my-6">
                   <div style={{display: 'inline-flex', border: '1px solid gray', color: 'black', lineHeight: 1, padding: '5px 10px' }}>
-                    Return policy >>
+                    Return policy &gt;&gt;
                   </div>
               </div>    
             </div>

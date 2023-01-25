@@ -13,7 +13,6 @@ import {
   createMuiTheme,
   ThemeProvider,
   CssBaseline,
-  Switch,
   Badge,
   Button,
   Menu,
@@ -24,7 +23,6 @@ import {
   List,
   ListItem,
   Divider,
-  ListItemText,
   InputBase,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -42,16 +40,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useStyles from '../utils/styles';
 import { Store } from '../utils/Store';
 import Image from 'next/image';
-import { getError } from '../utils/error';
 import Cookies from 'js-cookie';
 import Tabs from "@mui/material/Tabs"; 
 import Tab from "@mui/material/Tab";
-import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import { useStateContext } from '../utils/StateContext';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import ProductNocart from './ProductNocart'; 
 import Cart from './mycart/Cart';
@@ -68,7 +63,7 @@ const DynamicLogger = dynamic(() => import('./Logger'), {
 
 export default function Layout({ title, description, children, socialtitle, socialimages, socialdesc }) {
   const router = useRouter();
-  const { login, setLogin, openLogin, bag, setBag, handleOpenBag, cartopen, setCartopen, handleCartopen, handleCartclose, openinfos, setOpeninfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, handleCloseinfos, searchClick, setSearchClick, searchBtn, setSearchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, setSidebarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ, setCateg } = useStateContext();
+  const { login, openLogin, handleOpenBag, handleCartopen, openinfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, searchClick, searchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, sidebarOpenHandler, sidebarCloseHandler, handleAppbar, categ } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo, bagitems } = state;
   const theme = createMuiTheme({
@@ -96,10 +91,8 @@ export default function Layout({ title, description, children, socialtitle, soci
   });
   const classes = useStyles();
 
-  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
 
   const fetchProducts = async () => {
     try {
@@ -185,6 +178,11 @@ export default function Layout({ title, description, children, socialtitle, soci
         {socialimages && <meta
           property="og:image"
           content={socialimages}
+        />}
+        {scdinfo && <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={scdinfo}
+          key="product-jsonld"
         />}
         <link rel="icon" href="/shiglama.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
@@ -356,11 +354,7 @@ export default function Layout({ title, description, children, socialtitle, soci
                       aria-haspopup="true"
                       className={classes.navbarButton}
                      >
-                      <NextLink  href="/login" passHref>
-                        <Link>
-                          <Typography className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
-                        </Link>
-                      </NextLink>
+                      <Typography onClick={openLogin} className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
                     </Button>
                   </>
                 </div>

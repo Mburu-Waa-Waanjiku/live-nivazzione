@@ -16,7 +16,7 @@ function YourFoto({product, addToCartHandler}) {
             <div>
                 <div className="salesticker"><CgBolt style={{fontSize:16, marginBottom: 2}} />{percent}%</div>
             </div>
-			<Link href={`/product/${product.slug}`}>
+			<Link href={`${product.category}/${product.slug}`}>
                 <Image
                     width={364}
                     height={484}

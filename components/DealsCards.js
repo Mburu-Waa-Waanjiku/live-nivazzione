@@ -13,7 +13,7 @@ export default function ProductItem({ product, addToCartHandler }) {
       <div className={classes.newpostb}>
         NEW
       </div>
-      <Link href={`/product/${product.slug}`}>
+      <Link href={`${product.category}/${product.slug}`}>
         <a>
           <Image
             width={364}

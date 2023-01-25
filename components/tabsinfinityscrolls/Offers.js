@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
-import useStyles from '../../utils/styles';
-import ProductItem from '../ProductItem';
 import { useContext } from 'react';
 import { Store } from '../../utils/Store';
 import axios from 'axios';
@@ -10,7 +8,6 @@ import Loader from '../Loader';
 import YourFoto from '../YourFoto';
 
 export default function Offers() {
-   const classes = useStyles();
    const { state, dispatch } = useContext(Store);
    const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
     "infiniteCharacters",

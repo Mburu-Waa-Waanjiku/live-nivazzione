@@ -8,7 +8,7 @@ export default function ProductItem({ product, addToCartHandler }) {
   return (
     <div className="card">
     <div className="gallery">
-      <Link href={`/product/${product.slug}`}>
+      <Link href={`${product.category}/${product.slug}`}>
         <a>
           <Image
             width={364}

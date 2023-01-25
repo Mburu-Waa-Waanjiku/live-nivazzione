@@ -3,33 +3,25 @@ import { useStateContext } from '../../utils/StateContext';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
-import { AiOutlineShopping } from 'react-icons/ai';
 import {
   Button,
-  FormControl,
-  FormControlLabel,
-  List,
-  ListItem,
 } from '@material-ui/core';
-import PaySuccess from '../PaySuccess';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
 import { useRouter } from 'next/router';
 import { getError } from '../../utils/error';
 import { useSnackbar } from 'notistack';
-import LoaderPay from '../loaders/LoaderPay';
 
 function PaymentP4B() {
   
     const router = useRouter();
-    const { login, setLogin, closeLogin, collectpay, setCollectpay, handleCloseCP, makeOrder, setMakeOrder, handleClosecollect, bag, setBag, handleCloseBag } = useStateContext();
+    const { openLogin, handleCloseCP, handleClosecollect, handleCloseBag } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
       register,
       formState: { errors },
       setValue,
-      control,
      } =  useForm();
      
     const { state, dispatch } = useContext(Store);
@@ -45,19 +37,17 @@ function PaymentP4B() {
         shippingPrice = 60
       } else {
           shippingPrice = 0
-      };
+      }
     const taxPrice = round0(13 * itemsPrice / 100);
     const totalPrice = round0(itemsPrice + shippingPrice + taxPrice);
     const payout = round0( shippingPrice + taxPrice);
 
     const [confirming, setConfirming] = useState(false);
     const [completing, setCompleting] = useState(false);
-    const [loading, setLoading] = useState(false);
     
     const clearMybag = async () => {
       try {
-      setLoading(true);
-      const { data } = await axios.delete(
+      await axios.delete(
         '/api/P4Borders/delete',
         {
           data: { ID : bagitems[0]._id }
@@ -70,9 +60,7 @@ function PaymentP4B() {
       );
       dispatch({ type: 'EMPTY_BAG' });
       Cookies.remove('bagitems');
-      setLoading(false);
     } catch (err) {
-      setLoading(false);
       enqueueSnackbar(getError(err), { variant: 'error' });
     } 
     } ;
@@ -80,7 +68,6 @@ function PaymentP4B() {
     const placeOrderHandler = async () => {
     closeSnackbar();
     try {
-      setLoading(true);
       const { data } = await axios.post(
         '/api/orders',
         {
@@ -100,11 +87,9 @@ function PaymentP4B() {
           },
         }
       );
-      setLoading(false);
       enqueueSnackbar('Order created succesfully', { variant: 'success' });
       await router.push(`/order/${data._id}`);
     } catch (err) {
-      setLoading(false);
       enqueueSnackbar("Please Check Whether You Are Logged In");
     } 
   };
@@ -117,7 +102,7 @@ function PaymentP4B() {
 
        try {
         setConfirming(true);
-        const { data } = await axios.put(
+        await axios.put(
         '/api/P4Borders/pay',
         {
           amount,
@@ -136,7 +121,7 @@ function PaymentP4B() {
     const checkPayment = async () => {
 
        try {
-        const { data } = await axios.post(
+        await axios.post(
         '/api/P4Borders/confirmpay',
         {
           phone: cphone,
@@ -181,9 +166,9 @@ function PaymentP4B() {
               <div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
                 Payment Succesfull
               </div>
-              <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
               </svg>
               <div className="mb-12">
               </div>
@@ -225,7 +210,7 @@ function PaymentP4B() {
                           <input
                             className="block w-full"
                             id="amount"
-                            readonly="readonly"
+                            readOnly="readonly"
                             autoFocus
                             {...register('amount', {
                               required: 'Please enter Amount',

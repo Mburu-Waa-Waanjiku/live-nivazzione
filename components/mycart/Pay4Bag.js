@@ -1,13 +1,11 @@
 import Image from 'next/image';
-import { AiOutlineLeft, AiOutlineShopping } from 'react-icons/ai';
+import { AiOutlineShopping } from 'react-icons/ai';
 import Link from 'next/link';
 import React, { useEffect, useContext, useState } from 'react';
 import { Store } from '../../utils/Store';
-import { useRouter } from 'next/router';
 import useStyles from '../../utils/styles';
 import { useStateContext } from '../../utils/StateContext';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
-import { Button } from '@material-ui/core';
 import PaymentP4B from './PaymentP4B';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, FreeMode, } from 'swiper';
@@ -19,10 +17,9 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 export default function Pay4Bag() {
-  const router = useRouter(); 
   const classes = useStyles();
-  const { login, setLogin, openLogin, closeLogin, cartopen, setCartopen, handleCartopen, handleCartclose, openp4b, setOpenp4b, handleOpenp4b, handleClosep4b, payp4b, setPayp4b, handleOpenPayp4b } = useStateContext();
-  const { state, dispatch } = useContext(Store);
+  const { openLogin, openp4b, handleClosep4b, payp4b, handleOpenPayp4b } = useStateContext();
+  const { state } = useContext(Store);
   const { userInfo, cart } = state;
   const { cartItems } = cart;
   const {
@@ -101,7 +98,7 @@ export default function Pay4Bag() {
                 <div style={{borderRadius:"10px",margin:"0 3px 5px 3px" , boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)"}}>
                   <div className="gallery">
                     <div>
-                      <Link href={`/product/${item.slug}`}>
+                      <Link href={`/${item.category}/${item.slug}`}>
                         <Image
                           src={item.image[0]}
                           alt={item.name}
@@ -157,7 +154,7 @@ export default function Pay4Bag() {
                       </option>
                     ))}  
                     <option disabled style={{color: 'green', display:'block'}}>
-                      <div>YOU'RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
+                      <div>YOU&apos;RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
                       <div>VISIT us on Whatsapp 👇👇 for customized delivery🛍️ 😊</div>
                     </option>            
                   </select>
