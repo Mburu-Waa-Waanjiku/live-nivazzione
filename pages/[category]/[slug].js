@@ -81,7 +81,9 @@ export default function ProductScreen(props) {
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
   
-    function addProductJsonLd() {
+  const URL = `https://shiglam.com/${product.category}/${product.slug}`;
+
+  function addProductJsonLd() {
     return {
       __html: `{
       "@context": "https://schema.org/",
@@ -112,7 +114,7 @@ export default function ProductScreen(props) {
       },
       "offers": {
         "@type": "Offer",
-        "url": `https://shiglam.com/${product.category}/${product.slug}`,
+        "url": URL,
         "priceCurrency": "KES",
         "price": product.price,
         "priceValidUntil": "2023-2-14",
