@@ -165,7 +165,12 @@ export default function Layout({ title, description, children, socialtitle, soci
     <div>
       <Head>
         <title>{title ? `${title} - shiglam` : 'shiglam '}</title>
-        {description && <meta name="description" charset="UTF-8" content={description}></meta>}
+        {desc && <meta 
+          name="description" 
+          charset="UTF-8" 
+          content={desc}
+          key="desc"
+        />}
         <meta name="google-site-verification" content="tK9s0pQ66YNPGPxWplFwgCSa8dlOmhBlJLmRr_ZLLTM" />
         {socialtitle && <meta 
           property="og:title" 
