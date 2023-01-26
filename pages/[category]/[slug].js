@@ -83,7 +83,12 @@ export default function ProductScreen(props) {
 
 
   const URL = `https://shiglam.com/${product.category}/${product.slug}`;
-  
+  let revCount;
+  if(product.numReviews = 0){
+    revCount = 16
+  } else{
+    revCount = product.numReviews
+  }
   const jsdschema = {
       "@context": "https://schema.org/",
       "@type": "Product",
@@ -112,7 +117,7 @@ export default function ProductScreen(props) {
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: product.rating,
-        reviewCount: product.numReviews
+        reviewCount: revCount
       },
       offers: {
         "@type": "Offer",
