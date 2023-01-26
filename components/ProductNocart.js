@@ -40,7 +40,7 @@ export default function ProductNocart({ product }) {
         },
         author: {
           "@type": "Person",
-          name: product.reviews[0]?.name || "Diane"
+          name: product.reviews?.name || "Diane"
         }
       },
       aggregateRating: {
