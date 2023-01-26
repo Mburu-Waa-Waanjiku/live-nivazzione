@@ -56,6 +56,7 @@ function YourFoto({product, addToCartHandler}) {
         url: URL,
         offerCount: offerStock,
         priceCurrency: "KES",
+        price: product.price,
         lowPrice: product.price,
         highPrice: product.prevprice,
         priceValidUntil: "2023-2-14",
