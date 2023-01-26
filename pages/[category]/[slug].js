@@ -101,7 +101,7 @@ export default function ProductScreen(props) {
         "@type": "Review",
         reviewRating: {
           "@type": "Rating",
-          ratingValue: 4,
+          ratingValue: 5,
           bestRating: 5
         },
         author: {
@@ -112,7 +112,7 @@ export default function ProductScreen(props) {
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: product.rating,
-        reviewCount: Reviews[0]?.length
+        reviewCount: product.numReviews
       },
       offers: {
         "@type": "Offer",
