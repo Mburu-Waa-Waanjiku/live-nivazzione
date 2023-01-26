@@ -80,47 +80,55 @@ export default function ProductScreen(props) {
 
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
+
+
+  const URL = `https://shiglam.com/${product.category}/${product.slug}`;
   
+  const jsdschema = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      name: product.name,
+      image: [ 
+                product.image[0],
+                product.image[1] 
+              ],
+      description: product.description,
+      brand: {
+        "@type": "Brand",
+        name: product.brand
+      },
+      review: {
+        "@type": "Review",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: 4,
+          bestRating: 5
+        },
+        author: {
+          "@type": "Person",
+          name: Reviews[0]?.name || "Diane"
+        }
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: product.rating,
+        reviewCount: Reviews[0]?.length
+      },
+      offers: {
+        "@type": "Offer",
+        url: URL,
+        priceCurrency: "KES",
+        price: product.price,
+        priceValidUntil: "2023-2-14",
+        itemCondition: "https://schema.org/NewCondition",
+        availability: "https://schema.org/InStock"
+      }
+    };
+
 
   function addProductJsonLd() {
     return {
-      __html: `{
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      "name": product.name,
-      "image": product.image,
-      "description": product.description,
-      "brand": {
-        "@type": "Brand",
-        "name": product.brand
-      },
-      "review": {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "4",
-          "bestRating": "5"
-        },
-        "author": {
-          "@type": "Person",
-          "name": product.reviews[0]?.name
-        }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": product.rating,
-        "reviewCount": product.reviews[0]?.length
-      },
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "KES",
-        "price": product.price,
-        "priceValidUntil": "2023-2-14",
-        "itemCondition": "https://schema.org/NewCondition",
-        "availability": "https://schema.org/InStock"
-      }
-    }
-  `,
+      __html: JSON.stringify(jsdschema),
     };
   }
 
