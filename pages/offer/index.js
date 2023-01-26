@@ -27,7 +27,7 @@ const { categories, banner} = props;
   return (
     <> 
        <Layout title="SHIGLAM OFFERS KENYA — Women's Fashon,  Jewelry , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES "
-               content="Get NEW and LATEST products at UNBELIEVABLE offers from SHIGLAM KENYA — Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.1......"
+               desc="Get The Biggest Deals & Offers from SHIGLAM in Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Make-Up ACCESSORIES from as low as Ksh.1......"
        >
           <div className="margintopFix home-ft">SHIGLAM DEALS </div>
           <div className={classes.mideaSmallBannerResp} style={{marginTop:0, display:"none"}}><Image className="bg-gray-100" width={2600} height={340} alt="" src={banner[5].image[0]}></Image> </div>

@@ -59,8 +59,8 @@ const { categories } = props;
   
   return (
     <> 
-       <Layout title="SHIGLAM DAILYDROPS, Get NEW and LATEST trends at SHIGLAM KENYA, Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam."
-               content="SHIGLAM DAILYDROPS Get NEW and LATEST trends at SHIGLAM KENYA - Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
+       <Layout title="SHIGLAM DAILYDROPS, NEW and LATEST trends at SHIGLAM KENYA, Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam."
+               desc="Get NEW and LATEST trends in Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
        >
         <div className=" margintopFix home-ft">NEW PRODUCTS</div>
         <TabContext value={value}>          

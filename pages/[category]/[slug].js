@@ -85,7 +85,7 @@ export default function ProductScreen(props) {
   const URL = `https://shiglam.com/${product.category}/${product.slug}`;
   let revCount;
   if(product.numReviews < 1){
-    revCount = 16
+    revCount = Math.floor(Math.random() * 20) + 1;
   } else{
     revCount = product.numReviews
   }
@@ -140,7 +140,7 @@ export default function ProductScreen(props) {
   return (
     <>
       <Layout title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
-        description={product.description}
+        desc={product.description}
         socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
         socialdesc={product.description}
         socialimages={product.image[0]}
