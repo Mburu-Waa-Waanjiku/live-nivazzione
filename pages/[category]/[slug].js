@@ -84,7 +84,7 @@ export default function ProductScreen(props) {
 
   const URL = `https://shiglam.com/${product.category}/${product.slug}`;
   let revCount;
-  if(product.numReviews = 0){
+  if(product.numReviews < 1){
     revCount = 16
   } else{
     revCount = product.numReviews
