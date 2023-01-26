@@ -3,91 +3,74 @@ import ProgressBar from './ProgressBar';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-import Head from 'next/head';
+import HeadersContainer from './HeadersContainer';
 
 function BestSeller({product, addToCartHandler}) {
-  
-  function addProductJsonLd() {
-    return {
-      __html: `{
+   
+  const URL = `https://shiglam.com/`;
+  let revCount;
+  if(product.numReviews < 1){
+    revCount = 16
+  } else{
+    revCount = product.numReviews
+  }
+  const offerStock = Math.floor(Math.random() * 20) + 1;
+
+  const jsdschema = {
       "@context": "https://schema.org/",
       "@type": "Product",
-      "name": product.name,
-      "image": product.image,
-      "description": product.description,
-      "brand": {
+      name: product.name,
+      image: [ 
+                product.image[0],
+                product.image[1] 
+              ],
+      description: product.description,
+      brand: {
         "@type": "Brand",
-        "name": product.brand
+        name: product.brand
       },
-      "review": {
+      review: {
         "@type": "Review",
-        "reviewRating": {
+        reviewRating: {
           "@type": "Rating",
-          "ratingValue": "4",
-          "bestRating": "5"
+          ratingValue: 5,
+          bestRating: 5
         },
-        "author": {
+        author: {
           "@type": "Person",
-          "name": product.reviews[0]?.name
+          name: product.reviews?.name || "Diane"
         }
       },
-      "aggregateRating": {
+      aggregateRating: {
         "@type": "AggregateRating",
-        "ratingValue": product.rating,
-        "reviewCount": product.reviews[0]?.length
+        ratingValue: product.rating,
+        reviewCount: revCount
       },
-      "offers": {
+      offers: {
         "@type": "Offer",
-        "url": URL,
-        "priceCurrency": "KES",
-        "price": product.price,
-        "priceValidUntil": "2023-2-14",
-        "itemCondition": "https://schema.org/NewCondition",
-        "availability": "https://schema.org/InStock"
+        url: URL,
+        offerCount: offerStock,
+        priceCurrency: "KES",
+        price: product.price,
+        priceValidUntil: "2023-2-14",
+        itemCondition: "https://schema.org/NewCondition",
+        availability: "https://schema.org/InStock"
       }
-      "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": {
-            "@type": "MonetaryAmount",
-            "value": "0",
-            "currency": "KES"
-          },
-          "shippingDestination": {
-            "@type": "DefinedRegion",
-            "addressCountry": "KE"
-          },
-          "deliveryTime": {
-            "@type": "ShippingDeliveryTime",
-            "handlingTime": {
-              "@type": "QuantitativeValue",
-              "minValue": "0",
-              "maxValue": "1"
-            },
-            "transitTime": {
-              "@type": "QuantitativeValue",
-              "minValue": "1",
-              "maxValue": "3"
-            }
-          }
-    }
-  `,
     };
-  }
+    
+    function addProductJsonLd() {
+    return {
+      __html: JSON.stringify(jsdschema),
+      };
+    }
 
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const sales = product.initialStock - product.countInStock;
   const percent = round0(sales/product.initialStock * 100);
-  const URL = `https://shiglam.com/${product.category}/${product.slug}`;
 
 	return (
 		<div className="card">
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={addProductJsonLd()}
-          key="product-jsonld"
-        />
-      </Head>
+      <HeadersContainer data={addProductJsonLd()} />
       <div className="gallery" style={{borderRadius: 0}}>
         <Link href={`${product.category}/${product.slug}`}>
           <a>
