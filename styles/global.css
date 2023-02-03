@@ -1,13 +1,8 @@
 
-.body{
-      font-family     : Muli,Arial,Helvetica,sans-serif!important;
-      position        : relative;
-      top             : 0px;
-    
-      background-image: none;
-      margin          :10px ;
-      backgrond-color : #f0f0f0;
-    }
+body{
+    font-size: 13px !important;
+    background-color: white;
+    }   
 .tabb button.css-1t4lqmc-MuiButtonBase-root-MuiTab-root.Mui-selected 
 {
     color: black;
@@ -182,7 +177,6 @@ position: absolute;
 }
 .card {
     margin-bottom: 0rem;
-    display: block;
     border-width: 0px;
     --tw-border-opacity: 0;
     border-color: white;
@@ -244,6 +238,7 @@ position: absolute;
    position: relative;
   text-align: center;
   color: black;
+  background-color: white;
   text-decoration: none;
 }
 
@@ -276,18 +271,6 @@ position: absolute;
 {
   line-height: 30px;
   font-size: 13px;
-
-
-}
-
-.loves
-{
-  display: inline-block;
-  float: right;
-  border-radius: 5px 10px;
-  background-color:black;
-  padding: 5px 10px 5px 10px;
-  color: white;
 }
 .lovesO {
   display: block;
@@ -959,6 +942,9 @@ span.swiper-pagination-bullet {
 .w-max {
   max-width: 420px;
   min-width: 50px;
+}
+.MuiRadio-colorSecondary.Mui-checked {
+    color: #222 !important;
 }
 div.css-96yce9 .SnackbarItem-variantError {
     background-color: ghostwhite !important;

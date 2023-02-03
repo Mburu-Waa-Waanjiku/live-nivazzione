@@ -1,0 +1,65 @@
+.Maskcontent {
+    width: 100%;
+    height: 100%;
+}
+.Mascontent .LinkGalleryPreview, .Maskcontent>div:first-child {
+    height: 100%;
+}
+.LinkGalleryPreview {
+    padding: 48px 16px 16px;
+    background: url(https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg) #cabeb1 no-repeat 50%; 
+    background-gradient-end: #cabeb1;
+    text-color: #ffffff;
+    background-size: cover;
+    font-family: "proxima-nova","sans-serif";
+    font-family: "comic sans ms","sans-serif";
+}
+.flexcolumn {
+    display: flex;
+    flex-direction: column;
+}
+.Asm {
+    font-size: .75rem;
+    font-size: var(--display-xxsmall);
+}
+.A {
+    position: relative;
+    padding: 0;
+    color: #2281c2;
+    color: var(--color-blue-600);
+    font-weight: 600;
+    font-weight: var(--weight-semibold);
+    line-height: 1.33;
+    letter-spacing: -.1px;
+    text-decoration: none;
+}
+.LinkGalleryExtras {
+	display: flex;
+	margin-top: 24px!important;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+.Avatarprofile {
+    width: 72px;
+    height: 72px;
+}
+.Avatar {
+    display: flex;
+    flex-shrink: 0;
+}
+.Avatarimg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.Avatarimg img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.social {
+    font-size: 25px;
+    padding: 3px 6px;
+    color: white;
+}

@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
-    backgroundColor: 'black !important',
+    backgroundColor: 'rgba(255, 255, 255, 0.9) !important',
     position: 'sticky !important',
     top: 0,
     '& a': {
@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   main: {
     minHeight: '80vh',
+    backgroundColor: 'white'
   },
   footer: {
     marginTop: 10,
@@ -99,7 +100,8 @@ const useStyles = makeStyles((theme) => ({
   },
   reviewBody: {
     padding: 30,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: '#eeeeee',
+    borderRadius: 20,
   },
   reviewAllBody: {
     transitionProperty: 'all',
@@ -406,7 +408,7 @@ const useStyles = makeStyles((theme) => ({
   newpostb: {
     position: 'absolute',
     zIndex: 2,
-    marginTop: 10,
+    marginTop: 20,
     backgroundColor: '#00C949',
     color: 'white',
     width: 35,
@@ -428,17 +430,20 @@ const useStyles = makeStyles((theme) => ({
   },
   badge: {
     color: 'white',
-    border: '3px solid black',
+    border: '3px solid white',
     width: '4px',
     fontSize: '10px',
-    backgroundColor: ' #579fef',
+    backgroundColor: ' #222',
+  },
+  transparent: {
+    border: '3px solid transparent',
   },
   badgeLg: {
     color: 'white',
     border: '2px solid white',
     width: '4px',
     fontSize: '10px',
-    backgroundColor: '#579fef',
+    backgroundColor: '#222',
   },
   sScreen: {
     margin: '5px 10px',
@@ -468,7 +473,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sizeLg: {
     fontSize: '25 !important',
-    color: 'white !important',
+    color: '#222 !important',
   },
   textSml: {
    fontSize: '0.875rem !important',

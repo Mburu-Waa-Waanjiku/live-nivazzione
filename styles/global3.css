@@ -1,3 +1,34 @@
+.cartCheckmkTransform {
+  transform: translate(35px, -10px)
+}
+.CartFont {
+  font-size: inherit;
+}
+@media screen and (max-width:380px ) {
+  .CartFont {
+    font-size: 13px;
+  }
+  .cartCheckmkTransform {
+    transform: translate(20px, -10px)
+  }
+}
+.borderRadiusCart {
+  height: 100%;
+  border-radius: 0px;
+  margin: 0px;
+  overflow-y: hidden;
+}
+.borderRadiusCart::-webkit-scrollbar {
+  width: 0px;
+}
+@media screen and (max-width:767px ) {
+  .borderRadiusCart {
+    height: 80px;
+    border-radius: 50px;
+    margin: 0 10px;
+    overflow-y: scroll;
+  }
+}
 .logger {
   padding: 20px;
   background-image: url("https://res.cloudinary.com/dddx5qpji/image/upload/v1673943620/images_11_xqdlwb.webp");
@@ -5,7 +36,7 @@
   background-color: white;
 }
 .themecolor {
-  background-color: #579fef ;
+  background-color: #222 ;
 }
 .infinite-scroll-component  {
   overflow: hidden !important;

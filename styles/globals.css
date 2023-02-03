@@ -18,10 +18,10 @@ body {
   box-sizing: border-box;
 }
 
-input,
+form input,
 select,
 textarea {
-  @apply rounded border p-2  outline-none ring-slate-100  focus:ring;
+  @apply rounded border p-1  outline-none ring-slate-100  focus:ring;
 }
 
 .primary-button {
