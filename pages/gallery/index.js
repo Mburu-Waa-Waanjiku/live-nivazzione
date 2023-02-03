@@ -218,7 +218,7 @@ function Index({ instaProducts }) {
   )
 }
 
-export default index;
+export default Index;
 export async function getServerSideProps() {
   await db.connect();
   const instaProducts = await InstaProducts.find({}, '-reviews').sort({ createdAt: -1 }).lean();
