@@ -11,7 +11,7 @@ export default function Offers() {
    const { state, dispatch } = useContext(Store);
    const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
     "infiniteCharacters",
-    async ({ pageParam = 1 }) =>
+    async ({ pageParam = 2 }) =>
       await fetch(
         `/api/products/offers?page=${pageParam}`
       ).then((result) => result.json()),
@@ -36,12 +36,12 @@ export default function Offers() {
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
-   console.log(data);
+
 	return (
 		<div>
 		  {status === "success" ? (
             <InfiniteScroll
-              dataLength={data?.pages.length * 16}
+              dataLength={data?.pages.length * 20}
               next={fetchNextPage}
               hasMore={hasNextPage}
               loader={<Loader/>}

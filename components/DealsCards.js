@@ -73,13 +73,13 @@ export default function ProductItem({ product, addToCartHandler }) {
         NEW
       </div>
       <Link href={`${product.category}/${product.slug}`}>
-        <a>
+        <a className="bg-gray-100 rounded-xl">
           <Image
             width={364}
             height={484}
             src={product.image && product.image[0]}
             alt={product.name}
-            className="shadow object-cover bg-gray-100 h-auto w-100"
+            className="rounded-3xl shadow object-cover bg-gray-100 h-auto w-100"
           />
         </a>
       </Link>

@@ -204,7 +204,7 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
                   onClick={sidebarOpenHandler}
                   className={classes.menuButton}
                 >
-                  <MenuIcon className={classes.navbarButton} />
+                  <MenuIcon style={{color: "#222"}} className={classes.navbarButton} />
                 </IconButton>
               </div>
               <div className={classes.cartnlg}>
@@ -218,16 +218,16 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
                       classes={{ badge: classes.badge }}
                       badgeContent={bagitems[0]?.orderItems.length}
                      >
-                      <AiOutlineShopping style={{ fontSize: 25, color: "white" }} />
+                      <AiOutlineShopping style={{ fontSize: 25, color: "black" }} />
                     </Badge>
                    ) : (
-                    <AiOutlineShopping style={{ fontSize: 25, color: "white" }} />
+                    <AiOutlineShopping style={{ fontSize: 25, color: "black" }} />
                   )}
                 </Button>
               </div>
               <NextLink href="/" passHref>
                 <Link>
-                  <Typography className={classes.brand}>shiglam</Typography>
+                  <Typography style={{color: "#222"}} className={classes.brand}>shiglam</Typography>
                 </Link>
               </NextLink>
             </Box>
@@ -257,8 +257,8 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
                 <TabContext value={categ}>
                   <Tabs value={categ} classes={{ indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{ "& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleAppbar} variant="scrollable" orientation="vertical"  >
                     <Tab onClick={sidebarCloseHandler} value="Piercings" style={{margin: '20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Piercing" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
-                    <Tab value="Jewelry" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Jewelry" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/c_thumb,w_200,g_face/v1673000081/offerbanner1_5_upiwk4.jpg"/></div>} />
-                    <Tab value="Glam" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} /> 
+                    <Tab onClick={sidebarCloseHandler} value="Jewelry" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Jewelry" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/c_thumb,w_200,g_face/v1673000081/offerbanner1_5_upiwk4.jpg"/></div>} />
+                    <Tab onClick={sidebarCloseHandler} value="Glam" style={{ margin: '0 20px 20px 20px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} /> 
                   </Tabs>
                 </TabContext>
               </List>
@@ -269,7 +269,7 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
                       <HeadsetMicRounded style={{marginRight:10}}/>
                     </div>
                   </a>
-                  <Link href="https://wa.me/254770097070?text=Hello%20SHIGLAM,%20I'm%20Jane.I%20...." >
+                  <Link href="https://wa.me/message/E2RFFBWEGFSVN1" >
                     <div className="flex grow justify-center">
                       <i style={{color:"black", marginRight:10, fontSize:"25px", }} className="fa fa-whatsapp whatsapp-icon"></i>
                     </div>
@@ -279,12 +279,12 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
             </Drawer>
             <NextLink href="/" passHref>
                 <Link>
-                  <Typography className={classes.smbrand}>shiglam</Typography>
+                  <Typography style={{color: "#222"}} className={classes.smbrand}>shiglam</Typography>
                 </Link>
             </NextLink>  
             <div className=" flex justify-center">
               <div>
-                <Typography className={classes.cartnsch} component="span"><SearchIcon onClick={handleSearchBtn} sx={{ color: 'white'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/></Typography>
+                <Typography className={classes.cartnsch} component="span"><SearchIcon onClick={handleSearchBtn} sx={{ color: '#222'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/></Typography>
               </div>
               <div className={classes.cartnlg}>
                 <Button
@@ -299,10 +299,10 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
                         classes={{ badge: classes.badge }}
                         badgeContent={cart.cartItems.length}
                       >
-                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "white"}} />
+                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
                       </Badge>
                     ) : (
-                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "white"}} />
+                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
                     )}
                   </Typography>
                 </Button>
@@ -369,29 +369,29 @@ export default function Layout({ title, desc, children, socialtitle, socialimage
         </AppBar>
         {login && <DynamicLogger/>}
         <div className={classes.smseachbg} 
-             style={{position: "fixed", zIndex: 1210, top: 0, left: searchClick ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
+             style={{ position: "fixed", zIndex: 1210, top: 0, left: searchClick ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
           >
           <div className={classes.reviewTopTab}>
             <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, float:"left",}} /> Search
           </div>
-          <div className={classes.smseach} style={{top: '50px', padding: 40}}>
-            <div className={classes.searchSection}>
-                <InputBase
-                  classes={{ input: classes.inpttxt,}}
-                  className={classes.searchInput}
-                  placeholder="Search..."
-                  onChange={(e) => debounce((v) => {
-                    setSearch(v);
-                    }, 10)(e.target.value)}
-                />
+          <div className="flex justify-center">
+            <div className={classes.smseach} style={{marginLeft: "1rem", marginRight: "1rem", top: '50px', padding: "40px 4px", maxWidth: "650px", backgroundColor: "transparent", display: "flex", justifyContent: "center"}}>
+              <div style={{boxShadow: "0 2px 5px 1px rgb(64 60 67 / 20%)" ,backgroundColor: "rgba(255, 255, 255, 0.7)", oveflow: "hidden", borderRadius: 50, width: "100%"}}>
                 <IconButton
                   type="submit"
                   sx={{"&.MuiIconButton-root": {padding:0},}}
-                  className={classes.iconButton}
-                  aria-label="search"
-                 >
-                  <SearchIcon />
-                </IconButton>
+                   aria-label="search"
+                  >
+                   <SearchIcon />
+                 </IconButton>                
+                <InputBase
+                  style={{width: "70%"}}
+                  placeholder="Find products..."
+                  onChange={(e) => debounce((v) => {
+                    setSearch(v);
+                    }, 10)(e.target.value)}
+                /> 
+              </div>  
             </div>
           </div>
           <Cart/>

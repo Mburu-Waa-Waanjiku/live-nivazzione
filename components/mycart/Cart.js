@@ -1,17 +1,22 @@
 import Image from 'next/image';
 import { AiOutlineShoppingCart, AiOutlineShopping } from 'react-icons/ai';
-import Link from 'next/link';
 import React, { useContext } from 'react';
 import { Store } from '../../utils/Store';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import useStyles from '../../utils/styles';
 import { useStateContext } from '../../utils/StateContext';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
-import Pay4Bag from './Pay4Bag';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
+import CartItems from '../galleryComponents/CartItems';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import PaymentP4B from './PaymentP4B';
+import Checkout from '../NormalOrderPay/Pay';
+
+import { 
+  IconButton,
+} from '@material-ui/core';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -19,13 +24,14 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 function Cart() {
-  const router = useRouter();
   const classes = useStyles();
-  const { openp4b, handleOpenp4b, cartopen, handleCartclose } = useStateContext();
+  const { normalorderP, handleOpenNormalOP, cartopen, handleCartclose, payp4b, handleOpenPayp4b } = useStateContext();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
+    userInfo
   } = state;
+
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
@@ -37,171 +43,157 @@ function Cart() {
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
   };
-  const checkoutHandler = async () => {
-    await router.push('/shipping');
-    handleCartclose();
-  };
 
   
   return (
     <div className={classes.smseachbg} 
       style={{position: "fixed", zIndex: 1210, top: 0, left: cartopen ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
       >
-      <div className={classes.reviewTopTab}>
-        <ArrowBackIosIcon onClick={handleCartclose} sx={{ float:"left" }} /> 
-        My Cart 
-        <span className="cart-num-items">({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items)
-        </span>
-      </div>
-      {cartItems.length === 0 ? (
-        <div className=" w-full h-full flex justify-center place-items-center">
-          <div className="empty-cart">
-            <div className="cart-icn block">  
-              <AiOutlineShoppingCart size={150} />
-            </div>
-            <h3>Your shopping cart is empty</h3>
-          </div>
-        </div>
-        ) : (
-        <div style={{top: 0, overflowY: "auto", height:"90%", overflowX: "hidden"}} className=" relative">
-          <Swiper                    
-            autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-            modules={[FreeMode, Pagination, Autoplay, Thumbs]}
-            spaceBetween={10}           
-            loop={true}
-            pagination={true}
-            centeredSlides={false}
-            slidesPerView={1}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
-            style={{padding: 10}}
-            >
-            <SwiperSlide >
-              <Image
-                height={500} width={1500}
-                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674117112/bagadd_2_i1elch.png"
-                alt="Banner"
-                style={{ borderRadius: 10}}
-                className="shadow object-cover h-auto w-100 bg-gray-100"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Image
-                height={500} width={1500}
-                style={{ borderRadius: 10}}
-                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674467486/retyui_oa4bmj.png"
-                alt="Banner"
-                className="shadow object-cover h-auto w-100 bg-gray-100"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Image
-                height={500} width={1500}
-                style={{ borderRadius: 10}}
-                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674466881/ertylm_q1ibj9.png"
-                alt="Banner"
-                className="shadow object-cover h-auto w-100 bg-gray-100"
-              />
-            </SwiperSlide>
-          </Swiper>
-          <div className="grid md:grid-cols-4 md:gap-5">
-            <div className="overflow-x-auto md:col-span-3">
-              <table className="min-w-full ">
-                <thead className="border-b">
-                  <tr>
-                    <th className="p-5 text-left">Item</th>
-                    <th className="p-5 text-center">Name</th>
-                    <th className="p-5 text-right">Quantity</th>
-                    <th className="p-5 text-right">Price</th>
-                    <th className="p-5">Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item) => (
-                    <tr key={item.slug} className="border-b">
-                      <td className="pl-2">
-                        <Link href={`/${item.category}/${item.slug}`}>
-                          <a className="flex items-center">
-                            <Image
-                              src={item.image[0]}
-                              alt={item.name[0]}
-                              width={94}
-                              height={121}
-                              className="bg-gray-100"
-                            ></Image>
-                          </a>
-                        </Link>
-                      </td>
-                      <td className="p-5 text-right">{item.name.length > 25 ? (<b>{item.name.slice(0, 25).concat(" ", "."," ","."," ",".")}</b>) : (<b>{item.name}</b>) }</td>                    
-                      <td className="p-5 text-right">
-                        <select
-                          value={item.quantity}
-                          onChange={(e) =>
-                            updateCartHandler(item, e.target.value)
-                          }
-                        >
-                          {[...Array(item.countInStock).keys()].map((x) => (
-                            <option key={x + 1} value={x + 1}>
-                              {x + 1}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td className="p-5 text-right">Ksh.{item.price}</td>
-                      <td style={{color:"white"}} className="p-5 text-center ">
-                        <button onClick={() => removeItemHandler(item)}>
-                          <div style={{padding:"0px 8px", borderRadius:"5px", fontWeight:"bold", backgroundColor:"black", fontSize:"20px"}} >×</div>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="card p-5">
-              <ul>
-                <li>
-                  <div className="pb-3 mb-2 font-bold font-sans flex justify-between text-xl">
-                    <div> Subtotal  :</div><div> Ksh
-                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex gap-x-9">
-                    <button
-                      onClick={checkoutHandler}
-                      className="primary-button w-full mr-4"
-                      style={{backgroundColor: "#222"}}
-                    >
-                      Check Out
-                    </button>
-                    <button
-                      onClick={handleOpenp4b}
-                      style={{backgroundColor: "#222"}}
-                      className="primary-button w-full flex justify-center"
-                    >
-                      Add to 
-                      <div style={{position: "relative", height: 30}}>
-                      <AiOutlineShopping style={{fontSize: 25, position: "relative", top: 0, marginLeft: 10}}/>                
-                      <div style={{height: 18, display:"inline-block", position: "relative", fontSize: 12, top: "-32px", left: "-3px", border: "3px solid #242526" }}>
-                        +
-                      </div>
+        <div style={{top: 0, overflowY: "auto", height:"100%", overflowX: "hidden"}} className=" relative">
+          <div className="grid md:grid-cols-5 h-full">
+            <div style={{backgroundColor: "#faf9fe"}} className="overflow-x-auto md:col-span-3">
+              <div style={{backgroundColor: "rgba(255, 255, 255, 0.9)", position: "sticky", top: 0, zIndex: "10"}} className={classes.reviewTopTab}>
+                <ArrowBackIosIcon onClick={handleCartclose} sx={{ float:"left" }} /> 
+                My Cart 
+                <span className="cart-num-items">({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
+                  items)
+                </span>
+              </div>
+              {cartItems.length === 0 ? (
+                <div className=" w-full h-auto flex justify-center place-items-center">
+                  <div className="empty-cart">
+                    <div className="cart-icn block">  
+                      <AiOutlineShoppingCart size={150} />
                     </div>
+                    <h3>Your shopping cart is empty</h3>
+                  </div>
+                </div>
+                ) : (
+                <>
+                  <Swiper                    
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                      }}
+                    modules={[FreeMode, Pagination, Autoplay, Thumbs]}
+                    spaceBetween={10}           
+                    loop={true}
+                    pagination={true}
+                    centeredSlides={false}
+                    slidesPerView={1}
+                    onSwiper={(swiper) => console.log(swiper)}
+                    onSlideChange={() => console.log('slide change')}
+                    style={{padding: 10}}
+                    >
+                    <SwiperSlide >
+                      <Image
+                        height={500} width={1500}
+                        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674117112/bagadd_2_i1elch.png"
+                        alt="Banner"
+                        style={{ borderRadius: 10}}
+                        className="shadow object-cover h-auto w-100 bg-gray-100"
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <Image
+                        height={500} width={1500}
+                        style={{ borderRadius: 10}}
+                        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674467486/retyui_oa4bmj.png"
+                        alt="Banner"
+                        className="shadow object-cover h-auto w-100 bg-gray-100"
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <Image
+                        height={500} width={1500}
+                        style={{ borderRadius: 10}}
+                        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674466881/ertylm_q1ibj9.png"
+                        alt="Banner"
+                        className="shadow object-cover h-auto w-100 bg-gray-100"
+                      />
+                    </SwiperSlide>
+                  </Swiper>
+                  {cartItems.map((item) => (
+                    <CartItems
+                      key={item._id}
+                      item={item}
+                      removeItemHandler={() => removeItemHandler(item)}
+                      updateCartHandler={(e) => updateCartHandler(item, e.target.value)}
+                    />
+                  ))}
+                </>  
+                )
+              }
+            </div>
+            <div style={{backgroundColor: "#eeeeee" }} className="borderRadiusCart card p-4 md:col-span-2">
+              <div className="flex-wrap h-full flex justify-center content-center">
+              <div className="top-6 text-center grow relative h-fit">
+                <div className="hidden md:block " style={{position: "relative", bottom: 150}} >
+                  <IconButton
+                    type="submit"
+                    sx={{"&.MuiIconButton-root": {padding:0},}}
+                     aria-label="search"
+                    >
+                     {userInfo ? (<b style={{ width: 70, height:70, lineHeight: 1, fontSize: 35, borderRadius: 50, color: "white", backgroundColor: "#222"}} className="themecolor p-4 "><a style={{left: "-2px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>) :
+                       (<AccountCircle style={{fontSize: 80}} />) 
+                     }
+                  </IconButton> 
+                </div>
+                <div>
+                  <div className="hidden md:block text-center pb-3 mb-2 font-sans flex justify-between text-xl">
+                    <div> 
+                      Cart Tototal  : KES{cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="grid gap-y-2">
+                    <button
+                      onClick={handleOpenNormalOP}
+                      className="primary-button w-full mr-4"
+                      style={{backgroundColor: "#222", borderRadius: 50}}
+                    >
+                      <div className="flex justify-between ml-2 mr-2 md:justify-center">
+                        <div style={{fontFamily: "monospace"}} className="block md:hidden">
+                          KES {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                        </div>
+                        <div>
+                          Check Out
+                        </div>
+                      </div>
+                    </button>
+                    <button
+                      onClick={handleOpenPayp4b}
+                      style={{boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", backgroundColor: "#222", borderRadius: 50}}
+                      className="primary-button w-full flex justify-center"
+                    > 
+                      <div className="flex w-full justify-between ml-2 mr-2 md:justify-center">
+                        <div style={{fontFamily: "monospace"}} className="block md:hidden">
+                          KES {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                        </div>
+                        <div className="flex">
+                          Add to 
+                          <div style={{position: "relative", height: 30}}>
+                            <AiOutlineShopping style={{fontSize: 25, position: "relative", top: 0, marginLeft: 10}}/>                
+                            <div style={{height: 18, display:"inline-block", position: "relative", fontSize: 12, top: "-32px", left: "-3px", border: "3px solid #242526" }}>
+                              +
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </button>
                   </div>
-                </li>
-              </ul>
+                </div>
+              </div>
+              </div>
             </div>
-          </div>
+          </div>  
         </div>
-      )}
-      {openp4b && <Pay4Bag/>}
+      {payp4b && <PaymentP4B/>}
+      {normalorderP && <Checkout/>}
     </div>
   );
 }
 
 export default dynamic(() => Promise.resolve(Cart), { ssr: false });
+        

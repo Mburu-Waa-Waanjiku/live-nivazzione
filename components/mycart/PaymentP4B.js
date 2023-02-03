@@ -11,12 +11,13 @@ import { Store } from '../../utils/Store';
 import { useRouter } from 'next/router';
 import { getError } from '../../utils/error';
 import { useSnackbar } from 'notistack';
+import Image from 'next/image';
 
 function PaymentP4B() {
   
     const router = useRouter();
     const { state, dispatch } = useContext(Store);
-    const { handleOpenBag, handleCartclose, handleClosep4b, handleClosePayp4b } = useStateContext();
+    const { openLogin, handleOpenBag, handleCartclose, handleClosep4b, handleClosePayp4b } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
@@ -36,6 +37,14 @@ function PaymentP4B() {
     
     const [confirming, setConfirming] = useState(false);
     const [completing, setCompleting] = useState(false);
+    const [afterLocation, setAfterLocation] = useState(false);
+    const [county, setCounty] = useState("Select your Area");
+    const counties = ["Select your Area", "CBD", "SOUTH B", "IMARA DAIMA", "KITENGELA", "LANGATA", "KAREN", "LAVINGTON", "ROASTERS", "JKUAT MAIN STAGE", "JUJA", "KAHAWA SUKARI", "GUMBA ESTATE", "KAHAWA WENDANI", "RUIRU BYPASS", "RUIRU NDANI", "ZIMMERMAN", "TRM", "KAHAWA WEST", "KASARANI", "UMOJA", "BURUBURU", "EMBAKASI/NYAYO ESTATE", "UTAWALA", "NGONG ROAD", "NGONG RACECOURSE", "SYOKIMAU", "MLOLONGO", "THINDIGUA", "KIAMBU", "KIRIGITI", "RUAKA", "MADARAKA","NAIROBI WEST", "LANGATA", "RONGAI", "KISERIAN", "JERICHO", "KOMAROCK", "DONHOLM", "FEDHA", "CHOKA", "RUAI", "JAMUHURI ESTATE", "WESTLANDS", "LORESHO", "KANGEMI", "UTHIRU", "KINOO", "KIKUYU", "TWO RIVERS MALL", "TMALL(LANGATA RD)"];
+    
+    const handleCounty = (event) => {
+      setCounty(event.target.value);
+      setAfterLocation(true)
+    };
 
     const updateStockHandler = async () => {
     try {
@@ -88,7 +97,6 @@ function PaymentP4B() {
       setCamount(amount);
 
        try {
-        setConfirming(true);
         await axios.put(
         '/api/P4Borders/pay',
         {
@@ -101,6 +109,7 @@ function PaymentP4B() {
           },
         } 
       );
+      setConfirming(true);
     } catch (err) {
       enqueueSnackbar('Could not Complete your payment');
     }
@@ -138,7 +147,7 @@ function PaymentP4B() {
 
     useEffect(() => {
       if (!userInfo) {
-        router.push('/login?redirect=/');
+        openLogin();
       }
       setValue('amount', ItemsPrice);
     }, []);
@@ -150,7 +159,7 @@ function PaymentP4B() {
           <div className="cancel-m p-2 absolute right-2 top-2">
             <ClearIcon  onClick={handleClosePayp4b}/>
           </div>
-          <div style={{width:"80vw", height:"fit-content", borderRadius:10, backgroundColor:"white"}}>
+          <div style={{width:"280px", height:"fit-content", borderRadius:50, backgroundColor:"white"}}>
             {completing ? (
             <div>
               <div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
@@ -168,71 +177,115 @@ function PaymentP4B() {
               <div className="home-ft w-full justify-self-stretch">
                 Payment
               </div>
-              <div className="w-full flex justify-center">
-                <div style={{maxWidth: 300}}>
-                  <form
-                    className="mx-auto max-w-screen-md mt-4"
-                    onSubmit={handleSubmit(p4bPaymentHandler)}
-                   >
-                    <div style={{display: confirming ? "none" : "block"}}>
-                      <div className="flex justify-between gap-3">
-                        <div className="w-5/12 mb-4 grow">
-                          <label htmlFor="phone">Phone Number</label>
-                          <input
-                            className="block w-full"
-                            placeholder="0709234165"
-                            type="number"
-                            id="phone"
-                            autoFocus
-                            {...register('phone', {
-                              required: 'Please enter Phone Number',
-                              length: { value: 10, message: 'Phone number is 10 chars' },              
-                            })}
-                          />
-                          {errors.phone && (
-                            <div className="text-red-500">{errors.phone.message}</div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex justify-between gap-3">
-                        <div className="w-5/12 mb-4 grow">
-                          <label htmlFor="amount">Amount</label>
-                          <input
-                            className="block w-full"
-                            id="amount"
-                            readOnly="readonly"
-                            autoFocus
-                            {...register('amount', {
-                              required: 'Please enter Amount',
-                            })}
-                          />
-                          {errors.amount && (
-                            <div className="text-red-500">{errors.amount.message}</div>
-                          )}
-                        </div>
-                      </div>
+              <div className="home-ft" >
+                <Image width={120} height={40} alt="Mpesa" src="https://res.cloudinary.com/dddx5qpji/image/upload/q_100/v1667278803/lipanampesa-removebg-preview_ljrcyk.png">
+                </Image>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  className="primary-button w-full mr-4"
+                  style={{backgroundColor: "#222", borderRadius: 50, margin: 0}}
+                 >
+                  <div className="flex justify-between ml-2 mr-2 md:justify-center">
+                    <div style={{fontFamily: "monospace"}} >
+                      Amount
                     </div>
-                    <div className="flex justify-center mt-3" >
+                    <div style={{fontFamily: "monospace"}}>
+                      KES{ItemsPrice}
+                    </div>
+                  </div>
+                </button>
+              </div>
+              { afterLocation ? (
+                <div className="w-full flex justify-center">
+                  <div style={{maxWidth: 300}}>
+                    <form
+                      className="mx-auto max-w-screen-md mt-4"
+                      onSubmit={handleSubmit(p4bPaymentHandler)}
+                     >
+                      <div style={{display:"block"}}>
+                        <div className="flex justify-between gap-3">
+                          <div className="w-5/12 mb-4 grow pt-3">
+                            <input
+                              className="block w-full"
+                              placeholder="0709234165"
+                              type="number"
+                              id="phone"
+                              autoFocus
+                              {...register('phone', {
+                                required: 'Please enter Phone Number',
+                                length: { value: 10, message: 'Phone number is 10 chars' },              
+                              })}
+                            />
+                            {errors.phone && (
+                              <div className="text-red-500">{errors.phone.message}</div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex justify-between gap-3 hidden">
+                          <div className="w-5/12 mb-4 grow">
+                            <label htmlFor="amount">Amount</label>
+                            <input
+                              className="block w-full"
+                              id="amount"
+                              readOnly="readonly"
+                              autoFocus
+                              {...register('amount', {
+                                required: 'Please enter Amount',
+                              })}
+                            />
+                            {errors.amount && (
+                              <div className="text-red-500">{errors.amount.message}</div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center mt-3" >
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          style={{fontFamily: "monospace", borderRadius: '50px', backgroundColor: '#222', padding: "8px 35px"}}
+                         >
+                          {confirming ? (<div> RESEND </div>) : (<div> SEND </div>)}
+                        </Button>
+                      </div>
+                    </form>
+                    <div className="flex justify-center">
                       <Button
-                        type="submit"
+                        onClick={checkPayment}
                         variant="contained"
                         color="primary"
-                        style={{borderRadius: '50px', backgroundColor: 'green', padding: "8px 35px"}}
+                        style={{fontFamily: "monospace", borderRadius: '50px', marginTop: 20, display: confirming ? "block" : "none", backgroundColor: '#222', padding: "8px 35px", marginBottom: "10px"}}
                        >
-                        {confirming ? (<div> RESEND </div>) : (<div> SEND </div>)}
+                        CONFIRM
                       </Button>
                     </div>
-                  </form>
-                  <Button
-                    onClick={checkPayment}
-                    variant="contained"
-                    color="primary"
-                    style={{borderRadius: '50px', marginTop: 20, display: confirming ? "block" : "none", backgroundColor: 'green', padding: "8px 35px", marginBottom: "10px"}}
-                   >
-                    CONFIRM
-                  </Button>
-                </div>
-              </div>
+                  </div>
+                </div>) : (
+                <div>
+                  <div className="mb-4 pt-8">
+                    <select
+                        value={county}
+                        className="block w-full"
+                        onChange={handleCounty}
+                    >
+                      {counties.map((counties) => (
+                        <option key={counties} value={counties}>
+                          {counties}
+                        </option>
+                      ))}  
+                      <option disabled style={{color: 'green', display:'block'}}>
+                        <div>YOU&apos;RE OUTSIDE NAIROBI AND ITS ENVIRONS ?? </div> 
+                        <div>VISIT us on Whatsapp 👇👇 for customized delivery🛍️ 😊</div>
+                      </option>            
+                    </select>
+                    {errors.county && (
+                      <div className="text-red-500 ">{errors.county.message}</div>
+                    )}
+                  </div>
+                </div>)
+              }
             </div>)}
           </div>
         </div> 
