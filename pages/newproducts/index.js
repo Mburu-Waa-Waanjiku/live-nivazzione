@@ -17,15 +17,16 @@ import Tabsbottom from '../../components/Tabsbottom';
 import Loader from '../../components/Loader';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
+import Image from 'next/image';
 
 const Newproducts = (props) => {
-const { categories } = props;
+const { categories, newprods, banner } = props;
  const { state, dispatch } = useContext(Store);
  const classes = useStyles();
 
  const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
     "infiniteCharacters",
-    async ({ pageParam = 1 }) =>
+    async ({ pageParam = 2 }) =>
       await fetch(
         `/api/products/newprods?page=${pageParam}`
       ).then((result) => result.json()),
@@ -62,9 +63,11 @@ const { categories } = props;
        <Layout title="SHIGLAM DAILYDROPS, NEW and LATEST trends at SHIGLAM KENYA, Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam."
                desc="Get NEW and LATEST trends in Women's Fashon , Earrings, Noserings, Waist beads, Anclets and Glam: Make-Up ACCESSORIES from as low as Ksh.2...."
        >
-        <div className=" margintopFix home-ft">NEW PRODUCTS</div>
+        <div style={{marginTop:"0.75rem", marginBottom: "0.5rem"}}>
+          <Image style={{borderRadius: 20}} className="bg-gray-10" width={1600} height={480} alt="New Products" src={banner[3].image[0]}></Image> 
+        </div>
         <TabContext value={value}>          
-          <Tabs style={{display: "none"}} centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
+          <Tabs style={{display: "none"}} centered value={value} classes={{indicator:classes.ndicateThick }}  sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 0, zIndex: 15, marginBottom:"10px"}} fullWidth onChange={handleChange}   scrollButtons="auto" >
               {categories &&
                     categories.map((category) => (
                       <Tab label={category} key={category} value={category}>
@@ -76,9 +79,18 @@ const { categories } = props;
           </Tabs>
             <TabPanel style={{padding: 0}} value="All" >
               <div>
+                <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+                  {newprods.map((product) => (
+                    <DealsCards
+                      product={product}
+                      key={product}
+                      addToCartHandler={addToCartHandler}
+                    />
+                  ))}
+                </div>
                 {status === "success" ? (
                   <InfiniteScroll
-                    dataLength={data?.pages.length * 16}
+                    dataLength={data?.pages.length * 20}
                     next={fetchNextPage}
                     hasMore={hasNextPage}
                     loader={<Loader/>}
@@ -116,12 +128,20 @@ export async function getServerSideProps() {
   
   const banner = await Banner.find().lean();
   const categories = await Product.find({isNeww: true}).distinct('category');
-  
-  
+  const newprods = await Product.find(
+    { isNeww: true },
+    )
+      .lean()
+      .sort({
+        createdAt: -1,
+        rating: -1,
+      })
+      .limit(20);    
   
   await db.disconnect();
   return {
-    props: {      
+    props: { 
+      newprods: newprods.map(db.convertDocToObj),     
       banner: banner.map(db.convertDocToObj),
       categories,
     },

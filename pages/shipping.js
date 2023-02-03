@@ -207,7 +207,7 @@ export default function ShippingScreen() {
             <input
               className="w-full block"
               id="shippingPrice"
-              value= "KSh 100"
+              value= "KSh 120"
               readOnly="readonly"
             />
           </div>
@@ -686,7 +686,7 @@ export default function ShippingScreen() {
             placeholder="07234 ...."
             type="number"
             {...register('phoneNumber', {
-              required: 'Please enter postal code',
+              required: 'Please enter Phone number',
               length: { value: 10, message: 'Phone number is 10 chars' },              
             })}
           />

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import React, { useContext, useState } from 'react';
 import Layout from '../../components/Layout';
 import Product from '../../models/Product';
-import Tabsbottom from '../../components/Tabsbottom';
 import db from '../../utils/db';
 import { Store } from '../../utils/Store';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -14,6 +13,8 @@ import ProductNocart from '../../components/ProductNocart';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { FaTruckMoving } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { IconButton } from '@material-ui/core';
 
 import { Typography, ListItem, List, TextField, Button, CircularProgress, Grid, } from '@material-ui/core';
 import { Navigation, FreeMode, Thumbs, Pagination } from 'swiper';
@@ -146,9 +147,9 @@ export default function ProductScreen(props) {
         socialimages={product.image[0]}
         scdinfo={addProductJsonLd()}
       >
-      <div className="margintopFix mt-9 grid grid-cols-1 md:grid-cols-12 md:gap-4">
-        <div className="col-span-1 md:col-span-5 md:col-start-2">
-          <div layout="responsive" style={{maxWidth:420}} >
+      <div className="margintopFix pt-9 grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
+        <div className="col-span-1 ">
+          <div layout="responsive" className={classes.mideaSmallBannerResp} style={{maxWidth:600, marginTop: 0}} >
             <div onClick={() => router.back()} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", top: 30, padding: 7 , borderRadius: 50, zIndex: 1200, left: 25 }}> <ArrowBackIosIcon sx={{fontSize:10}} /></div>
             <>
              <Swiper
@@ -159,24 +160,31 @@ export default function ProductScreen(props) {
                 pagination={{
                   type: "fraction",
                 }}
+                breakpoints={{
+                  100: {
+                    slidesPerView: 1.25,
+                  },
+                  641: {
+                    slidesPerView: 1,
+                  }
+                }}      
                 modules={[Pagination, FreeMode, Navigation, Thumbs]}
-                spaceBetween={2}
-                slidesPerView={1.05}
-                loop={true}
+                spaceBetween={8}
+                loop={false}
                 navigation={true}
               onSwiper={(swiper) => console.log(swiper)}
               onSlideChange={() => console.log('slide change')}
              >
               {product.image?.map((item) => ( 
-                <SwiperSlide key={item} >
-                  <Image key={item} width={400} height={530} alt={product.name} className="bg-gray-100 g-images-child"
+                <SwiperSlide  className="pl-2 sm:pl-0" key={item} style={{maxWidth: 420}} >
+                  <Image style={{ borderRadius: 20 }} key={item} width={420} height={556.5} alt={product.name} className="bg-gray-100 g-images-child"
                     src={(item)}
                   />
                 </SwiperSlide >
               ))}
              </Swiper>
              <Swiper
-               spaceBetween={10}
+               spaceBetween={0}
                slidesPerView={5}
                className="hidden sm:block"
                freeMode={true}
@@ -185,8 +193,8 @@ export default function ProductScreen(props) {
         
              >
                {product.image?.map((item) => ( 
-                <SwiperSlide key={item}>
-                  <Image key={item} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
+                <SwiperSlide style={{ paddingLeft: 8, maxWidth: 73 }} key={item}>
+                  <Image style={{ borderRadius: 20 }} key={item} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
                     src={(item)}
                   />
                 </SwiperSlide >
@@ -195,13 +203,17 @@ export default function ProductScreen(props) {
            </>
            </div>
         </div>
-        <div className="col-span-1 md:col-span-5 md:col-start-7">
+        <div className="col-span-1">
         <div>
-         {product.name.length > 45 ? (<h3>{product.name.slice(0, 45).concat(" ", ".", " ", ".", " ", ".", " ", ".")}</h3>) : (<h3>{product.name}</h3>)}
-         {product.isOnoffer && <div className="slug-gallery" style={{padding:"10px 0 0 0 ", fontSize:19, color:"orangered"}}><s>Ksh.{product.prevprice}</s></div>}
-         <div className="slug-gallery" style={{padding:"10px 0"}}>Ksh.{product.price}</div>
+          <div className="flex justify-between mb-3">
+            {product.name.length > 20 ? (<h3 style={{fontSize: 17, fontWeight: 600, marginTop: 20}}>{product.name.slice(0, 17).concat(" ", ". .")}</h3>) : (<h3 style={{fontSize: 16, fontWeight: 500, marginTop: 20}}>{product.name}</h3>)}
+            <div className="grid">
+              <div className="text-lg md:text-2xl" style={{padding:"19px 0 0", fontWeight: 600,}}>Ksh.{product.price}</div>
+              {product.isOnoffer && <div className="text-sm md:text-lg justify-self-end" style={{padding:"0 0 10px 0 ", fontWeight: 600, color:"orangered"}}><s>Ksh.{product.prevprice}</s></div>}
+            </div>
+          </div>
          <div className={classes.textSml}>
-           <b style={{flexGrow: "inherit"}}>Details</b>
+           <b style={{flexGrow: "inherit", fontSize: 15}}>Details</b>
            <div className="reviews">
               <Rating className={classes.textSmla} value={product.rating} readOnly></Rating>
               <Typography className={classes.textSml} >({product.numReviews} reviews)</Typography>
@@ -212,21 +224,27 @@ export default function ProductScreen(props) {
           <div className="mb-2 flex"> <b className="mr-1">Description:</b> <p>{product.description}</p></div>
           </div> 
         </div>
-        <div className="mt-5">
-          <div className="card bs p-5">
-            <div className="mb-2 flex justify-between">
-              <div>Status</div>
-              <div>{product.countInStock > 0 ? 'In stock' : 'Out of Stock'}</div>
+        <div style={{ backgroundColor: "rgba(255, 255, 255, 0.7", boxShadow: "none"}} className="hidden sm:block bs p-5">
+          <button
+            className="primary-button w-full"
+            onClick={addToCartHandler}
+            style={{borderRadius: 50, backgroundColor: "black", height: 55}}
+           >
+            <div className="flex justify-between ml-2 mr-2">
+              <div style={{fontFamily: "monospace"}} >
+                <div style={{lineHeight: "38px"}}>
+                  {product.countInStock > 0 ? 'In stock' : 'Out of Stock'}
+                </div>
+              </div>
+              <div>
+                <IconButton style={{border: "3px solid white", top: -6, padding: 10}}>
+                  <AiOutlineShoppingCart style={{color: "white"}}/>
+                </IconButton>
+              </div>
             </div>
-            <button
-              className="primary-button w-full"
-              onClick={addToCartHandler}
-            >
-              Add To Cart
-            </button>
-          </div>
+          </button>
         </div>
-        <div className="bg-slate-100">
+        <div style={{backgroundColor: "#eeeeee", borderRadius: 25, paddingTop:10}} >
           <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
             Shipping 
           </div>
@@ -236,21 +254,19 @@ export default function ProductScreen(props) {
               <div className="ml-3 self-center">Our shipping is done by Pickup Mtaan & it takes from same day to 3 days max.</div>
             </div>
           </div>
-          <div className="mx-6 my-3">
-            <Image width={500} height={83} alt="" className="bg-gray-100" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667233530/ezgif.com-gif-maker_1_fx3ey6.gif"></Image>
+          <div className="mx-6 my-3 flex justify-center">
+            <Image width={500} height={83} alt="" className="bg-gray-100 rounded-2xl" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667233530/ezgif.com-gif-maker_1_fx3ey6.gif"></Image>
           </div>
-        </div> 
-        <div className="bg-slate-100">
-          <div className=" mt-2 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
+          <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
             Return 
           </div>
-          <div className="flex justify-start mx-6 py-1">
+          <div className="flex justify-start mx-6 py-1 pb-2">
             {product.isOnoffer ? (<div>Products on promotion are not eligible to be returned.</div>) : (<div>This product can be returned if it is defective on delivery</div>)}
           </div>
-        </div> 
+        </div>  
         </div>
       </div>
-      {product.gallery.length > 0 && <div className="mt-5">
+      {product.gallery.length > 0 && <div>
       <div className="slug-gallery">Style Gallery</div>
        <div className="g-images">
           {product.gallery?.map((item) => ( 
@@ -260,7 +276,7 @@ export default function ProductScreen(props) {
                   src={(item)}
                   />
                   ))}
-          {showOverlay && <div className="cart-wrapper">
+                 {showOverlay && <div className="cart-wrapper">
                              <div className="Overlay-wrapper">
                                  <div className="cancel-m p-2 absolute right-2 top-2">
                                     <ClearIcon  onClick={() => setShowOverlay(false)}/>
@@ -299,7 +315,7 @@ export default function ProductScreen(props) {
         <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
         </div>
       </div>
-      <div className="mt-5">
+      <div>
          <div className="slug-gallery">Customer Reviews({product.numReviews}) </div>
       </div>
       <div className={classes.reviewBody}>
@@ -402,19 +418,38 @@ export default function ProductScreen(props) {
         <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
         </div>
       </div>
-      <div className="mt-4">
+      <div>
          <div className="slug-gallery">You May Also Like </div>
       </div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-         {similarProds.map((product) => (
-                            <ProductNocart
-                             product={product}
-                             key={product.slug}
-                             addToCartHandler={addToCartHandler}
-                             ></ProductNocart>
-                        ))}
+        {similarProds.map((product) => (
+          <ProductNocart
+           product={product}
+           key={product.slug}
+           addToCartHandler={addToCartHandler}
+           ></ProductNocart>
+        ))}
       </div>
-      <Tabsbottom/>
+      <div style={{ zIndex: 1, bottom: 0, position: "fixed", width: "100%", left: 0, backgroundColor: "rgba(255, 255, 255, 0.7"}} className="block sm:hidden card bs p-5">
+        <button
+          className="primary-button w-full"
+          onClick={addToCartHandler}
+          style={{borderRadius: 50, backgroundColor: "black", height: 55}}
+        >
+          <div className="flex justify-between ml-2 mr-2 md:justify-center">
+            <div style={{fontFamily: "monospace"}} >
+              <div style={{lineHeight: "38px"}}>
+                {product.countInStock > 0 ? 'In stock' : 'Out of Stock'}
+              </div>
+            </div>
+            <div>
+              <IconButton style={{border: "3px solid white", top: -35, backgroundColor: "black"}}>
+                <AiOutlineShoppingCart style={{color: "white"}}/>
+              </IconButton>
+            </div>
+          </div>
+        </button>
+      </div>
       </Layout>
     </> 
 

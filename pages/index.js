@@ -85,7 +85,7 @@ const Home = ({topselling, banner, offers, newdrops }) => {
                   >
                       <SwiperSlide>
                            <Image
-                             height={718} width={1560}
+                             height={709} width={1919}
                              src={banner[1].image[0]}
                              alt="Banner"
        
@@ -98,7 +98,7 @@ const Home = ({topselling, banner, offers, newdrops }) => {
                 <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
                   <Link href="/newproducts">  
                     <div>                                               
-                      <Image height={800} width={1600} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
+                      <Image height={626} width={1600} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
                     </div>
                   </Link>
                 </div>

@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useStateContext } from '../../utils/StateContext';
 import useStyles from '../../utils/styles';
 import { useSnackbar } from 'notistack';
 import { getError } from '../../utils/error';
@@ -90,8 +91,8 @@ function Order({ params }) {
   const { state } = useContext(Store);
   const { userInfo } = state;
   
-  
-
+  const { openLogin } = useStateContext();
+ 
   const [
     { loading, error, order, successPay, loadingDeliver, successDeliver },
     dispatch,
@@ -117,7 +118,7 @@ function Order({ params }) {
    
   useEffect(() => {
     if (!userInfo) {
-      return router.push('/login');
+      openLogin();
     }
     const fetchOrder = async () => {
       try {
