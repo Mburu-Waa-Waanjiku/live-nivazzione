@@ -4,10 +4,16 @@ import Link from 'next/link';
 import React from 'react';
 import { useStateContext } from '../utils/StateContext';
 import HeadersContainer from './HeadersContainer';
+import { useRouter } from 'next/router';
 
 export default function ProductNocart({ product }) {
-   
+  const router = useRouter();
+
   const { handleClickSearchf } = useStateContext();
+  const HandleSearch = async () => {
+    await router.push(`https://www.shiglam.com/${product.category}/${product.slug}`);
+    handleClickSearchf();
+  }
   
   const URL = `https://shiglam.com/${product.category}/${product.slug}`;
   let revCount;
@@ -71,19 +77,17 @@ export default function ProductNocart({ product }) {
     <div className="card">
     <HeadersContainer data={addProductJsonLd()} />
     <div className="gallery">
-      <Link href={`${product.category}/${product.slug}`}>
-        <a>
-          <Image
-            width={364}
-            height={484}
-            onClick={handleClickSearchf}
-            src={product.image && product.image[0]}
-            alt={product.name}
-            className="shadow bg-gray-100 object-cover h-auto w-100"
-            style={{borderRadius:10, backgroundColor: '#f3f4f6', overflow:"hidden"}}
-          />
-        </a>
-      </Link>
+      <a>
+        <Image
+          width={364}
+          height={484}
+          onClick={HandleSearch}
+          src={product.image && product.image[0]}
+          alt={product.name}
+          className="shadow bg-gray-100 object-cover h-auto w-100"
+          style={{borderRadius:10, backgroundColor: '#f3f4f6', overflow:"hidden"}}
+        />
+      </a>
       <div className="heart-ck" style={{height:27, backgroundColor: 'transparent'}}>
       </div>
       <div className="flex ">
