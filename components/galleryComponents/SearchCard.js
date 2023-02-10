@@ -4,8 +4,8 @@ import React from 'react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 function Card({product, addToCartHandler}) {
-	return (
-		<div className="card">
+  return (
+    <div className="card">
     <div className="gallery">
       <Link href={`${product.category}/${product.slug}`}>
         <a>
@@ -29,7 +29,7 @@ function Card({product, addToCartHandler}) {
 
       
     </div>
-	)
+  )
 }
 
 export default Card

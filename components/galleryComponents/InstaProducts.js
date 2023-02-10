@@ -6,8 +6,8 @@ import ImageListItem from '@mui/material/ImageListItem';
 import Image from 'next/image';
 
 function Card({instaProducts}) {
-	return (
-		<Box  sx={{ width: 500, height: 'fit-content',borderRadius: 3, padding: '1rem', backgroundColor: 'rgba(255, 255, 255, 0.9)'  }}>
+  return (
+    <Box  sx={{ width: 500, height: 'fit-content',borderRadius: 3, padding: '1rem', backgroundColor: 'rgba(255, 255, 255, 0.9)'  }}>
       <div className="flex justify-center mt-5 mb-8">
         <Image src="/Instagram-Icon.png" width={50} height={50} alt="instagram icon"
         />
@@ -29,7 +29,7 @@ function Card({instaProducts}) {
         ))}
       </ImageList>
     </Box>
-	)
+  )
 }
 
 export default Card

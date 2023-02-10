@@ -24,7 +24,7 @@ function CartItems({item, removeItemHandler, updateCartHandler}) {
         <div onClick={slugPush} style={{backgroundColor: "#f3f4f6", height: 90, width: 70.5, margin: 5, borderRadius: 20, overflow: "hidden"}}>
           <Image
             src={item.image[0]}
-            alt={item.name[0]}
+            alt={item.name}
             width={74.5}
             height={99}
           />
