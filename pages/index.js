@@ -295,7 +295,7 @@ const Home = ({ products, banner, categories }) => {
                     slidesPerView: 1.6,
                   },
                  300: {                  
-                    slidesPerView: 2.1,
+                    slidesPerView: 2.3,
                  },
                  450: {
                     slidesPerView: 2.8,
@@ -376,12 +376,12 @@ const Home = ({ products, banner, categories }) => {
                     slidesPerView: 1.6,
                   },
                  300: {                  
-                    slidesPerView: 2.1,
+                    slidesPerView: 2.3,
                  },
-                 390: {
+                 450: {
                     slidesPerView: 2.8,
                  }, 
-                 450: {
+                 520: {
                     slidesPerView: 3.2,
                  }, 
                  850: {
@@ -457,12 +457,12 @@ const Home = ({ products, banner, categories }) => {
                     slidesPerView: 1.6,
                   },
                  300: {                  
-                    slidesPerView: 2.1,
+                    slidesPerView: 2.3,
                  },
-                 390: {
+                 450: {
                     slidesPerView: 2.8,
                  }, 
-                 450: {
+                 520: {
                     slidesPerView: 3.2,
                  }, 
                  850: {
