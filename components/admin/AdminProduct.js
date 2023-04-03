@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { CgBolt } from 'react-icons/cg';
 import ShieldTwoTone from '@mui/icons-material/ShieldTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteSweepTwoTone';
-import Link from 'next/Link';
+import Link from 'next/link';
 import UpdateProds from './UpdateProds';
 import CopyAllIcon from '@mui/icons-material/CopyAllSharp';
 import copy from "copy-to-clipboard";
