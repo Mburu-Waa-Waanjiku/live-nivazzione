@@ -12,7 +12,7 @@ function Card({product, addToCartHandler}) {
           <Image
             width={364}
             height={484}
-            src={product.image && product.image[0]}
+            src={product.image && product.image[0].item}
             alt={product.name}
             className="shadow bg-gray-100 object-cover h-auto w-100"
           />

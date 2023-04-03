@@ -35,7 +35,7 @@ function Shipporder() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
   const counties = ["Choose your Area", "CBD", "SOUTH B", "IMARA DAIMA", "KITENGELA", "LANGATA", "KAREN", "LAVINGTON", "ROASTERS", "JKUAT MAIN STAGE", "JUJA", "KAHAWA SUKARI", "GUMBA ESTATE", "KAHAWA WENDANI", "RUIRU BYPASS", "RUIRU NDANI", "ZIMMERMAN", "TRM", "KAHAWA WEST", "KASARANI", "UMOJA", "BURUBURU", "EMBAKASI/NYAYO ESTATE", "UTAWALA", "NGONG ROAD", "NGONG RACECOURSE", "SYOKIMAU", "MLOLONGO", "THINDIGUA", "KIAMBU", "KIRIGITI", "RUAKA", "MADARAKA","NAIROBI WEST", "LANGATA", "RONGAI", "KISERIAN", "JERICHO", "KOMAROCK", "DONHOLM", "FEDHA", "CHOKA", "RUAI", "JAMUHURI ESTATE", "WESTLANDS", "LORESHO", "KANGEMI", "UTHIRU", "KINOO", "KIKUYU", "TWO RIVERS MALL", "TMALL(LANGATA RD)"];
-  const CBD = ["PHILADELPHIA HOUSE, NEXT TO AFYA CENTER", "STAR MALL, TOM MBOYA"];
+  const CBD = ["CROCKS AND SANDALS,OPPOSITESUPREME COURT, NEXT TO REINSURANCE PLAZA ALONG TAIFA ROAD"];
   const SOUTHB = ["SHOPPING CENTER-ELLYS DRY CLEANERS", "SOUTH B SANASANA-DELIGHT BEAUTY"];
   const IMARADAIMA = ["IMARA DAIMA ESTATE JUNCTION, MWANIKI CLOTHING STORE", ];
   const KITENGELA = ["KOBIL PETROL STATION JUPITER HOUSE, SUDS AND DUS"];
@@ -112,14 +112,18 @@ function Shipporder() {
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const itemsPrice = bagitems[0]?.itemsPrice;
   let shippingPrice;
-  if (itemsPrice < 699) {
-      shippingPrice = 120;
-    } else if (itemsPrice < 999 ) {
-        shippingPrice = 60
-      } else {
+  if (itemsPrice < 699 && county != 'CBD' ) {
+        shippingPrice = 119;
+      } else if (itemsPrice < 699 && county === 'CBD' ) {
+          shippingPrice = 29
+        } else if (itemsPrice < 999 && county != 'CBD' ) {
+          shippingPrice = 59
+      } else if (itemsPrice < 999 && county === 'CBD' ) {
+          shippingPrice = 15
+      }  else {
           shippingPrice = 0
       }
-  const taxPrice = round0(13 * itemsPrice / 100);
+  const taxPrice = 0;
   const totalPrice = round0(itemsPrice + shippingPrice + taxPrice);
   const payout = round0(shippingPrice + taxPrice);
   useEffect(() => {

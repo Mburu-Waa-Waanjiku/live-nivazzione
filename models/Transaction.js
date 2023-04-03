@@ -5,6 +5,7 @@ const transactionSchema = new mongoose.Schema(
     Phone: { type: Number, required: true },
     Code: { type: String, required: true },
     Amount: { type: Number, required: true },
+    isNewtransac: { type: Boolean, required: true },
   },
   {
     timestamps: true,

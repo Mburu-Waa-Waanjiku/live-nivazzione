@@ -47,13 +47,13 @@ function Pay() {
     const bundlePrice = round0(itemsPrice - ratePrice);
     let shippingPrice;
     if (itemsPrice < 699 && county != 'CBD' ) {
-        shippingPrice = 120;
+        shippingPrice = 119;
       } else if (itemsPrice < 699 && county === 'CBD' ) {
-          shippingPrice = 40
+          shippingPrice = 29
         } else if (itemsPrice < 999 && county != 'CBD' ) {
-          shippingPrice = 50
+          shippingPrice = 59
       } else if (itemsPrice < 999 && county === 'CBD' ) {
-          shippingPrice = 20
+          shippingPrice = 15
       }  else {
           shippingPrice = 0
       }
@@ -145,8 +145,12 @@ function Pay() {
       );
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
-      enqueueSnackbar('Order created succesfully', { variant: 'success' });
-      router.push(`/order/${data._id}`);
+      enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
+      setCompleting(true); 
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      await router.push(`/order/${data._id}`);
+      handleCloseNormalOP();
+      handleCartclose();
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
       }
@@ -202,7 +206,7 @@ function Pay() {
 
     const [paymentMethod, setPaymentMethod] = useState('');
     const counties = ["Select your Area", "CBD", "SOUTH B", "IMARA DAIMA", "KITENGELA", "LANGATA", "KAREN", "LAVINGTON", "ROASTERS", "JKUAT MAIN STAGE", "JUJA", "KAHAWA SUKARI", "GUMBA ESTATE", "KAHAWA WENDANI", "RUIRU BYPASS", "RUIRU NDANI", "ZIMMERMAN", "TRM", "KAHAWA WEST", "KASARANI", "UMOJA", "BURUBURU", "EMBAKASI/NYAYO ESTATE", "UTAWALA", "NGONG ROAD", "NGONG RACECOURSE", "SYOKIMAU", "MLOLONGO", "THINDIGUA", "KIAMBU", "KIRIGITI", "RUAKA", "MADARAKA","NAIROBI WEST", "LANGATA", "RONGAI", "KISERIAN", "JERICHO", "KOMAROCK", "DONHOLM", "FEDHA", "CHOKA", "RUAI", "JAMUHURI ESTATE", "WESTLANDS", "LORESHO", "KANGEMI", "UTHIRU", "KINOO", "KIKUYU", "TWO RIVERS MALL", "TMALL(LANGATA RD)"];
-    const CBD = ["CROCKS AND SANDALS,OPPOSITESUPREME COURT, NEXT TO REINSURANCE PLAZA ALONG TAIFA ROAD"];
+    const CBD = ["CROCKS AND SANDALS, OPPOSITESUPREME COURT, NEXT TO REINSURANCE PLAZA ALONG TAIFA ROAD"];
     const SOUTHB = ["SHOPPING CENTER-ELLYS DRY CLEANERS", "SOUTH B SANASANA-DELIGHT BEAUTY"];
     const IMARADAIMA = ["IMARA DAIMA ESTATE JUNCTION, MWANIKI CLOTHING STORE", ];
     const KITENGELA = ["KOBIL PETROL STATION JUPITER HOUSE, SUDS AND DUS"];

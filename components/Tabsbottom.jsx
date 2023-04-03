@@ -12,17 +12,18 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import HomeIcon from '@mui/icons-material/HomeOutlined';
 import PersonIcon from '@mui/icons-material/PersonOutlined';
-import { AiOutlineShopping } from 'react-icons/ai';
+import { BsHeartFill } from 'react-icons/bs';
 import useStyles from '../utils/styles';
 import { debounce } from '../utils/helpers';
+import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
 
 export default function Tabsbottom() {
   const classes = useStyles();
-  const { openLogin, handleOpenBag , handleCartopen } = useStateContext();
+  const { openLogin, handleOpenBag , handleCartopen, viewOpenHandler } = useStateContext();
 
   const router = useRouter();
   const { state } = useContext(Store);
-  const { cart, userInfo, bagitems } = state;
+  const { cart, userInfo, bagitems, notifications } = state;
   const routes = ["/", "/myBag", "/cart", "/me", "/"];
   
   const history = router.pathname;
@@ -45,6 +46,8 @@ export default function Tabsbottom() {
 
   }, [prevScrollPos, visible, handleScroll]);
 
+  const notesLength = [...notifications.filter((notification) => !notification.isViewed )];
+
   return (
     <div className="tabb">
        <div className={tabsStyles.backgcoverticalcenter}>
@@ -53,17 +56,6 @@ export default function Tabsbottom() {
             
             <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         
-            <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleOpenBag}  icon={bagitems[0]?.orderItems.length > 0 ? (
-                      <Badge
-                        classes={{ badge: classes.badgeLg }}
-                        badgeContent={bagitems[0]?.orderItems.length}
-                      >
-                      <AiOutlineShopping style={{ fontSize: 24 }}/>
-                      </Badge>
-                    ) : (
-                      <AiOutlineShopping style={{ fontSize: 24 }}/>
-                    )}  />
-            
             <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleCartopen} icon={cart.cartItems.length > 0 ? (
                       <Badge
                         classes={{ badge: classes.badgeLg }}
@@ -73,6 +65,24 @@ export default function Tabsbottom() {
                       </Badge>
                     ) : (
                       <AiOutlineShoppingCart style={{ fontSize: 24 }}/>
+                    )}  />
+
+            <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleOpenBag}  icon={<BsHeartFill style={{ fontSize: 23 }}/>}  />
+            
+            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={viewOpenHandler} icon={notesLength.length > 0 ? (
+                      <Badge
+                        classes={{ badge: classes.badgeLg }}
+                        badgeContent={notesLength.length}
+                      >
+                        <IoNotificationsSharp style={{ fontSize: 24 }}/>
+                      </Badge>
+                    ) : (
+                      <Badge
+                        classes={{ badge: classes.badgetab }}
+                        badgeContent={''}
+                      >
+                        <IoNotificationsOutline style={{ fontSize: 24 }}/>
+                      </Badge>
                     )}  />
                                  
             {userInfo ? (<Tab 

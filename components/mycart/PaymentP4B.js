@@ -4,7 +4,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import {
-  Button
+  Button,
+  CircularProgress,
 } from '@material-ui/core';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
@@ -17,7 +18,7 @@ function PaymentP4B() {
   
     const router = useRouter();
     const { state, dispatch } = useContext(Store);
-    const { openLogin, handleOpenBag, handleCartclose, handleClosep4b, handleClosePayp4b } = useStateContext();
+    const { handleChangeBag, openLogin, handleCartclose, handleClosep4b, handleClosePayp4b } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
@@ -44,6 +45,19 @@ function PaymentP4B() {
     const handleCounty = (event) => {
       setCounty(event.target.value);
       setAfterLocation(true)
+    };
+
+    const fetchBags = async () => {
+      try {
+        dispatch({ type: 'FETCH_BAG' });
+        const { data } = await axios.get(`/api/P4Borders/history`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({ type: 'FETCH_BAG_SUCCESS', payload: data });
+        Cookies.set('bagitems', data);
+      } catch (err) {
+        dispatch({ type: 'FETCH_BAG_FAIL', payload: getError(err) });
+      }
     };
 
     const updateStockHandler = async () => {
@@ -83,6 +97,7 @@ function PaymentP4B() {
       );
       dispatch({ type: 'CART_CLEAR' });
       Cookies.remove('cartItems');
+      fetchBags();
       enqueueSnackbar('Your Bag has been updated succesfully', { variant: 'success' });
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
@@ -114,8 +129,11 @@ function PaymentP4B() {
       enqueueSnackbar('Could not Complete your payment');
     }
     };
+
+    const [awaitingConfirm, setAwaitConfirm] = useState(false);
     const checkPayment = async () => {
       closeSnackbar();
+      setAwaitConfirm(true);
        try {
         await axios.post(
         '/api/P4Borders/confirmpay',
@@ -129,17 +147,18 @@ function PaymentP4B() {
           },
         } 
       );
+     setAwaitConfirm(false);
      setCompleting(true); 
      await new Promise(resolve => setTimeout(resolve, 2000));
      updateStockHandler();
      placeP4BHandler();
-     await router.push('/')
+     Cookies.remove('cartItems');
      await new Promise(resolve => setTimeout(resolve, 3000));
      handleClosePayp4b();
      handleClosep4b();
-     handleCartclose();
-     handleOpenBag();
+     handleChangeBag();
     } catch (err) {
+      setAwaitConfirm(false);
       enqueueSnackbar('Dear customer, Your Payment was not successful, Check your account balance and try again');
     }
     };
@@ -258,7 +277,7 @@ function PaymentP4B() {
                         color="primary"
                         style={{fontFamily: "monospace", borderRadius: '50px', marginTop: 20, display: confirming ? "block" : "none", backgroundColor: '#222', padding: "8px 35px", marginBottom: "10px"}}
                        >
-                        CONFIRM
+                        {!awaitingConfirm ? 'CONFIRM' : <CircularProgress className="loadinbutton"/>}
                       </Button>
                     </div>
                   </div>

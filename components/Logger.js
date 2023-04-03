@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 import { getError } from '../utils/error';
 import { useStateContext } from '../utils/StateContext';
-
+import Image from 'next/image';
 
 function Logger() {
   
@@ -45,7 +45,7 @@ function Logger() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, notifications } = state;
   useEffect(() => {
     if (userInfo) {
       closeLogin();
@@ -53,6 +53,18 @@ function Logger() {
   }, [router, userInfo]);
 
   const classes = useStyles();
+
+  const fetchNotes = async () => {
+    try {
+      dispatch({ type: 'FETCH_NOTIFICATIONS' });
+      const { data } = await axios.post(`/api/users/${userInfo._id}`);
+      dispatch({ type: 'FETCH_NOTIFICATIONS_SUCCESS', payload: data });
+      Cookies.set('notifications', data)
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
+    }
+  };
+ 
   const LoginsubmitHandler = async ({ email, password }) => {
     closeSnackbar();
     try {
@@ -62,9 +74,14 @@ function Logger() {
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
       Cookies.set('userInfo', data);
+      fetchNotes();
+      dispatch({ type: 'FETCH_BAG' });
+      const { fav } = await axios.get(`/api/users/${userInfo._id}`);
+      dispatch({ type: 'FETCH_FAVOURITES_SUCCESS', payload: fav });
+      Cookies.set('favourites', fav);
       closeLogin();
     } catch (err) {
-      enqueueSnackbar("Problem Making a Connection");
+      console.log(err);
     }
   };
   
@@ -103,9 +120,9 @@ function Logger() {
   };
 
 	return (
-		<div style={{zIndex: 1220}} className=" fixed w-full h-full flex justify-center content-center">
-		  <div style={{width: "fit-content", height: "fit-content", padding: 20 , }}>
- 	        <div className="logger">
+		<div style={{zIndex: 1220, flexWrap: 'wrap', transform: 'translate(0, -10%)'}} className=" fixed w-full h-full flex justify-center content-center">
+		  <div style={{ width: "fit-content", height: "fit-content", padding: 10, background: 'linear-gradient(to left,#eee 50%, #333 50%)' }}>
+ 	        <div  className="logger loggerborder">
  	          <div onClick={closeLogin} style={{float: "right", fontSize: 20, position: "relative", top: -16, right: -6}}>
  	            <b> x </b>
  	          </div>
@@ -113,7 +130,12 @@ function Logger() {
 				<div >
 	  			    <form onSubmit={handleSubmit(RegistersubmitHandler)} className={classes.form}>
       			      <Typography style={{textAlign: "center"}} component="h1" variant="h1">
-      			        Register
+      			         <Image
+                       width={200}
+                       height={40}
+                       alt="register"
+                       src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679073683/signup_diyk7v.png"
+                      />
       			      </Typography>
       			      <List>
         			      <ListItem>
@@ -234,7 +256,12 @@ function Logger() {
         			      </ListItem>
         			      <ListItem>
         			        <Button variant="contained" type="submit" fullWidth color="primary">
-        			          Register
+        			          <Image
+                          width={110}
+                          height={22}
+                          alt="sign up"
+                          src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679075027/signupbutton_o4zzu3.png"
+                        />
         			        </Button>
         			      </ListItem>
           			    <ListItem>
@@ -312,7 +339,12 @@ function Logger() {
 				<div>
       			    <form onSubmit={handleSubmit(LoginsubmitHandler)} className={classes.form}>
     			      <Typography style={{textAlign: "center"}} component="h1" variant="h1">
-    			        Login
+    			        <Image
+                    width={200}
+                    height={40}
+                    alt="register"
+                    src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679073912/login_banner_vtuzyp.png"
+                  />
     			      </Typography>
     			      <List>
     			        <ListItem>
@@ -380,7 +412,12 @@ function Logger() {
     			        </ListItem>
     			        <ListItem>
     			          <Button variant="contained" type="submit" fullWidth color="primary">
-    			            Login
+    			            <Image
+                        width={110}
+                        height={22}
+                        alt="sign in"
+                        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679075158/signin_qgpk17.png"
+                      />
     			          </Button>
     			        </ListItem>
     			        <ListItem>

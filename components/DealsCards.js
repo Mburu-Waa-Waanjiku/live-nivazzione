@@ -1,13 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
+import React, { useState, useContext } from 'react';
+import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
 import useStyles from '../utils/styles';
 import HeadersContainer from './HeadersContainer';
+import { Store } from '../utils/Store';
 
 export default function ProductItem({ product, addToCartHandler }) {
   const classes = useStyles();
+  const [fill, setFill] = useState(false);
+  const { state, dispatch } = useContext(Store);
+  const existItem = state.cart.cartItems.find((x) => x._id === product._id);
 
+  const addToCartWithAnimation = async () => {
+    await addToCartHandler(product);
+    setFill(true);
+  }
   const URL = `https://shiglam.com/newproducts`;
   let revCount;
   if(product.numReviews < 1){
@@ -22,8 +30,8 @@ export default function ProductItem({ product, addToCartHandler }) {
       "@type": "Product",
       name: product.name,
       image: [ 
-                product.image[0],
-                product.image[1] 
+                product.image[0].item,
+                product.image[1]?.item 
               ],
       description: product.description,
       brand: {
@@ -77,14 +85,14 @@ export default function ProductItem({ product, addToCartHandler }) {
           <Image
             width={364}
             height={484}
-            src={product.image && product.image[0]}
+            src={product.image && product.image[0].item}
             alt={product.name}
             className="rounded-3xl shadow object-cover bg-gray-100 h-auto w-100"
           />
         </a>
       </Link>
-      <div className="heart-ck"  onClick={() => addToCartHandler(product)}>
-          <AiOutlineShoppingCart/>
+      <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={addToCartWithAnimation}>
+          {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }
       </div>
       <p className="desc price">Ksh{product.price}</p>
       </div>

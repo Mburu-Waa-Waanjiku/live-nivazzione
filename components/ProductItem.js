@@ -1,12 +1,33 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
+import React, { useState, useContext } from 'react';
+import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
 import HeadersContainer from './HeadersContainer';
+import home from '../styles/Home.module.css';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { Store } from '../utils/Store';
 
-export default function ProductItem({ product, addToCartHandler }) {
+export default function ProductItem({ product, addToCartHandler, addToFavsHandler, removeFavHandler }) {
   
-    const URL = `https://shiglam.com/`;
+  const { state, dispatch } = useContext(Store);
+  const [fill, setFill] = useState(false);
+  const [fillFav, setFillFav] = useState(false);
+  const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+  const existFav = state.favourites.find((x) => x._id === product._id);
+  const addToCartWithAnimation = async () => {
+    await addToCartHandler(product);
+    setFill(true);
+  }
+  const addToFavWithAnimation = async () => {
+    await addToFavsHandler(product);
+    setFillFav(true);
+  }
+  const removeFavWithAnimation = async () => {
+    setFillFav(false);
+    await removeFavHandler(product);
+  }
+
+  const URL = `https://shiglam.com/`;
   let revCount;
   if(product.numReviews < 1){
     revCount = 16
@@ -20,8 +41,8 @@ export default function ProductItem({ product, addToCartHandler }) {
       "@type": "Product",
       name: product.name,
       image: [ 
-                product.image[0],
-                product.image[1] 
+                product.image[0].item,
+                product.image[1]?.item 
               ],
       description: product.description,
       brand: {
@@ -37,7 +58,7 @@ export default function ProductItem({ product, addToCartHandler }) {
         },
         author: {
           "@type": "Person",
-          name: product.reviews[0]?.name || "Diane"
+          name: "Diane"
         }
       },
       aggregateRating: {
@@ -67,24 +88,38 @@ export default function ProductItem({ product, addToCartHandler }) {
     <div className="card">
     <HeadersContainer data={addProductJsonLd()} />
     <div className="gallery">
+      { product.isNeww && (
+        <div className={home.newpostb}>
+          NEW
+        </div>
+      )}
       <Link href={`${product.category}/${product.slug}`}>
         <a>
           <Image
             width={364}
             height={484}
-            src={product.image && product.image[0]}
+            src={product.image && product.image[0].item}
             alt={product.name}
             className="shadow bg-gray-100 object-cover h-auto w-100"
           />
         </a>
       </Link>
-      <div className="heart-ck"  onClick={() => addToCartHandler(product)}>
-          <AiOutlineShoppingCart/>
+      <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={addToCartWithAnimation}>
+          {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }
       </div>
-      <div className="flex ">
-       {product.isBurgain && (<div className="loves"> B </div>)}
-       <p className="desc price">Ksh{product.price}</p>
-      </div>
+      <div className="flex justify-between">
+              <div  style={{display: 'flex', justifyContent: 'start'}}>
+                <div className="block sm:flex" >
+                  <div className="desc price">Ksh{product.price}</div>
+                  {product.isOnoffer && <div className="pl-2 sm:pl-0" style={{fontSize: 12, lineHeight: 1.6, transform: 'translate(15px, 6.8px)', fontWeight: 600, color: 'orangered'}}><s>Ksh.{product.prevprice}</s></div>}
+                </div>
+              </div>
+              <div style={{position: "relative", right: "-20px" }} className="flex justify-end">
+                <div style={{animation: fillFav ? 'scaler 1.5s' : 'none', transform:'translate(8px, 40px)', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.4)'}} className="heart-ck heart-anim" >
+                  {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
+                </div>
+              </div>
+            </div>
       </div>
 
       

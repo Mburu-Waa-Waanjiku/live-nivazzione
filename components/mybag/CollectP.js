@@ -80,6 +80,7 @@ function PaymentP4B() {
           totalPrice,
           isPaid : true,
           paidAt : Date.now(),
+          wasBag: true,
         },
         {
           headers: {

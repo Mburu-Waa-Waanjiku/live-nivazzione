@@ -26,8 +26,8 @@ function YourFoto({product, addToCartHandler}) {
       "@type": "Product",
       name: product.name,
       image: [ 
-                product.image[0],
-                product.image[1] 
+                product.image[0].item,
+                product.image[1]?.item 
               ],
       description: product.description,
       brand: {
@@ -81,7 +81,7 @@ function YourFoto({product, addToCartHandler}) {
                 <Image
                     width={364}
                     height={484}
-                    src={product.image[0]}
+                    src={product.image[0].item}
                     alt={product.name}
                     className="shadow object-cover bg-gray-100 h-auto w-100"
                 />

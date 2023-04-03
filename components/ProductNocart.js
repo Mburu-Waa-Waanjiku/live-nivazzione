@@ -29,8 +29,8 @@ export default function ProductNocart({ product }) {
       "@type": "Product",
       name: product.name,
       image: [ 
-                product.image[0],
-                product.image[1] 
+                product.image[0].item,
+                product.image[1]?.item 
               ],
       description: product.description,
       brand: {
@@ -82,7 +82,7 @@ export default function ProductNocart({ product }) {
           width={364}
           height={484}
           onClick={HandleSearch}
-          src={product.image && product.image[0]}
+          src={product.image && product.image[0].item}
           alt={product.name}
           className="shadow bg-gray-100 object-cover h-auto w-100"
           style={{borderRadius:10, backgroundColor: '#f3f4f6', overflow:"hidden"}}
@@ -91,7 +91,6 @@ export default function ProductNocart({ product }) {
       <div className="heart-ck" style={{height:27, backgroundColor: 'transparent'}}>
       </div>
       <div className="flex ">
-       {product.isBurgain && (<div className="loves"> B </div>)}
        <p className="desc price">Ksh{product.price}</p>
       </div>
       </div>

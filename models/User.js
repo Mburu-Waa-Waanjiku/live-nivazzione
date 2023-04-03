@@ -1,4 +1,18 @@
 import mongoose from 'mongoose';
+import Product from './Product';
+ 
+const notificationsSchema = new mongoose.Schema(
+  {
+    isViewed : { type: Boolean, required: true, default: false },
+    isProduct : { type: Boolean, required: true, default: false },
+    message : { type: String, required: true},
+    product : { type: Array },
+    orderLink : { type: String },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const userSchema = new mongoose.Schema(
   {
@@ -6,6 +20,8 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, required: true, default: false },
+    favourites: { type: Array },
+    notifications : [notificationsSchema]
   },
   {
     timestamps: true,
