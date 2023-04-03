@@ -16,13 +16,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await db.connect();
   const newBanner = new Banner({
-    smallText: 'sample smalltext',
-    midText: 'sample midtext',
-    largeText1: 'sample largetext',
-    image: '/images/shirt1.jpg',
-    buttonText: 'button text',
-    discount: 'sample discount ',
-    desc: 'sample description',
+    ...req.body,
   });
 
   const banner = await newBanner.save();

@@ -1,3 +1,183 @@
+.loadinbutton circle {
+  stroke: white !important;
+}
+.Idgridhidden {
+ display: none !important;
+}
+.Idgridshow {
+  display: block !important;
+}
+.idswidth {
+  width: initial !important;
+}
+.bordererIds {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+.OrderIdgrids {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+  }
+.profileborder {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 10px solid rgba(0, 0, 0, 0.12);
+}
+.ordersscroll {
+  justify-content: center !important;
+}
+.loggerborder {
+  border-width: 0.1px;
+  border-style: solid;
+  border-color: black;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+.swipereactor {
+   padding-left : 60px !important;
+   padding-right: 60px !important;
+   padding-top: 20px !important;
+   padding-bottom: 20px !important;
+   background-color:  rgba(0, 0, 0, 0.12);
+}
+.swipereactor .card {
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+  }
+.swipereactor .nopad .card {
+    padding: 0px;
+    background-color: white;
+    border-radius: 20px;
+  }
+.swipereactor .nopad .gallery {
+    padding: 8px !important;
+  }
+.swipereactor .nopad .adminInd {
+    display: none;
+  }
+  .swipereactor img {
+    border-radius: 20px;
+  }
+.mereactor .card {
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+  }
+.mereactor img {
+    border-radius: 20px;
+  }
+.marinerhome {
+  padding-left: 0px;
+  padding-right: 0px;
+  column-gap: 8px;
+}
+.marinercategs {
+  gap: 8px;
+}
+.bannerTransformer {
+  position: sticky !important;
+  top: 55px;
+  transform: translate(-24px, 0px);
+  z-index: 10;
+}
+.bannerwidth {
+  width:calc(100% + 48px);
+  position: relative;
+  left: -24px;
+}
+.bannerimg img {
+  border-radius: 50px;
+}
+.Profileditor {
+  display: none;
+}
+.Profileditorsmall {
+  display: block;
+}
+@media screen and (max-width:767px){
+  .swipereactor {
+    padding : 20px !important;
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+  .swipereactor .card {
+    padding: 5px;
+    background-color: white;
+    border-radius: 20px;
+  }
+  .swipereactor img {
+    border-radius: 20px;
+  }
+  .mereactor .card {
+    padding: 5px;
+    background-color: white;
+    border-radius: 20px;
+  }
+  .mereactor img {
+    border-radius: 20px;
+  }
+  .marinerhome {
+    padding-left: 10px;
+    padding-right: 10px;
+    column-gap: 8px;
+  }
+  .marinercategs {
+    gap: 8px;
+  }
+}
+@media screen and (max-width:530px){
+  .ordersscroll {
+    justify-content: start !important;
+  }
+  .OrderIdgrids {
+    display: grid;
+    grid-template-columns: 96.5vw;
+  }
+  .bordererIds {
+    border-right: none;
+  }
+  .Idgridhidden {
+   display: block !important;
+  }
+  .Idgridshow {
+    display: none !important;
+  }
+  .idswidth {
+    width: 100vw !important;
+  }
+}
+@media screen and (max-width:639px){
+  .Profileditor {
+    display: block;
+  }
+  .Profileditorsmall {
+    display: none;
+  }
+  .profileborder {
+    border-right: none;
+  }
+}
+@media screen and (max-width:600px){
+  .bannerwidth {
+    width: calc(100% + 32px);
+    position: relative;
+    left: -16px;
+  }
+  .bannerTransformer {
+    position: sticky !important;
+    top: 55px;
+    z-index: 10;
+    transform: translate(-16px, 0px);
+  }
+}
+@media screen and (max-width:350px){
+  .marinerhome {
+    padding-left: 5px;
+    padding-right: 5px;
+    column-gap: 0px;
+  }
+  .marinercategs {
+    gap: 0px;
+  }
+}
 .cartCheckmkTransform {
   transform: translate(35px, -10px)
 }
@@ -31,7 +211,6 @@
 }
 .logger {
   padding: 20px;
-  background-image: url("https://res.cloudinary.com/dddx5qpji/image/upload/v1673943620/images_11_xqdlwb.webp");
   background-size: cover;
   background-color: white;
 }
@@ -49,6 +228,11 @@
     display: none !important;    
   }
  }
+ @media screen and (min-width: 1280px) {
+  .MuiContainer-maxWidthLg {
+    max-width: 2000px !important;
+  }
+}
 .checkmark__circle {
   stroke-dasharray: 166;
   stroke-dashoffset: 166;
@@ -90,4 +274,63 @@
   50% {
     transform: scale3d(1.1, 1.1, 1);
   }
+}
+.heart-anim {
+  animation: scaler 1.5s;
+}
+
+@keyframes scaler {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  20% {
+    transform: scale3d(1.2, 1.2, 1);
+  }
+  30% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+  90% {
+    transform: scale3d(1.4, 1.4, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+.favsanimate {
+  animation: favicon 0.9s;
+  animation-iteration-count: infinite;
+}
+@keyframes favicon {
+  0% {
+    transform: scale3d(1, 1, 1);
+    color: rgba(0, 0, 0, 1);
+  }
+  16.666667% {
+    transform: scale3d(1.2, 1.2, 1);
+    color: rgba(0, 0, 0, 0.95);
+  }
+  33.333333% {
+    transform: scale3d(1.4, 1.4, 1);
+    color: rgba(0, 0, 0, 0.88);
+  }
+  50% {
+    transform: scale3d(1.6, 1.6, 1);
+    color: rgba(0, 0, 0, 0.8);
+  }
+  66.666667% {
+    transform: scale3d(1.6, 1.6, 1);
+    color: rgba(0, 0, 0, 0.88);
+  }
+  83.333333% {
+    transform: scale3d(1.2, 1.2, 1);
+    color: rgba(0, 0, 0, 0.95);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+    color: rgba(0, 0, 0, 1);
+  }
+}
+
+:root {
+  --border-color: linear-gradient(to left,#eee 50%, #333 50%);
 }

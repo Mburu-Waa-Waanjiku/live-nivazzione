@@ -74,8 +74,15 @@ const useStyles = makeStyles((theme) => ({
   },
   footer: {
     marginTop: 10,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '#222',
     textAlign: 'center',
+    left: '-16px',
+    position: 'relative',
+    width: `calc(100% + 32px)`,
+    [theme.breakpoints.up('sm')]: {
+      left: '-24px',
+      width: `calc(100% + 48px)`
+    },
   },
   section: {
     marginTop: 10,
@@ -288,22 +295,20 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
   },
   hmStyle: {
-    display:'none',
-    height: 45,
+    height: 40,
     backgroundColor: 'white',
   },
 
   categ: {
     display:'grid !important',
     gap: 10,
-    gridTemplateColumns: '1fr 1fr 1fr',
+    justifyItems: 'center',
+    gridTemplateColumns: '1fr 1fr',
     gridTemplateRows: '1fr',
     [theme.breakpoints.up('sm')]: {
-       gap: 15,
-    },
-    [theme.breakpoints.up('md')]: {
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gridTemplateRows: '1fr ',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+      gridTemplateRows: '1fr ',
+      gap: 15,
     },
   },
   categRut: {
@@ -333,7 +338,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ndicateThick: {
     height: '4px !important',
-    backgroundColor:'#222 !important',
+    backgroundColor:'rgba(0, 0, 0, 0.7) !important',
   },
   wrapperCateg: {
     justifyContent: 'space-evenly !important',
@@ -382,6 +387,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '0 !important',
     [theme.breakpoints.up('sm')]: {
       justifyItems: 'center',
+      marginRight: '8px !important',
     },
     '& span': {
       padding: '8px !important',
@@ -445,6 +451,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '10px',
     backgroundColor: '#222',
   },
+  badgetab: {
+    color: 'white',
+    width: '4px',
+    fontSize: '10px',
+    backgroundColor: '#222',
+    transform: 'translate(-1px, 1px)', 
+    scale: 0.6, 
+    border: '4px solid white'
+  },
   sScreen: {
     margin: '5px 10px',
     padding: '1px 10px',
@@ -488,10 +503,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   mideaSmallBannerResp: {
-    width: '100vw',
+    width: 'calc(100% + 32px)',
     marginTop: '2px',
     position: 'relative',
-    left: '-4.3vw',
+    left: '-16px',
     [theme.breakpoints.up('sm')]: {
       marginTop: '22px',
       width:'100%',
@@ -505,5 +520,11 @@ const useStyles = makeStyles((theme) => ({
       width:'100%',
     },
   },
+  liaderadmin: {
+    top: '56px',
+    [theme.breakpoints.up('sm')]: {
+      top: '72px',
+    },
+  }
 }));
 export default useStyles;

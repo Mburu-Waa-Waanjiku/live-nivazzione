@@ -52,6 +52,8 @@
     "react-icons": "^4.4.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-query": "^3.39.2",
+    "react-use-downloader": "^1.2.4",
+    "react-watermark-component": "^2.2.1",
     "streamifier": "^0.1.1",
     "swiper": "^8.4.4"
   },

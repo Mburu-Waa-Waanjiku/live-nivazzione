@@ -1,5 +1,5 @@
 import nc from 'next-connect';
-import Order from '../../../models/Order';
+import Bag from '../../../models/Bag';
 import { isAuth, isAdmin } from '../../../utils/auth';
 import db from '../../../utils/db';
 import { onError } from '../../../utils/error';
@@ -11,10 +11,10 @@ handler.use(isAuth, isAdmin);
 
 handler.get(async (req, res) => {
   await db.connect();
-  const orders = await Order.find({}).populate('user', 'name').sort({ createdAt: -1 });
+  const bags = await Bag.find({}).populate('user', 'name').sort({ updatedAt: -1 });
   await db.disconnect();
-  res.send(orders);
+  console.log(bags);
+  res.send(bags);
 });
-
 
 export default handler;

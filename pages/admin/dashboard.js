@@ -1,213 +1,339 @@
 import axios from 'axios';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import React, { useEffect, useContext, useReducer } from 'react';
-import {
-  CircularProgress,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-  Card,
-  Button,
-  ListItemText,
-  CardContent,
-  CardActions,
-} from '@material-ui/core';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { getError } from '../../utils/error';
 import { Store } from '../../utils/Store';
-import Layout from '../../components/Layout';
 import useStyles from '../../utils/styles';
+import ProgressLoad from '../../components/admin/LoadingProgress';
+import { useSnackbar } from 'notistack';
+import Compass from '../../components/admin/Compass';
+import admin from '../../styles/admin.module.css';
+import Tabs from "@mui/material/Tabs"; 
+import Tab from "@mui/material/Tab";
+import TabPanel from '@mui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
+import Products from '../../components/admin/Products';
+import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Orders from '../../components/admin/Orders';
+import Bags from '../../components/admin/Bags';
+import Transactions from '../../components/admin/Transactions';
+import Banners from '../../components/admin/Banners';
+import Users from '../../components/admin/Users';
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true, error: '' };
-    case 'FETCH_SUCCESS':
-      return { ...state, loading: false, summary: action.payload, error: '' };
-    case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
-    default:
-      state; 
-  }
-}
-
-function AdminDashboard() {
-  const { state } = useContext(Store);
+export default function AdminDashboard() {
+  const { state, dispatch } = useContext(Store);
   const router = useRouter();
   const classes = useStyles();
   const { userInfo } = state;
+  const { enqueueSnackbar } = useSnackbar();
+  
+  const [FetchProgres, setFetchProgres] = useState(0);
+  const [show, setShow] = useState(false);
 
-  const [{ loading, error, summary }, dispatch] = useReducer(reducer, {
-    loading: true,
-    summary: { salesData: [] },
-    error: '',
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [bags, setBags] = useState([]);
+  const [users, setUsers] = useState([]);
+
+
+
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get(`/api/admin/products`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setProducts(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err));
+    }
+  };
+
+  const createHandler = async () => {
+    if (!window.confirm('Are you sure?')) {
+      return;
+    }
+    try {
+      const { data } = await axios.post(
+        `/api/admin/products`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      enqueueSnackbar('Product created successfully', { variant: 'success' });
+      router.push(`/admin/product/${data.product._id}`);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const deleteHandler = async (productId) => {
+    if (!window.confirm('Are you sure?')) {
+      return;
+    }
+    try {
+      await axios.delete(`/api/admin/products/${productId}`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      enqueueSnackbar('Product deleted successfully', { variant: 'success' });
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const fetchBanner = async () => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await axios.get(`/api/admin/banners`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setBanners(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const { data } = await axios.get(`/api/admin/users`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setUsers(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const fetchTransactions = async () => {
+    try {
+      const { data } = await axios.get(`/api/admin/transactions`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setTransactions(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const fetchBags = async () => {
+    try {
+      const { data } = await axios.get(`/api/admin/bags`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setBags(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      const { data } = await axios.get(`/api/admin/orders`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setOrders(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState({
+    products: [],
+    isSearch: false,
+    resultFound: false,
   });
+
+  const debounce = (func, wait) => {
+    let timerId;
+    return (...args) => {
+      if (timerId) clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        func(...args);
+      }, wait);
+    };
+  };
+
+  const filterData = () => {
+    let fData = [];
+    let resultFound = false;
+    console.log(fData);
+    if (search) {
+      fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search.toLowerCase()) != -1)];
+      console.log('new fdata is' + ' ' + fData);
+      if (fData.length > 0) {
+        resultFound = true;
+      }
+    }
+    setFilteredData({
+      ...fData,
+      products: [...fData],
+      isSearch: search.trim().length > 0,
+      resultFound: resultFound,
+    });
+  };
+
 
   useEffect(() => {
     if (!userInfo) {
       router.push('/login');
     }
-    const fetchData = async () => {
-      try {
-        dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/admin/summary`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
-      } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
-      }
-    };
-    fetchData();
-  }, [router, userInfo]);
+    const fetcherfc = async () => {
+        await fetchProducts();
+        setShow(true);
+        await setFetchProgres(30);
+        await fetchBanner();
+        await setFetchProgres(38);
+        await fetchUsers();
+        await setFetchProgres(52);
+        await fetchTransactions();
+        await setFetchProgres(59);
+        await fetchBags();
+        await setFetchProgres(65);
+        await fetchOrders();
+        await new Promise(resolve => setTimeout(resolve, 1500));        
+        await setFetchProgres(79);
+        await new Promise(resolve => setTimeout(resolve, 800));        
+        await setFetchProgres(100);
+        await new Promise(resolve => setTimeout(resolve, 200));        
+        setShow(false);
+      };
+    fetcherfc();
+  }, []);
+
+  const pages = ["Products", "Orders", "Bags", "Transactions", "Banners", "Users"];
+  const [current, setCurrent] = useState("Products");
+ 
   return (
-    <Layout title="Admin Dashboard">
-      <div className="margintopFix">
+    <>
+      <div className={classes.liaderadmin} style={{ left: 0, width: '100%', position: 'absolute', display: show ? 'block' : 'none', zIndex: 3}}>
+        <ProgressLoad
+          percent={FetchProgres}
+        />
       </div>
-      <Grid container spacing={1}>
-        <Grid item md={3} xs={12}>
-          <Card className={classes.section}>
-            <List>
-              <NextLink href="/admin/dashboard" passHref>
-                <ListItem selected button component="a">
-                  <ListItemText primary="Admin Dashboard"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/orders" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="Orders"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/products" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="Products"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/banners" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="Banners"></ListItemText>
-                </ListItem>
-              </NextLink>
-              <NextLink href="/admin/users" passHref>
-                <ListItem button component="a">
-                  <ListItemText primary="Users"></ListItemText>
-                </ListItem>
-              </NextLink>
-            </List>
-          </Card>
-        </Grid>
-        <Grid item md={9} xs={12}>
-          <Card className={classes.section}>
-            <List>
-              <ListItem>
-                {loading ? (
-                  <CircularProgress />
-                ) : error ? (
-                  <Typography className={classes.error}>{error}</Typography>
-                ) : (
-                  <Grid container spacing={5}>
-                    <Grid item md={3}>
-                      <Card raised>
-                        <CardContent>
-                          <Typography variant="h1">
-                            Ksh.{summary.ordersPrice}
-                          </Typography>
-                          <Typography>Sales</Typography>
-                        </CardContent>
-                        <CardActions>
-                          <NextLink href="/admin/orders" passHref>
-                            <Button size="small" color="primary">
-                              View sales
-                            </Button>
-                          </NextLink>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                    <Grid item md={3}>
-                      <Card raised>
-                        <CardContent>
-                          <Typography variant="h1">
-                            {summary.ordersCount}
-                          </Typography>
-                          <Typography>Orders</Typography>
-                        </CardContent>
-                        <CardActions>
-                          <NextLink href="/admin/orders" passHref>
-                            <Button size="small" color="primary">
-                              View orders
-                            </Button>
-                          </NextLink>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                    <Grid item md={3}>
-                      <Card raised>
-                        <CardContent>
-                          <Typography variant="h1">
-                            {summary.productsCount}
-                          </Typography>
-                          <Typography>Products</Typography>
-                        </CardContent>
-                        <CardActions>
-                          <NextLink href="/admin/products" passHref>
-                            <Button size="small" color="primary">
-                              View products
-                            </Button>
-                          </NextLink>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                    <Grid item md={3}>
-                      <Card raised>
-                        <CardContent>
-                          <Typography variant="h1">
-                            {summary.usersCount}
-                          </Typography>
-                          <Typography>Users</Typography>
-                        </CardContent>
-                        <CardActions>
-                          <NextLink href="/admin/users" passHref>
-                            <Button size="small" color="primary">
-                              View users
-                            </Button>
-                          </NextLink>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                    <Grid item md={3}>
-                      <Card raised>
-                        <CardContent>
-                          <Typography variant="h1">
-                            {summary.rcustomerCount}
-                          </Typography>
-                          <Typography>Rocking Customers</Typography>
-                        </CardContent>
-                        <CardActions>
-                          <NextLink href="/admin/rcustomers" passHref>
-                            <Button size="small" color="primary">
-                              View Rocking Customers
-                            </Button>
-                          </NextLink>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                )}
-              </ListItem>
-              <ListItem>
-                <Typography component="h1" variant="h1">
-                  Sales Chart
-                </Typography>
-              </ListItem>
-              
-            </List>
-          </Card>
-        </Grid>
-      </Grid>
-    </Layout>
+      <Compass
+        admin={admin}
+        pages={pages}
+        current={current}
+        products={products}
+        orders={orders}
+        transactions={transactions}
+        banners={banners}
+        Navigation={Navigation}
+        FreeMode={FreeMode}
+        Thumbs={Thumbs}
+        Pagination={Pagination}
+        Autoplay={Autoplay}
+        Swiper={Swiper}
+        SwiperSlide={SwiperSlide}
+        bags={bags}
+        users={users}
+        setCurrent={setCurrent}
+        setOrders={setOrders}
+        setBags={setBags}
+        enqueueSnackbar={enqueueSnackbar}
+        getError={getError}
+        userInfo={userInfo}
+      />
+      <Products
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        products={products}
+        admin={admin}
+        classes={classes}
+        Navigation={Navigation}
+        FreeMode={FreeMode}
+        Thumbs={Thumbs}
+        Pagination={Pagination}
+        Autoplay={Autoplay}
+        Swiper={Swiper}
+        SwiperSlide={SwiperSlide}
+        deleteHandler={deleteHandler}
+        setFetchProgres={setFetchProgres}
+        setShow={setShow}
+        setProducts={setProducts}
+        showSearch={showSearch}
+        setShowSearch={setShowSearch}
+        search={search}
+        filteredData={filteredData}
+        debounce={debounce}
+        filterData={filterData}
+        setSearch={setSearch}
+      />
+      <Orders
+        admin={admin}
+        orders={orders}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+      />
+      <Bags
+        admin={admin}
+        bags={bags}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+      />
+      <Transactions
+        admin={admin}
+        transactions={transactions}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+      />
+      <Banners
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        banners={banners}
+        admin={admin}
+        setBanners={setBanners}
+        classes={classes}
+        Navigation={Navigation}
+        FreeMode={FreeMode}
+        Thumbs={Thumbs}
+        Pagination={Pagination}
+        Autoplay={Autoplay}
+        Swiper={Swiper}
+        SwiperSlide={SwiperSlide}
+        setFetchProgres={setFetchProgres}
+        setShow={setShow}
+      />
+      <Users
+        admin={admin}
+        users={users}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+        orders={orders}
+        bags={bags}
+      />
+    </>
   );
 }
-
-export default dynamic(() => Promise.resolve(AdminDashboard), { ssr: false });

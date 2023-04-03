@@ -16,14 +16,20 @@ const initialState = {
       ? Cookies.get('paymentMethod')
       : '',
   },
-   userInfo: Cookies.get('userInfo')
+  userInfo: Cookies.get('userInfo')
     ? JSON.parse(Cookies.get('userInfo'))
     : null,
-   bagitems: Cookies.get('bagitems')
+  bagitems: Cookies.get('bagitems')
     ? JSON.parse(Cookies.get('bagitems'))
     : [],
-   loading: true,
-   error: '',
+  favourites: Cookies.get('favourites')
+    ? JSON.parse(Cookies.get('favourites'))
+    : [],
+  notifications: Cookies.get('notifications')
+    ? JSON.parse(Cookies.get('notifications'))
+    : [],
+  loading: true,
+  error: '',
 
 };
 function reducer(state, action) {
@@ -101,6 +107,40 @@ function reducer(state, action) {
       return { ...state, bagitems: [] };
     case 'FETCH_BAG_FAIL':
       return { ...state, loading: false, error: action.payload };
+    case 'FETCH_NOTIFICATIONS':
+      return { ...state, loading: true, error: ''};
+    case 'FETCH_NOTIFICATIONS_SUCCESS':
+      return { ...state, notifications: action.payload, loading: false, error: '' };
+    case 'EMPTY_NOTIFICATIONS':
+      return { ...state, notifications: [] };
+    case 'FETCH_NOTIFICATIONS_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    case 'FETCH_FAVOURITES':
+      return { ...state, loading: true, error: ''};
+    case 'FETCH_FAVOURITES_SUCCESS':
+      return { ...state, favourites: action.payload, loading: false, error: '' };
+    case 'FETCH_FAVOURITES_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    case 'FAVOURITES_ADD_ITEM': {
+      const newItem = action.payload;
+      const existItem = state.favourites.find(
+        (item) => item._id === newItem._id
+      );
+      const favourites = existItem
+        ? state.favourites.map((item) =>
+            item.name === existItem.name ? newItem : item
+          )
+        : [...state.favourites, newItem];
+      Cookies.set('favourites', JSON.stringify(favourites));
+      return { ...state, favourites };
+    }
+    case 'FAVOURITES_REMOVE_ITEM': {
+      const favourites = state.favourites.filter(
+        (item) => item._id !== action.payload._id
+      );
+      Cookies.set('favourites', JSON.stringify(favourites));
+      return { ...state, favourites };
+    }
     default:
       return state;
   }

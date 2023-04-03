@@ -5,18 +5,37 @@ const Context = createContext();
 
 export const StateContext = ({ children }) => {
  const router = useRouter();
- const [value, setValue] = useState('1');
- const handleChange = (event, newValue) => {
-        setValue(newValue)
+
+ const today = new Date();
+
+  const [value, setValue] = useState("Cart");
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
   };
- const [categ, setCateg] = useState('Ankara');
- const handleCateg = (event, newCateg) => {
-        setCateg(newCateg)
+  const handleChangeBag = () => {
+    setValue("Bag")
   };
- const handleBoth = (event, newCateg) => {
-     router.push("/");
-     setValue('2');
-     setCateg(newCateg);
+
+ const [viewNotes, setViewNotes] = useState(false);
+ const NotesOpenHandler = () => {
+    setViewNotes(true);
+  };
+  const NotesCloseHandler = () => {
+    setViewNotes(false);
+  };
+
+ const [view, setView] = useState(false);
+ const viewOpenHandler = () => {
+    setView(true);
+  };
+  const viewCloseHandler = () => {
+    setView(false);
+  };
+  
+ const [happyHour, setHappyHour] = useState(false);
+ const currentTime = today.getHours();
+ if ( 21 > currentTime && currentTime > 20 ) {
+  setHappyHour(true);
  };
 
  const [sidbarVisible, setSidebarVisible] = useState(false);
@@ -26,17 +45,6 @@ export const StateContext = ({ children }) => {
   const sidebarCloseHandler = () => {
     setSidebarVisible(false);
   };
-
- const handleAppbar = (event, newCateg) => {
-     router.push("/");
-     setValue('2');
-     setCateg(newCateg);
- };
-
- const handleBack = (event, newCateg) => {
-     setValue('1');
-     setCateg(newCateg);
- };   
 
   const [searchClick, setSearchClick] = useState(false);
   const [searchBtn, setSearchBtn] = useState(true);
@@ -179,15 +187,19 @@ export const StateContext = ({ children }) => {
         setSidebarVisible,
         sidebarOpenHandler,
         sidebarCloseHandler,
-        handleAppbar,
+        setHappyHour,
+        view,
+        setView,
+        viewOpenHandler,
+        viewCloseHandler,
+        viewNotes,
+        setViewNotes,
+        NotesOpenHandler,
+        NotesCloseHandler,
         value,
         setValue,
         handleChange,
-        categ,
-        setCateg,
-        handleCateg,
-        handleBoth,
-        handleBack,
+        handleChangeBag,
       }}
     >
       {children}

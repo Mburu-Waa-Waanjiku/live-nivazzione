@@ -14,11 +14,16 @@ handler.get(async (req, res) => {
 });
 
 handler.post(async (req, res) => {
+  const imageItem = 
   await db.connect();
   const newProduct = new Product({
     name: 'sample name',
     slug: 'sample-slug-' + Math.random(),
-    image: ['/images/shirt1.jpg'],
+    image:  [
+      {
+        item: '/images/shirt1.jpg',
+      },
+    ],
     price: 0,
     category: 'sample category',
     brand: 'sample brand',

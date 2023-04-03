@@ -11,7 +11,7 @@ handler.use(isAuth);
 
 handler.get(async (req, res) => {
   await db.connect();
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
   res.send(orders);
 });
 

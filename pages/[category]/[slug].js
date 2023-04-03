@@ -2,7 +2,6 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
-import Layout from '../../components/Layout';
 import Product from '../../models/Product';
 import db from '../../utils/db';
 import { Store } from '../../utils/Store';
@@ -13,60 +12,45 @@ import ProductNocart from '../../components/ProductNocart';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { FaTruckMoving } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
+import Download from '../../components/downloader';
 import { IconButton } from '@material-ui/core';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
 
 import { Typography, ListItem, List, TextField, Button, CircularProgress, Grid, } from '@material-ui/core';
 import { Navigation, FreeMode, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSnackbar } from 'notistack';
- 
+import Headers from '../../components/HeadersContainer';
+
 import 'swiper/css'
 
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-
 export default function ProductScreen(props) {
   const [showOverlay, setShowOverlay] = useState(false);
   const classes = useStyles();
   const router = useRouter();
- 
+  const [fillFav, setFillFav] = useState(false);
+  const [fill, setFill] = useState(false);
+
   const { product, similarProds, Reviews } = props;
   const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, favourites } = state;
   const { enqueueSnackbar } = useSnackbar();
 
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
-  
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await axios.post(
-        `/api/products/${product._id}/reviews`,
-        {
-          rating,
-          comment,
-        },
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      setLoading(false);
-      enqueueSnackbar('Review submitted successfully', { variant: 'success' });
-      setShowOverlay(false)
-    } catch (err) {
-      setLoading(false);
-      enqueueSnackbar('Please fill both the comment & rating 🙂', { variant: 'error' });
-    }
-  };
+  const existFav = state.favourites.find((x) => x._id === product._id);
+  const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+
 
   if (!product) {
-    return <Layout title="Produt Not Found">Produt Not Found</Layout>;
+    return  <div> 
+              <Headers title="Produt Not Found"/>
+              <div> Produt Not Found </div>
+            </div>
   }
 
   const addToCartHandler = async () => {
@@ -75,13 +59,43 @@ export default function ProductScreen(props) {
     const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
+      window.alert('Product Already added');
       return;
     }
 
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+    enqueueSnackbar('Product added to Cart', { variant: 'success' });    
+  };
+  
+  const addToFavsHandler = async (product) => {
+    const existFav = state.favourites.find((x) => x._id === product._id);
+    if (existFav) {
+      window.alert('Already a Favourite');
+      return;
+    }
+    dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
+    const { data } = await axios.post(`/api/products/${product._id}/${userInfo._id}`);
+
+  };
+  
+  const removeFavHandler = async (product) => {
+    dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
+    const { data } = await axios.delete(`/api/products/${product._id}/${userInfo._id}`);
   };
 
+  const addToCartWithAnimation = async () => {
+    await addToCartHandler(product);
+    setFill(true);
+  }
+
+  const addToFavWithAnimation = async () => {
+    await addToFavsHandler(product);
+    setFillFav(true);
+  }
+  const removeFavWithAnimation = async () => {
+    setFillFav(false);
+    await removeFavHandler(product);
+  }
 
   const URL = `https://shiglam.com/${product.category}/${product.slug}`;
   let revCount;
@@ -140,17 +154,17 @@ export default function ProductScreen(props) {
 
   return (
     <>
-      <Layout title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
+      <Headers title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
         desc={product.description}
         socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
         socialdesc={product.description}
         socialimages={product.image[0]}
         scdinfo={addProductJsonLd()}
-      >
-      <div className="margintopFix pt-9 grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
+      />
+      <div className="margintopFix grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
         <div className="col-span-1 ">
           <div layout="responsive" className={classes.mideaSmallBannerResp} style={{maxWidth:600, marginTop: 0}} >
-            <div onClick={() => router.back()} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", top: 30, padding: 7 , borderRadius: 50, zIndex: 1200, left: 25 }}> <ArrowBackIosIcon sx={{fontSize:10}} /></div>
+            <div onClick={() => router.back()} className="top-8 sm:top-12" style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 7 , borderRadius: 50, zIndex: 1200, left: 25 }}> <ArrowBackIosIcon sx={{fontSize:10}} /></div>
             <>
              <Swiper
                style={{
@@ -162,7 +176,7 @@ export default function ProductScreen(props) {
                 }}
                 breakpoints={{
                   100: {
-                    slidesPerView: 1.25,
+                    slidesPerView: 1,
                   },
                   641: {
                     slidesPerView: 1,
@@ -175,27 +189,32 @@ export default function ProductScreen(props) {
               onSwiper={(swiper) => console.log(swiper)}
               onSlideChange={() => console.log('slide change')}
              >
-              {product.image?.map((item) => ( 
-                <SwiperSlide  className="pl-2 sm:pl-0" key={item} style={{maxWidth: 420}} >
-                  <Image style={{ borderRadius: 20 }} key={item} width={420} height={556.5} alt={product.name} className="bg-gray-100 g-images-child"
-                    src={(item)}
+              {product.image?.map((img) => ( 
+                <SwiperSlide key={item} style={{maxWidth: 420}} >
+                  <Image className="rounded-none sm:rounded-3xl" key={item} width={420} height={520} alt={product.name} className="bg-gray-100 g-images-child"
+                    src={img.item}
+                  />
+                  <Download
+                    original = {img.item}
+                    name = {product.name}
                   />
                 </SwiperSlide >
               ))}
              </Swiper>
              <Swiper
-               spaceBetween={0}
+               spaceBetween={8}
                slidesPerView={5}
                className="hidden sm:block"
                freeMode={true}
                watchSlidesProgress={true}
                modules={[FreeMode, Navigation, Thumbs]}
+               style={{marginTop: 5}}
         
              >
-               {product.image?.map((item) => ( 
-                <SwiperSlide style={{ paddingLeft: 8, maxWidth: 73 }} key={item}>
-                  <Image style={{ borderRadius: 20 }} key={item} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
-                    src={(item)}
+               {product.image?.map((img) => ( 
+                <SwiperSlide style={{ maxWidth: 73 }} key={item}>
+                  <Image key={item} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
+                    src={img.item}
                   />
                 </SwiperSlide >
               ))}
@@ -227,7 +246,6 @@ export default function ProductScreen(props) {
         <div style={{ backgroundColor: "rgba(255, 255, 255, 0.7", boxShadow: "none"}} className="hidden sm:block bs p-5">
           <button
             className="primary-button w-full"
-            onClick={addToCartHandler}
             style={{borderRadius: 50, backgroundColor: "black", height: 55}}
            >
             <div className="flex justify-between ml-2 mr-2">
@@ -237,14 +255,21 @@ export default function ProductScreen(props) {
                 </div>
               </div>
               <div>
-                <IconButton style={{border: "3px solid white", top: -6, padding: 10}}>
-                  <AiOutlineShoppingCart style={{color: "white"}}/>
+                <IconButton onClick={addToCartWithAnimation} style={{animation: fill ? 'scaler 1.5s' : 'none', border: "3px solid white", top: -6, padding: 10}} className="heart-anim">
+                  {existItem ? <HiShoppingCart style={{color: "white"}}/> : <HiOutlineShoppingCart style={{color: "white"}}/> }
                 </IconButton>
+              </div>
+              <div style={{border: "3px solid white", fontSize:24,  top: -6, padding: 10, animation: fillFav ? 'scaler 1.5s' : 'none', backgroundColor:"black"}} className="heart-ck heart-anim" >
+                {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
               </div>
             </div>
           </button>
         </div>
-        <div style={{backgroundColor: "#eeeeee", borderRadius: 25, paddingTop:10}} >
+        <div className="bannerwidth block sm:hidden mt-4">
+          <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+          </div>
+        </div>
+        <div className="mt-4" style={{backgroundColor: "#eeeeee", borderRadius: 25, paddingTop:10}} >
           <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
             Shipping 
           </div>
@@ -311,15 +336,16 @@ export default function ProductScreen(props) {
                   }
        </div>
       </div>}
-      <div className={classes.mideaSmallBannerResp} style={{marginTop: 15}}>
+      <div className="bannerwidth block sm:hidden mt-4">
         <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
         </div>
       </div>
-      <div>
+      {Reviews.length > 0 &&
+      <>
+        <div>
          <div className="slug-gallery">Customer Reviews({product.numReviews}) </div>
-      </div>
-      <div className={classes.reviewBody}>
-      {Reviews.length === 0 && <ListItem>No reviews yet</ListItem>}
+        </div>
+        <div className={classes.reviewBody}>
         {Reviews.slice(-2).map((review, index) => (
           <ListItem key={index}>
             <Grid container>
@@ -341,7 +367,7 @@ export default function ProductScreen(props) {
           </ListItem>
         ))}
       </div>
-      {Reviews.length > 2 ? (<div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>See More</div>) : (<div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>Add a review</div>)}
+      {Reviews.length > 2 && <div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>See More</div>}
       <div className={showOverlay ? classes.reviewAllBody : classes.ndicatenone}>
          <div className={classes.reviewTopTab}>
           <ArrowBackIosIcon onClick={() => setShowOverlay(false)} sx={{fontSize:10, float:"left",}} /> Reviews
@@ -362,66 +388,69 @@ export default function ProductScreen(props) {
             </Grid>
           </ListItem>
         ))}
-        <ListItem className={classes.addRev}>
-          {userInfo ? (
-            <form onSubmit={submitHandler} className={classes.reviewForm}>
-              <List>
-                <ListItem>
-                  <Typography variant="h2">Leave your review</Typography>
-                </ListItem>
-                <ListItem>
-                 <div className="grow">
-                  <TextField
-                    multiline
-                    variant="outlined"
-                    className="w-full"
-                    name="review"
-                    label="Enter comment"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                 </div>
-                 <div className="ml-5">
-                  <Button
-                    type="submit"
-                    className="w-5 h-10"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Post
-                  </Button>
-
-                  {loading && <CircularProgress></CircularProgress>}
-                 </div>
-                </ListItem>
-                <ListItem>
-                  <Rating
-                    name="simple-controlled"
-                    value={rating}
-                    onChange={(e) => setRating(e.target.value)}
-                  />
-                </ListItem>
-              </List>
-            </form>
-          ) : (
-            <Typography variant="h2">
-              Please{' '}
-              <Link href={`/login?redirect=/product/${product.slug}`}>
-                login
-              </Link>{' '}
-              to write a review
-            </Typography>
-          )}
-        </ListItem>
       </div>
-      <div className={classes.mideaSmallBannerResp} style={{marginTop: 30}}>
+      <div className="bannerwidth block sm:hidden mt-8">
         <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
         </div>
       </div>
+      </>}
       <div>
          <div className="slug-gallery">You May Also Like </div>
       </div>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      {similarProds > 0 &&
+      <div className="bannerwidth hidden sm:block">
+        <div 
+          className="swipereactor"
+          style={{borderRadius: 20, marginLeft: 16, marginRight: 16 }}
+          >
+          <Swiper                    
+             breakpoints={{
+               100: {
+                  slidesPerView: 1.6,
+                },
+               300: {                  
+                  slidesPerView: 2.1,
+               },
+               390: {
+                  slidesPerView: 2.8,
+               }, 
+               450: {
+                  slidesPerView: 3.2,
+               }, 
+               850: {
+                  slidesPerView: 4.1,
+               },
+               1600: {
+                  slidesPerView: 4.6,
+               },             
+             }}
+      
+               modules={[FreeMode, Navigation, Pagination, Thumbs]}
+               spaceBetween={10}           
+               loop={false}
+               navigation= {true}
+               centeredSlides={false}
+               style={{ maxWidth: 1100 }}
+
+           onSwiper={(swiper) => console.log(swiper)}
+           onSlideChange={() => console.log('slide change')}
+           >
+            {similarProds.slice(0, 5).map((product) =>(
+              <SwiperSlide key={product}>
+                <ProductItems
+                  addToCartHandler = {addToCartHandler}
+                  addToFavsHandler = {addToFavsHandler}
+                  removeFavHandler = {removeFavHandler}
+                  product={product}
+                  key={product}
+                />                         
+              </SwiperSlide>
+             ))
+            }
+          </Swiper>
+        </div>
+      </div>}
+      <div className="mb-24 md:mb-5 grid grid-cols-2 gap-4 sm:hidden">
         {similarProds.map((product) => (
           <ProductNocart
            product={product}
@@ -433,7 +462,6 @@ export default function ProductScreen(props) {
       <div style={{ zIndex: 1, bottom: 0, position: "fixed", width: "100%", left: 0, backgroundColor: "rgba(255, 255, 255, 0.7"}} className="block sm:hidden card bs p-5">
         <button
           className="primary-button w-full"
-          onClick={addToCartHandler}
           style={{borderRadius: 50, backgroundColor: "black", height: 55}}
         >
           <div className="flex justify-between ml-2 mr-2 md:justify-center">
@@ -443,14 +471,16 @@ export default function ProductScreen(props) {
               </div>
             </div>
             <div>
-              <IconButton style={{border: "3px solid white", top: -35, backgroundColor: "black"}}>
-                <AiOutlineShoppingCart style={{color: "white"}}/>
+              <IconButton onClick={addToCartWithAnimation} style={{animation: fill ? 'scaler 1.5s' : 'none', border: "3px solid white", top: -6, padding: 10}} className="heart-anim">
+                {existItem ? <HiShoppingCart style={{color: "white"}}/> : <HiOutlineShoppingCart style={{color: "white"}}/> }
               </IconButton>
+            </div>
+            <div style={{marginLeft:"7px", border: "3px solid white", fontSize:24,  top: -6, padding: 10, animation: fillFav ? 'scaler 1.5s' : 'none', backgroundColor:"black"}} className="heart-ck heart-anim" >
+              {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
             </div>
           </div>
         </button>
       </div>
-      </Layout>
     </> 
 
   );

@@ -17,6 +17,7 @@ handler.post(async (req, res ) => {
         Phone: req.body.Body.stkCallback.CallbackMetadata.Item[4].Value,
         Code: req.body.Body.stkCallback.CallbackMetadata.Item[1].Value,
         Amount: req.body.Body.stkCallback.CallbackMetadata.Item[0].Value,
+        isNewtransac: true,
       }); 
 
       const transaction = await newTransaction.save();

@@ -13,6 +13,7 @@ import { useState } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
+import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps }) {
 
@@ -28,7 +29,7 @@ function MyApp({ Component, pageProps }) {
     <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
      <StateContext>
       <StoreProvider>
-        <PayPalScriptProvider deferLoading={true}>
+        <Layout>
           <Script
             strategy="lazyOnload"
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
@@ -49,7 +50,7 @@ function MyApp({ Component, pageProps }) {
               <Component {...pageProps} />
             </Hydrate>
           </QueryClientProvider>
-        </PayPalScriptProvider>
+        </Layout>
       </StoreProvider>
      </StateContext>
     </SnackbarProvider>

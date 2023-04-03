@@ -5,7 +5,7 @@ import db from '../../../utils/db';
 const handler = nc();
 
 handler.get(async (req, res) => {
-  const pageSize = 20;
+  const pageSize = 24;
   const curPage = req.query.page || 2
 
   await db.connect();

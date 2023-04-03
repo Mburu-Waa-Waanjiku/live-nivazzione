@@ -16,7 +16,7 @@ handler.post(async (req, res ) => {
   const amount = 0+receivedamt;
   const phone = 254+dynamic;
   console.log(phone);
-  await new Promise(resolve => setTimeout(resolve, 3000));
+  await new Promise(resolve => setTimeout(resolve, 6000));
   
   await db.connect();
   const transaction = await Transaction.find({createdAt : {$gte: new Date().getTime()-(7*60*1000) }, Amount: amount, Phone: phone });

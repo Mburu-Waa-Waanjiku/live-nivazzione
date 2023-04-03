@@ -1,0 +1,131 @@
+.newpostb {
+    position: absolute;
+    z-index: 2;
+    margin-top: 30px;
+    background-color: #00C949;
+    color: white;
+    line-height: 5px;
+    height: 20px;
+    padding: 8px 10px 4px 10px;
+    font-size: 12px;
+  }
+.typography {
+  font-size: 26px;
+}
+.views {
+  gap: 16px;
+  max-width: 850px;
+}
+.banner {
+  width: calc(100% + 48);
+}
+.categoriescards {
+  cursor: pointer;
+  padding: 0;
+}
+.categoriescards span {
+  border-radius: 0px;
+}
+.gradient {
+  padding: 20px;
+    z-index: 1;
+    transform: translate(0%, -108%);
+    position: absolute;
+    width: calc((100% - 8px) / 3);
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    color: white;
+    text-align: center;
+    font-family: "Jost",sans-serif;
+    font-size: 20px;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+    transition: scale 2s;
+    border-radius: 0;
+}
+.gradient div b {
+   fontsize: 10px;
+}
+.categoriescards:hover .animate{
+    opacity: 1;
+    font-size: 15px;
+}
+.categoriescards:hover .itemslength{
+    opacity: 0;
+    font-size: 0;
+    transform: translate(0 10px);
+}
+.animate {
+    opacity: 0;
+    font-size: 0px;
+    transition: opacity .4s, font-size .4s;
+    font-weight: 600;
+    color: #CEBD9C !important;
+}
+.itemslength {
+  display: flex;
+  justify-content: center;
+  transition: opacity .1s, font-size .1s, transform .1s;
+}
+.newhider1 {
+    display: block;
+}
+
+@media screen and (max-width:767px){
+  .typography {
+    font-size: 23px;
+  }
+  .gallery p{
+    width: calc((100% - 40px) / 2);
+    text-align: center;
+    border-radius: 15px 15px 0px 0px;
+  }
+  .views {
+      gap: 8px;
+      max-width: 560px;
+    }
+  .gradient {
+    width: calc((100% - 66px) / 3);
+    border-radius: 20px;
+  }
+  .itemslength {
+      display: flex;
+      justify-content: center;
+    }
+  .categoriescards {
+      overflow: hidden;
+      padding: 5px;
+    }
+    .categoriescards span {
+      border-radius: 20px;
+    }
+    .categoriescards:hover .animate{
+        opacity: 0;
+        font-size: 0;
+    }
+    .categoriescards:hover .itemslength{
+        opacity: 1;
+        font-size: initial;
+        transform: translate(0 0px);
+    }
+    .gradient div b {
+        font-size: initial;
+    }
+    .newhider1 {
+      display: none;
+    }
+  
+}
+@media screen and (max-width:350px){
+  .typography {
+    font-size: 19px;
+  }
+  .gradient {
+    width: calc((100% - 60px) / 3);
+    border-radius: 20px;
+    padding: 10px;
+  }
+  .gradient div b {
+        font-size: 15px;
+    }
+}

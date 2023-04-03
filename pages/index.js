@@ -1,287 +1,522 @@
 import React from 'react';
-import Tabs from "@mui/material/Tabs"; 
-import Tab from "@mui/material/Tab";
-import TabPanel from '@mui/lab/TabPanel';
-import TabContext from '@mui/lab/TabContext';
 import { useContext } from 'react';
 import { Store } from '../utils/Store'; 
 import db from '../utils/db'; 
 import Product from '../models/Product';
 import Banner from '../models/Banner';
-import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import BestSeller from '../components/BestSeller';
 import axios from 'axios';
 import Tabsbottom from '../components/Tabsbottom';
-import OffersHome from '../components/OffersHome';
-import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { useStateContext } from '../utils/StateContext';
-import dynamic from 'next/dynamic';
-const DynamicEditorsPics = dynamic(() => import('../components/EditorsPics'), {
-  loading: () => '',
-})
-import Piercing from '../components/tabsinfinityscrolls/Piercings';
-import Jewelry from '../components/tabsinfinityscrolls/Jewelry';
-import Glam from '../components/tabsinfinityscrolls/Glam';
+import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Footer from '../components/Footer';
+import home from '../styles/Home.module.css';
+import ProductItems from '../components/ProductItem';
+import Headers from '../components/HeadersContainer';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-
-const Home = ({topselling, banner, offers, newdrops }) => {
+const Home = ({ products, banner, categories }) => {
   const { state, dispatch } = useContext(Store);
-  const {  value, handleChange, categ, handleCateg, handleBoth, handleBack } = useStateContext();
   const classes = useStyles();
+  const {userInfo, favourites } = state;
 
+  const { setHappyHour } = useStateContext();
+
+  const newdrops = [...products.filter((product) => product.isNeww)];
+  const offers = [...products.filter((product) => product.isOnoffer)];
+  const topselling = [...products.filter((product) => product.initialStock - product.countInStock > 5 ).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];  
+  const editorspics = [...products.filter((product) => product.isEditorsChoice).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1)];
+  const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1)];
+  const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1)];
+  
+  const ancletsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('anclet') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1) ];
+  const earringsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('earring') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];
+  const necklacemap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('necklace') != -1).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+  
   const addToCartHandler = async (product) => {
+
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock < quantity) {
+    if (existItem) {
+      window.alert('Already added');
+    } else if (data.countInStock < quantity ) {
       window.alert('Sorry. Product is out of stock');
       return;
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
-   
+
+  const addToFavsHandler = async (product) => {
+    const existFav = state.favourites.find((x) => x._id === product._id);
+    if (existFav) {
+      window.alert('Already a Favourite');
+      return;
+    }
+    dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
+    const { data } = await axios.post(`/api/products/${product._id}/${userInfo._id}`);
+
+  };
+  
+  const removeFavHandler = async (product) => {
+    dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
+    const { data } = await axios.delete(`/api/products/${product._id}/${userInfo._id}`);
+  };
  
   return (
-    <> 
-      <Layout title="SHIGLAM KENYA ,Get Valentine offers on Latest trends in  Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons."
-          desc="SHIGLAM Valentine offers Exclusive discounts and the latest trends at SHIGLAM KENYA — NAIROBI — Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more. ✓ Free Shipping On Orders ..." 
-          socialtitle="SHIGLAM KENYA ,Get Valentine offers on Latest trends in Fashon & Jewelry | Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons." 
-          socialdesc="Get Exclusive Valentine discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
-          socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
-      > 
-        <TabContext value={value}>
-          <Tabs className={classes.ndicatenone}  value={value} classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15}} fullWidth onChange={handleChange} variant="scrollable"  scrollButtons="auto" >
-            <Tab value="1" />
-            <Tab value="2" />
-            
-          </Tabs>
-
-            
-            <TabPanel style={{padding: 0}} value="1">
-               <div className={classes.mideaSmallBannerResp}>
-                 <Swiper                    
-                      autoplay={{
-                          delay: 3000,
-                          disableOnInteraction: false,
-                        }}
-                      modules={[FreeMode, Pagination, Autoplay, Thumbs]}
-                      spaceBetween={10}           
-                      loop={true}
-                      pagination={true}
-                      centeredSlides={false}
-                      slidesPerView={1}
-                   onSwiper={(swiper) => console.log(swiper)}
-                   onSlideChange={() => console.log('slide change')}
-                  >
-                      <SwiperSlide>
-                           <Image
-                             height={709} width={1919}
-                             src={banner[1].image[0]}
-                             alt="Banner"
-       
-                             className="shadow object-cover h-auto w-100 bg-gray-100"
-                           />
-                       </SwiperSlide>
-                 </Swiper> 
-               </div>
-              <div className="home-ft">Newly Dropped</div>
-                <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
-                  <Link href="/newproducts">  
-                    <div>                                               
-                      <Image height={626} width={1600} className="bg-gray-100" alt="" src={banner[2].image[0]}></Image>
-                    </div>
-                  </Link>
-                </div>
-              <div className={classes.mideaSmallDivResp}> 
-               <div className={classes.fullWidth}>
-                 <Swiper                    
-                    breakpoints={{
-                      100: {
-                         slidesPerView: 2.8,
-                       },
-                      640: {
-                         slidesPerView: 4.3,
-                      }, 
-                      1000: {
-                         slidesPerView: 6.3,
-                      },             
-                    }}
-      
-                      modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
-                      spaceBetween={10}           
-                      loop={false}
-                      navigation= {true}
-                      centeredSlides={false}
-                
-                  onSwiper={(swiper) => console.log(swiper)}
-                  onSlideChange={() => console.log('slide change')}
-        
-                 >
-    
-                   {newdrops.map((product) =>(
-                      <SwiperSlide key={product}>
-                        <div className={classes.newpostb} style={{height: 9}}>
-                          NEW
+      <>
+        <Headers />
+        <div className="bannerwidth">
+          <Swiper                    
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[FreeMode, Pagination, Autoplay, Thumbs]}
+            spaceBetween={10}           
+            loop={true}
+            pagination={true}
+            centeredSlides={false}
+            slidesPerView={1}
+            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={() => console.log('slide change')}
+           >
+            <SwiperSlide>
+               <div className=" hidden md:block">
+                <Image height={709} width={1919} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+              </div>
+              <div className=" block md:hidden">
+                <Image height={834} width={943} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" /> 
+              </div>
+            </SwiperSlide>
+          </Swiper> 
+        </div>
+        <div className="bannerwidth pt-4 pb-1">
+          <div className="hidden md:block">
+            <Image
+              width={1600}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678551221/categories_qkbf71.png"
+            />
+          </div>
+          <div className="block md:hidden">
+            <Image
+              width={1000}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678551854/categories_2_ns5grl.png"
+            />
+          </div>
+        </div>        
+        <div className="bannerwidth">
+          <div className="grid gap-x-0 md:gap-x-1 px-4 md:px-0 grid-cols-3">
+              <Link href="/trending">
+                <div className={home.categoriescards}>
+                  <div className="block md:hidden">
+                    <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1673000081/offerbanner1_5_upiwk4.jpg"/>
+                  </div>
+                  <div className="hidden md:block">
+                    <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"/>
+                  </div>
+                  <div className={home.gradient}>
+                    <div>
+                      <b className="ml-2 flex justify-center">
+                        <div>
+                          Hot
                         </div>
-                        <Link href={`${product.category}/${product.slug}`} >
-                           <Image
-                             width={364}
-                             height={484}
-                             src={product.image[0]}
-                             alt={product.name}
-       
-                             className="shadow object-cover h-auto w-100 bg-gray-100"
-                           />
-                        </Link>
-                       </SwiperSlide>
-                     ))
-                   }
-                 </Swiper>
-               </div>
-              </div>
-              
-              <div className="home-ft">Categories</div> 
-                <TabContext  value={categ} 
-              >
-                  <Tabs value={categ} classes={{ flexContainer: classes.categ, indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{"& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth onChange={handleBoth} variant="scrollable"  >
-                    <Tab value="Piercings" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Piercings" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,g_center,h_500,w_500/v1666792827/0e8156a292b6b2fc8b3dcce2ee243da1_ed3fmn.jpg"/></div>}/>} />
-                    <Tab value="Jewelry" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="Jewelry" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100 mb-2" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/c_thumb,w_200,g_face/v1673000081/offerbanner1_5_upiwk4.jpg"/></div>} />
-                    <Tab value="Glam" classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="Glam" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/b_auto,c_pad,h_50,q_100,w_50/v1666796089/images_ovntvt.jpg"/></div>}/>} />
-                  </Tabs>
-             </TabContext>
-              <div className="home-ft">Best Sellers </div>
-                <div className={classes.mideaSmallDivResp} style={{marginTop:0}}>
-                  <Swiper                    
-                    breakpoints={{
-                      100: {
-                         slidesPerView: 2.8,
-                       },
-                      640: {
-                         slidesPerView: 4.3,
-                      }, 
-                      1000: {
-                         slidesPerView: 6.3,
-                      },             
-                    }}
-      
-                      modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
-                      spaceBetween={10}           
-                      loop={false}
-                      navigation= {true}
-                      centeredSlides={false}
-                      style={{padding: 10}}
-                  onSwiper={(swiper) => console.log(swiper)}
-                  onSlideChange={() => console.log('slide change')}
-        
-                 >
-                   {topselling.map((product) =>(
-                      <SwiperSlide key={product}>
-                        <BestSeller
-                          product={product}
-                          key={product}
-                          addToCartHandler={addToCartHandler}
-                        />                         
-                      </SwiperSlide>
-                     ))
-                   }
-                 </Swiper>
+                        <div className="ml-1">
+                          <Image 
+                            src="https://res.cloudinary.com/dddx5qpji/image/upload/v1676717289/ezgif.com-webp-to-jpg__2_-removebg-preview_v6pfrg.png"
+                            width={20}
+                            height={20}
+                            alt=""
+                          />
+                        </div>
+                      </b>
+                    </div>
+                    <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                      <div> {topselling.length}+ </div> <div className="pl-1"> items </div>
+                    </div>
+                    <div className={home.animate}>
+                   Shop Now >
+                    </div>
+                  </div>
                 </div>
-              <div className="home-ft">Flash sale </div>
-                <div className={classes.mideaSmallBannerResp} style={{marginTop:0}}>
-                  <Link href="/offer">
-                    <Image height={600} width={1600} className="bg-gray-100" alt="" src={banner[0].image[0]}></Image>
-                  </Link>
+              </Link>
+              <Link href="/offers">
+                <div className={home.categoriescards}>
+                  <div className="block md:hidden">
+                    <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549482/salemin_oczx1c.png"/>
+                  </div>
+                  <div className="hidden md:block">
+                    <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678547572/sale-concept-with-shopping-cart_23-2148313066_qkggk6.jpg"/>
+                  </div>
+                  <div className={home.gradient}>
+                    <div>
+                      <b style={{marginLeft: 3}} className=" flex justify-center">
+                        <div className="flex">
+                          <div> On </div> 
+                          <div className="ml-1"> Sale </div>
+                        </div>
+                        <div className="ml-1">
+                          <Image 
+                            src="https://res.cloudinary.com/dddx5qpji/image/upload/v1676720500/removal.ai__tmp-63f0b93b4b8f3_bj5ao2.png"
+                            width={20}
+                            height={20}
+                            alt=""
+                          />
+                        </div>
+                      </b>
+                    </div>
+                    <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                      <div> {offers.length}+ </div> <div className="pl-1"> items </div>
+                    </div>
+                    <div className={home.animate}>
+                     Shop Now >
+                    </div>
+                  </div>
                 </div>
-              <div className={classes.mideaSmallDivResp}>
-                 <Swiper                    
-                    breakpoints={{
-                      100: {
-                         slidesPerView: 2.8,
-                       },
-                      640: {
-                         slidesPerView: 4.3,
-                      }, 
-                      1000: {
-                         slidesPerView: 6.3,
-                      },             
-                    }}
+              </Link>
+              <Link href="/new-products">
+                <div className={home.categoriescards}>
+                  <div className="block md:hidden">
+                    <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678548104/newarrivals2_2_xtemuk.jpg"/>
+                  </div>
+                  <div className="hidden md:block">
+                    <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678548606/newarrivals2_i7nevv.jpg"/>
+                  </div>
+                  <div className={home.gradient}>
+                    <div>
+                      <div className="ml-2 flex justify-center">
+                        <b >New </b>
+                        <div className="ml-1"> 
+                          <Image 
+                            src="https://res.cloudinary.com/dddx5qpji/image/upload/v1676718586/png-transparent-three-yellow-stars-art-illustration-emojipedia-sticker-iphone-sms-sparkles-emoji-leaf-orange-symmetry-removebg-preview_gp7yl8.png"
+                            width={20}
+                            height={20}
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <b className={home.newhider1}>Arrivals</b>
+                    </div>
+                    <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                      <div> {newdrops.length}+ </div> <div className="pl-1"> items </div>
+                    </div>
+                    <div className={home.animate}>
+                     Shop Now >
+                    </div>
+                  </div>
+                </div>
+              </Link>
+              {categories.map((category) => (
+                <Link href={`/${category}`}>
+                  <div className={home.categoriescards}>
+                    {category == "Necklaces" &&
+                      <>
+                        <div className="block md:hidden">
+                          <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678542559/neclacesmin_2_pzh7tr.jpg"/>
+                        </div>
+                        <div className="hidden md:block">
+                          <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678542560/neclacemax_2_ufbobg.jpg"/>
+                        </div>
+                      </>
+                    }
+                    {category == "Earrings" && 
+                      <>
+                        <div className="block md:hidden">
+                          <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549970/il_570xN.3254524046_9p24_2_ghkimd.jpg"/>
+                        </div>
+                        <div className="hidden md:block">
+                          <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678539566/il_570xN.3254524046_9p24_ibhqfg.jpg"/>
+                        </div>
+                      </>
+                    }
+                    {category == "Anclets" && 
+                      <>
+                        <div className="block md:hidden">
+                          <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/>
+                        </div>
+                        <div className="hidden md:block">
+                          <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678543017/ancletsmin_2_u3fcqb.jpg"/>
+                        </div>
+                      </>
+                    }
+                    <div className={home.gradient}>
+                      <div>
+                        <b>{category}</b>
+                      </div>
+                      <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                        {category == "Necklaces" && <> <div> {necklace.length}+ </div> <div className="pl-1"> items </div></>}
+                        {category == "Earrings" && <> <div> {earrings.length}+ </div> <div className="pl-1"> items </div></>}
+                        {category == "Anclets" && <> <div> {anclets.length}+ </div> <div className="pl-1"> items </div></>}
+                      </div>
+                      <div className={home.animate}>
+                       Shop Now >
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </div>
+        <div className="bannerwidth pt-4 pb-1">
+          <div className="hidden md:block">
+            <Image
+              width={1600}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678624435/ancletsiconmax_q508q9.png"
+            />
+          </div>
+          <div className="block md:hidden">
+            <Image
+              width={1000}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678624410/ancletsiconmin_zqbaxh.png"
+            />
+          </div>
+        </div>
+        <div className="bannerwidth">
+          <div 
+            className="swipereactor"
+            style={{borderRadius: 20, marginLeft: 16, marginRight: 16 }}
+            >
+            <Swiper                    
+               breakpoints={{
+                 100: {
+                    slidesPerView: 1.6,
+                  },
+                 300: {                  
+                    slidesPerView: 2.1,
+                 },
+                 390: {
+                    slidesPerView: 2.8,
+                 }, 
+                 450: {
+                    slidesPerView: 3.2,
+                 }, 
+                 850: {
+                    slidesPerView: 4.1,
+                 },
+                 1600: {
+                    slidesPerView: 4.6,
+                 },             
+               }}
       
-                      modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
-                      spaceBetween={10}           
-                      loop={false}
-                      navigation= {true}
-                      centeredSlides={false}
+                 modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
+                 spaceBetween={10}           
+                 loop={false}
+                 navigation= {true}
+                 centeredSlides={false}
+                 style={{ maxWidth: 1100 }}
 
-                  onSwiper={(swiper) => console.log(swiper)}
-                  onSlideChange={() => console.log('slide change')}
+             onSwiper={(swiper) => console.log(swiper)}
+             onSlideChange={() => console.log('slide change')}
         
-                 >
+             >
     
-                   {offers.slice(1, 10).map((product) =>(
-                      <SwiperSlide key={product}>
-                        <OffersHome
-                           product={product}
-                           key={product}
-                        />                         
-                      </SwiperSlide>
-                     ))
-                   }
-                   <SwiperSlide>
-                     <Link href="/offer">
-                       <Image
-                          width={364}
-                          height={484}
-                          src="https://res.cloudinary.com/dddx5qpji/image/upload/v1668954945/Untitled0_tbldbw.png"
-                          alt=""
-                          className="shadow object-cover h-auto w-100 bg-gray-100"
-                       />
-                     </Link> 
-                   </SwiperSlide>
-                 </Swiper>
-              </div>
-              <DynamicEditorsPics/>
-            </TabPanel>
+              {ancletsmap.slice(0, 5).map((product) =>(
+                <SwiperSlide key={product}>
+                  <ProductItems
+                    addToCartHandler = {addToCartHandler}
+                    addToFavsHandler = {addToFavsHandler}
+                    removeFavHandler = {removeFavHandler}
+                    product={product}
+                    key={product}
+                  />                         
+                </SwiperSlide>
+               ))
+              }
+              <SwiperSlide>
+                <Link href="/Anclets">
+                  <Image
+                     width={364}
+                     height={484}
+                     src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678623563/seemarorelg_a8x5rx.png"
+                     alt=""
+                     className="shadow object-cover h-auto w-100 bg-gray-100"
+                  />
+                </Link> 
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </div>
+        <div className="bannerwidth pt-4 pb-1">
+          <div className="hidden md:block">
+            <Image
+              width={1600}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678555813/Earrings_lv18ss.png"
+            />
+          </div>
+          <div className="block md:hidden">
+            <Image
+              width={1000}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678555813/Earrings2_siol2e.png"
+            />
+          </div>
+        </div>  
+        <div className="bannerwidth">
+          <div 
+            className="swipereactor"
+            style={{borderRadius: 20, marginLeft: 16, marginRight: 16 }}
+            >
+            <Swiper                    
+               breakpoints={{
+                 100: {
+                    slidesPerView: 1.6,
+                  },
+                 300: {                  
+                    slidesPerView: 2.1,
+                 },
+                 390: {
+                    slidesPerView: 2.8,
+                 }, 
+                 450: {
+                    slidesPerView: 3.2,
+                 }, 
+                 850: {
+                    slidesPerView: 4.1,
+                 },
+                 1600: {
+                    slidesPerView: 4.6,
+                 },             
+               }}
+      
+                 modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
+                 spaceBetween={10}           
+                 loop={false}
+                 navigation= {true}
+                 centeredSlides={false  }
+                 style={{ maxWidth: 1100 }}
 
-            <TabPanel style={{padding: 0}} value="2">
-               <TabContext  value={categ} >
-                 <Tabs classes={{root:classes.categGallAbs}} value={categ} sx={{"& .MuiTabs-flexContainer": {display: "inline-flex", margin:"4px", position:"fixed", top:"30px", zIndex:1200},}} onChange={handleBack}>
-                   <Tab classes={{ root: classes.roundedTabShadow }} value="back"  iconPosition="start" icon={<ArrowBackIosIcon sx={{fontSize:10}} />}/>
-                 </Tabs>
-               </TabContext>
-               <TabContext value={categ}>
-                  <Tabs value={categ} classes={{root:classes.categGall, indicator:classes.ndicateArrow, scroller: classes.catehgallbty }}  sx={{"& .MuiTabs-flexContainer": {gap: "16px !important", inlineSize: "min-content" }, "& .MuiButtonBase-root": {textTransform: "none", color: "white"},"& .MuiTab-root.Mui-selected": {color:"black", backgroundColor:"rgb(186, 202, 188)"},"& .MuiTabs-scrollButtons":{color: "black !important"}, position:"fixed" ,top: 55, zIndex: 15}} fullWidth onChange={handleCateg} variant="scrollable"  scrollButtons="auto" >
-                    <Tab value="Piercings"  label="Piercings" classes={{ root: classes.roundedTab }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
-                    <Tab value="Jewelry" label="Jewelry" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(55, 62, 88)",},}}/>
-                    <Tab value="Glam" label="Glam" classes={{ root: classes.roundedTab  }} sx={{"&.MuiTab-root": {backgroundColor: "rgb(211, 196, 175)",},}}/>
-                  </Tabs>
-                  <TabPanel  style={{padding: 0, marginTop: 85}} value="Piercings" >
-                     <Piercing/>
-                  </TabPanel>
-                  <TabPanel  style={{padding: 0, marginTop: 85}} value="Jewelry" >
-                     <Jewelry/>
-                  </TabPanel>
-                  <TabPanel  style={{padding: 0, marginTop: 85}} value="Glam">
-                    <Glam/>
-                    <div className="grid grid-cols-12 justify-center h-screen align-center"><div className="pt-6 col-span-4 col-start-5 grow"><div className="block"><Image width={300} height={450} alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667216863/219-2195024_mannequin-fashion-design-icon-hd-png-download-removebg_im8a6n.png"></Image><div className="flex justify-center"><div>NO UPDATES YET</div></div></div></div></div>
-                  </TabPanel>
-               </TabContext >             
-            </TabPanel>
-        </TabContext >             
-        
+           onSwiper={(swiper) => console.log(swiper)}
+             onSlideChange={() => console.log('slide change')}
+          
+           >
+      
+            {earringsmap.slice(0, 5).map((product) =>(
+              <SwiperSlide key={product}>
+                <ProductItems
+                  addToCartHandler = {addToCartHandler}
+                  addToFavsHandler = {addToFavsHandler}
+                  removeFavHandler = {removeFavHandler}
+                  product={product}
+                  key={product}
+                />                          
+              </SwiperSlide>
+             ))
+            }
+            <SwiperSlide>
+              <Link href="/Earrings">
+                <Image
+                   width={364}
+                   height={484}
+                   src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678623563/seemarorelg_a8x5rx.png"
+                   alt=""
+                   className="shadow object-cover h-auto w-100 bg-gray-100"
+                />
+              </Link> 
+            </SwiperSlide>
+            </Swiper>
+          </div>
+        </div>
+        <div className="bannerwidth pt-4 pb-1">
+          <div className="hidden md:block">
+            <Image
+              width={1600}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678624620/nacklacesiconmax_bgrc1o.png"
+            />
+          </div>
+          <div className="block md:hidden">
+            <Image
+              width={1000}
+              height={70}
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678624333/necklacesicinmin_j8pwam.png"
+            />
+          </div>
+        </div>
+        <div className="bannerwidth">
+          <div 
+            className="swipereactor"
+            style={{borderRadius: 20, marginLeft: 16, marginRight: 16 }}
+            >
+            <Swiper                    
+               breakpoints={{
+                 100: {
+                    slidesPerView: 1.6,
+                  },
+                 300: {                  
+                    slidesPerView: 2.1,
+                 },
+                 390: {
+                    slidesPerView: 2.8,
+                 }, 
+                 450: {
+                    slidesPerView: 3.2,
+                 }, 
+                 850: {
+                    slidesPerView: 4.1,
+                 },
+                 1600: {
+                    slidesPerView: 4.6,
+                 },             
+               }}
+      
+                 modules={[FreeMode, Navigation, Pagination, Autoplay, Thumbs]}
+                 spaceBetween={10}           
+                 loop={false}
+                 navigation= {true  }
+                 centeredSlides={false}
+                 style={{ maxWidth: 1100 }}
+
+             onSwiper={(swiper) => console.log(swiper)}
+             onSlideChange={() => console.log('slide change')}
+          
+             >
+      
+              {necklacemap.slice(0, 5).map((product) =>(
+                <SwiperSlide key={product}>
+                  <ProductItems
+                    addToCartHandler = {addToCartHandler}
+                    addToFavsHandler = {addToFavsHandler}
+                    removeFavHandler = {removeFavHandler}
+                    product={product}
+                    key={product}
+                  />                         
+                </SwiperSlide>
+                ))
+              }
+              <SwiperSlide>
+                <Link href="/Necklaces">
+                  <Image
+                    width={364}
+                    height={484}
+                    src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678623563/seemarorelg_a8x5rx.png"
+                    alt=""
+                    className="shadow object-cover h-auto w-100 bg-gray-100"
+                  />
+                </Link> 
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </div>
+        <div className="py-5">
+          <Image height={709} width={1919} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+        </div>
         <Tabsbottom/>
-    </Layout>
-         </>
-  
+        <Footer/>
+      </> 
 )
  
 };
@@ -289,18 +524,14 @@ export async function getServerSideProps() {
   await db.connect();
   const products = await Product.find({}, '-reviews').lean();
   const banner = await Banner.find().lean();
+  const categories = await Product.find().distinct('category');
   await db.disconnect();
   
-  const newdrops = [...products.filter((product) => product.isNeww)];
-  const offers = [...products.filter((product) => product.isOnoffer)];
-  const topselling = [...products.filter((product) => product.initialStock - product.countInStock > 5 ).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];  
-
   return {
     props: {
-      topselling: topselling.map(db.convertDocToObj),
-      newdrops: newdrops.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
-      offers: offers.sort((a, b) => (a.rating < b.rating) ? 1 : -1).map(db.convertDocToObj),
+      products: products.map(db.convertDocToObj),
       banner: banner.map(db.convertDocToObj),
+      categories,
     },
   };
 }

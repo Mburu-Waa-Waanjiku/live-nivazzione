@@ -67,7 +67,7 @@ function OrderHistory() {
     fetchOrders();
   }, [router, userInfo]);
   return (
-    <Layout title="Order History">
+    <>
       <div className="margintopFix">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
@@ -145,7 +145,7 @@ function OrderHistory() {
         </Grid>
       </Grid>
       </div>
-    </Layout>
+    </>
   );
 }
 

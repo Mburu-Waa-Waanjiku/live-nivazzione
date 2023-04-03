@@ -12,7 +12,6 @@ handler.use(isAuth);
 handler.get(async (req, res) => {
   await db.connect();
   const bags = await Bag.find({ user: req.user._id });
-  console.log(bags);
   res.send(bags);
 });
 
