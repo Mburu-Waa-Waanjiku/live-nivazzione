@@ -4,7 +4,7 @@ import EmptyBanner from './EmptyBanner';
 
 function Products({ setFetchProgres, setShow, setBanners, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, banners, Tabs, Tab, TabPanel, TabContext, current}) {
   
-  const producttabs = [ 'All  Banners' ];
+  const producttabs = [ 'All Banners' ];
   const [showCreate, setshowCreate] = useState(false);
   const [currenttab,  setTab] = useState('All  Banners');
   const setCurrentTab = ( event, newPage ) => {
@@ -26,7 +26,7 @@ function Products({ setFetchProgres, setShow, setBanners, admin, Navigation, Fre
             }
           </Tabs>
         </div>
-        <TabPanel value='All  Banners' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
+        <TabPanel value='All Banners' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
           {!showCreate ? <div onClick={() => {setshowCreate(true)}} className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 1200, right: 0, height: 'fit-content', fontWeight: 700 }}> Create </div> :
             <EmptyBanner
               setFetchProgres={setFetchProgres}

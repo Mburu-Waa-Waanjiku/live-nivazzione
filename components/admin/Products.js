@@ -9,7 +9,7 @@ import {
 
 function Products({ showSearch, setSearch, setShowSearch, search, filteredData, debounce, filterData, setProducts, setFetchProgres, setShow, deleteHandler, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, products, Tabs, Tab, TabPanel, TabContext, current}) {
   
-  const producttabs = [ 'All  Products', 'Out of Stock', 'Less Than Five', 'Best Selling', 'Least Selling', 'Most Loved', 'On Offer', 'Editors Pics'];
+  const producttabs = [ 'All Products', 'Out of Stock', 'Less Than Five', 'Best Selling', 'Least Selling', 'Most Loved', 'On Offer', 'Editors Pics'];
   const [currenttab,  setTab] = useState('All  Products');
   const setCurrentTab = ( event, newPage ) => {
   	setTab(newPage)
@@ -101,7 +101,7 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
             </div>
           }
         </div>
-        <TabPanel value='All  Products' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
+        <TabPanel value='All Products' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
           <div className={admin.productsgridding}>
            {products.map((product) =>(
               <AdminProds
