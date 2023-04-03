@@ -190,8 +190,8 @@ export default function ProductScreen(props) {
               onSlideChange={() => console.log('slide change')}
              >
               {product.image?.map((img) => ( 
-                <SwiperSlide key={item} style={{maxWidth: 420}} >
-                  <Image className="rounded-none sm:rounded-3xl" key={item} width={420} height={520} alt={product.name} className="bg-gray-100 g-images-child"
+                <SwiperSlide key={img} style={{maxWidth: 420}} >
+                  <Image className="rounded-none sm:rounded-3xl" key={img} width={420} height={520} alt={product.name} className="bg-gray-100 g-images-child"
                     src={img.item}
                   />
                   <Download
@@ -212,8 +212,8 @@ export default function ProductScreen(props) {
         
              >
                {product.image?.map((img) => ( 
-                <SwiperSlide style={{ maxWidth: 73 }} key={item}>
-                  <Image key={item} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
+                <SwiperSlide style={{ maxWidth: 73 }} key={img}>
+                  <Image key={img} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
                     src={img.item}
                   />
                 </SwiperSlide >
