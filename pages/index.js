@@ -297,10 +297,10 @@ const Home = ({ products, banner, categories }) => {
                  300: {                  
                     slidesPerView: 2.1,
                  },
-                 390: {
+                 450: {
                     slidesPerView: 2.8,
                  }, 
-                 450: {
+                 520: {
                     slidesPerView: 3.2,
                  }, 
                  850: {
