@@ -26,19 +26,18 @@ function OrderId({ bag, classes, userInfo }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [load, setLoad] = useState(false);
   
-  console.log(bag);
   async function checkBadHandler() {
     setLoad(true);
     try {
       const { data } = await axios.put(
-        '/api/P4Borders',
+        `/api/P4Borders/${bag._id}`,
         {},
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       setLoad(false);
-      enqueueSnackbar('Order is delivered', { variant: 'success' });
+      enqueueSnackbar('Bag is Checked', { variant: 'success' });
     } catch (err) {
       setLoad(false);
       enqueueSnackbar(getError(err), { variant: 'error' });

@@ -15,7 +15,6 @@ import {
   CssBaseline,
   Badge,
   Button,
-  Menu,
   MenuItem,
   Box,
   IconButton,
@@ -56,6 +55,7 @@ import { useEffect } from 'react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import dynamic from 'next/dynamic';
+import Logo from './svgs/ShiglamLogosvg';
 import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
 const DynamicFooterDocs = dynamic(() => import('./FooterDocs'), {
   loading: () => " ",
@@ -226,11 +226,7 @@ export default function Layout({ children }) {
               <NextLink href="/" passHref>
                 <Link>
                   <Typography className={classes.brand}>
-                    <Image 
-                      width={175} 
-                      height={70} 
-                      src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678532283/shiglamlayouticon_iwbfwj.png"
-                    />
+                    <Logo/>
                   </Typography>
                 </Link>
               </NextLink>
@@ -300,11 +296,7 @@ export default function Layout({ children }) {
             <NextLink href="/" passHref>
                 <Link>
                   <Typography style={{color: "#222", paddingTop: '10px'}} className={classes.smbrand}>
-                    <Image 
-                      width={200} 
-                      height={80} 
-                      src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678532283/shiglamlayouticon_iwbfwj.png"
-                    />
+                    <Logo/>
                   </Typography>
                 </Link>
             </NextLink>  
@@ -363,47 +355,18 @@ export default function Layout({ children }) {
               </div>
               {userInfo ? (
                 <div className={classes.cartnlg}>
-                <>
-
-                  <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={loginClickHandler}
-                    className={classes.navbarButton}
-                  >
-                    <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-14px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
-                  </Button>
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={loginMenuCloseHandler}
-                  >
-                    <MenuItem
-                      onClick={(e) => loginMenuCloseHandler(e, '/me')}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={(e) =>
-                        loginMenuCloseHandler(e, '/order-history')
-                      }
-                    >
-                      Order Hisotry
-                    </MenuItem>
-                    {userInfo.isAdmin && (
-                      <MenuItem
-                        onClick={(e) =>
-                          loginMenuCloseHandler(e, '/admin/dashboard')
-                        }
+                  <NextLink href="https://www.shiglam.com/me" passHref>
+                    <Link>
+                      <Button
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={loginClickHandler}
+                        className={classes.navbarButton}
                       >
-                        Admin Dashboard
-                      </MenuItem>
-                    )}
-                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
-                  </Menu>
-                </>
+                        <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-14px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
+                      </Button>
+                    </Link>
+                  </NextLink>
                 </div>
               ) : (
                 <div className={classes.cartnlg}>

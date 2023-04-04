@@ -6,9 +6,13 @@ import HeadersContainer from './HeadersContainer';
 import home from '../styles/Home.module.css';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Store } from '../utils/Store';
+import { CgBolt } from 'react-icons/cg';
 
 export default function ProductItem({ product, addToCartHandler, addToFavsHandler, removeFavHandler }) {
-  
+  const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
+  const subtract = product.prevprice - product.price;
+  const percent = round0(subtract/product.prevprice * 100);
+
   const { state, dispatch } = useContext(Store);
   const [fill, setFill] = useState(false);
   const [fillFav, setFillFav] = useState(false);
@@ -88,16 +92,22 @@ export default function ProductItem({ product, addToCartHandler, addToFavsHandle
     <div className="card">
     <HeadersContainer data={addProductJsonLd()} />
     <div className="gallery">
-      { product.isNeww && (
-        <div className={home.newpostb}>
-          NEW
-        </div>
-      )}
+      { product.countInStock < 1 ? (
+        <div style={{ marginTop: 30, width: 'fit-content', height: 'fit-content', backgroundColor: '#222', color: 'white' }} className="salesticker"> <div> Out of Stock</div></div>
+        ) : product.isOnoffer ? (
+        <div style={{ width: 'fit-content', height: 'fit-content' }} className="salesticker"><CgBolt style={{fontSize:16, margin: 4}} />{percent}%</div>
+        ) : product.isNeww && (
+          <div className={home.newpostb}>
+            NEW
+          </div>
+        )
+      }
       <Link href={`${product.category}/${product.slug}`}>
         <a>
           <Image
             width={364}
             height={484}
+            style={{borderRadius: 20}}
             src={product.image && product.image[0].item}
             alt={product.name}
             className="shadow bg-gray-100 object-cover h-auto w-100"

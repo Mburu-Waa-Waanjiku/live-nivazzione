@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Bagcomponent from './BagLinstings';
 
-function Orders({ userInfo, admin, classes, bags, Tabs, Tab, TabPanel, TabContext, current }) {
+function Orders({ fetchBags, userInfo, admin, classes, bags, Tabs, Tab, TabPanel, TabContext, current }) {
   
   const orderTabs = ['All Bags', 'Not Updated']
   const [currenttab,  setTab] = useState('All Bags');
@@ -28,6 +28,7 @@ function Orders({ userInfo, admin, classes, bags, Tabs, Tab, TabPanel, TabContex
                 classes={classes}
                 userInfo={userInfo}
                 currenttab={currenttab}
+                fetchBags={fetchBags}
               />
             </div>
           </div>
@@ -40,6 +41,7 @@ function Orders({ userInfo, admin, classes, bags, Tabs, Tab, TabPanel, TabContex
                 classes={classes}
                 userInfo={userInfo}
                 currenttab={currenttab}
+                fetchBags={fetchBags}
               />
             </div>
           </div>

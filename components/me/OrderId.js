@@ -13,6 +13,8 @@ import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import ProductItems from './OrderProducts';
 import { useSnackbar } from 'notistack';
+import axios from 'axios';
+import { getError } from '../../utils/error';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProgressBar from './ProgressBar';
 import Link from 'next/link';
 import Image from 'next/image';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
 import HeadersContainer from './HeadersContainer';
+import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 
-function BestSeller({product, addToCartHandler}) {
+function BestSeller({ state, addToFavsHandler, removeFavHandler, product, addToCartHandler}) {
    
   const URL = `https://shiglam.com/`;
   let revCount;
@@ -15,6 +16,23 @@ function BestSeller({product, addToCartHandler}) {
     revCount = product.numReviews
   }
   const offerStock = Math.floor(Math.random() * 20) + 1;
+
+  const [fill, setFill] = useState(false);
+  const [fillFav, setFillFav] = useState(false);
+  const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+  const existFav = state.favourites.find((x) => x._id === product._id);
+  const addToCartWithAnimation = async () => {
+    await addToCartHandler(product);
+    setFill(true);
+  }
+  const addToFavWithAnimation = async () => {
+    await addToFavsHandler(product);
+    setFillFav(true);
+  }
+  const removeFavWithAnimation = async () => {
+    setFillFav(false);
+    await removeFavHandler(product);
+  }
 
   const jsdschema = {
       "@context": "https://schema.org/",
@@ -72,6 +90,9 @@ function BestSeller({product, addToCartHandler}) {
 		<div className="card">
       <HeadersContainer data={addProductJsonLd()} />
       <div className="gallery" style={{borderRadius: 0}}>
+        <div>
+          <div style={{ margin: '8px 4px', padding: 6, width: 40,  backgroundColor: '#222', color: 'white', borderRadius: 50 }} className="salesticker"><div>{percent}%</div><div>SOLD</div></div>
+        </div>
         <Link href={`${product.category}/${product.slug}`}>
           <a>
             <Image
@@ -83,18 +104,17 @@ function BestSeller({product, addToCartHandler}) {
             />
           </a>
         </Link>
-        <div className="heart-ck"  onClick={() => addToCartHandler(product)}>
-          <AiOutlineShoppingCart/>
+        <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={addToCartWithAnimation}>
+          {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }
         </div>
-        <div>
-          <ProgressBar
-            percent={percent}
-            sales={sales}
-          />
+        <div className="flex justify-end">
+          <div style={{position: "relative", right: "-20px" }} className="flex justify-end">
+            <div style={{animation: fillFav ? 'scaler 1.5s' : 'none', transform:'translate(8px, 40px)', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.4)'}} className="heart-ck heart-anim" >
+              {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
+            </div>
+          </div>
         </div>
       </div>
-
-      
     </div>
 	)
 }

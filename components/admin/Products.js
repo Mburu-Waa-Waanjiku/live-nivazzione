@@ -10,7 +10,7 @@ import {
 function Products({ showSearch, setSearch, setShowSearch, search, filteredData, debounce, filterData, setProducts, setFetchProgres, setShow, deleteHandler, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, products, Tabs, Tab, TabPanel, TabContext, current}) {
   
   const producttabs = [ 'All Products', 'Out of Stock', 'Less Than Five', 'Best Selling', 'Least Selling', 'Most Loved', 'On Offer', 'Editors Pics'];
-  const [currenttab,  setTab] = useState('All  Products');
+  const [currenttab,  setTab] = useState('All Products');
   const setCurrentTab = ( event, newPage ) => {
   	setTab(newPage)
   }

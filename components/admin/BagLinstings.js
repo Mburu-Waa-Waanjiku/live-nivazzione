@@ -1,7 +1,7 @@
 import React from 'react';
 import BagID from './BagID';
 
-function Orders({ bags, currenttab, classes, userInfo }) {
+function Orders({ fetchBags, bags, currenttab, classes, userInfo }) {
   
   const unprocessed = [...bags.filter((bag) => !bag.isChecked)];
 
@@ -111,6 +111,7 @@ function Orders({ bags, currenttab, classes, userInfo }) {
 	            classes={classes}
 	            bag={bag}
 	            userInfo= {userInfo}
+	            fetchBags={fetchBags}
 	          />
 	        </div>
 	      </div>

@@ -81,7 +81,7 @@ function Logger() {
       Cookies.set('favourites', fav);
       closeLogin();
     } catch (err) {
-      console.log(err);
+      {err.response?.data.message == 'Invalid email or password' && enqueueSnackbar(getError(err), { variant: 'error' })};
     }
   };
   
