@@ -289,6 +289,7 @@ export default function AdminDashboard() {
         current={current}
         userInfo={userInfo}
         classes={classes}
+        fetchBags={fetchBags}
       />
       <Transactions
         admin={admin}

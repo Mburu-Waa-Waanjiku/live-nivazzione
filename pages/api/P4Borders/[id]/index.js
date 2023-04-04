@@ -26,4 +26,23 @@ handler.delete(async (req, res) => {
   }
 });
 
+handler.put(async (req, res) => {
+  await db.connect();
+  const bag = await Bag.findById(req.query.id);
+  
+  if(bag) {
+  console.log('old bag');
+  await Bag.updateOne(
+        { _id: req.query.id },
+        {
+          $set: {
+            isChecked: true 
+          }
+        }
+      );
+    console.log('updated'); 
+    res.status(200).send('updated');
+  } 
+});
+
 export default handler;

@@ -62,6 +62,7 @@ const Newproducts = (props) => {
         {offers.map((product) => (
           <YourFoto
             key={product._id}
+            state={state}
             product={product}
             addToCartHandler = {addToCartHandler}
             addToFavsHandler = {addToFavsHandler}

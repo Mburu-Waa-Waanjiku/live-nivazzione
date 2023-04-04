@@ -60,28 +60,5 @@ handler.post(async (req, res) => {
 
 });
 
-handler.put(async (req, res) => {
-  await db.connect();
-  const bag = await Bag.find({user: req.user._id});
-  
-  if(bag.length > 0) {
-  console.log('old bag');
-  const price = bag[0].itemsPrice;
-  const ID = bag[0]._id;
-  const priceN = 0 + req.body.itemsPrice;
-  const newPrice = price + priceN;
-  
-  await Bag.updateOne(
-        { _id: ID },
-        {
-          $set: {
-            isChecked: true 
-          }
-        }
-      );
-    console.log('updated'); 
-    res.status(200).send('updated');
-  } 
-});
  
 export default handler;

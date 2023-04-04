@@ -12,8 +12,10 @@ import axios from 'axios';
 import Footer from '../../components/Footer';
 import Headers from '../../components/HeadersContainer';
 import CategoryBanner from '../../components/BannersHON';
+import useStyles from '../../utils/styles';
 
 const Newproducts = (props) => {
+  const classes = useStyles();
   const { banner, products} = props;
   const { state, dispatch } = useContext(Store);
   const mylink = "http://localhost:3000/trending";
@@ -65,7 +67,9 @@ const Newproducts = (props) => {
           <BestSeller
             product={product}
             key={product}
+            state={state}
             addToCartHandler = {addToCartHandler}
+            style={{borderRadius: 22}}
             addToFavsHandler = {addToFavsHandler}
             removeFavHandler = {removeFavHandler}
           />

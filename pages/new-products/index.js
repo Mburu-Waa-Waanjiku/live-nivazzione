@@ -84,6 +84,7 @@ const Newproducts = (props) => {
             <DealsCards
               product={product}
               key={product}
+              state={state}
               addToCartHandler = {addToCartHandler}
               addToFavsHandler = {addToFavsHandler}
               removeFavHandler = {removeFavHandler}
@@ -103,6 +104,7 @@ const Newproducts = (props) => {
                   {page.newprods?.map((product) => (
                     <DealsCards
                       product={product}
+                      state={state}
                       key={product}
                       addToCartHandler={addToCartHandler}
                     />
