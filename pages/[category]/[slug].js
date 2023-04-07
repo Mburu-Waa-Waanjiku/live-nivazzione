@@ -160,7 +160,7 @@ export default function ProductScreen(props) {
       <Headers title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
         desc={product.description}
         socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
-        socialdesc={product.description}
+        socialdesc={'https://www.shiglam.com' + product.description}
         socialimages={product.image[0].item}
         scdinfo={addProductJsonLd()}
       />
