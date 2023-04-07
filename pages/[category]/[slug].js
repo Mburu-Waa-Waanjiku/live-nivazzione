@@ -112,8 +112,8 @@ export default function ProductScreen(props) {
       "@type": "Product",
       name: product.name,
       image: [ 
-                product.image[0],
-                product.image[1] 
+                product.image[0].item,
+                product.image[1]?.item 
               ],
       description: product.description,
       brand: {

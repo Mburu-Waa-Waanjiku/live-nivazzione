@@ -39,8 +39,6 @@ export default function AdminDashboard() {
   const [bags, setBags] = useState([]);
   const [users, setUsers] = useState([]);
 
-
-
   const fetchProducts = async () => {
     try {
       const { data } = await axios.get(`/api/admin/products`, {
@@ -64,22 +62,7 @@ export default function AdminDashboard() {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
-      enqueueSnackbar('Product created successfully', { variant: 'success' });
-      router.push(`/admin/product/${data.product._id}`);
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
-    }
-  };
-
-  const deleteHandler = async (productId) => {
-    if (!window.confirm('Are you sure?')) {
-      return;
-    }
-    try {
-      await axios.delete(`/api/admin/products/${productId}`, {
-        headers: { authorization: `Bearer ${userInfo.token}` },
-      });
-      enqueueSnackbar('Product deleted successfully', { variant: 'success' });
+      fetchProducts();
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
@@ -254,9 +237,9 @@ export default function AdminDashboard() {
         Thumbs={Thumbs}
         Pagination={Pagination}
         Autoplay={Autoplay}
+        createHandler={createHandler}
         Swiper={Swiper}
         SwiperSlide={SwiperSlide}
-        deleteHandler={deleteHandler}
         setFetchProgres={setFetchProgres}
         setShow={setShow}
         setProducts={setProducts}
