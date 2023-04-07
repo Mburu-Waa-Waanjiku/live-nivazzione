@@ -26,7 +26,7 @@ export default function HeadersContainer({ data, title, desc, socialtitle, socia
           content={socialdesc}
         />}
         {socialimages && <meta
-          property="og:image"
+          property="og:image:secure_url"
           content={socialimages}
         />}
         {scdinfo && <script
