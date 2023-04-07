@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head'
 
-export default function HeadersContainer({ data, title, desc, socialtitle, socialimages, socialdesc, scdinfo }) {
+export default function HeadersContainer({ data, socialimagessec, title, desc, socialtitle, socialimages, socialdesc, scdinfo }) {
 	return (
 		<Head>
       <script
@@ -26,8 +26,12 @@ export default function HeadersContainer({ data, title, desc, socialtitle, socia
           content={socialdesc}
         />}
         {socialimages && <meta
-          property="og:image:secure_url"
+          property="og:image"
           content={socialimages}
+        />}
+        {socialimagessec && <meta
+          property="og:image:secure_url"
+          content={socialimagessec}
         />}
         {scdinfo && <script
           type="application/ld+json"
