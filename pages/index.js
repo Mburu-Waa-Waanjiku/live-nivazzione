@@ -74,7 +74,13 @@ const Home = ({ products, banner, categories }) => {
  
   return (
       <>
-        <Headers />
+        <Headers 
+          title="SHIGLAM KENYA ,Get Valentine offers on Latest trends in  Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons."
+          desc="SHIGLAM Valentine offers Exclusive discounts and the latest trends at SHIGLAM KENYA — NAIROBI — Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more. ✓ Free Shipping On Orders ..." 
+          socialtitle="SHIGLAM KENYA ,Get Valentine offers on Latest trends in Fashon & Jewelry | Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons." 
+          socialdesc="Get Exclusive Valentine discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
+          socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
+        />
         <div className="bannerwidth">
           <Swiper                    
             autoplay={{
