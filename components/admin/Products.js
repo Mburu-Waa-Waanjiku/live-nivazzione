@@ -5,16 +5,20 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { 
   IconButton,
   InputBase,
+  CircularProgress,
 } from '@material-ui/core';
+import axios from 'axios';
 
-function Products({ showSearch, setSearch, setShowSearch, search, filteredData, debounce, filterData, setProducts, setFetchProgres, setShow, deleteHandler, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, products, Tabs, Tab, TabPanel, TabContext, current}) {
+function Products({ createHandler, fetchProducts, showSearch, setSearch, setShowSearch, search, filteredData, debounce, filterData, setProducts, setFetchProgres, setShow, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, products, Tabs, Tab, TabPanel, TabContext, current}) {
   
+  const [showCreate, setshowCreate] = useState(false);
   const producttabs = [ 'All Products', 'Out of Stock', 'Less Than Five', 'Best Selling', 'Least Selling', 'Most Loved', 'On Offer', 'Editors Pics'];
   const [currenttab,  setTab] = useState('All Products');
+  const [fetchingp, setFetching] =  useState(false);
   const setCurrentTab = ( event, newPage ) => {
   	setTab(newPage)
   }
-
+ 
   useEffect(() => {
     filterData();
   }, []);
@@ -26,7 +30,7 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
   const mostLoved = [...products.filter((product) => product.favourites.length > 0).sort((a, b) => b.favourites.length - a.favourites.length )];
   const offers = [...products.filter((product) => product.isOnoffer)];
   const editorspics = [...products.filter((product) => product.isEditorsChoice).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
-
+  
   return (
 	  <div className={current == "Products" ? "bannerwidth pt-1" : "hidden pt1"}>
       <TabContext value={currenttab}>
@@ -101,6 +105,11 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
             </div>
           }
         </div>
+        <>
+          { fetchingp ? <CircularProgress className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 1200, right: 0, height: 'fit-content', fontWeight: 700 }}/> : 
+            <div onClick={createHandler} className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 1200, right: 0, height: 'fit-content', fontWeight: 700 }}> Create </div>
+          }
+        </>
         <TabPanel value='All Products' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
           <div className={admin.productsgridding}>
            {products.map((product) =>(
@@ -114,7 +123,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -136,7 +144,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -158,7 +165,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -180,7 +186,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -202,7 +207,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -224,7 +228,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -246,7 +249,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}
@@ -268,7 +270,6 @@ function Products({ showSearch, setSearch, setShowSearch, search, filteredData, 
                 Swiper={Swiper}
                admin={admin}
                SwiperSlide={SwiperSlide}
-               deleteHandler={deleteHandler}
                setFetchProgres={setFetchProgres}
                setShow={setShow}
                setProducts={setProducts}

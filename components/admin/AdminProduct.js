@@ -13,7 +13,7 @@ import { getError } from '../../utils/error';
 import axios from 'axios';
 import { Store } from '../../utils/Store';
 
-function AdminProduct({ setProducts, setFetchProgres, setShow, deleteHandler, admin, product, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide}) {
+function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide}) {
   
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const subtract = product.prevprice - product.price;
@@ -33,6 +33,20 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, deleteHandler, ad
     setIsClicked(false);
   }
   
+  const deleteHandler = async (productId) => {
+    if (!window.confirm('Are you sure?')) {
+      return;
+    }
+    try {
+      await axios.delete(`/api/admin/products/${product._id}`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      enqueueSnackbar('Product deleted successfully', { variant: 'success' });
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
   const fetchProducts = async () => {
     try {
       setShow(true);
@@ -153,7 +167,7 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, deleteHandler, ad
               product={product}
               fetchProducts={fetchProducts}
             />
-            <DeleteTwoTone onClick={() => {deleteHandler(); fetchProducts();}} style={{ color: 'rgba(220, 38, 38)', fontSize: 26 }}/>
+            <DeleteTwoTone onClick={() => {deleteHandler(product._id); fetchProducts();}} style={{ color: 'rgba(220, 38, 38)', fontSize: 26 }}/>
           </div>
         </div>
 	  </div>
