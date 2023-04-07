@@ -163,7 +163,6 @@ export default function ProductScreen(props) {
         socialdesc={product.description}
         socialimages={'https://www.shiglam.com' + product.image[0].item}
         scdinfo={addProductJsonLd()}
-        socialimagessec={'https://www.shiglam.com' + product.image[0].item}
       />
       <div className="margintopFix grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
         <div className="col-span-1 ">
