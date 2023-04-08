@@ -154,6 +154,7 @@ function UpdateProds({ admin, bannerID, banner, fetchBanner }) {
       dispatch({ type: 'UPDATE_SUCCESS' });
       enqueueSnackbar('Product updated successfully', { variant: 'success' });
       setEditor(false);
+      fetchBanner();
     } catch (err) {
       dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
       enqueueSnackbar(getError(err), { variant: 'error' });
