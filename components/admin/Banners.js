@@ -6,7 +6,7 @@ function Products({ setFetchProgres, setShow, setBanners, admin, Navigation, Fre
   
   const producttabs = [ 'All Banners' ];
   const [showCreate, setshowCreate] = useState(false);
-  const [currenttab,  setTab] = useState('All  Banners');
+  const [currenttab,  setTab] = useState('All Banners');
   const setCurrentTab = ( event, newPage ) => {
   	setTab(newPage)
   }
