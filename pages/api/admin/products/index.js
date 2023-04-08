@@ -21,12 +21,12 @@ handler.post(async (req, res) => {
     slug: 'sample-slug-' + Math.random(),
     image:  [
       {
-        item: '/images/shirt1.jpg',
+        item: '/images/il_1140xN.3076823954_n08q.jpg',
       },
     ],
     price: 0,
     category: 'sample category',
-    brand: 'sample brand',
+    brand: 'Earrings',
     distinctCateg: ['1', '2', '3', '4', '5', '6'],
     countInStock: 0,
     initialStock: 1,
