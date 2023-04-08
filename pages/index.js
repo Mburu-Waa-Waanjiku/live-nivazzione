@@ -526,7 +526,7 @@ const Home = ({ products, banner, categories }) => {
           </div>
         </div>
         <div className="py-5">
-          <Image height={709} width={1919} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+          <Image height={709} width={1919} src={banner[0].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
         </div>
         <Tabsbottom/>
         <Footer/>
