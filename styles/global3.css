@@ -165,10 +165,10 @@
 }
 @media screen and (max-width:600px){
   .smbrand {
-    fontWeight: 'bold !important',
-    position: 'absolute !important',
-    fontSize: '1.5rem !important',
-    transform: 'translate(-50%, -50%) !important',
+    fontWeight: bold !important;
+    position: absolute !important;
+    fontSize: 1.5rem !important;
+    transform: translate(-50%, -50%) !important;
   }
   .brand {
     display: 'none',
