@@ -225,7 +225,7 @@ export default function Layout({ children }) {
               </div>
               <NextLink href="/" passHref>
                 <Link>
-                  <Typography className={classes.brand}>
+                  <Typography className="brand">
                     <Logo/>
                   </Typography>
                 </Link>
@@ -295,7 +295,7 @@ export default function Layout({ children }) {
             </Drawer>
             <NextLink href="/" passHref>
                 <Link>
-                  <Typography style={{color: "#222", paddingTop: '10px'}} className={classes.smbrand}>
+                  <Typography style={{color: "#222", paddingTop: '10px'}} className="smbrand">
                     <Logo/>
                   </Typography>
                 </Link>

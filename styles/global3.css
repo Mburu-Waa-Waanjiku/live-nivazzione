@@ -1,3 +1,11 @@
+.brand {
+  display: flex !important;
+  fontWeight: bold !important;
+  fontSize: 1.6rem !important;
+}
+.smbrand {
+  display: none;
+}
 .loadinbutton circle {
   stroke: white !important;
 }
@@ -156,6 +164,15 @@
   }
 }
 @media screen and (max-width:600px){
+  .smbrand {
+    fontWeight: 'bold !important',
+    position: 'absolute !important',
+    fontSize: '1.5rem !important',
+    transform: 'translate(-50%, -50%) !important',
+  }
+  .brand {
+    display: 'none',
+  }
   .bannerwidth {
     width: calc(100% + 32px);
     position: relative;
