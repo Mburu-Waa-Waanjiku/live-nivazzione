@@ -97,7 +97,7 @@ export default function ProductItem({ product, addToCartHandler, addToFavsHandle
         ) : product.isOnoffer ? (
         <div style={{ width: 'fit-content', height: 'fit-content' }} className="salesticker"><CgBolt style={{fontSize:16, margin: 4}} />{percent}%</div>
         ) : product.isNeww && (
-          <div className={home.newpostb}>
+          <div style={{height: 10}} className={home.newpostb}>
             NEW
           </div>
         )
