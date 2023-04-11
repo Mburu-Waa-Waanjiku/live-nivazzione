@@ -1,5 +1,5 @@
 .brand {
-  display: flex !important;
+  display: flex;
   fontWeight: bold !important;
   fontSize: 1.6rem !important;
 }
