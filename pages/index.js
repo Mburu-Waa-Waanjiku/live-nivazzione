@@ -81,17 +81,44 @@ const Home = ({ products, banner, categories }) => {
           socialdesc="Get Exclusive Valentine discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
           socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
         />
-        <div className="bannerwidth" >
+        <div className="bannerwidth" style={{ overflowX: 'hidden' }}>
           <div style={{ padding: '10px 10px 5px 10px', backgroundColor: '#222', color: 'white', borderBottom: '1px solid white' }}>
-            <marquee style={{fontSize: 16, fontFamily: "monospace", letterSpacing: 1 }}> <b style={{color: 'red', marginRight: 8 }}>ITs FREEE !!</b> Get your <b style={{color: 'red' }}>NEXT DAY</b> delivery in Our CBD pickup station na ni <b style={{color: 'red' }}>freeee!!!</b> </marquee>
+            <marquee style={{fontSize: 16,  fontFamily: "monospace", letterSpacing: 1 }}> <b style={{color: 'red', marginRight: 8 }}>ITs FREEE !!</b> Get your <b style={{color: 'red' }}>NEXT DAY</b> delivery in Our CBD pickup station na ni <b style={{color: 'red' }}>freeee!!!</b> </marquee>
           </div>
-        </div>
-        <div className="bannerwidth bg-gray-100" style={{ overflowX: 'hidden' }} >
-          <video style={{ transform: 'translateX(-6%)', width: '120%', maxWidth: '120%' }} width="1919" height="748" loop autoPlay muted>
-            <source src="https://res.cloudinary.com/dddx5qpji/video/upload/v1681422150/Aimages_-_Best_Deal_2_ccqgc3.mp4" type="video/mp4"></source>
+          <video className="block  md:hidden" style={{ transform: 'translateX(-6%)', width: '120%', maxWidth: '120%' }} width="1919" height="748" loop autoPlay muted>
+            <source src="https://res.cloudinary.com/dddx5qpji/video/upload/v1681399098/Best_Deal_ip3or0.mp4" type="video/mp4"></source>
             <source src="movie.ogg" type="video/ogg"></source>
             Your browser does not support the video tag.
           </video> 
+          <Swiper                    
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[FreeMode, Pagination, Autoplay, Thumbs]}
+            spaceBetween={10} 
+            className="hidden md:block"          
+            loop={true}
+            pagination={true}
+            centeredSlides={false}
+            style={{ transform: 'translateX(-6%)', width: '120%', maxWidth: '120%' }}
+            slidesPerView={1}
+            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={() => console.log('slide change')}
+           >
+            <SwiperSlide >
+                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470293/k6A7IeDa_2x_tppl3r.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+            </SwiperSlide>
+            <SwiperSlide style={{ transform: 'translateX(5%)'}}>
+                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470293/xitjDu30_2x_l4byko.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+            </SwiperSlide>
+            <SwiperSlide>
+                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470293/2nBCKkZs_2x_mj4hvk.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+            </SwiperSlide>
+            <SwiperSlide>
+                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470292/KYxPHnDy_2x_vdogeb.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+            </SwiperSlide>
+          </Swiper> 
         </div>
         <div className="bannerwidth pt-4 pb-1">
           <div className="hidden md:block">
