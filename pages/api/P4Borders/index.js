@@ -1,5 +1,6 @@
 import nc from 'next-connect';
 import Bag from '../../../models/Bag';
+import User from '../../../models/User';
 import { isAuth } from '../../../utils/auth';
 import db from '../../../utils/db';
 import { onError } from '../../../utils/error';
@@ -11,14 +12,28 @@ handler.use(isAuth);
 
 handler.post(async (req, res) => {
   await db.connect();
+  const user = await User.findById(req.user._id);
   const bag = await Bag.find({user: req.user._id});
   
   if(bag.length > 0) {
   console.log('old bag');
+  const points = req.body.itemsPrice / 25 ;
+  const totalPoints = points + user.shiglamPoints ; 
   const price = bag[0].itemsPrice;
   const ID = bag[0]._id;
   const priceN = 0 + req.body.itemsPrice;
   const newPrice = price + priceN;
+  const buys = user.totalBuys + req.body.itemsPrice ;
+
+  await User.updateOne(
+      { _id: req.user._id },
+        {
+          $set: {
+            shiglamPoints : totalPoints,
+            totalBuys : buys,
+        },
+      }
+    );
   
   await Bag.updateOne(
         { _id: ID },
@@ -47,6 +62,20 @@ handler.post(async (req, res) => {
     res.status(200).send(bag);
   } else {
       console.log('new bag');
+      const points = req.body.itemsPrice / 25 ;
+      const totalPoints = points + user.shiglamPoints ; 
+      const buys = user.totalBuys + req.body.itemsPrice ;
+
+      await User.updateOne(
+          { _id: req.user._id },
+            {
+              $set: {
+                shiglamPoints : totalPoints,
+                totalBuys : buys,
+            },
+          }
+        );
+
       const newBag = new Bag({
         ...req.body,
         isChecked: false,

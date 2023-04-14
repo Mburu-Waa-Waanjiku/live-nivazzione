@@ -81,38 +81,17 @@ const Home = ({ products, banner, categories }) => {
           socialdesc="Get Exclusive Valentine discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
           socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
         />
-        <div className="bannerwidth">
-          <Swiper                    
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            modules={[FreeMode, Pagination, Autoplay, Thumbs]}
-            spaceBetween={10}           
-            loop={true}
-            pagination={true}
-            centeredSlides={false}
-            slidesPerView={1}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
-           >
-            <SwiperSlide>
-               <div className=" hidden md:block">
-                <Image height={709} width={1919} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
-              </div>
-              <div className=" block md:hidden">
-                <Image height={834} width={1043} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" /> 
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-               <div className=" hidden md:block">
-                <Image height={709} width={1919} src={banner[3].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
-              </div>
-              <div className=" block md:hidden">
-                <Image height={834} width={1043} src={banner[3].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" /> 
-              </div>
-            </SwiperSlide>
-          </Swiper> 
+        <div className="bannerwidth" >
+          <div style={{ padding: '10px 10px 5px 10px', backgroundColor: '#222', color: 'white', borderBottom: '1px solid white' }}>
+            <marquee style={{fontSize: 16, fontFamily: "monospace", letterSpacing: 1 }}> <b style={{color: 'red', marginRight: 8 }}>ITs FREEE !!</b> Get your <b style={{color: 'red' }}>NEXT DAY</b> delivery in Our CBD pickup station na ni <b style={{color: 'red' }}>freeee!!!</b> </marquee>
+          </div>
+        </div>
+        <div className="bannerwidth bg-gray-100" style={{ overflowX: 'hidden' }} >
+          <video style={{ transform: 'translateX(-6%)', width: '120%', maxWidth: '120%' }} width="1919" height="748" loop autoPlay muted>
+            <source src="https://res.cloudinary.com/dddx5qpji/video/upload/v1681422150/Aimages_-_Best_Deal_2_ccqgc3.mp4" type="video/mp4"></source>
+            <source src="movie.ogg" type="video/ogg"></source>
+            Your browser does not support the video tag.
+          </video> 
         </div>
         <div className="bannerwidth pt-4 pb-1">
           <div className="hidden md:block">

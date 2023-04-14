@@ -102,7 +102,7 @@ const Jewelry = (props) => {
       <div className="pt-10 grid justify-center">
         {Anclets == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
           {anclets.map((product) => ( 
-            <div className={home.you}>
+            <div className={home.you + " " + "newb"}>
               <ProductItems
                 product={product}
                 key={product}
@@ -115,7 +115,7 @@ const Jewelry = (props) => {
         </div>}
         {Earrings == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
           {earrings.slice(0, 24).map((product) => ( 
-            <div className={home.you}>
+            <div className={home.you + " " + home.newb}>
               <ProductItems
                 product={product}
                 key={product}
@@ -138,13 +138,15 @@ const Jewelry = (props) => {
                 {data?.pages.map((page) => (
                   <>
                     {page.earrings?.map((product) => (
-                      <ProductItems
-                           product={product}
-                           key={product}
-                           addToCartHandler = {addToCartHandler}
-                           addToFavsHandler = {addToFavsHandler}
-                           removeFavHandler = {removeFavHandler}
-                          />
+                      <div className={home.you + " " + home.newb}>
+                        <ProductItems
+                          product={product}
+                          key={product}
+                          addToCartHandler = {addToCartHandler}
+                          addToFavsHandler = {addToFavsHandler}
+                          removeFavHandler = {removeFavHandler}
+                        />
+                      </div>
                     ))}
                   </>
                 ))}
@@ -158,7 +160,7 @@ const Jewelry = (props) => {
         </div>}
         {Necklaces == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
           {necklace.map((product) => ( 
-            <div className={home.you}>
+            <div className={home.you + " " + home.newb}>
               <ProductItems
                 product={product}
                 key={product}
