@@ -68,7 +68,7 @@ function PaymentP4B() {
     const placeOrderHandler = async () => {
     closeSnackbar();
     try {
-      const { data } = await axios.post(
+      const { data } = await axios.put(
         '/api/orders',
         {
           orderItems: bagitems[0].orderItems,
@@ -89,7 +89,7 @@ function PaymentP4B() {
         }
       );
       enqueueSnackbar('Order created succesfully', { variant: 'success' });
-      await router.push(`/order/${data._id}`);
+      await router.push(`/me`);
     } catch (err) {
       enqueueSnackbar("Please Check Whether You Are Logged In");
     } 

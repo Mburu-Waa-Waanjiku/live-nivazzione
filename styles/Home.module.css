@@ -1,3 +1,6 @@
+.newb .newpostb {
+  height: 20px !important;
+}
 .newpostb {
     position: absolute;
     z-index: 2;

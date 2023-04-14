@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isAdmin: { type: Boolean, required: true, default: false },
     favourites: { type: Array },
+    shiglamPoints: { type: Number, required: true, default: 0},
+    totalBuys: { type: Number, required: true, default: 0 },
+    accountType: { type: String, required: true, default: "Bronze" },
     notifications : [notificationsSchema]
   },
   {
