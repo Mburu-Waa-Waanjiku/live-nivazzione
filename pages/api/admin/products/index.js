@@ -25,6 +25,7 @@ handler.post(async (req, res) => {
       },
     ],
     price: 0,
+    isCollectn: true,
     category: 'Earrings',
     brand: 'SHIGLAM FASHON',
     distinctCateg: ['1', '2', '3', '4', '5', '6'],

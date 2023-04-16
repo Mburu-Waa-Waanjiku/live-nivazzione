@@ -21,9 +21,9 @@ import home from '../../styles/Home.module.css';
 const Jewelry = (props) => {
  
   const {  products, banner } = props;
-  const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
-  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
-  const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+  const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1 && !product.isCollectn).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+  const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
   
   const router = useRouter();
   const { category } = router.query;

@@ -10,7 +10,7 @@ handler.get(async (req, res) => {
 
   await db.connect();
   const earrings = await Product.find(
-    { category: 'Earrings' },
+    { category: 'Earrings', isCollectn: false },
     )
       .lean()
       .sort({
