@@ -29,7 +29,7 @@ function BannersHON({categs, banner, mylink, Anclets, Earrings, Necklaces }) {
   return (
       <div className="bannerwidth bannerTransformer">
         <div style={{ maxHeight: '15vh', minHeight: '10vh', overflow: 'hidden'}}>
-          {New == mylink && <Image style={{visibility: visible ? 'visible' : 'hidden', transition: 'visibility .2s'}} className="bg-gray-10" width={1600} height={480} alt="New Products" src={banner[3].image[0]}></Image>}
+          {New == mylink && <Image style={{visibility: visible ? 'visible' : 'hidden', transition: 'visibility .2s'}} className="bg-gray-10" width={1600} height={480} alt="New Products" src={banner[9].image[0]}></Image>}
           {Offers == mylink && <Image style={{visibility: visible ? 'visible' : 'hidden', transition: 'visibility .2s'}} className="bg-gray-100" width={1600} height={500} alt="Offers" src={banner[4].image[0]}></Image>}
           {Hot == mylink && <Image style={{visibility: visible ? 'visible' : 'hidden', transition: 'visibility .2s'}} className="bg-gray-100" width={1600} height={500} alt="Offers" src={banner[5].image[0]}></Image>}
           {Earrings == mylink && <Image style={{visibility: visible ? 'visible' : 'hidden', transition: 'visibility .2s'}} className="bg-gray-100" width={1600} height={500} alt="Offers" src={banner[6].image[0]}></Image>}          

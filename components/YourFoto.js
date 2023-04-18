@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Image from 'next/image';
 import useStyles from '../utils/styles';
 import Link from 'next/link';
@@ -6,29 +6,54 @@ import { CgBolt } from 'react-icons/cg';
 import HeadersContainer from './HeadersContainer';
 import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import axios from 'axios';
+import { Store } from '../utils/Store';
 
-function YourFoto({ state, addToFavsHandler, removeFavHandler, product, addToCartHandler}) {
+function YourFoto({ product }) {
 	const classes = useStyles();
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const subtract = product.prevprice - product.price;
   const percent = round0(subtract/product.prevprice * 100);
   
   const [fill, setFill] = useState(false);
+  const { state, dispatch } = useContext(Store);
+  const {userInfo, favourites } = state;
   const [fillFav, setFillFav] = useState(false);
   const existItem = state.cart.cartItems.find((x) => x._id === product._id);
   const existFav = state.favourites.find((x) => x._id === product._id);
-  const addToCartWithAnimation = async () => {
-    await addToCartHandler(product);
+  
+  const addToCartHandler = async (product) => {
     setFill(true);
-  }
-  const addToFavWithAnimation = async () => {
-    await addToFavsHandler(product);
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (existItem) {
+      window.alert('Already added');
+    } else if (data.countInStock < quantity ) {
+      setFill(false);
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+  };
+
+  const addToFavsHandler = async (product) => {
     setFillFav(true);
-  }
-  const removeFavWithAnimation = async () => {
+    const existFav = state.favourites.find((x) => x._id === product._id);
+    if (existFav) {
+      window.alert('Already a Favourite');
+      return;
+    }
+    dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
+    const { data } = await axios.post(`/api/products/${product._id}/${userInfo?._id}`);
+
+  };
+  
+  const removeFavHandler = async (product) => {
     setFillFav(false);
-    await removeFavHandler(product);
-  }
+    dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
+    const { data } = await axios.delete(`/api/products/${product._id}/${userInfo?._id}`);
+  };
 
   const URL = `https://shiglam.com/offer`;
   let revCount;
@@ -105,7 +130,7 @@ function YourFoto({ state, addToFavsHandler, removeFavHandler, product, addToCar
                     className="shadow object-cover bg-gray-100 h-auto w-100"
                 />
               </Link> 
-            <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={addToCartWithAnimation}>
+            <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={() => addToCartHandler(product)}>
                 {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }
             </div>
             <div className="flex justify-between">
@@ -117,7 +142,7 @@ function YourFoto({ state, addToFavsHandler, removeFavHandler, product, addToCar
               </div>
               <div style={{position: "relative", right: "-20px" }} className="flex justify-end">
                 <div style={{animation: fillFav ? 'scaler 1.5s' : 'none', transform:'translate(8px, 40px)', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.4)'}} className="heart-ck heart-anim" >
-                  {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
+                  {existFav ? <BsHeartFill onClick={() => removeFavHandler(product)} /> : <BsHeart onClick={() => addToFavsHandler(product)} /> }
                 </div>
               </div>
             </div>
