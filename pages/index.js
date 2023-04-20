@@ -40,7 +40,7 @@ const Home = ({ products, banner, categories }) => {
   
   const ancletsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('anclet') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1) ];
   const earringsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('earring') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];
-  const necklacemap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('necklace') != -1).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+  const necklacemap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('necklace') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];
   
   const addToCartHandler = async (product) => {
 
