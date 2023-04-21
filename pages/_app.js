@@ -7,6 +7,7 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
 import Script from "next/script";
+import { Analytics } from '@vercel/analytics/react';
 import { StoreProvider } from '../utils/Store';
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
@@ -48,6 +49,7 @@ function MyApp({ Component, pageProps }) {
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
               <Component {...pageProps} />
+              <Analytics />
             </Hydrate>
           </QueryClientProvider>
         </Layout>
