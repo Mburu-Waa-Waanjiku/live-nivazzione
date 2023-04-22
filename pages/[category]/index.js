@@ -17,13 +17,15 @@ import Footer from '../../components/Footer';
 import Headers from '../../components/HeadersContainer';
 import CategoryBanner from '../../components/BannersHON';
 import home from '../../styles/Home.module.css';
+import lodash from 'lodash';
 
 const Jewelry = (props) => {
  
   const {  products, banner } = props;
-  const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
-  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1 && !product.isCollectn).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
-  const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
+
+  const necklace = lodash.shuffle([...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).slice(0, 24)]);
+  const anclets = lodash.shuffle([...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1 && !product.isCollectn).slice(0, 24)]);
+  const earrings = lodash.shuffle([...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).slice(0, 24)]);
   
   const router = useRouter();
   const { category } = router.query;
@@ -137,7 +139,7 @@ const Jewelry = (props) => {
               <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
                 {data?.pages.map((page) => (
                   <>
-                    {page.earrings?.map((product) => (
+                    {lodash.shuffle(page.earrings).map((product) => (
                       <div className={home.you + " " + home.newb}>
                         <ProductItems
                           product={product}
@@ -182,7 +184,7 @@ export async function getServerSideProps() {
   await db.connect();
   
   const banner = await Banner.find().lean();
-  const products = await Product.find({}, '-reviews').lean();
+  const products = await Product.find({}, '-reviews').sort( {createdAt: -1} ).lean();
   
   await db.disconnect();
   return {
