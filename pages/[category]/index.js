@@ -153,7 +153,7 @@ const Jewelry = (props) => {
               <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
                 {data?.pages.map((page) => (
                   <>
-                    {lodash.shuffle(page.earrings).map((product) => (
+                    {page.earrings.map((product) => (
                       <div className={home.you + " " + home.newb}>
                         <ProductItems
                           product={product}
