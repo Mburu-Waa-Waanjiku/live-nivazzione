@@ -12,9 +12,9 @@ import 'swiper/css/scrollbar';
 
 function BannersHON({collections, categs, banner, mylink, Anclets, Earrings, Necklaces }) {
     
-  const [Offers, setOffers] = useState("https://www.shiglam.com/offers");
-  const [Hot, setHot] = useState("https://http://www.shiglam.com/trending");
-  const [New, setNew] = useState("https://http://www.shiglam.com/new-products");
+  const [Offers, setOffers] = useState("offers");
+  const [Hot, setHot] = useState("trending");
+  const [New, setNew] = useState("new-products");
   
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
