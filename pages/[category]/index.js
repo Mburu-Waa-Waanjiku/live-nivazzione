@@ -33,13 +33,12 @@ const Jewelry = (props) => {
   const { state, dispatch } = useContext(Store);
   const {userInfo, favourites } = state;
 
-  const mylink = `http://localhost:3000/${category}`;
-  const [Anclets, setAnclets] = useState('http://www.shiglam.com/Anclets');
-  const [Earrings, setEarrings] = useState('http://www.shiglam.com/Earrings');
-  const [Necklaces, setNeclaces] = useState('http://www.shiglam.com/Necklaces');
-  const [collections, setCollections] = useState('http://www.shiglam.com/collections');
+  const mylink = category ;
+  const [Anclets, setAnclets] = useState('Anclets');
+  const [Earrings, setEarrings] = useState('Earrings');
+  const [Necklaces, setNeclaces] = useState('Necklaces');
+  const [collections, setCollections] = useState('collections');
   const [categs, setCategs] = useState(true);
-  console.log("this is" ,mylink);
 
  const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
     "infiniteCharacters",
