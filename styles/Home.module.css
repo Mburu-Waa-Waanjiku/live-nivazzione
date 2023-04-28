@@ -24,7 +24,7 @@
 }
 .categoriescards {
   cursor: pointer;
-  padding: 0;
+  margin: 0;
 }
 .categoriescards span {
   border-radius: 0px;
@@ -45,6 +45,9 @@
     background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
     transition: scale 2s;
     border-radius: 0;
+}
+.gradientWidth {
+  width: calc(100% - 40px) !important;
 }
 .gradient div b {
    fontsize: 10px;
@@ -91,13 +94,16 @@
     width: calc((100% - 66px) / 3);
     border-radius: 20px;
   }
+  .gradientWidth {
+    width: calc(100% - 40px) !important;
+  }
   .itemslength {
       display: flex;
       justify-content: center;
     }
   .categoriescards {
       overflow: hidden;
-      padding: 5px;
+      margin: 5px;
     }
     .categoriescards span {
       border-radius: 20px;
@@ -131,4 +137,7 @@
   .gradient div b {
         font-size: 15px;
     }
+  .gradientWidth {
+    width: calc(100% - 21px) !important;
+  }
 }

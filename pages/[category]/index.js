@@ -17,16 +17,16 @@ import Footer from '../../components/Footer';
 import Headers from '../../components/HeadersContainer';
 import CategoryBanner from '../../components/BannersHON';
 import home from '../../styles/Home.module.css';
-import lodash from 'lodash';
 
 const Jewelry = (props) => {
  
   const {  products, banner } = props;
 
-  const necklace = lodash.shuffle([...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).slice(0, 24)]);
-  const anclets = lodash.shuffle([...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1 && !product.isCollectn).slice(0, 24)]);
-  const earrings = lodash.shuffle([...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).slice(0, 24)]);
-  
+  const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).slice(0, 24)];
+  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1 && !product.isCollectn).slice(0, 24)];
+  const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).slice(0, 24)];
+  const Collections = [...products.filter((product) => product.isCollectn ).slice(0, 24)];
+
   const router = useRouter();
   const { category } = router.query;
 
@@ -34,9 +34,10 @@ const Jewelry = (props) => {
   const {userInfo, favourites } = state;
 
   const mylink = `http://localhost:3000/${category}`;
-  const [Anclets, setAnclets] = useState('http://localhost:3000/Anclets');
-  const [Earrings, setEarrings] = useState('http://localhost:3000/Earrings');
-  const [Necklaces, setNeclaces] = useState('http://localhost:3000/Necklaces');
+  const [Anclets, setAnclets] = useState('http://www.shiglam.com/Anclets');
+  const [Earrings, setEarrings] = useState('http://www.shiglam.com/Earrings');
+  const [Necklaces, setNeclaces] = useState('http://www.shiglam.com/Necklaces');
+  const [collections, setCollections] = useState('http://www.shiglam.com/collections');
   const [categs, setCategs] = useState(true);
   console.log("this is" ,mylink);
 
@@ -100,8 +101,22 @@ const Jewelry = (props) => {
         Earrings={Earrings}
         Necklaces={Necklaces}
         Anclets={Anclets}
+        collections={collections}
       />
       <div className="pt-10 grid justify-center">
+        {collections == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+          {Collections.slice(0, 24).map((product) => ( 
+            <div className={home.you + " " + home.newb}>
+              <ProductItems
+                product={product}
+                key={product}
+                addToCartHandler = {addToCartHandler}
+                addToFavsHandler = {addToFavsHandler}
+                removeFavHandler = {removeFavHandler}
+              />
+            </div>
+          ))}
+        </div>}
         {Anclets == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
           {anclets.map((product) => ( 
             <div className={home.you + " " + "newb"}>

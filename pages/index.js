@@ -37,6 +37,7 @@ const Home = ({ products, banner, categories }) => {
   const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1)];
   const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1)];
   const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1)];
+  const collections = [...products.filter((product) => product.isCollectn)];
   
   const ancletsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('anclet') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1) ];
   const earringsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('earring') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];
@@ -237,6 +238,117 @@ const Home = ({ products, banner, categories }) => {
                   </div>
                 </div>
               </Link>
+          </div>
+          <Swiper                    
+            modules={[FreeMode, Pagination, Autoplay, Thumbs]}
+            spaceBetween={10} 
+            className="block md:hidden roundswipes"          
+            loop={false}
+            style={{ paddingLeft: '1rem'}}
+            pagination={true}
+            centeredSlides={false}
+            slidesPerView={3.3}
+            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={() => console.log('slide change')}
+           >
+            <SwiperSlide >
+              <Link href="/collections">
+                <div style={{ position: 'relative', lineHeight: 'calc(100% - 5px)', borderRadius: 1000, overflow: 'hidden'}} className={home.categoriescards}>
+                  <div className="block md:hidden">
+                    <Image style={{ borderRadius: 100 }} width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1682536105/My-Favorite-Jewelry-Pieces_sdaxfr.jpg"/>
+                  </div>
+                  <div style={{ transform: 'translate(0%, -100%)', lineHeight: 'normal', background: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3))'}} className={home.gradient + ' ' + home.gradientWidth}>
+                    <div>
+                      <div className=" flex justify-center">
+                        <b > Collections </b>
+                      </div>
+                    </div>
+                    <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                      <div> {newdrops.length}+ </div> <div className="pl-1"> items </div>
+                    </div>
+                    <div className={home.animate}>
+                     Shop Now >
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </SwiperSlide >
+            {categories.map((category) => (
+              <SwiperSlide >
+                <Link href={`/${category}`}>
+                  <div style={{ position: 'relative', lineHeight: 'calc(100% - 5px)', borderRadius: 1000, overflow: 'hidden'}} className={home.categoriescards}>
+                    {category == "Necklaces" &&
+                      <>
+                        <div className="block md:hidden">
+                          <Image style={{ borderRadius: 100 }} width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678542559/neclacesmin_2_pzh7tr.jpg"/>
+                        </div>
+                        <div className="hidden md:block">
+                          <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678542560/neclacemax_2_ufbobg.jpg"/>
+                        </div>
+                      </>
+                    }
+                    {category == "Earrings" && 
+                      <>
+                        <div className="block md:hidden">
+                          <Image style={{ borderRadius: 100 }} width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549970/il_570xN.3254524046_9p24_2_ghkimd.jpg"/>
+                        </div>
+                        <div className="hidden md:block">
+                          <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678539566/il_570xN.3254524046_9p24_ibhqfg.jpg"/>
+                        </div>
+                      </>
+                    }
+                    {category == "Anclets" && 
+                      <>
+                        <div className="block md:hidden">
+                          <Image style={{ borderRadius: 100 }} width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/>
+                        </div>
+                        <div className="hidden md:block">
+                          <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678543017/ancletsmin_2_u3fcqb.jpg"/>
+                        </div>
+                      </>
+                    }
+                    <div style={{ transform: 'translate(0%, -100%)', lineHeight: 'normal', background: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3))'}} className={home.gradient + ' ' + home.gradientWidth}>
+                      <div>
+                        <b>{category}</b>
+                      </div>
+                      <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                        {category == "Necklaces" && <> <div> {necklace.length}+ </div> <div className="pl-1"> items </div></>}
+                        {category == "Earrings" && <> <div> {earrings.length}+ </div> <div className="pl-1"> items </div></>}
+                        {category == "Anclets" && <> <div> {anclets.length}+ </div> <div className="pl-1"> items </div></>}
+                      </div>
+                      <div className={home.animate}>
+                       Shop Now >
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide >
+            ))}
+          </Swiper> 
+          <div className=" hidden md:grid gap-x-0 md:gap-x-1 px-4 md:px-0 grid-cols-4">
+              <Link href="/collections">
+                <div className={home.categoriescards}>
+                  <div className="block md:hidden">
+                    <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678548104/newarrivals2_2_xtemuk.jpg"/>
+                  </div>
+                  <div className="hidden md:block">
+                    <Image width={829}  height={570} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1682536105/My-Favorite-Jewelry-Pieces_sdaxfr.jpg"/>
+                  </div>
+                  <div style={{width: 'calc((100% - 8px) / 4)'}} className={home.gradient}>
+                    <div>
+                      <div className="ml-2 flex justify-center">
+                        <b > Collections </b>
+                      </div>
+                    </div>
+                    <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
+                      <div> {newdrops.length}+ </div> <div className="pl-1"> items </div>
+                    </div>
+                    <div className={home.animate}>
+                     Shop Now >
+                    </div>
+                  </div>
+                </div>
+              </Link>
               {categories.map((category) => (
                 <Link href={`/${category}`}>
                   <div className={home.categoriescards}>
@@ -270,7 +382,7 @@ const Home = ({ products, banner, categories }) => {
                         </div>
                       </>
                     }
-                    <div className={home.gradient}>
+                    <div style={{width: 'calc((100% - 8px) / 4)'}} className={home.gradient}>
                       <div>
                         <b>{category}</b>
                       </div>
