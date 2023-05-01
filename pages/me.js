@@ -78,7 +78,7 @@ function Me() {
 
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login');
+      router.push('/');
     }
     const fetchOrders = async () => {
       try {
