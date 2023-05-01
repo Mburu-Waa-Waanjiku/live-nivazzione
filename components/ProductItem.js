@@ -133,7 +133,7 @@ export default function ProductItem({ product }) {
             style={{borderRadius: 20}}
             src={product.image && product.image[0].item}
             alt={product.name}
-            className="shadow bg-gray-100 object-cover h-auto w-100"
+            className="shadow  object-cover h-auto w-100 pulse"
           />
         </a>
       </Link>

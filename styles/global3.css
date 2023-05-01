@@ -349,6 +349,21 @@
   }
 }
 
+.pulse {
+  background-color: rgb(243 244 246);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% {
+    background-color: rgb(243 244 246);
+  }
+  50% {
+    background-color: rgb(243, 244, 246, 0.6);
+  }
+  100% {
+    background-color: rgb(243 244 246);
+  }
+}
 :root {
   --border-color: linear-gradient(to left,#eee 50%, #333 50%);
 }
