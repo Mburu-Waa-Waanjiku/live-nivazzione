@@ -98,7 +98,7 @@ function Logger() {
     }
   };
 
-  const RegistersubmitHandler = async ({ name, email, password, confirmPassword }) => {
+  const RegistersubmitHandler = async ({ name, email, phone, password, confirmPassword }) => {
     closeSnackbar();
     if (password !== confirmPassword) {
       enqueueSnackbar("Passwords don't match", { variant: 'error' });
@@ -107,6 +107,7 @@ function Logger() {
     try {
       const { data } = await axios.post('/api/users/register', {
         name,
+        phone,
         email,
         password,
       });
@@ -114,7 +115,7 @@ function Logger() {
       Cookies.set('userInfo', data);
       closeLogin();
     } catch (err) {
-      enqueueSnackbar(err.response.data ? err.response.data.message : err.message,
+      enqueueSnackbar(err.response?.data ? err.response.data.message : err.message,
         { variant: 'error' });
     }
   };
@@ -196,6 +197,36 @@ function Logger() {
         			          )}
         			        ></Controller>
     			          </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="phone"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          pattern: /07[0-9]{8}/,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="phone"
+                            label="Phone"
+                            placeholder="07..."
+                            inputProps={{ type: 'phone' }}
+                            error={Boolean(errors.phone)}
+                            helperText={
+                              errors.phone
+                                ? errors.phone.type === 'pattern'
+                                  ? 'Phone number is not valid'
+                                  : 'Phone number is required'
+                                : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
     			          <ListItem>
     			            <Controller
     			              name="password"
@@ -267,7 +298,7 @@ function Logger() {
           			    <ListItem>
           			      Already have an account? &nbsp;
           			      <a style={{cursor: "pointer"}} onClick={handleLogin}>
-    			            Login
+    			            <b style={{ fontSize: 14 }}>Login</b>
     			          </a>
           			    </ListItem>
       				  </List>			    
@@ -317,7 +348,7 @@ function Logger() {
     			      <ListItem>
     			        Don&apos;t have an account? &nbsp;
     			        <a style={{cursor: "pointer"}} onClick={handleRegister}>
-    			          Register
+    			          <b style={{ fontSize: 14 }}>Register</b>
     			        </a>
     			      </ListItem>
     			    </List>
@@ -423,7 +454,7 @@ function Logger() {
     			        <ListItem>
     			          Don&apos;t have an account? &nbsp;
     			            <a style={{cursor: "pointer"}} onClick={handleRegister}>
-    			              Register
+    			              <b style={{ fontSize: 14 }}>Register</b>
     			            </a>
     			        </ListItem>
     			      </List>
