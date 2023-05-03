@@ -368,10 +368,28 @@ function Pay() {
                       </div>
                     </div>}
                   </div>
+                  {cartItems.length > 2 && view && <div className="flex justify-between ml-2 mr-2">
+                      <div style={{fontFamily: "monospace"}} >
+                        Total
+                      </div>
+                      <div style={{fontFamily: "monospace", color: 'red'}}>
+                        <b>KES{oldTotalPrice}</b>
+                        <div style={{ transform:'translate(-4px, -14px)', width: 70, rotate: '18deg', backgroundColor: 'red', height: 2 }} ></div>
+                      </div>
+                    </div>}
                   <div className="flex justify-between ml-2 mr-2">
                     <div style={{fontFamily: "monospace"}} >
-                      <div style={{display: afterShippinginfo ? "none" : "block"}}> Total</div>
-                      <div style={{display: afterShippinginfo ? "block" : "none"}}> Amount</div>
+                      {cartItems.length > 2 ? (
+                          <>
+                            <div> Amount</div>
+                          </>
+                        ) : (
+                          <>
+                            <div style={{display: afterShippinginfo ? "none" : "block"}}> Total</div>
+                            <div style={{display: afterShippinginfo ? "block" : "none"}}> Amount</div>
+                          </>
+                        )
+                      }
                     </div>
                     <div style={{fontFamily: "monospace"}}>
                       {view ? (<div>KES{totalPrice}</div>) : (<div>KES{itemsPrice}</div>)}
@@ -394,6 +412,7 @@ function Pay() {
                             placeholder="Mpesa Number 0724.."
                             type="number"
                             id="phone"
+                            pattern= "07[0-9]{8}"
                             autoFocus
                             {...register('phone', {
                               required: 'Please enter Phone Number',
@@ -1037,7 +1056,7 @@ function Pay() {
                         </Button>
                       </ListItem>
                       <div className="fixed p-5" style={{bottom:'2vh', right:'2vh'}}>
-                        <Link href="https://wa.me/message/E2RFFBWEGFSVN1">
+                        <Link href="https://wa.me/254103477957?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20...." >
                           <i style={{color:"white", padding:"10px 11px", fontSize:"40px", borderRadius:"50px", margin:"4px", backgroundColor:"#30d04a"}} className="fa fa-whatsapp whatsapp-icon"></i>
                         </Link>
                       </div>
