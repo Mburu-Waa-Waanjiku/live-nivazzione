@@ -109,7 +109,7 @@ const Home = ({ products, banner, categories }) => {
             <SwiperSlide >
                 <Image height={799} width={1919} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
             </SwiperSlide>
-            <SwiperSlide style={{ transform: 'translateX(5%)'}}>
+            <SwiperSlide>
                 <Image height={799} width={1919} src={banner[3].image[0]} />
             </SwiperSlide>
             <SwiperSlide>
@@ -133,7 +133,7 @@ const Home = ({ products, banner, categories }) => {
             />
           </div>
         </div>        
-        <div className="bannerwidth">
+        <div className="bannerwidth" style={{ width: 'calc(100% + 47px)' }}>
           <div className="grid gap-x-0 md:gap-x-1 px-4 md:px-0 grid-cols-3">
               <Link href="/trending">
                 <div className={home.categoriescards}>
