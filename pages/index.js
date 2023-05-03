@@ -86,8 +86,8 @@ const Home = ({ products, banner, categories }) => {
           <div style={{ padding: '10px 10px 5px 10px', backgroundColor: '#222', color: 'white', borderBottom: '1px solid white' }}>
             <marquee style={{fontSize: 16,  fontFamily: "monospace", letterSpacing: 1 }}> <b style={{color: 'red', marginRight: 8 }}>ITs FREEE !!</b> Get your <b style={{color: 'red' }}>NEXT DAY</b> delivery in Our CBD pickup station na ni <b style={{color: 'red' }}>freeee!!!</b> </marquee>
           </div>
-          <video className="block  md:hidden" style={{ transform: 'translateX(-6%)', width: '120%', maxWidth: '120%' }} width="1919" height="748" loop autoPlay muted>
-            <source src="https://res.cloudinary.com/dddx5qpji/video/upload/v1681399098/Best_Deal_ip3or0.mp4" type="video/mp4"></source>
+          <video className="block  md:hidden" width="1919" height="748" loop autoPlay muted>
+            <source src={banner[13].image[0]}></source>
             <source src="movie.ogg" type="video/ogg"></source>
             Your browser does not support the video tag.
           </video> 
@@ -102,22 +102,18 @@ const Home = ({ products, banner, categories }) => {
             loop={true}
             pagination={true}
             centeredSlides={false}
-            style={{ transform: 'translateX(-6%)', width: '120%', maxWidth: '120%' }}
             slidesPerView={1}
             onSwiper={(swiper) => console.log(swiper)}
             onSlideChange={() => console.log('slide change')}
            >
             <SwiperSlide >
-                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470293/k6A7IeDa_2x_tppl3r.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+                <Image height={799} width={1919} src={banner[1].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
             </SwiperSlide>
             <SwiperSlide style={{ transform: 'translateX(5%)'}}>
-                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470293/xitjDu30_2x_l4byko.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+                <Image height={799} width={1919} src={banner[3].image[0]} />
             </SwiperSlide>
             <SwiperSlide>
-                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470293/2nBCKkZs_2x_mj4hvk.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <Image height={709} width={1919} src="https://res.cloudinary.com/dddx5qpji/image/upload/v1681470292/KYxPHnDy_2x_vdogeb.jpg" alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+                <Image height={799} width={1919} src={banner[12].image[0]} />
             </SwiperSlide>
           </Swiper> 
         </div>
@@ -644,7 +640,9 @@ const Home = ({ products, banner, categories }) => {
           </div>
         </div>
         <div className="py-5">
-          <Image height={609} width={1919} src={banner[0].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+          <Link href="/collections">
+            <Image height={709} width={1919} src={banner[0].image[0]} alt="Banner" className="shadow object-cover h-auto w-100 bg-gray-100" />
+          </Link>
         </div>
         <Tabsbottom/>
         <Footer/>
