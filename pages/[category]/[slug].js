@@ -9,6 +9,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import useStyles from '../../utils/styles';
 import Rating from '@material-ui/lab/Rating';
 import ProductNocart from '../../components/ProductNocart';
+import ProductItems from '../../components/ProductItem';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { FaTruckMoving } from 'react-icons/fa';
 import { useRouter } from 'next/router';
@@ -400,8 +401,8 @@ export default function ProductScreen(props) {
       <div>
          <div className="slug-gallery">You May Also Like </div>
       </div>
-      {similarProds > 0 &&
-      <div className="bannerwidth hidden sm:block">
+      {similarProds.length > 0 &&
+      <div className="bannerwidth hidden sm:block"> 
         <div 
           className="swipereactor"
           style={{borderRadius: 20, marginLeft: 16, marginRight: 16 }}
@@ -455,11 +456,11 @@ export default function ProductScreen(props) {
       </div>}
       <div className="mb-24 md:mb-5 grid grid-cols-2 gap-4 sm:hidden">
         {similarProds.map((product) => (
-          <ProductNocart
+          <ProductItems
            product={product}
            key={product.slug}
            addToCartHandler={addToCartHandler}
-           ></ProductNocart>
+           ></ProductItems>
         ))}
       </div>
       <div style={{ zIndex: 1, bottom: 0, position: "fixed", width: "100%", left: 0, backgroundColor: "rgba(255, 255, 255, 0.7"}} className="block sm:hidden card bs p-5">
