@@ -88,7 +88,7 @@
   z-index: 10;
 }
 .bannerwidth {
-  width:calc(100% + 48px);
+  width:calc(100% + 47px);
   position: relative;
   left: -24px;
 }
