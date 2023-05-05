@@ -161,7 +161,7 @@ export default function ProductScreen(props) {
         desc={product.description}
         socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
         socialdesc={product.description}
-        socialimages={'https://www.shiglam.com' + product.image[0].item}
+        socialimages={`https://www.shiglam.com${product.image[0].item}&w=384&q=75`}
         scdinfo={addProductJsonLd()}
       />
       <div className="margintopFix grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
