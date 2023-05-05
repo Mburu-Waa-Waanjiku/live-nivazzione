@@ -27,7 +27,7 @@ function Me() {
     const {userInfo, favourites } = state;
     const classes = useStyles();
     const router = useRouter();
-    const { openLogin, handleCartopen, handleChangeBag } = useStateContext();
+    const { page, setPage, handlePage, openLogin, handleCartopen, handleChangeBag } = useStateContext();
 
     const logoutClickHandler = () => {
       dispatch({ type: 'USER_LOGOUT' });
@@ -67,12 +67,6 @@ function Me() {
     dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
     const { data } = await axios.delete(`/api/products/${product._id}`);
   };
-
-  const [page,  setPage] = useState("Wishlist");
-
-  const handlePage = ( event, newPage ) => {
-    setPage(newPage);
-  }
   
   const [orderslist, setOrderlist] = useState(null);
 

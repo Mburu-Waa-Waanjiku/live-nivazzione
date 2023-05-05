@@ -134,10 +134,23 @@ export const StateContext = ({ children }) => {
   const closeLogin = () => {
     setLogin(false)
   }
-
+  const [page,  setPage] = useState("Wishlist");
+  const handlePage = ( event, newPage ) => {
+    setPage(newPage);
+  }
+  const [openId, setOpenId] = useState(false);
+  const  handeOpenId = () => {
+    setOpenId(true);
+  }
   return (
     <Context.Provider
       value={{
+        openId,
+        setOpenId,
+        handeOpenId,
+        page,
+        setPage,
+        handlePage,
         login,
         setLogin,
         openLogin,
