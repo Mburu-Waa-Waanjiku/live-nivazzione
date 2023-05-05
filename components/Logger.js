@@ -4,6 +4,7 @@ import {
   Typography,
   TextField,
   Button,
+  CircularProgress,
 } from '@material-ui/core';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -23,6 +24,7 @@ function Logger() {
   const [register, setRegister] = useState(false);
   const [passReset, setPassreset] = useState(false);
   const [divSc, setDivSc] = useState(false);
+  const [waiting, setWaiting] = useState(false);
 
   const handleRegister = () => {
   	setRegister(true);
@@ -67,6 +69,7 @@ function Logger() {
  
   const LoginsubmitHandler = async ({ email, password }) => {
     closeSnackbar();
+    setWaiting(true);
     try {
       const { data } = await axios.post('/api/users/login', {
         email,
@@ -79,8 +82,10 @@ function Logger() {
       const { fav } = await axios.get(`/api/users/${userInfo._id}`);
       dispatch({ type: 'FETCH_FAVOURITES_SUCCESS', payload: fav });
       Cookies.set('favourites', fav);
+      setWaiting(false);
       closeLogin();
     } catch (err) {
+      setWaiting(false);
       {err.response?.data.message == 'Invalid email or password' && enqueueSnackbar(getError(err), { variant: 'error' })};
     }
   };
@@ -100,6 +105,7 @@ function Logger() {
 
   const RegistersubmitHandler = async ({ name, email, phone, password, confirmPassword }) => {
     closeSnackbar();
+    setWaiting(true);
     if (password !== confirmPassword) {
       enqueueSnackbar("Passwords don't match", { variant: 'error' });
       return;
@@ -113,8 +119,10 @@ function Logger() {
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
       Cookies.set('userInfo', data);
+      setWaiting(false);
       closeLogin();
     } catch (err) {
+      setWaiting(false);
       enqueueSnackbar(err.response?.data ? err.response.data.message : err.message,
         { variant: 'error' });
     }
@@ -287,12 +295,15 @@ function Logger() {
         			      </ListItem>
         			      <ListItem>
         			        <Button variant="contained" type="submit" fullWidth color="primary">
-        			          <Image
-                          width={110}
-                          height={22}
-                          alt="sign up"
-                          src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679075027/signupbutton_o4zzu3.png"
-                        />
+        			          {!waiting ? (
+                          <Image
+                            width={110}
+                            height={22}
+                            alt="sign up"
+                            src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679075027/signupbutton_o4zzu3.png"
+                          />) :
+                          (<CircularProgress style={{color: 'white'}}/>)
+                        }
         			        </Button>
         			      </ListItem>
           			    <ListItem>
@@ -443,12 +454,15 @@ function Logger() {
     			        </ListItem>
     			        <ListItem>
     			          <Button variant="contained" type="submit" fullWidth color="primary">
-    			            <Image
-                        width={110}
-                        height={22}
-                        alt="sign in"
-                        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679075158/signin_qgpk17.png"
-                      />
+    			            {!waiting ? (
+                        <Image
+                          width={110}
+                          height={22}
+                          alt="sign in"
+                          src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679075158/signin_qgpk17.png"
+                        /> ) :
+                        (<CircularProgress style={{color: 'white'}}/>)
+                      }
     			          </Button>
     			        </ListItem>
     			        <ListItem>
