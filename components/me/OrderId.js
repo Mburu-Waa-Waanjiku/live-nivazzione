@@ -15,6 +15,7 @@ import ProductItems from './OrderProducts';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { getError } from '../../utils/error';
+import { useStateContext } from '../../utils/StateContext';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -23,12 +24,7 @@ import 'swiper/css/scrollbar';
 
 function OrderId({ order, classes, userInfo }) {
 
-  const [openId, setOpenId] = useState(false);
-  const  handeOpenId = () => {
-    console.log("about to open");
-    setOpenId(true);
-    console.log("opened");
-  }
+  const { openId, setOpenId, handeOpenId } = useStateContext();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [load, setLoad] = useState(false);
   
@@ -69,7 +65,7 @@ function OrderId({ order, classes, userInfo }) {
 	      <div className={classes.smseachbg}
           style={{position: "fixed", left: 0, zIndex: 1210, top: 0, background: 'white',  width: "100vw", height: "100vh"}}
          >
-          <div style={{backgroundColor: "rgba(255, 255, 255, 0.9)", position: "sticky", top: 0, zIndex: "10"}} className={classes.reviewTopTab}>
+          <div style={{backgroundColor: "rgba(255, 255, 255, 0.9)", position: "fixed", width: '100%', top: 0, zIndex: "10"}} className={classes.reviewTopTab}>
             <ArrowBackIosIcon onClick={() => {setOpenId(false)}} sx={{ float:"left" }} /> 
             <div className="flex justify-center">
               My Order

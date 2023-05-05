@@ -4,9 +4,13 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
 import { getError } from '../../utils/error';
 import Link from 'next/link';
+import { useStateContext } from '../../utils/StateContext';
+import { useRouter } from 'next/router';
 
 function Notes({ viewCloseHandler, axios, classes, notification, Cookies, userInfo, dispatch, notifications }) {
-
+  
+  const router = useRouter();
+  const { setPage, openId, setOpenId, handeOpenId } = useStateContext();
 	const [openNotes, setOpenNotes] = useState(false);
 	const handleOpen = () => {
 		setOpenNotes(true)
@@ -34,7 +38,12 @@ function Notes({ viewCloseHandler, axios, classes, notification, Cookies, userIn
   		handleOpen()
   	}
   }
-
+  
+  const viewOrder = async () => {
+    await viewCloseHandler();
+    await router.push('/me');
+    setPage("My Orders")
+  }
   return (
   <>
 	  <div onClick={updateHundler} style={{maxHeight: 58, overflow: 'hidden', width: '100%', padding: 10, display: !openNotes ? 'grid' : 'none', gap: 3, gridTemplateColumns: '50px 1fr'}}>
@@ -102,21 +111,30 @@ function Notes({ viewCloseHandler, axios, classes, notification, Cookies, userIn
             </div>
           </div>
         </div>
-        <div className="flex justify-center">
-          <Link href={notification.isProduct ? `https://www.shiglam.com/${notification.product[0].category}/${notification.product[0].slug}` : notification.orderLink } >
-            <div onClick={{viewCloseHandler}} className=" flex gap-1 justify-center" style={{ maxWidth: 700, width: '100%', fontWeight: 'bold', borderRadius: 10, boxShadow: '0 2px 5px 1px rgb(64 60 67 / 15%)', margin: 10, padding: 5, fontSize: 18}} >
+        {notification.isProduct ? 
+          (<div className="flex justify-center">
+            <Link href={notification.isProduct ? `https://www.shiglam.com/${notification.product[0].category}/${notification.product[0].slug}` : notification.orderLink } >
+              <div onClick={{viewCloseHandler}} className=" flex gap-1 justify-center" style={{ maxWidth: 700, width: '100%', fontWeight: 'bold', borderRadius: 10, boxShadow: '0 2px 5px 1px rgb(64 60 67 / 15%)', margin: 10, padding: 5, fontSize: 18}} >
+                <div>
+                  View
+                </div>
+                <div style={{display: notification.isProduct ? 'block' : 'none'}}>
+                  Product
+                </div>
+              </div>
+            </Link>
+          </div>) : (
+          <div style={{display: !notification.isProduct ? 'flex' : 'none'}} className="flex justify-center">
+            <div onClick={viewOrder} className=" flex gap-1 justify-center" style={{ maxWidth: 700, width: '100%', fontWeight: 'bold', borderRadius: 10, boxShadow: '0 2px 5px 1px rgb(64 60 67 / 15%)', margin: 10, padding: 5, fontSize: 18}} >
               <div>
                 View
               </div>
               <div style={{display: notification.isProduct ? 'block' : 'none'}}>
-                Product
-              </div>
-              <div style={{display: !notification.isProduct ? 'block' : 'none'}}>
                 Order
               </div>
             </div>
-          </Link>
-        </div>
+          </div>)
+        }
       </div>
 	  </div>
 	</>

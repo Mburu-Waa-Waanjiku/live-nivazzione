@@ -23,7 +23,7 @@ import Link from 'next/link';
 function Pay() {
     
     const router = useRouter();
-    const { openLogin, handleCartclose, handleCloseNormalOP } = useStateContext();
+    const { setPage, openLogin, handleCartclose, handleCloseNormalOP } = useStateContext();
     const { closeSnackbar, enqueueSnackbar } = useSnackbar();    
     const {
       handleSubmit,
@@ -116,6 +116,7 @@ function Pay() {
       setCompleting(true); 
       await new Promise(resolve => setTimeout(resolve, 3000));
       await router.push(`/me`);
+      setPage("My Orders");
       handleCloseNormalOP();
       handleCartclose();
     } catch (err) {
@@ -149,6 +150,7 @@ function Pay() {
       setCompleting(true); 
       await new Promise(resolve => setTimeout(resolve, 3000));
       await router.push(`/me`);
+      setPage("My Orders");
       handleCloseNormalOP();
       handleCartclose();
     } catch (err) {
