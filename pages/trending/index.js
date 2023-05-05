@@ -18,7 +18,7 @@ const Newproducts = (props) => {
   const classes = useStyles();
   const { banner, products} = props;
   const { state, dispatch } = useContext(Store);
-  const mylink = "http://localhost:3000/trending";
+  const mylink = "trending";
 
   const topselling = [...products.filter((product) => product.initialStock - product.countInStock > 5 ).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];  
 

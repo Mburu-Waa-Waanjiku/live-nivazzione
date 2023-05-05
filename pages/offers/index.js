@@ -16,7 +16,7 @@ import CategoryBanner from '../../components/BannersHON';
 const Newproducts = (props) => {
   const {  banner, offers} = props;
   const { state, dispatch } = useContext(Store);
-  const mylink = "http://localhost:3000/offers";
+  const mylink = "offers";
 
   const addToCartHandler = async (product) => {
 

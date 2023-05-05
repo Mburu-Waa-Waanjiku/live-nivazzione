@@ -19,7 +19,7 @@ import CategoryBanner from '../../components/BannersHON';
 const Newproducts = (props) => {
  const {  newprods, banner } = props;
  const { state, dispatch } = useContext(Store);
- const mylink = "http://localhost:3000/new-products";
+ const mylink = "new-products";
 
  const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
     "infiniteCharacters",
