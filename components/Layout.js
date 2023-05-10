@@ -53,7 +53,7 @@ import Cart from './mycart/Cart';
 import Notification from './notifications/view';
 import { useEffect } from 'react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
+import Search from './SearchComponent';
 import dynamic from 'next/dynamic';
 import Logo from './svgs/ShiglamLogosvg';
 import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
@@ -102,51 +102,6 @@ export default function Layout({ children }) {
     setValue(newValue)
   };
 
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-
-  const fetchProducts = async () => {
-    try {
-      const { data } = await axios.get(`/api/products`);
-      setProducts(data);
-    } catch (err) {
-            console.log(err);   
-          }
-  };
-  
-  const [filteredData, setFilteredData] = useState({
-    products: [],
-    isSearch: false,
-    resultFound: false,
-  });
-  
-  const debounce = (func, wait) => {
-    let timerId;
-    return (...args) => {
-      if (timerId) clearTimeout(timerId);
-      timerId = setTimeout(() => {
-        func(...args);
-      }, wait);
-    };
-  };
-  
-  const filterData = () => {
-    let fData = [];
-    let resultFound = false;
-    if (search) {
-      fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search.toLowerCase()) != -1)];
-      if (fData.length > 0) {
-        resultFound = true;
-      }
-    }
-    setFilteredData({
-      ...fData,
-      products: [...fData],
-      isSearch: search.trim().length > 0,
-      resultFound: resultFound,
-    });
-  };
-  
   const fetchFavs = async () => {
     try {
       dispatch({ type: 'FETCH_BAG' });
@@ -170,11 +125,9 @@ export default function Layout({ children }) {
   };
 
   useEffect(() => {
-    fetchProducts();
-    filterData();
     fetchNotes();
     fetchFavs();
-  }, [search, router, userInfo]);
+  }, [ router, userInfo]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const loginClickHandler = (e) => {
@@ -215,46 +168,47 @@ export default function Layout({ children }) {
                 </IconButton>
               </div>
               <div className={classes.cartnlg}>
-                <Button
+                <IconButton
                   onClick={handleOpenBag}
-                  aria-label="open drawer"
                   className={classes.menuButton}
-                > 
+                >
                   <BsHeartFill style={{ fontSize: 25, color: "black" }} />                
-                </Button>
+                </IconButton>
               </div>
-              <NextLink href="/" passHref>
-                <Link>
-                  <Typography className="brand">
-                    <Logo/>
+              <div className={classes.cartnlg}>
+                <IconButton
+                  onClick={handleSearchBtn}
+                  className={classes.menuButton}
+                >
+                  <Typography className={classes.carton} component="span">
+                    <SearchIcon sx={{ color: '#222'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/>
                   </Typography>
-                </Link>
-              </NextLink>
+                </IconButton>
+              </div>
             </Box>
             <Drawer
               anchor="left"
               open={sidbarVisible}
               onClose={sidebarCloseHandler}
-            >
+             >
               <List>
-                <div className="flex justify-end">
-                  <IconButton
-                    style={{padding: "0px 8px"}}
-                    sx={{"&.MuiIconButton-root": {padding:0},}}
-                    aria-label="close"
-                    onClick={sidebarCloseHandler}
-                   >
-                    <CancelIcon />
-                  </IconButton>
-                </div>
-                <div className="flex justify-center">
+                <div className="items-center" style={{ display: 'grid', gridTemplateColumns: '1fr 0px' }}>
                   <Box
                     display="flex"
                     alignItems="center"
-                    justifyContent="space-between"
+                    style={{ justifySelf: 'center' }}
                   >
                     <b className="text-center">SHOP BY</b>
                   </Box>
+                  <IconButton
+                    onClick={handleSearchBtn}
+                    className={classes.menuButton}
+                    style={{ justifySelf: 'end' }}
+                   >
+                    <Typography component="span">
+                      <SearchIcon sx={{ color: '#222'}}/>
+                    </Typography>
+                  </IconButton>
                 </div>
                 <TabContext value={value}>
                   <Tabs classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15, minHeight: 40}} value={value} centered onChange={handleChange}>
@@ -296,24 +250,36 @@ export default function Layout({ children }) {
             </Drawer>
             <NextLink href="/" passHref>
                 <Link>
-                  <Typography style={{color: "#222", paddingTop: '10px'}} className="smbrand">
+                  <Typography style={{position: 'absolute', transform:'translate(-50%, -50%)', paddingTop: '10px'}}>
                     <Logo/>
                   </Typography>
                 </Link>
             </NextLink>  
-            <div className=" flex justify-center">
+            <div className=" flex justify-center items-center">
               <div>
-                <Typography className={classes.cartnsch} component="span">
-                  <SearchIcon onClick={handleSearchBtn} sx={{ color: '#222'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/>
-                </Typography>
+                <IconButton
+                  onClick={handleCartopen}
+                  className={classes.menuButton}
+                 >
+                  <Typography className={classes.cartnsch} style={{paddingTop: 0}} component="span">
+                    {cart.cartItems.length > 0 ? (
+                      <Badge
+                        classes={{ badge: classes.badge }}
+                        badgeContent={cart.cartItems.length}
+                      >
+                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
+                      </Badge>
+                    ) : (
+                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
+                    )}
+                  </Typography>
+                </IconButton>
               </div>
               <div className={classes.cartnlg}>
-                <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={viewOpenHandler}
-                    className={classes.navbarButton}
-                  >
+                <IconButton
+                  onClick={viewOpenHandler}
+                  className={classes.menuButton}
+                 >
                   <Typography className={classes.carton} component="span">
                   {notesLength.length > 0 ? (
                       <Badge
@@ -331,54 +297,29 @@ export default function Layout({ children }) {
                       </Badge>
                     )}
                   </Typography>
-                </Button>
-              </div>
-              <div className={classes.cartnlg}>
-                <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={handleCartopen}
-                    className={classes.navbarButton}
-                  >
-                  <Typography className={classes.carton} component="span">
-                    {cart.cartItems.length > 0 ? (
-                      <Badge
-                        classes={{ badge: classes.badge }}
-                        badgeContent={cart.cartItems.length}
-                      >
-                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
-                      </Badge>
-                    ) : (
-                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
-                    )}
-                  </Typography>
-                </Button>
+                </IconButton>
               </div>
               {userInfo ? (
                 <div className={classes.cartnlg}>
                   <NextLink href="https://www.shiglam.com/me" passHref>
                     <Link>
-                      <Button
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
+                      <IconButton
                         onClick={loginClickHandler}
-                        className={classes.navbarButton}
-                      >
-                        <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-14px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
-                      </Button>
+                        className={classes.menuButton}
+                       >
+                        <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-15px", fontSize: '18px', top: '-3px', position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
+                      </IconButton>
                     </Link>
                   </NextLink>
                 </div>
               ) : (
                 <div className={classes.cartnlg}>
                   <>
-                    <Button
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      className={classes.navbarButton}
+                    <IconButton
+                      className={classes.menuButton}
                      >
                       <Typography onClick={openLogin} className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
-                    </Button>
+                    </IconButton>
                   </>
                 </div>
               )}
@@ -387,50 +328,9 @@ export default function Layout({ children }) {
         </AppBar>
         {login && <DynamicLogger/>}
         {view && <Notification/> }
-        <div className={classes.smseachbg} 
-             style={{ position: "fixed", zIndex: 1210, top: 0, left: searchClick ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
-          >
-          <div className={classes.reviewTopTab}>
-            <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, float:"left", marginTop: 1.5}} />
-            <div className="flex justify-center">
-              <div className={classes.smseach} style={{marginLeft: "1rem", marginRight: "1rem", top: '50px', padding: "25px 4px", maxWidth: "650px", backgroundColor: "transparent", display: "flex", justifyContent: "center"}}>
-                <div style={{boxShadow: "0 2px 5px 1px rgb(64 60 67 / 20%)" ,backgroundColor: "rgba(255, 255, 255, 0.7)", oveflow: "hidden", borderRadius: 50, width: "100%"}}>
-                  <IconButton
-                    type="submit"
-                    sx={{"&.MuiIconButton-root": {padding:0},}}
-                     aria-label="search"
-                    >
-                     <SearchIcon />
-                   </IconButton>                
-                  <InputBase
-                    style={{width: "70%"}}
-                    placeholder="Find products..."
-                    onChange={(e) => debounce((v) => {
-                      setSearch(v);
-                      }, 10)(e.target.value)}
-                  /> 
-                </div>  
-              </div>
-            </div>
-          </div>
-          <Cart/>
-          <MyBag/>
-          <div className="flex place-content-center w-full h-full">
-            <div style={{overflowX: 'auto',height: '76%', margin: 20, display: "grid", gridTemplateColumns: 'repeat(3, minmax(0px, 300px))', gap: 10, gridAutoRows: '1fr' }}>
-              {filteredData.isSearch && !filteredData.resultFound && (
-                <p>No results found..</p>
-              )}
-              {filteredData.products.map((product) => {
-                return (
-                  <ProductNocart
-                    product={product}
-                    key={product.slug}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        <MyBag/>
+        <Cart/>
+        <Search/>
         <Container className={classes.main}>{children}</Container>
       </ThemeProvider>
     </div>

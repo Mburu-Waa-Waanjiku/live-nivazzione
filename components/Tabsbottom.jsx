@@ -1,3 +1,4 @@
+import SearchIcon from '@material-ui/icons/Search';
 import React, { useContext } from 'react';
 import {  
   Badge, 
@@ -6,7 +7,6 @@ import { Store } from '../utils/Store';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useStateContext } from '../utils/StateContext';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
 import tabsStyles from '../styles/Tabs.module.css';
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -19,7 +19,7 @@ import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
 
 export default function Tabsbottom() {
   const classes = useStyles();
-  const { openLogin, handleOpenBag , handleCartopen, viewOpenHandler } = useStateContext();
+  const { handleSearchBtn, openLogin, handleOpenBag , handleCartopen, viewOpenHandler } = useStateContext();
 
   const router = useRouter();
   const { state } = useContext(Store);
@@ -56,16 +56,10 @@ export default function Tabsbottom() {
             
             <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
                         
-            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleCartopen} icon={cart.cartItems.length > 0 ? (
-                      <Badge
-                        classes={{ badge: classes.badgeLg }}
-                        badgeContent={cart.cartItems.length}
-                      >
-                      <AiOutlineShoppingCart style={{ fontSize: 24 }}/>
-                      </Badge>
-                    ) : (
-                      <AiOutlineShoppingCart style={{ fontSize: 24 }}/>
-                    )}  />
+            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleSearchBtn} icon={
+                <SearchIcon style={{ fontSize: 24 }}/>
+              }
+            />
 
             <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleOpenBag}  icon={<BsHeartFill style={{ fontSize: 23 }}/>}  />
             

@@ -158,7 +158,12 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     justifyContent: 'space-between',
   },
-  menuButton: { padding: '0 !important' },
+  menuButton: { 
+    padding: '8px !important',
+    [theme.breakpoints.up('sm')]: {
+      padding: '16px !important',
+      }
+  },
   mt1: { marginTop: '1rem' },
   // search
   searchSection: {
