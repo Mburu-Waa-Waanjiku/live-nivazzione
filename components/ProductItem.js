@@ -125,7 +125,7 @@ export default function ProductItem({ product }) {
           </div>
         )
       }
-      <Link href={`${product.category}/${product.slug}`}>
+      <Link href={`https://www.shiglam.com/${product.category}/${product.slug}`}>
         <a>
           <Image
             width={364}
