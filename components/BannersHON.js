@@ -118,7 +118,7 @@ function BannersHON({collections, categs, banner, mylink, Anclets, Earrings, Nec
                 </Link>
               </SwiperSlide>
               <SwiperSlide>
-                <Link href="/Anclets">
+                <Link href="/Anklets">
                   <div style={{ minWidth: 75, cursor: 'pointer', scale: Anclets == mylink ? '1.1' : '1', transform: Hot ? 'translate(0px, 1.4px)' : 'translate(0px, 0px)' }} >
                     <div style={{overflow: 'hidden'}} >
                       <Image width={60}  height={60} className="bg-gray-100 p-2" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/>
