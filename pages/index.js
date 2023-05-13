@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { useContext } from 'react';
 import { Store } from '../utils/Store'; 
 import db from '../utils/db'; 
@@ -76,10 +76,10 @@ const Home = ({ products, banner, categories }) => {
   return (
       <>
         <Headers 
-          title="SHIGLAM KENYA ,Get Valentine offers on Latest trends in  Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons."
-          desc="SHIGLAM Valentine offers Exclusive discounts and the latest trends at SHIGLAM KENYA — NAIROBI — Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more. ✓ Free Shipping On Orders ..." 
-          socialtitle="SHIGLAM KENYA ,Get Valentine offers on Latest trends in Fashon & Jewelry | Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons." 
-          socialdesc="Get Exclusive Valentine discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
+          title="SHIGLAM KENYA ,Get Exclusive offers on Latest trends in  Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelry in NAIROBI & its enirons."
+          desc="SHIGLAM offers Exclusive discounts and the latest trends at SHIGLAM KENYA — NAIROBI — Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more. ✓ Free Shipping On Orders ..." 
+          socialtitle="SHIGLAM KENYA ,Get Exclusive offers on Latest trends in Fashon & Jewelry | Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons." 
+          socialdesc="Get Exclusive discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
           socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
         />
         <div className="bannerwidth" style={{ overflowX: 'hidden' }}>
@@ -368,7 +368,7 @@ const Home = ({ products, banner, categories }) => {
                         </div>
                       </>
                     }
-                    {category == "Anclets" && 
+                    {category == "Anklets" && 
                       <>
                         <div className="block md:hidden">
                           <Image width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/>
@@ -385,7 +385,7 @@ const Home = ({ products, banner, categories }) => {
                       <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
                         {category == "Necklaces" && <> <div> {necklace.length}+ </div> <div className="pl-1"> items </div></>}
                         {category == "Earrings" && <> <div> {earrings.length}+ </div> <div className="pl-1"> items </div></>}
-                        {category == "Anclets" && <> <div> {anclets.length}+ </div> <div className="pl-1"> items </div></>}
+                        {category == "Anklets" && <> <div> {anclets.length}+ </div> <div className="pl-1"> items </div></>}
                       </div>
                       <div className={home.animate}>
                        Shop Now >
