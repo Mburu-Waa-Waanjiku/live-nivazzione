@@ -24,6 +24,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 import { GrEdit } from 'react-icons/gr';
 import Image from 'next/image';
+import { Select } from 'antd';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -56,6 +57,7 @@ function reducer(state, action) {
 }
 
 function UpdateProds({ fetchProducts, admin, product, productID}) {
+  const { Option } = Select;
   const productId = productID;
   const { state } = useContext(Store);
   const [Editor, setEditor] = useState(false);
@@ -478,6 +480,7 @@ function UpdateProds({ fetchProducts, admin, product, productID}) {
                             )}
                           ></Controller>
                         </ListItem>
+                        <div className="pl-3 text-lg" >Category</div>
                         <ListItem>
                           <Controller
                             name="category"
@@ -487,17 +490,14 @@ function UpdateProds({ fetchProducts, admin, product, productID}) {
                               required: true,
                             }}
                             render={({ field }) => (
-                              <TextField
-                                variant="outlined"
-                                fullWidth
-                                id="category"
-                                label="Category"
-                                error={Boolean(errors.category)}
-                                helperText={
-                                  errors.category ? 'Category is required' : ''
-                                }
-                                {...field}
-                              ></TextField>
+                              <>
+                                <Select className="w-full" defaultValue="lucy" {...field}>
+                                  <Option value="Anklets">Anklets</Option>
+                                  <Option value="Earrings">Earrings</Option>
+                                  <Option value="Necklace" > Necklace</Option>
+                                  <Option value="Collection">Collection</Option>
+                                </Select>
+                              </>
                             )}
                           ></Controller>
                         </ListItem>
