@@ -23,7 +23,7 @@ const Jewelry = (props) => {
   const {  products, banner } = props;
 
   const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).slice(0, 24)];
-  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1 && !product.isCollectn).slice(0, 24)];
+  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anklet') != -1 && !product.isCollectn).slice(0, 24)];
   const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).slice(0, 24)];
   const Collections = [...products.filter((product) => product.isCollectn ).slice(0, 24)];
 
@@ -34,7 +34,7 @@ const Jewelry = (props) => {
   const {userInfo, favourites } = state;
 
   const mylink = category ;
-  const [Anclets, setAnclets] = useState('Anclets');
+  const [Anclets, setAnclets] = useState('Anklets');
   const [Earrings, setEarrings] = useState('Earrings');
   const [Necklaces, setNeclaces] = useState('Necklaces');
   const [collections, setCollections] = useState('collections');
