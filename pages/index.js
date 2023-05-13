@@ -34,12 +34,12 @@ const Home = ({ products, banner, categories }) => {
   const offers = [...products.filter((product) => product.isOnoffer)];
   const topselling = [...products.filter((product) => product.initialStock - product.countInStock > 5 ).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];  
   const editorspics = [...products.filter((product) => product.isEditorsChoice).sort((a, b) => (a.createdAt - b.createdAt ? 1 : -1))];
-  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anclet') != -1)];
+  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anklet') != -1)];
   const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1)];
   const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1)];
   const collections = [...products.filter((product) => product.isCollectn)];
   
-  const ancletsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('anclet') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1) ];
+  const ancletsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('anklet') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1) ];
   const earringsmap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('earring') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];
   const necklacemap = [...products.filter((product) => product.isEditorsChoice && product.category.toLowerCase().indexOf('necklace') != -1).sort((a, b) => ((a.initialStock - a.countInStock) < (b.initialStock - b.countInStock)) ? 1 : -1)];
   
@@ -293,7 +293,7 @@ const Home = ({ products, banner, categories }) => {
                         </div>
                       </>
                     }
-                    {category == "Anclets" && 
+                    {category == "Anklets" && 
                       <>
                         <div className="block md:hidden">
                           <Image style={{ borderRadius: 100 }} width={309}  height={309} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/>
@@ -310,7 +310,7 @@ const Home = ({ products, banner, categories }) => {
                       <div className={home.itemslength} style={{fontSize: '12px', color: 'lightgray'}}>
                         {category == "Necklaces" && <> <div> {necklace.length}+ </div> <div className="pl-1"> items </div></>}
                         {category == "Earrings" && <> <div> {earrings.length}+ </div> <div className="pl-1"> items </div></>}
-                        {category == "Anclets" && <> <div> {anclets.length}+ </div> <div className="pl-1"> items </div></>}
+                        {category == "Anklets" && <> <div> {anclets.length}+ </div> <div className="pl-1"> items </div></>}
                       </div>
                       <div className={home.animate}>
                        Shop Now >
