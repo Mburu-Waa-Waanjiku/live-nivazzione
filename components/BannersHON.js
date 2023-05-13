@@ -124,7 +124,7 @@ function BannersHON({collections, categs, banner, mylink, Anclets, Earrings, Nec
                       <Image width={60}  height={60} className="bg-gray-100 p-2" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/>
                     </div>
                     <div style={{backgroundColor:'rgba(0, 0, 0, 0.2)', borderRadius: 50, fontSize: 15, transform: 'translate(0px, -108%)', color: Anclets == mylink ? 'white' : 'rgba(255, 255, 255, 0.7)', fontWeight: 600, height: 60, width: 60}} className="absolute grid justify-center content-center">
-                      <div> Anclets </div>
+                      <div> Anklets </div>
                     </div>
                   </div>
                 </Link>

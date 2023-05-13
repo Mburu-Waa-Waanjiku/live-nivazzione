@@ -495,7 +495,6 @@ function UpdateProds({ fetchProducts, admin, product, productID}) {
                                   <Option value="Anklets">Anklets</Option>
                                   <Option value="Earrings">Earrings</Option>
                                   <Option value="Necklace" > Necklace</Option>
-                                  <Option value="Collection">Collection</Option>
                                 </Select>
                               </>
                             )}
