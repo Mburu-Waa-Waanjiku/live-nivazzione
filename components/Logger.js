@@ -61,7 +61,7 @@ function Logger() {
       dispatch({ type: 'FETCH_NOTIFICATIONS' });
       const { data } = await axios.post(`/api/users/${userInfo._id}`);
       dispatch({ type: 'FETCH_NOTIFICATIONS_SUCCESS', payload: data });
-      Cookies.set('notifications', data)
+      Cookies.set('notifications', data, { expires: 365 })
     } catch (err) {
       dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
     }
@@ -76,7 +76,7 @@ function Logger() {
         password,
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
-      Cookies.set('userInfo', data);
+      Cookies.set('userInfo', data, { expires: 365 });
       fetchNotes();
       dispatch({ type: 'FETCH_BAG' });
       const { fav } = await axios.get(`/api/users/${userInfo._id}`);
@@ -118,7 +118,7 @@ function Logger() {
         password,
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
-      Cookies.set('userInfo', data);
+      Cookies.set('userInfo', data, { expires: 365 });
       setWaiting(false);
       closeLogin();
     } catch (err) {

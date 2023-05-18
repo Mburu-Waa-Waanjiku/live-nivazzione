@@ -102,23 +102,12 @@ export default function Layout({ children }) {
     setValue(newValue)
   };
 
-  const fetchFavs = async () => {
-    try {
-      dispatch({ type: 'FETCH_BAG' });
-      const {data } = await axios.get(`/api/users/${userInfo._id}`);
-      dispatch({ type: 'FETCH_FAVOURITES_SUCCESS', payload: data });
-      Cookies.set('favourites', data);
-    } catch (err) {
-      dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
-    }
-  };
-
   const fetchNotes = async () => {
     try {
       dispatch({ type: 'FETCH_NOTIFICATIONS' });
       const { data } = await axios.post(`/api/users/${userInfo._id}`);
       dispatch({ type: 'FETCH_NOTIFICATIONS_SUCCESS', payload: data });
-      Cookies.set('notifications', data)
+      Cookies.set('notifications', data, { expires: 365 })
     } catch (err) {
       dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
     }
@@ -126,7 +115,6 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     fetchNotes();
-    fetchFavs();
   }, [ router, userInfo]);
 
   const [anchorEl, setAnchorEl] = useState(null);

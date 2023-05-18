@@ -48,7 +48,7 @@ function reducer(state, action) {
             item.name === existItem.name ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
-      Cookies.set('cartItems', JSON.stringify(cartItems));
+      Cookies.set('cartItems', JSON.stringify(cartItems), { expires: 365 });
       return { ...state, cart: { ...state.cart, cartItems } };
     }
     case 'CART_REMOVE_ITEM': {
@@ -131,7 +131,7 @@ function reducer(state, action) {
             item.name === existItem.name ? newItem : item
           )
         : [...state.favourites, newItem];
-      Cookies.set('favourites', JSON.stringify(favourites));
+      Cookies.set('favourites', JSON.stringify(favourites), { expires: 365 });
       return { ...state, favourites };
     }
     case 'FAVOURITES_REMOVE_ITEM': {

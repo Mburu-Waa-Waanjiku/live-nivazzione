@@ -59,7 +59,7 @@ function Cart() {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_BAG_SUCCESS', payload: data });
-        Cookies.set('bagitems', data);
+        Cookies.set('bagitems', data, { expires: 365 });
       } catch (err) {
         dispatch({ type: 'FETCH_BAG_FAIL', payload: getError(err) });
       }
