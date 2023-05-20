@@ -1,36 +1,12 @@
-Nextjs Tailwind ECommerce Website Like Amazon
-next amazona
+Nextjs ECommerce Website 
 
-Build ECommerce Website Like Amazon by Next.js
+Demo Website :  https://www.shiglam.com
 
-Source Code    :  https://github.com/basir/next-amazona
-Demo Website :  https://nextjs-amazona-final.vercel.app
-What you will learn
-NextJS basics like setting up project, navigating between pages and data fetching
-NextJS advanced topics like dynamic routing, image optimization,  SSG and SSR
-Tailwind CSS framework to build responsive website using custom theme, animation and carousel
-ReactJS including decomposing components, context API and hooks
-Next Auth package to authenticate customers and admin users
-MongoDB and Mongoose to save and retrieve data like products, orders and users
-PayPal developer api to make online payment
-Deploy web applications on servers like Vercel and Netlify
-Full Course
-Learn building this ecommerce website on Udemy with 90% discount: https://www.udemy.com/course/nextjs-ecommerce
+Web applications deployed on Vercel
 
-Run it Locally
-$ git clone https://github.com/basir/next-tailwind-amazona
-$ cd next-tailwind-amazona
-$ npm install
-$ npm run dev
-$ Open http://localhost:3000/api/seed
-$ Open http://localhost:3000
-Lessons
-Introduction
-Install Tools
-Create Next App
-Publish to Github
-Create Website Layout
-create layout component
+KEY FEATURES
+
+layout component
 add header
 add main section
 add footer
@@ -41,7 +17,6 @@ add images
 render products
 Create Product Details
 create product page
-create 3 columns
 show image in first column
 show product info in second column
 show add to cart action on third column
@@ -53,11 +28,9 @@ create addd to cart action
 add reducer
 create store provider
 handle add to cart button
-Create Cart Page
 create cart.js
 use context to get cart items
 list items in cart items
-redirect to cart screen after add to cart
 Update Quantity In The Cart
 add select box for quantity
 handle select box change
@@ -69,11 +42,6 @@ install react hook form
 create input boxes
 add login button
 Connect To MongoDB
-install mongoose
-install mongodb or use mongodb atlas
-save connection url in .env file
-create db utils file
-create sample users
 Create Login API
 install next-auth
 create nextauth.js
@@ -109,8 +77,7 @@ Create Register Screen
 add signup api
 create register page
 call api on form submit
-Pay Order By PayPal
-add paypal button
+Pay Order By Lipa Na Mpesa
 handle payment
 create backend api
 update order state
@@ -118,10 +85,6 @@ Create Order History Screen
 create my order api
 create order history component
 fetch orders and display them
-Publish On Vercel
-create vercel account
-connect to github
-set next auth and mongodb db in env vars
 push code to github
 Update User Profile
 create profile screen
