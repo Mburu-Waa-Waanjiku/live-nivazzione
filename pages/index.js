@@ -89,7 +89,7 @@ const Home = ({ products, banner, categories }) => {
           <video className="block  md:hidden" width="1919" height="748" loop autoPlay muted>
             <source src={banner[13].image[0]}></source>
             <source src="movie.ogg" type="video/ogg"></source>
-            Your browser does not support the video tag.
+            Get Exclusive offers on Latest trends in  Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelry in NAIROBI & its enirons.
           </video> 
           <Swiper                    
             autoplay={{
