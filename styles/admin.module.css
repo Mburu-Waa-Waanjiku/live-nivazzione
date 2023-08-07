@@ -13,7 +13,6 @@
   padding-top: 1px;
   background-color: white;
   top: 72px;
-  transform: translateX(-24px);
   z-index: 2;
 }
 .tabsfloat {
@@ -59,7 +58,6 @@
     background-color: white;
     z-index: 2;
     top: 56px;
-    transform: translateX(-16px);
   }
   .searchheight {
     height: calc(100vh - 140px);

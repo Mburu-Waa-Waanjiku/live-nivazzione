@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300&display=swap');
+
+.select-h {
+    height: 100% !important;
+}
+.orderscheck {
+    width: 25px;
+    height: 25px;
+    display: block;
+    stroke-width: 2;
+    stroke: darkgreen;
+    box-shadow: inset 0px 0px 0px darkgreen;
+}
+.orderscheck__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 3;
+    stroke-miterlimit: 10;
+    stroke: #7ac142;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.orderscheck__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+.gallery span {
+    position: relative !important;
+}
+.gallery a img {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+.select-h .ant-select-selector {
+    height: 100% !important;
+}
+.inset-bshadow {
+    box-shadow: inset 0em 0em 1em 0.1em rgba(64, 60, 67, 0.2);
+}
+.title-font {
+    font-family: 'Jost', sans-serif;
+}
+.scale-102 {
+    transform: scale(1.02);
+}
+.p-btn {
+    padding: 10px !important;
+}
+.max-Ibar-w {
+    max-width: 260px;
+}
+.hidden-I {
+    display: none !important;
+}
+.h-search {
+    height: calc(100vh - 145px);
+}
+.adder {
+    opacity: 0;
+    z-index: 0;
+    transition: all .3s;
+}
+.adder:hover {
+    z-index: 10;
+    opacity: 1;
+}
+.outline-bshadow {
+    box-shadow: rgba(64, 60, 67, 0.2) 0px 2px 5px -1px;
+}
+.bshadow {
+    box-shadow: rgba(64, 60, 67, 0.2) 0px 2px 5px 1px;
+}
+.prod-shadow {
+    box-shadow: rgba(64, 60, 67, 0) 0px 2px 5px 2px;
+    border-radius: 0px;
+}
+.max-w-thumb {
+    max-width: 40px !important;
+}
+.max-h-slug {
+    max-height: fit-content !important;
+}
+.max-h-slugchild {
+    max-height: fit-content !important;
+}
+.h-slug {
+    height: fit-content;
+}
+.btop {
+    box-shadow: rgba(64, 60, 67, 0.2) 0px 2px 5px 6px;
+}
+.darklucent {
+    background: rgb(0, 0, 0, 0.3);
+}
+.bg-grayb {
+    background-color: #202020;
+}
+.bg-tabb {
+    background-color: rgb(12, 12, 12);
+}
+.color-slug {
+    color: #202020;
+}
+.bg-white-lucent {
+    background: rgb(255, 255, 255, 0.6);
+}
+.bg-white-parent {
+    background: rgb(255, 255, 255, 0.3);
+}
+.c-grayb {
+    color: #202020;
+}
+.bg-grayw {
+    background-color: #f5f5f5;
+}
+.bg-graymw {
+    background-color: #f1f1f1;
+}
+.thumb-position {
+    right: 0;
+}
+.heart-ck {
+    position: absolute;
+    height: -moz-fit-content;
+    height: fit-content;
+    padding: 8px;
+    border-radius: 50%;
+    display: -webkit-inline-box;
+}
+.categshade {
+    background: linear-gradient(180deg, transparent 50%,rgb(0, 0, 0, 0.8));
+}
+.categshade-full {
+    background: rgb(0, 0, 0, 0.3);
+}
+.notesshade {
+    background: linear-gradient(90deg, transparent 50%,rgb(255, 255, 255));
+}
+.w-fitdiv {
+    width: -webkit-fill-available;
+}
+.h-fitdiv {
+    height: -webkit-fill-available;
+}
+.heart-anim {
+    animation: scaler 1.5s;
+  }
+  
+  @keyframes scaler {
+    0% {
+      transform: scale3d(1, 1, 1);
+    }
+    20% {
+      transform: scale3d(1.2, 1.2, 1);
+    }
+    30% {
+      transform: scale3d(1.1, 1.1, 1);
+    }
+    90% {
+      transform: scale3d(1.4, 1.4, 1);
+    }
+    100% {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+@media screen and (min-width:512px ) {
+    .prod-shadow {
+        box-shadow: rgba(64, 60, 67, 0.2) 0px 2px 5px 2px;
+        border-radius: 24px;
+        margin-top: 20px;
+    }
+}
+@media screen and (min-width:768px ) {
+    .thumb-position {
+        right: -32px;
+    }
+    .max-h-slug {
+        max-height: 603px !important;
+    }
+    .max-h-slugchild {
+        max-height: 480px !important;
+    }
+    .h-slug {
+        height: calc((100vw - 64px) / 2 * (797/600) - 72px);
+    }
+}
+@media screen and (min-width:600px ) {
+  .p-btn {
+    padding: 12px !important;
+  }
+    .categshade {
+        background: rgb(0, 0, 0, 0.2);
+    }
+}
+.pulse {
+    background-color: rgb(243 244 246);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% {
+      background-color: rgb(243 244 246);
+    }
+    50% {
+      background-color: rgb(243, 244, 246, 0.6);
+    }
+    100% {
+      background-color: rgb(243 244 246);
+    }
+  }

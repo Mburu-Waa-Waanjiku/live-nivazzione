@@ -20,6 +20,7 @@ body {
 
 form input,
 select,
+Select,
 textarea {
   @apply rounded border p-1  outline-none ring-slate-100  focus:ring;
 }

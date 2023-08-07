@@ -6,23 +6,24 @@
     position: fixed;
     height: 50px;
     display: flex;
+    justify-content: center;
     left: 0px;
-    z-index: 100;
-}
-
-.bottomnav {
-    box-shadow: 0 2px 5px 1px rgb(64 60 67 / 50%);
+    z-index: 120;
+  }
+  
+  .bottomnav {
     position: fixed;
-    z-index: 10;
-    display: grid;
-    height: 40px;
-    width: 273px;
-    border-radius: 25px;
-    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 25px;
+    height: auto;
+    width: 94%;
+    border-radius: 50px;
+    background-color: rgb(12, 12, 12);
     opacity: 1;
+    color: white;
+    font-size: x-large;
     transition: bottom 0.6s;
-    left: 50%;
-    transform: translate(-50%, 550%);
 }
 .icon
 {

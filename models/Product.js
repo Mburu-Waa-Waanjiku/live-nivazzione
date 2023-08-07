@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Shop from './Shop';
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -73,7 +74,7 @@ const productSchema = new mongoose.Schema(
     isCollectn: { type: Boolean, default: false },
     collectionType: { type: Array },    
     favourites: [favsData],
-    shopId: { type: mongoose.Schema.Types.ObjectId },
+    shopId: { type: mongoose.Schema.Types.ObjectId, ref: Shop, required: true },
     carts: { type: Number, required: true, default: 0 },
     views: { type: Number, required: true, default: 0},
     pageViews: { type: Number, required: true, default: 0},

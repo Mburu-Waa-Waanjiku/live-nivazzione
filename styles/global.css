@@ -19,7 +19,19 @@ body{
 .thread::-webkit-scrollbar {
   height: 0px;
 }
-
+.MuiDrawer-paper::-webkit-scrollbar {
+  width: 5px;
+  height: 100vh;
+  background-color: white;
+}
+.MuiDrawer-paper::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35) ;
+  margin-right: 4px;
+  border-radius: 5px;
+}
+.MuiDrawer-paper::-webkit-scrollbar-track {
+  width: 10px;
+}
 @media screen and (max-width:310px )
 {
   div.loves
@@ -240,21 +252,6 @@ position: absolute;
   color: black;
   background-color: white;
   text-decoration: none;
-}
-
-.heart-ck 
-{
-  position: relative;
-    bottom: 40px;
-    float: right;
-    right: 8px;
-    height: fit-content;
-    padding: 8px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: -webkit-inline-box
-
-
 }
 .like 
 {
@@ -572,9 +569,6 @@ width: 90px;
 
     .me-common-1{
       display: inline-block;
-      margin-left: 5px;
-      padding: 4px;
-      
     }
     .cmn-a
     {
@@ -590,7 +584,6 @@ width: 90px;
     }
     .name-profile{
       padding-bottom: 40px;
-      margin-top: 20px;
       text-align: center;
     }
     
