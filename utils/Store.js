@@ -19,8 +19,8 @@ const initialState = {
   userInfo: Cookies.get('userInfo')
     ? JSON.parse(Cookies.get('userInfo'))
     : null,
-  bagitems: Cookies.get('bagitems')
-    ? JSON.parse(Cookies.get('bagitems'))
+  followedShops: Cookies.get('followedShops')
+    ? JSON.parse(Cookies.get('followedShops'))
     : [],
   favourites: Cookies.get('favourites')
     ? JSON.parse(Cookies.get('favourites'))
@@ -99,13 +99,13 @@ function reducer(state, action) {
           paymentMethod: '',
         },
       };
-    case 'FETCH_BAG':
+    case 'FETCH_SHOP':
       return { ...state, loading: true, error: ''};
-    case 'FETCH_BAG_SUCCESS':
-      return { ...state, bagitems: action.payload, loading: false, error: '' };
-    case 'EMPTY_BAG':
-      return { ...state, bagitems: [] };
-    case 'FETCH_BAG_FAIL':
+    case 'FETCH_SHOP_SUCCESS':
+      return { ...state, followedShops: [ ...state.followedShops , action.payload], loading: false, error: '' };
+    case 'EMPTY_SHOP':
+      return { ...state, followedShops: [] };
+    case 'FETCH_SHOP_FAIL':
       return { ...state, loading: false, error: action.payload };
     case 'FETCH_NOTIFICATIONS':
       return { ...state, loading: true, error: ''};

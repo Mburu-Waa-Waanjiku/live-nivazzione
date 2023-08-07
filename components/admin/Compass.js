@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 
 function Compass({ userInfo, getError, enqueueSnackbar, setOrders, setBags, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, admin, pages, setCurrent, current, products, orders, transactions, banners, bags, users }) {
@@ -11,7 +11,7 @@ function Compass({ userInfo, getError, enqueueSnackbar, setOrders, setBags, Navi
       setOrders(data);
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
-    };
+    }
     try {
       const { data } = await axios.get(`/api/admin/bags`, {
         headers: { authorization: `Bearer ${userInfo.token}` },
@@ -66,19 +66,19 @@ function Compass({ userInfo, getError, enqueueSnackbar, setOrders, setBags, Navi
               <div className="text-base"><b>{page}</b></div> 
               <div className="flex justify-center">
                 <span className="h-5 w-5 relative">
-                  <span className={ page == "Orders" && [...orders.filter((order) => !order.isDelivered)].length > 0 ? "text-center animate-ping bg-red-600 absolute w-full h-full" 
+                  <span className={ page == "Orders" && orders.orders?.filter((order) => !order.isDelivered).length > 0 ? "text-center animate-ping bg-red-600 absolute w-full h-full" 
                                     : page == "Bags" && [...bags.filter((bag) => !bag.isChecked)].length > 0 ? "text-center animate-ping absolute bg-red-600 w-full h-full" 
                                     : page == "Transactions" && [...transactions.filter((transaction) => transaction.isNewtransac)].length > 0 ? "text-center bg-red-600 animate-ping absolute w-full h-full" 
                                     : "text-center"
                                   } style={{ borderRadius: 20, opacity: 0.75}}>
                   </span>
-                  <span className={ page == "Orders" && [...orders.filter((order) => !order.isDelivered)].length > 0 ? "text-center text-xs flex justify-center content-center relative h-5 w-5 block bg-red-600 text-white"
+                  <span className={ page == "Orders" && orders.orders?.filter((order) => !order.isDelivered).length > 0 ? "text-center text-xs flex justify-center content-center relative h-5 w-5 block bg-red-600 text-white"
                                     : page == "Bags" && [...bags.filter((bag) => !bag.isChecked)].length > 0 ? "text-center text-xs relative flex justify-center content-center h-5 w-5 block bg-red-600 text-white"
                                     : page == "Transactions" && [...transactions.filter((transaction) => transaction.isNewtransac)].length > 0 ? "text-center flex justify-center content-center text-xs text-white relative h-5 w-5 block bg-red-600"
                                     : "text-center relative h-5 w-5 block"
                                   } style={{ borderRadius: 20, flexWrap: 'wrap'}}><b>
                     {page == "Products" ? products.length
-                      : page == "Orders" ? [...orders.filter((order) => !order.isDelivered)].length 
+                      : page == "Orders" ? orders.orders?.filter((order) => !order.isDelivered).length 
                       : page == "Bags" ? [...bags.filter((bag) => !bag.isChecked)].length
                       : page == "Transactions" ?  [...transactions.filter((transaction) => transaction.isNewtransac)].length
                       : page == "Banners" ? banners.length

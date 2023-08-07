@@ -2,11 +2,11 @@ import React from 'react';
 import UserOrders from './UserOrders';
 import BagID from './BagID';
 
-function Orders({ bags, orders, currenttab, classes, userInfo, users }) {
+function Orders({ bags, orders, classes, users }) {
 
   return (
 	<div style={{padding: '16px 16px 36px 16px', width: 'fit-content'}} >
-	  <div style={{marginBottom: 10, borderRadius: 20, backgroundColor: '#222', color: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(4, minmax(100px, 170px))'}}>
+	  <div style={{marginBottom: 10, borderRadius: 20, backgroundColor: 'white', color: 'black', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(4, minmax(100px, 170px))'}}>
 	    <div className="flex place-items-center p-4">
 	      <b className="ml-5"> Name </b>
 	    </div>
@@ -21,7 +21,7 @@ function Orders({ bags, orders, currenttab, classes, userInfo, users }) {
 	    </div>
 	  </div>
 	  {users.map((user) => (
-	    <div key={user._id} style={{marginBottom: 10, borderRadius: 20, backgroundColor: '#222', color: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(4, minmax(100px, 170px))'}}>
+	    <div key={user._id} style={{marginBottom: 10, borderRadius: 20, backgroundColor: 'white', color: 'black', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(4, minmax(100px, 170px))'}}>
 	      <div className="p-3 flex place-items-center">
 	        <div className="flex gap-3">
 	          <div>

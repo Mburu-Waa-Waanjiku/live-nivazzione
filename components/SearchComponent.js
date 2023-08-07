@@ -1,21 +1,19 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import ProductNocart from './ProductNocart'; 
 import { useStateContext } from '../utils/StateContext';
-import SearchIcon from '@material-ui/icons/Search';
+import {FiSearch} from 'react-icons/fi';
 import useStyles from '../utils/styles';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { InputBase, IconButton } from '@material-ui/core';
 
 function SearchComponent() {
-
-  const { searchClick, handleClickSearchf } = useStateContext();
+  const { setDivstick } = useStateContext();
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const classes = useStyles();
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get(`/api/products`);
+      const { data } = await axios.post(`/api/products/categories`, {});
       setProducts(data);
     } catch (err) {
             console.log(err);   
@@ -38,21 +36,26 @@ function SearchComponent() {
     };
   };
   
+  
   const filterData = () => {
     let fData = [];
     let resultFound = false;
-    if (search) {
-      fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search.toLowerCase()) != -1)];
-      if (fData.length > 0) {
-        resultFound = true;
+    setDivstick(false);
+    if(products.length > 0) {
+      if (search) {
+        fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search.toLowerCase()) != -1)];
+        if (fData.length > 0) {
+          resultFound = true;
+          setDivstick(true);
+        } 
       }
+      setFilteredData({
+        ...fData,
+        products: [...fData],
+        isSearch: search.trim().length > 0,
+        resultFound: resultFound,
+      });
     }
-    setFilteredData({
-      ...fData,
-      products: [...fData],
-      isSearch: search.trim().length > 0,
-      resultFound: resultFound,
-    });
   };
 
   useEffect(() => {
@@ -61,24 +64,20 @@ function SearchComponent() {
   }, [search]);
   
   return (
-	<div className={classes.smseachbg} 
-       style={{ position: "fixed", zIndex: 1400, top: 0, left: searchClick ? '0' : '120vw', background: 'white',  width: "100vw", height: "100vh"}}
-      >
+	  <div className='relative max-h-screen'>
       <div className={classes.reviewTopTab}>
-        <ArrowBackIosIcon onClick={handleClickSearchf} sx={{fontSize:10, float:"left", marginTop: 1.5}} />
         <div className="flex justify-center">
-          <div className={classes.smseach} style={{marginLeft: "1rem", marginRight: "1rem", top: '50px', padding: "25px 4px", maxWidth: "650px", backgroundColor: "transparent", display: "flex", justifyContent: "center"}}>
-            <div style={{boxShadow: "0 2px 5px 1px rgb(64 60 67 / 20%)" ,backgroundColor: "rgba(255, 255, 255, 0.7)", oveflow: "hidden", borderRadius: 50, width: "100%"}}>
+          <div className={classes.smseach} style={{marginLeft: "1rem", marginRight: "1rem", top: '50px', padding: "25px 4px", backgroundColor: "transparent", display: "flex", justifyContent: "center"}}>
+            <div className='flex items-center bg-grayw xsm:bg-graymw ' style={{ oveflow: "hidden", borderRadius: 50, width: "100%"}}>
               <IconButton
-                type="submit"
-                sx={{"&.MuiIconButton-root": {padding:0},}}
-                 aria-label="search"
+                aria-label="search"
+                className='p-btn'
                 >
-                 <SearchIcon />
-               </IconButton>                
+                  <FiSearch />
+                </IconButton>                
               <InputBase
-                style={{width: "70%"}}
-                placeholder="Find products..."
+                style={{width: "80%"}}
+                placeholder="Search products..."
                 onChange={(e) => debounce((v) => {
                   setSearch(v);
                   }, 10)(e.target.value)}
@@ -87,20 +86,22 @@ function SearchComponent() {
           </div>
         </div>
       </div>
-      <div className="flex place-content-center w-full h-full">
-        <div style={{overflowX: 'auto',height: '76%', margin: 20, display: "grid", gridTemplateColumns: 'repeat(3, minmax(0px, 300px))', gap: 10, gridAutoRows: '1fr' }}>
-          {filteredData.isSearch && !filteredData.resultFound && (
-            <p>No results found..</p>
-          )}
-          {filteredData.products.map((product) => {
-            return (
-              <ProductNocart
-                product={product}
-                key={product.slug}
-              />
-            );
-          })}
-        </div>
+      <div className={"flex bg-white z-50 place-content-center relative rounded-2xl slg:absolute w-full overflow-y-scroll".concat(filteredData.resultFound && " absolute bshadow h-search overglow-y-scroll")}>
+        {filteredData.isSearch && !filteredData.resultFound && (
+          <p className='m-5'>No results found..</p>
+        )}
+        {filteredData.resultFound &&
+          <div className='bg-whiteblock h-full w-full px-4 mb-72 pt-6 z-50'>
+            {filteredData.products.map((product) => {
+              return (
+                <ProductNocart
+                  product={product}
+                  key={product.slug}
+                />
+              );
+            })}
+          </div>
+        }
       </div>
     </div>
   )

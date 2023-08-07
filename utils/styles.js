@@ -76,13 +76,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     backgroundColor: '#222',
     textAlign: 'center',
-    left: '-16px',
     position: 'relative',
-    width: `calc(100% + 32px)`,
-    [theme.breakpoints.up('sm')]: {
-      left: '-24px',
-      width: `calc(100% + 48px)`
-    },
+    left: '-8px',
+    width: 'calc(100% + 16px)',
   },
   section: {
     marginTop: 10,
@@ -124,12 +120,10 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   reviewTopTab: {
-    padding: 10,
     textAlign: 'center',
     fontSize: 20,
     top: 0,
     fontWeight: 'bolder',
-    borderBottom: '2px solid #ececec',
   },
   addRev: {
     position: 'fixed',
@@ -348,11 +342,15 @@ const useStyles = makeStyles((theme) => ({
   wrapperCateg: {
     justifyContent: 'space-evenly !important',
     backgroundColor: '#white !important', 
+    borderRadius: '10px',
     display: 'flex !important',
     flexFlow: 'column !important',
+    margin: '10px', 
+    padding: '10px',
+    fontFamily: 'monospace',
     [theme.breakpoints.up('sm')]: {
       flexFlow: 'row !important',
-      backgroundColor : '#f1f5f9 !important',
+      backgroundColor : 'rgba(0, 0, 0, 0.08) !important',
     },
     
   },
@@ -384,13 +382,15 @@ const useStyles = makeStyles((theme) => ({
   },
   categPic: {
     padding: 0,
+    marginBottom: 8,
     backgroundColor: '#f1f5f9',
-    borderRadius: 50,
+    borderRadius: 10,
     width: 60,
     height: 60,
     overflow: 'hidden',
     marginRight: '0 !important',
     [theme.breakpoints.up('sm')]: {
+      marginBottom: 0,
       justifyItems: 'center',
       marginRight: '8px !important',
     },
@@ -446,6 +446,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '10px',
     backgroundColor: ' #222',
   },
+  badgeme: {
+    color: 'white',
+    backgroundColor: 'green',
+    transform: 'scale(1) translate(30%, -30%)'
+  },
   transparent: {
     border: '3px solid transparent',
   },
@@ -460,7 +465,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     width: '4px',
     fontSize: '10px',
-    backgroundColor: '#222',
+    backgroundColor: 'indianred',
     transform: 'translate(-1px, 1px)', 
     scale: 0.6, 
     border: '4px solid white'

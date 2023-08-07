@@ -4,17 +4,13 @@ import { useRouter } from 'next/router';
 const Context = createContext();
 
 export const StateContext = ({ children }) => {
- const router = useRouter();
+  const router = useRouter();
 
- const today = new Date();
-
-  const [value, setValue] = useState("Cart");
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  };
-  const handleChangeBag = () => {
-    setValue("Bag")
-  };
+  const [hometab, setHomeTab] = useState("Trending");
+  const [openCategory, SetOpenCategory] = useState(false);
+ 
+  const [route, setRoute] = useState("home");
+  const routes = ["home", "categories", "favs", "cart"];
 
  const [viewNotes, setViewNotes] = useState(false);
  const NotesOpenHandler = () => {
@@ -31,12 +27,6 @@ export const StateContext = ({ children }) => {
   const viewCloseHandler = () => {
     setView(false);
   };
-  
- const [happyHour, setHappyHour] = useState(false);
- const currentTime = today.getHours();
- if ( 21 > currentTime && currentTime > 20 ) {
-  setHappyHour(true);
- };
 
  const [sidbarVisible, setSidebarVisible] = useState(false);
   const sidebarOpenHandler = () => {
@@ -44,18 +34,6 @@ export const StateContext = ({ children }) => {
   };
   const sidebarCloseHandler = () => {
     setSidebarVisible(false);
-  };
-
-  const [searchClick, setSearchClick] = useState(false);
-  const [searchBtn, setSearchBtn] = useState(true);
-
-  const handleClickSearchf = () => {
-    setSearchClick(false);
-    setSearchBtn(true);
-  };
-  const handleSearchBtn = () => {
-    setSearchClick(true);
-    setSearchBtn(false);
   };
 
   const [openinfos, setOpeninfos] = useState(false);
@@ -142,6 +120,9 @@ export const StateContext = ({ children }) => {
   const  handeOpenId = () => {
     setOpenId(true);
   }
+  // setitng immovable div while search
+  const [divstick, setDivstick] = useState(false);
+
   return (
     <Context.Provider
       value={{
@@ -190,17 +171,10 @@ export const StateContext = ({ children }) => {
         setOpeninfos,
         handleOpeninfos,
         handleCloseinfos,
-        searchClick,
-        setSearchClick,
-        searchBtn,
-        setSearchBtn,
-        handleClickSearchf,
-        handleSearchBtn,
         sidbarVisible,
         setSidebarVisible,
         sidebarOpenHandler,
         sidebarCloseHandler,
-        setHappyHour,
         view,
         setView,
         viewOpenHandler,
@@ -209,10 +183,15 @@ export const StateContext = ({ children }) => {
         setViewNotes,
         NotesOpenHandler,
         NotesCloseHandler,
-        value,
-        setValue,
-        handleChange,
-        handleChangeBag,
+        route, 
+        setRoute,
+        routes,
+        hometab, 
+        setHomeTab,
+        divstick, 
+        setDivstick,
+        openCategory,
+        SetOpenCategory
       }}
     >
       {children}

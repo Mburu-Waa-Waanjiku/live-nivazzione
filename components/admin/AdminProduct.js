@@ -18,11 +18,21 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
   const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
   const subtract = product.prevprice - product.price;
   const percent = round0(subtract/product.prevprice * 100);
+  const isProduct = true;
 
-  const { state, dispatch } = useContext(Store);
+  const [gallery, setGallery] = useState(null);
+  const [gallery1, setGallery1] = useState(null);
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
+  const [isOnoffer, setIsOnoffer] = useState(false);
+  const [isEditorsChoice, setIsEditorsChoice] = useState(false);
+  const [isCollectn, setIsCollectn] = useState(false);
+
+  const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [isClicked, setIsClicked] = useState(false);
   const mylink = product.slug;
@@ -33,7 +43,7 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
     setIsClicked(false);
   }
   
-  const deleteHandler = async (productId) => {
+  const deleteHandler = async () => {
     if (!window.confirm('Are you sure?')) {
       return;
     }
@@ -81,8 +91,6 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
            navigation= {true}
            centeredSlides={false}
            style={{ width: '100%', maxWidth: '220px' }}
-         onSwiper={(swiper) => console.log(swiper)}
-         onSlideChange={() => console.log('slide change')}
         >
           {product.image.map((img) => (
             <SwiperSlide style={{borderRadius: 15, height: 'calc(100% - 5px)', overflow: 'hidden'}} key={img} >
@@ -163,9 +171,25 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
             }
             <UpdateProds
               admin={admin}
-              productID={product._id}
               product={product}
               fetchProducts={fetchProducts}
+              isProduct={isProduct}
+              gallery={gallery}
+              setGallery={setGallery}
+              gallery1={gallery1}
+              setGallery1={setGallery1}
+              image1={image1}
+              setImage1={setImage1}
+              image2={image2}
+              setImage2={setImage2}
+              image3={image3}
+              setImage3={setImage3}
+              isOnoffer={isOnoffer}
+              setIsOnoffer={setIsOnoffer}
+              isEditorsChoice={isEditorsChoice}
+              setIsEditorsChoice={setIsEditorsChoice}
+              isCollectn={isCollectn}
+              setIsCollectn={setIsCollectn}
             />
             <DeleteTwoTone onClick={() => {deleteHandler(product._id); fetchProducts();}} style={{ color: 'rgba(220, 38, 38)', fontSize: 26 }}/>
           </div>

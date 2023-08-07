@@ -13,7 +13,7 @@ function downloader({original, name}) {
 
   return (
 	  <div>
-	    <AiOutlineDownload onClick={() => download(fileUrl, filename)} style={{fontSize:"30px", position:"absolute", bottom:"20px", right:"20px", padding:"10px", borderRadius:"20px", backgroundColor:"rgba(255, 255, 255, 0.7)"}} />
+	    <AiOutlineDownload className='bg-white-lucent text-5xl absolute bottom-5 right-5 p-2.5 rounded-2xl' onClick={() => download(fileUrl, filename)}/>
 	  </div>
 	)
 }

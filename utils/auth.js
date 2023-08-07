@@ -6,12 +6,14 @@ const signToken = (user) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      shopId: user.shopId,
       isAdmin: user.isAdmin,
+      isSeller: user.isSeller,
     },
 
     process.env.JWT_SECRET,
     {
-      expiresIn: '30d',
+      expiresIn: '365d',
     }
   );
 };
@@ -39,5 +41,12 @@ const isAdmin = async (req, res, next) => {
     res.status(401).send({ message: 'User is not admin' });
   }
 };
+const isSeller = async (req, res, next) => {
+  if (req.user.isSeller) {
+    next();
+  } else {
+    res.status(401).send({ message: 'User is not seller' });
+  }
+};
 
-export { signToken, isAuth, isAdmin };
+export { signToken, isAuth, isAdmin, isSeller };

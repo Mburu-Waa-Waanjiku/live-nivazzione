@@ -12,13 +12,12 @@ import { Store } from '../../utils/Store';
 import useStyles from '../../utils/styles';
 import { Controller, useFieldArray, useFormContext, FormProvider, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
-import ArrlessData from '../shop/ArrlessData';
-import ColorsArr from '../shop/ColorsArr';
-import SizesArr from '../shop/SizesArr';
-import ImagesArr from '../shop/ImagesArr';
-import GalleryArr from '../shop/GalleryArr';
+import ArrlessData from './ArrlessData';
+import ColorsArr from './ColorsArr';
+import SizesArr from './SizesArr';
+import ImagesArr from './ImagesArr';
+import GalleryArr from './GalleryArr';
 import { TfiWrite } from 'react-icons/tfi';
-import Addasadmin from './Addasadmin';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -34,7 +33,7 @@ function reducer(state, action) {
   }
 }
 
-function UpdateProds({ isOnoffer, setIsOnoffer, isEditorsChoice, setIsEditorsChoice, isCollectn, setIsCollectn, fetchProducts, fetchPendingPs, isProduct, gallery, product, setGallery, gallery1, setGallery1, image1, setImage1, image2, setImage2, image3, setImage3 }) {
+function UpdatePending({ fetchProducts, gallery, product, setGallery, gallery1, setGallery1, image1, setImage1, image2, setImage2, image3, setImage3 }) {
   
   const [Editor, setEditor] = useState(false);
   const { state } = useContext(Store);
@@ -51,12 +50,7 @@ function UpdateProds({ isOnoffer, setIsOnoffer, isEditorsChoice, setIsEditorsCho
       color: product.color,
       image: product.image,
       gallery: product.gallery,
-      sizes: product.sizes,
-      distinctCateg: product.distinctCateg,
-      isCollectn: product.isCollectn,
-      isOnoffer: product.isOnoffer,
-      collectionType: product.collectionType,
-      isEditorsChoice: product.isEditorsChoice
+      sizes: product.sizes
     }
   });
   
@@ -73,10 +67,6 @@ function UpdateProds({ isOnoffer, setIsOnoffer, isEditorsChoice, setIsEditorsCho
     setImage3(product.image[2]?.item);
     setGallery(product.gallery[0]?.item);
     setGallery1(product.gallery[1]?.item);
-    setIsEditorsChoice(product.isEditorsChoice);
-    setIsCollectn(product.isCollectn);
-    setIsOnoffer(product.isOnoffer);
-
   };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const classes = useStyles();
@@ -84,53 +74,29 @@ function UpdateProds({ isOnoffer, setIsOnoffer, isEditorsChoice, setIsEditorsCho
 
   const submitHandler = async ( data) => {
     closeSnackbar();
-    if(isProduct == true) {
-        try {
-          dispatch({ type: 'UPDATE_REQUEST' });
-          await axios.put(
-            `/api/admin/products/${product._id}`,
-            data ,
-            { headers: { authorization: `Bearer ${userInfo.token}` } }
-          );
-          dispatch({ type: 'UPDATE_SUCCESS' });
-          fetchProducts();
-          enqueueSnackbar('Product updated successfully', { variant: 'success' });
-          setEditor(false);
-        } catch (err) {
-          dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
-          enqueueSnackbar(getError(err), { variant: 'error' });
-        }
-    } else {
-      try {
-        dispatch({ type: 'UPDATE_REQUEST' });
-        await axios.post(
-          `/api/admin/products/${product._id}`,
-          data ,
-          { headers: { authorization: `Bearer ${userInfo.token}` } }
-        );
-        dispatch({ type: 'UPDATE_SUCCESS' });
-        fetchProducts();
-        fetchPendingPs();
-        enqueueSnackbar('Product updated successfully', { variant: 'success' });
-        setEditor(false);
-      } catch (err) {
-        dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
-        enqueueSnackbar(getError(err), { variant: 'error' });
-      }
+    try {
+      dispatch({ type: 'UPDATE_REQUEST' });
+      await axios.put(
+        `/api/admin/shopproducts/${product._id}`,
+        data ,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({ type: 'UPDATE_SUCCESS' });
+      fetchProducts();
+      enqueueSnackbar('Product updated successfully', { variant: 'success' });
+      setEditor(false);
+    } catch (err) {
+      dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
+      enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
 
 	return (
 		<div>{!Editor ?  
 		  ( 
-        <div onClick={imgsetter} className='p-4 rounded-full bg-grayb text-amber-500 font-bold text-2xl  xsm:grow'>
-          <div className='w-full gap-3 items-center justify-center flex'>
-            <TfiWrite className='text-2xl'/>
-            <div className='hidden xsm:block'>Edit</div>
-          </div>
-        </div>
-      ) :
-		  (<div className='p-2 z-50' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', position: 'fixed', top: '0px', width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.4)', left: '0px'}}>
+            <TfiWrite onClick={imgsetter} className='text-xl'/>
+          ) :
+		  (<div className='p-2' style={{zIndex: 10, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', position: 'fixed', top: '0px', width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.4)', left: '0px'}}>
 			  <div className='rounded-3xl w-full relative bg-white max-w-xl h-full xsm:w-3/4 xsm:w-3/4' style={{ overflow: 'hidden'}}>
           <div className="flex justify-end ">
             <div className=' translate-y-3 z-10' onClick={() => {setEditor(false);}} style={{ cursor: 'pointer', fontSize: 19, fontWeight: 900, padding: '0px 10px' }}>
@@ -202,21 +168,6 @@ function UpdateProds({ isOnoffer, setIsOnoffer, isEditorsChoice, setIsEditorsCho
                         useForm={useForm}
                         useFormContext={useFormContext}
                       />
-                      <Addasadmin
-                        Controller={Controller}
-                        ListItem={ListItem}
-                        TextField={TextField}
-                        userInfo={userInfo}
-                        useForm={useForm}
-                        useFormContext={useFormContext}
-                        setCategory={setCategory}
-                        isOnoffer={isOnoffer}
-                        setIsOnoffer={setIsOnoffer}
-                        isEditorsChoice={isEditorsChoice}
-                        setIsEditorsChoice={setIsEditorsChoice}
-                        isCollectn={isCollectn}
-                        setIsCollectn={setIsCollectn}
-                      />
                       <ListItem>
                         <Button
                           variant="contained"
@@ -241,4 +192,4 @@ function UpdateProds({ isOnoffer, setIsOnoffer, isEditorsChoice, setIsEditorsCho
 	)
 }
 
-export default UpdateProds
+export default UpdatePending

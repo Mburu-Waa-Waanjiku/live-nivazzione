@@ -1,107 +1,51 @@
-import React, { useContext } from 'react';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Head from 'next/head';
-import HeadsetMicRounded from '@mui/icons-material/HeadsetMicRounded';
+import React, { useContext, useState } from 'react';
+import { FiUser } from 'react-icons/fi';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import MyBag from './mybag/MyBag';
-import NextLink from 'next/link';
-import { 
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Link,
-  createMuiTheme,
-  ThemeProvider,
-  CssBaseline,
-  Badge,
-  Button,
-  MenuItem,
-  Box,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  Divider,
-  InputBase,
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import { BsHeartFill } from 'react-icons/bs';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import CancelIcon from '@material-ui/icons/Cancel';
 import {
-  faYoutube,
-  faFacebook,
-  faTwitter,
-  faInstagram
-} from "@fortawesome/free-brands-svg-icons";
-import SearchIcon from '@material-ui/icons/Search';
+  Badge,
+  IconButton
+} from '@material-ui/core';
 import useStyles from '../utils/styles';
 import { Store } from '../utils/Store';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import Tabs from "@mui/material/Tabs"; 
-import Tab from "@mui/material/Tab";
-import TabContext from '@mui/lab/TabContext';
-import TabPanel from '@mui/lab/TabPanel';
 import { useStateContext } from '../utils/StateContext';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getError } from '../utils/error';
 import axios from 'axios';
-import ProductNocart from './ProductNocart'; 
 import Cart from './mycart/Cart';
 import Notification from './notifications/view';
 import { useEffect } from 'react';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
 import Search from './SearchComponent';
 import dynamic from 'next/dynamic';
-import Logo from './svgs/ShiglamLogosvg';
 import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
-const DynamicFooterDocs = dynamic(() => import('./FooterDocs'), {
-  loading: () => " ",
-})
 const DynamicLogger = dynamic(() => import('./Logger'), {
   loading: () => " ",
 })
-import Headers from './HeadersContainer';
+import { FiShoppingBag } from 'react-icons/fi';
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
+import {GiReceiveMoney, GiHanger} from 'react-icons/gi';
+import {BsShop} from 'react-icons/bs';
+import Link from 'next/link';
 
 export default function Layout({ children }) {
   const router = useRouter();
-  const { login, view, openLogin, handleOpenBag, handleCartopen, openinfos, handleOpeninfosReturn, handleOpeninfos, handleOpeninfosShipping, handleOpeninfosHelp, searchClick, searchBtn, handleClickSearchf, handleSearchBtn, sidbarVisible, sidebarOpenHandler, sidebarCloseHandler, categ, viewOpenHandler } = useStateContext();
+  const { divstick, login, openLogin, handleOpenBag, viewOpenHandler, handleCartopen, setRoute, route } = useStateContext();
   const { state, dispatch } = useContext(Store);
-  const { darkMode, cart, userInfo, bagitems, favourites, notifications } = state;
+  const { userInfo, cart, notifications } = state;
   const notesLength = [...notifications.filter((notification) => !notification.isViewed )];
-
-  const theme = createMuiTheme({
-    typography: {
-      h1: {
-        fontSize: '1.6rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-      h2: {
-        fontSize: '1.4rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-    },
-    palette: {
-      type: darkMode ? 'dark' : 'light',
-      primary: {
-        main: '#242526',
-      },
-      secondary: {
-        main: '#208080',
-      },
-    },
-  });
-  const classes = useStyles();
-
-  const [value, setValue] = useState("Category");
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
+  
+  const [homeLinks, setHomelinks] = useState(false);
+  const [userLinks, setUserlinks] = useState(false);
+  
+  const logoutClickHandler = () => {
+    dispatch({ type: 'USER_LOGOUT' });
+    Cookies.remove('cartItems');
+    router.push('/');
   };
-
+  const classes = useStyles();
+  
   const fetchNotes = async () => {
     try {
       dispatch({ type: 'FETCH_NOTIFICATIONS' });
@@ -112,215 +56,186 @@ export default function Layout({ children }) {
       dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
     }
   };
-
+  
   useEffect(() => {
     fetchNotes();
-  }, [ router, userInfo]);
+  }, []);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const loginClickHandler = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-  const loginMenuCloseHandler = (e, redirect) => {
-    setAnchorEl(null);
-    if (redirect) {
-      router.push(redirect);
-    }
-  };
-  const logoutClickHandler = () => {
-    setAnchorEl(null);
-    dispatch({ type: 'USER_LOGOUT' });
-    Cookies.remove('userInfo');
-    Cookies.remove('cartItems');
-    Cookies.remove('shippinhAddress');
-    Cookies.remove('paymentMethod');
-    router.push('/');
-  };
 
   return (
-    <div>
-      <Headers />
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppBar position="static" style={{boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 20%)'}} className={classes.navbar}>
-          <Toolbar className={classes.toolbar}>
-            <Box className="flex" alignItems="center">
-              <div>
-                <IconButton
-                  edge="start"
-                  aria-label="open drawer"
-                  onClick={sidebarOpenHandler}
-                  className={classes.menuButton}
-                >
-                  <MenuIcon style={{color: "#222"}} className={classes.navbarButton} />
-                </IconButton>
-              </div>
-              <div className={classes.cartnlg}>
-                <IconButton
-                  onClick={handleOpenBag}
-                  className={classes.menuButton}
-                >
-                  <BsHeartFill style={{ fontSize: 25, color: "black" }} />                
-                </IconButton>
-              </div>
-              <div className={classes.cartnlg}>
-                <IconButton
-                  onClick={handleSearchBtn}
-                  className={classes.menuButton}
-                >
-                  <Typography className={classes.carton} component="span">
-                    <SearchIcon sx={{ color: '#222'}} className={searchBtn ? classes.sizeLg : classes.ndicatenone}/>
-                  </Typography>
-                </IconButton>
-              </div>
-            </Box>
-            <Drawer
-              anchor="left"
-              open={sidbarVisible}
-              onClose={sidebarCloseHandler}
-             >
-              <List>
-                <div className="items-center" style={{ display: 'grid', gridTemplateColumns: '1fr 0px' }}>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    style={{ justifySelf: 'center' }}
-                  >
-                    <b className="text-center">SHOP BY</b>
-                  </Box>
-                  <IconButton
-                    onClick={handleSearchBtn}
-                    className={classes.menuButton}
-                    style={{ justifySelf: 'end' }}
-                   >
-                    <Typography component="span">
-                      <SearchIcon sx={{ color: '#222'}}/>
-                    </Typography>
-                  </IconButton>
-                </div>
-                <TabContext value={value}>
-                  <Tabs classes={{root:classes.hmStyle, indicator:classes.ndicateThick }} sx={{"& .MuiTab-root.Mui-selected": {color:"black"}, position:"sticky" ,top: 45, zIndex: 15, minHeight: 40}} value={value} centered onChange={handleChange}>
-                    <Tab label="Category" value="Category" />
-                    <Tab label="Other" value="Other"/>
-                  </Tabs>
-                  <Divider light />
-                  <TabPanel value="Category">
-                    <Tabs value={categ} classes={{ indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{ "& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth variant="scrollable" orientation="vertical"  >
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/collections');}} style={{margin: '20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="COLLECTIONS" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1682536105/My-Favorite-Jewelry-Pieces_sdaxfr.jpg"/></div>}/>} />
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/Earrings');}} style={{margin: '20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="EARRINGS" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549970/il_570xN.3254524046_9p24_2_ghkimd.jpg"/></div>}/>} />
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/Anklets');}} style={{ margin: '0 20px 20px 20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="ANKLETS" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549575/ancletsmin_pk4p2f.jpg"/></div>} />
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/Necklaces');}} style={{ margin: '0 20px 20px 20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="NECKLACES" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678542559/neclacesmin_2_pzh7tr.jpg"/></div>}/>} /> 
-                    </Tabs>
-                  </TabPanel>
-                  <TabPanel value="Other">
-                    <Tabs value={categ} classes={{ indicator:classes.ndicatenone, scroller: classes.categRut}} sx={{ "& .MuiTab-root.Mui-selected": {color:"black", },"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} fullWidth variant="scrollable" orientation="vertical"  >
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/trending');}} style={{margin: '20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="HOT" iconPosition="start" icon={<div><Image width={30}  height={30} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1673000081/offerbanner1_5_upiwk4.jpg"/></div>}/>} />
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/offers');}} style={{ margin: '0 20px 20px 20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic}} label="OFFERS" iconPosition="start" icon={<div><Image  width={50} height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678549482/salemin_oczx1c.png"/></div>} />
-                      <Tab onClick={() => {sidebarCloseHandler(); router.push('/new-products');}} style={{ margin: '0 20px 20px 20px', padding: '10px'}} classes={{ root: classes.wrapperCateg, iconWrapper: classes.categPic }} label="NEW" iconPosition="start" icon={<div><Image width={50}  height={50} className="bg-gray-100" alt="" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1678548104/newarrivals2_2_xtemuk.jpg"/></div>}/>} /> 
-                    </Tabs>
-                  </TabPanel>
-                </TabContext>
-              </List>
-              <div className="absolute flex bottom-0 w-full" style={{borderTop: '1px solid rgba(0, 0, 0, 0.08)'}}>
-                <div className="flex justify-evenly p-4 grow">
-                  <a href="tel:0770097070">
-                    <div className="flex grow justify-center">
-                      <HeadsetMicRounded style={{marginRight:10}}/>
-                    </div>
-                  </a>
-                  <Link href="https://wa.me/254103477957?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20...." >
-                    <div className="flex grow justify-center">
-                      <i style={{color:"black", marginRight:10, fontSize:"25px", }} className="fa fa-whatsapp whatsapp-icon"></i>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </Drawer>
-            <NextLink href="/" passHref>
-                <Link>
-                  <Typography style={{position: 'absolute', transform:'translate(-50%, -50%)', paddingTop: '10px'}}>
-                    <Logo/>
-                  </Typography>
-                </Link>
-            </NextLink>  
-            <div className=" flex justify-center items-center">
-              <div>
-                <IconButton
-                  onClick={handleCartopen}
-                  className={classes.menuButton}
-                 >
-                  <Typography className={classes.cartnsch} style={{paddingTop: 0}} component="span">
-                    {cart.cartItems.length > 0 ? (
-                      <Badge
-                        classes={{ badge: classes.badge }}
-                        badgeContent={cart.cartItems.length}
-                      >
-                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
-                      </Badge>
-                    ) : (
-                        <AiOutlineShoppingCart style={{ fontSize: 22, color: "#222"}} />
-                    )}
-                  </Typography>
-                </IconButton>
-              </div>
-              <div className={classes.cartnlg}>
-                <IconButton
-                  onClick={viewOpenHandler}
-                  className={classes.menuButton}
-                 >
-                  <Typography className={classes.carton} component="span">
-                  {notesLength.length > 0 ? (
-                      <Badge
-                        classes={{ badge: classes.badgeLg }}
-                        badgeContent={notesLength.length}
-                      >
-                        <IoNotificationsSharp style={{ fontSize: 24, color:' black' }}/>
-                      </Badge>
-                    ) : (
-                      <Badge
-                        classes={{ badge: classes.badgetab }}
-                        badgeContent={''}
-                      >
-                        <IoNotificationsOutline style={{ fontSize: 24, color:' black' }}/>
-                      </Badge>
-                    )}
-                  </Typography>
-                </IconButton>
-              </div>
-              {userInfo ? (
-                <div className={classes.cartnlg}>
-                  <NextLink href="https://www.shiglam.com/me" passHref>
-                    <Link>
-                      <IconButton
-                        onClick={loginClickHandler}
-                        className={classes.menuButton}
-                       >
-                        <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-15px", fontSize: '18px', top: '-3px', position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
-                      </IconButton>
-                    </Link>
-                  </NextLink>
-                </div>
-              ) : (
-                <div className={classes.cartnlg}>
-                  <>
-                    <IconButton
-                      className={classes.menuButton}
-                     >
-                      <Typography onClick={openLogin} className={classes.cartnlgo} component="span"><AccountCircle sx={{ color: 'white'}} className={classes.sizeLg}/></Typography>
-                    </IconButton>
-                  </>
-                </div>
-              )}
+    <div className={divstick ? "fixed top-0 w-full" : ""}>
+      <div className="flex items-center z-50 w-full px-4 pt-6 pb-2">
+        <div className='hidden xsm:block pr-3'>
+          <Image className='rounded-full' width={40} height={40} alt='logo' src='/icon-256x256.png'/>
+        </div>
+        <div className='text-left text-3xl block xsm:hidden sm:text-center font-semibold'>
+          SHIGLAM
+        </div>
+        <div className=' mt-2' style={{zIndex: 120}}>
+          <div className='hidden title-font xsm:flex items-center'>
+            <div onClick={() => {setRoute(route == "home" ? "home" : "categories"); router.push(!route == "home" ? "/categories" : "/")}} className={'mlg:hidden block font-semibold text-center flex-grow text-lg rounded-full px-8 pt-2.5 pb-3 text-black bg-grayw'}>
+              {route.charAt(0).toUpperCase() + route.slice(1)}
             </div>
-          </Toolbar>
-        </AppBar>
-        {login && <DynamicLogger/>}
-        {view && <Notification/> }
-        <MyBag/>
-        <Cart/>
+            <div className='flex mlg:hidden pl-1 text-2xl items-center'>
+              <MdKeyboardArrowDown onClick={() => setHomelinks(true)} className={!homeLinks ? 'block' : 'hidden'}/> 
+              <MdKeyboardArrowUp onClick={() => setHomelinks(false)} className={homeLinks ? 'block' : 'hidden'}/>
+            </div>
+            <div onClick={() => {setRoute("home"); router.push("/")}} className={'hidden mlg:block font-semibold text-center flex-grow text-lg rounded-full px-8 pt-2.5 pb-3 text-black '.concat(route == "home" ? 'bg-grayw' : 'bg-white ')}>
+              Home
+            </div>
+            <div onClick={() => {setRoute("categories"); router.push("/categories")}} className={'hidden mlg:block font-semibold text-center flex-grow text-lg rounded-full px-8 pt-2.5 pb-3 text-black '.concat(route == "categories" ? 'bg-grayw ' : 'bg-white')}>
+              Categories
+            </div>
+          </div>
+          <div className={'absolute top-0 z-30 left-0 right-0 bottom-0 '.concat(homeLinks ? 'block' : 'hidden')} onClick={() => setHomelinks(false)}>
+          </div>
+          <div className={'w-48 title-font translate-y-2 z-50 p-2 bg-white rounded-2xl h-32 bshadow absolute '.concat(homeLinks ? 'block' : 'hidden')} >
+            <div onClick={() => {setRoute("home"); router.push("/"); setHomelinks(false)}} className={' font-semibold text-center flex-grow text-lg rounded-2xl px-8 pt-2.5 pb-3 text-black '.concat(route == "home" ? 'bg-grayw' : 'bg-white ')}>
+              Home
+            </div>
+            <div onClick={() => {setRoute("categories"); router.push("/categories"); setHomelinks(false)}} className={' block font-semibold text-center flex-grow text-lg rounded-2xl px-8 pt-2.5 pb-3 text-black '.concat(route == "categories" ? 'bg-grayw ' : 'bg-white')}>
+              Categories
+            </div>
+          </div>
+        </div>
+        <div className='flex-grow flex items-center justify-end'>
+          <div className='flex-grow hidden slg:block'>
+            <Search/>
+          </div>
+          <IconButton onClick={viewOpenHandler} className='justify-items-end'>
+            {notesLength.length > 0 ? (
+              <Badge
+                classes={{ badge: classes.badgeLg }}
+                badgeContent={notesLength.length}
+              >
+                <IoNotificationsSharp  style={{ fontSize: 28, color:' black' }}/>
+              </Badge>
+            ) : (
+              <Badge
+                classes={{ badge: classes.badgetab }}
+                badgeContent={''}
+              >
+                <IoNotificationsOutline onClick={viewOpenHandler} style={{ fontSize: 28, color:' black' }}/>
+              </Badge>
+            )}
+          </IconButton>
+          <div className='hidden xsm:block'>
+            <IconButton onClick={handleOpenBag} >
+              <GiHanger className='text-black'/>
+            </IconButton>
+          </div>
+          <div className='hidden xsm:block'>
+            <IconButton >
+              <div className='relative text-black' onClick={handleCartopen}>
+                <FiShoppingBag/>
+                {cart.cartItems.length > 0 && <div style={{transform: 'translate(9px, -5px)'}} className='top-0 right-0 absolute text-xs border-2 text-white border-white bg-tabb w-5 h-5 flex justify-center items-center rounded-full'> {cart.cartItems.length} </div>}
+              </div>
+            </IconButton>
+          </div>
+          {userInfo ? (
+              <b className='w-12 h-12 text-xl ml-2 bg-grayb rounded-full text-white flex justify-center items-center' onClick={() => setUserlinks(true)}>{userInfo.name.slice(0,1)}</b>
+            ) : (
+              <IconButton>
+                <FiUser onClick={openLogin} className='text-3xl ml-2' />
+              </IconButton>
+            )
+          }
+        </div>
+      </div>
+      <div className=' block slg:hidden'>
         <Search/>
-        <Container className={classes.main}>{children}</Container>
-      </ThemeProvider>
+      </div>
+      {login && <DynamicLogger/>}
+      <Notification/>
+      <MyBag/>
+      <Cart/>
+      <div onClick={() => setUserlinks(false)} className={'absolute w-screen '.concat(userLinks ? 'h-screen top-0 z-10' : 'h-0')}></div>
+      <div className={"absolute hidden justify-end top-20 z-50 right-2 w-full transition-all duration-1000 sm:flex ".concat(!userLinks && 'hidden-I')} >
+        <div onClick={() => setUserlinks(false)} className='flex-grow' ></div>
+        <div className="p-2 m-2 relative bg-white rounded-xl max-w-xs w-full" style={{ boxShadow: 'rgba(64, 60, 67, 0.2) 0px 2px 5px 1px'}}>
+          <div className="absolute z-50"  style={{ right: '2%', top: '18px' }}>
+            <IoIosArrowUp className='text-xl' onClick={() => setUserlinks(false)} />
+          </div>
+          <div className="flex items-center" onClick={() => {logoutClickHandler(); setUserlinks(false)}} >
+            <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="flex text-lg justify-center items-center themecolor p-4 font-black">
+              {userInfo?.name.toUpperCase().slice(0,1)}
+            </div>
+            <div className="p-2 text-base font-black">
+              Log Out
+            </div>
+          </div>
+          {userInfo?.isAffiliate && 
+            <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center"  >
+              <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                <GiReceiveMoney />
+              </div>
+              <div className="p-2 text-base font-black">
+                Affiliate
+              </div>
+            </div>
+          }
+          {userInfo?.isSeller &&
+            <Link href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" } >
+              <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
+                <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                  <BsShop />
+                </div>
+                <div className="p-2 text-base font-black">
+                  My Shop
+                </div>
+              </div>
+            </Link>
+          }
+        </div>
+      </div>
+      <div style={{bottom: userLinks ? '0%' : '-40%'}} className='bg-white fixed py-6 px-3 btop overflow-hidden transition-all duration-1000 z-50  rounded-t-3xl w-full h-fit  sm:hidden'>
+        <div className='relative z-10 box-border gap-2 flex-col justify-center items-center w-full h-full flex'>
+          <div className="flex items-center" onClick={() => {logoutClickHandler(); setUserlinks(false)}} >
+            <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="flex text-lg justify-center items-center themecolor p-4 font-black">
+              {userInfo?.name.toUpperCase().slice(0,1)}
+            </div>
+            <div className="p-2 text-base font-black">
+              Log Out
+            </div>
+          </div>
+          <div onClick={() => router.push('https://www.shiglam.com/me')} className="flex my-1 items-center"  >
+            <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+              <FiUser className='text-2xl'/>
+            </div>
+            <div className="p-2 text-base font-black">
+              Account
+            </div>
+          </div>
+          <div onClick={() => setUserlinks(false)} className='absolute text-xl top-0 right-3'>
+            <IoIosArrowDown/>
+          </div>
+          {userInfo?.isAffiliate && 
+            <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center"  >
+              <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                <GiReceiveMoney />
+              </div>
+              <div className="p-2 text-base font-black">
+                Affiliate
+              </div>
+            </div>
+          }
+          {userInfo?.isSeller &&
+            <Link href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" } >
+              <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
+                <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                  <BsShop />
+                </div>
+                <div className="p-2 text-base font-black">
+                  My Shop
+                </div>
+              </div>
+            </Link>
+          }
+        </div>
+      </div>
+      <div className='w-full p-2 xsm-4'>
+        {children}
+      </div>
     </div>
   );
 }

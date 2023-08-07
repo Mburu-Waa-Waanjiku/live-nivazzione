@@ -3,41 +3,43 @@ import OrderID from '../me/OrderId';
 
 function Orders({ currenttab, classes, userInfo, orderslist }) {
   
-  const unprocessed = [...orderslist.filter((orders) => !orders.isDelivered)];
+  const unprocessed = orderslist.orders?.filter((orders) => !orders.isDelivered);
 
   return (
 	<div style={{padding: '16px 16px 36px 16px', width: 'fit-content'}} >
-	  <div style={{marginBottom: 10, borderRadius: 20, backgroundColor: '#222', color: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
-	    <div className="flex place-items-center p-4">
-	      <b className="ml-5"> ID</b>
-	    </div>
-	    <div className="flex place-items-center p-4">
-	      <b className="ml-5"> Name</b>
-	    </div>
-	    <div className="flex justify-center place-items-center p-4">
-	      <b className="ml-4"> Items</b>
-	    </div>
-	    <div className="flex justify-center place-items-center p-4">
-	      <b className="ml-4"> Total</b>
-	    </div>
-	    <div className="flex justify-center place-items-center p-4">
-	      <b className="ml-4"> Fulfilled</b>
-	    </div>
-	    <div className="flex justify-center place-items-center p-4">
-	      <b className="ml-4"> Delivered</b>
-	    </div>
-	    <div className="flex justify-center place-items-center p-4">
-	      <b className="ml-4">View details</b>
-	    </div>
-	  </div>
+	  {currenttab != 'Shop Orders' &&
+		<div style={{marginBottom: 10, borderRadius: 20, backgroundColor: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
+			<div className="flex place-items-center p-4">
+			<b className="ml-5"> ID</b>
+			</div>
+			<div className="flex place-items-center p-4">
+			<b className="ml-5"> Name</b>
+			</div>
+			<div className="flex justify-center place-items-center p-4">
+			<b className="ml-4"> Items</b>
+			</div>
+			<div className="flex justify-center place-items-center p-4">
+			<b className="ml-4"> Total</b>
+			</div>
+			<div className="flex justify-center place-items-center p-4">
+			<b className="ml-4"> Fulfilled</b>
+			</div>
+			<div className="flex justify-center place-items-center p-4">
+			<b className="ml-4"> Delivered</b>
+			</div>
+			<div className="flex justify-center place-items-center p-4">
+			<b className="ml-4">View details</b>
+			</div>
+		</div>
+      }
 	  {currenttab == 'All Orders' ? (
 	    <>
-	    {orderslist.map((orders) => (
-	  	  <div key={orders._id} style={{marginBottom: 10, borderRadius: 20, backgroundColor: '#222', color: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
+	    {orderslist.orders?.map((orders) => (
+	  	  <div key={orders._id} style={{marginBottom: 10, fontWeight: 600, borderRadius: 20, backgroundColor:'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
 	        <div className="p-3 flex place-items-center">
 	          <div className="flex gap-3">
 	            <div>
-	              {orderslist.map((o) => o._id).indexOf(orders._id) + 1}
+	              {orderslist.orders?.map((o) => o._id).indexOf(orders._id) + 1}
 	            </div>
 	            <div>
 	              {orders._id.substring(20, 24)}
@@ -89,14 +91,14 @@ function Orders({ currenttab, classes, userInfo, orderslist }) {
 	      </div>
 	  	  ))
 	    }
-	    </>) : (
+	    </>) : currenttab == 'Unprocessed Orders' ? (
 	    <>
 	    {unprocessed.map((orders) => (
-	  	  <div key={orders._id} style={{marginBottom: 10, borderRadius: 20, backgroundColor: '#222', color: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
+	  	  <div key={orders._id} style={{marginBottom: 10, fontWeight: 600, borderRadius: 20, backgroundColor:'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
 	        <div className="p-3 flex place-items-center">
 	          <div className="flex gap-3">
 	            <div>
-	              {orderslist.map((o) => o._id).indexOf(orders._id) + 1}
+	              {orderslist.orders?.map((o) => o._id).indexOf(orders._id) + 1}
 	            </div>
 	            <div>
 	              {orders._id.substring(20, 24)}
@@ -148,7 +150,11 @@ function Orders({ currenttab, classes, userInfo, orderslist }) {
 	      </div>
 	  	  ))
 	    }
-	    </>)
+	    </>) : (
+		<>
+		  <div></div>
+		</>
+		)
 	  }
 	</div>
   )

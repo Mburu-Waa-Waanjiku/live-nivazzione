@@ -33,18 +33,28 @@ async function disconnect() {
     }
   }
 }
+function convertSizeToObj(sz) {
+  sz._id = sz._id?.toString() || null;
+  sz.createdAt = sz.createdAt?.toString() || null;
+  sz.updatedAt = sz.updatedAt?.toString() || null;
+  return sz;
+}
 function convertDocToObj(doc) {
   doc._id = doc._id.toString();
   doc.createdAt = doc.createdAt.toString();
+  doc.shopId = doc.shopId?.toString() || null;
+  doc.sizes = doc.sizes?.map(convertSizeToObj) || null;
+  doc.color = doc.color?.map(convertSizeToObj) || null;
+  doc.favourites = doc.favourites?.map(convertSizeToObj) || null;
   doc.updatedAt = doc.updatedAt.toString();
   return doc;
-}
+} 
 function convertRevDocToObj(doc) {
   doc._id = doc._id.toString();
   doc.createdAt = doc.createdAt.toString();
-  doc.user = doc.user.toString();
+  doc.user = doc.user?.toString()  || null;
   doc.updatedAt = doc.updatedAt.toString();
-  doc.rating = doc.rating.toString();
+  doc.ratings = doc.ratings.toString();
   return doc;
 }
 

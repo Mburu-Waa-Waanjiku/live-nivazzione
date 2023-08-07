@@ -3,23 +3,19 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import {
   Grid,
   Typography,
-  TextField,
-  CircularProgress,
-  Button,
   List,
   ListItem,
 } from '@material-ui/core';
 import { Navigation, FreeMode, Thumbs, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import ProductItems from '../me/OrderProducts';
-import { useSnackbar } from 'notistack';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-function OrderId({ orders, classes, userInfo, user }) {
+function OrderId({ orders, classes, user }) {
 
   const [openId, setOpenId] = useState(false);
   const  handeOpenId = () => {
@@ -28,20 +24,20 @@ function OrderId({ orders, classes, userInfo, user }) {
   
   const [orderTab, setOrderTabs]= useState("All Orders");
 
-  const inPersonOrders = orders.filter( x => 
+  const inPersonOrders = orders.orders?.filter( x => 
     x.user._id == user._id  
   );
-  const totalSpent = inPersonOrders.reduce((accumulator, object) => {
+  const totalSpent = inPersonOrders?.reduce((accumulator, object) => {
     return accumulator + object.totalPrice;
   }, 0);
 
   return (
     <div>
-      {inPersonOrders.length > 0 && <button
+      {inPersonOrders?.length > 0 && <button
         onClick={handeOpenId}
         style={{color: 'white', padding: '4px 15px', borderRadius: 5, backgroundColor: '#222'}}
        >
-        {inPersonOrders.length} View >> 
+        {inPersonOrders?.length} View {'>>'} 
       </button>}
       <div style={{ display: openId ? 'block' : 'none', color: 'black' }}>
         <div className={classes.smseachbg}
@@ -50,7 +46,7 @@ function OrderId({ orders, classes, userInfo, user }) {
           <div style={{backgroundColor: "rgba(255, 255, 255, 0.9)", position: "sticky", top: 0, zIndex: "10"}} className={classes.reviewTopTab}>
             <ArrowBackIosIcon onClick={() => {setOpenId(false)}} sx={{ float:"left" }} /> 
             <div className="flex justify-center">
-              {user.name + 's Orders'+ ' ' + (inPersonOrders.length)}
+              {user.name + 's Orders'+ ' ' + (inPersonOrders?.length)}
             </div>
           </div>
           <div style={{height: 'calc(100vh - 54px)', overflowY: 'scroll', width: '100vw', backgroundColor: 'white'}} className="OrderIdgrids">
@@ -78,7 +74,7 @@ function OrderId({ orders, classes, userInfo, user }) {
                             <Typography><b className="pr-16">Orders</b></Typography>
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography align="right">{inPersonOrders.length}</Typography>
+                            <Typography align="right">{inPersonOrders?.length}</Typography>
                           </Grid>
                         </Grid>
                       </ListItem>
@@ -129,7 +125,7 @@ function OrderId({ orders, classes, userInfo, user }) {
           
                     >
       
-                     {inPersonOrders.map((order) =>(
+                     {inPersonOrders?.map((order) =>(
                       <>
                         {order.orderItems.map((product) =>(
                           <SwiperSlide style={{ backgroundColor: 'white', borderRadius: 20}} key={product._id}>
@@ -147,10 +143,10 @@ function OrderId({ orders, classes, userInfo, user }) {
                   </div>
                 </div>}
               </div>
-              {inPersonOrders.map((order) => (
-                <div className=" bordererIds">
+              {inPersonOrders?.map((order, index) => (
+                <div key={index} className=" bordererIds">
                   <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.2)', borderBottom: '1px solid rgba(0, 0, 0, 0.2)', backgroundColor: orderTab == order._id.toString() ? 'rgba(0, 0, 0, 0.09)' : 'white'}} onClick={()=> {setOrderTabs(order._id.toString())}} className="w-full text-center text-lg p-4">
-                    <b> Order {inPersonOrders.map((o) => o._id).indexOf(order._id) + 1} </b>
+                    <b> Order {inPersonOrders?.map((o) => o._id).indexOf(order._id) + 1} </b>
                   </div>
                   {orderTab == order._id.toString() && <div className="Idgridhidden w-full">
                     <div style={{ paddingTop: 4 }} className="p-8 profileborder">
@@ -204,7 +200,7 @@ function OrderId({ orders, classes, userInfo, user }) {
                   </div>
                 </div>
                 {orderTab == "All Orders" && <div className='p-4 grid grid-cols-1 gap-col-4 gap-y-3 md:grid-cols-2 lg:grid-cols-3'>
-                  {inPersonOrders.map((order) =>(
+                  {inPersonOrders?.map((order) =>(
                     <>
                       {order.orderItems.map((product) =>(
                         <ProductItems
@@ -217,7 +213,7 @@ function OrderId({ orders, classes, userInfo, user }) {
                     ))
                   }
                 </div>}
-                {inPersonOrders.map((order) =>(
+                {inPersonOrders?.map((order) =>(
                   <>
                     {orderTab == order._id.toString() && <div className='p-4 grid grid-cols-1 gap-col-4 gap-y-3 md:grid-cols-2 lg:grid-cols-3'>
                       {order.orderItems.map((product) =>(

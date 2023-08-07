@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import User from './User';
+import Shop from './Shop';
 
 const orderSchema = new mongoose.Schema(
   {
@@ -9,9 +10,9 @@ const orderSchema = new mongoose.Schema(
         name: { type: String, required: true },
         quantity: { type: Number, required: true },
         image: { type: Array, required: true },
-        price: { type: Number, required: true },
-        isBurgain: {type: Boolean,required: true, default: false},
-        
+        collected: {type: Boolean, required: true, default: false},
+        csize: { type: Object, required: true },
+        shopId: { type: mongoose.Schema.Types.ObjectId, ref: Shop, required: true }      
       },
     ],
     shippingAddress: {

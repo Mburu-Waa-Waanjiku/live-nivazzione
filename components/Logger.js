@@ -27,16 +27,16 @@ function Logger() {
   const [waiting, setWaiting] = useState(false);
 
   const handleRegister = () => {
-  	setRegister(true);
-  	setPassreset(false)
+    setRegister(true);
+    setPassreset(false)
   }
   const handlePassreset = () => {
-  	setPassreset(true);
-  	setRegister(false);
+    setPassreset(true);
+    setRegister(false);
   }
   const handleLogin = () => {
-  	setPassreset(false);
-  	setRegister(false);
+    setPassreset(false);
+    setRegister(false);
   }
 
   const {
@@ -75,6 +75,7 @@ function Logger() {
         email,
         password,
       });
+      console.log(data);
       dispatch({ type: 'USER_LOGIN', payload: data });
       Cookies.set('userInfo', data, { expires: 365 });
       fetchNotes();
@@ -128,83 +129,83 @@ function Logger() {
     }
   };
 
-	return (
-		<div style={{zIndex: 1220, flexWrap: 'wrap', transform: 'translate(0, -10%)'}} className=" fixed w-full h-full flex justify-center content-center">
-		  <div style={{ width: "fit-content", height: "fit-content", padding: 10, background: 'linear-gradient(to left,#eee 50%, #333 50%)' }}>
- 	        <div  className="logger loggerborder">
- 	          <div onClick={closeLogin} style={{float: "right", fontSize: 20, position: "relative", top: -16, right: -6}}>
- 	            <b> x </b>
- 	          </div>
-			  {register ? (
-				<div >
-	  			    <form onSubmit={handleSubmit(RegistersubmitHandler)} className={classes.form}>
-      			      <Typography style={{textAlign: "center"}} component="h1" variant="h1">
-      			         <Image
+  return (
+    <div style={{zIndex: 1220, flexWrap: 'wrap', transform: 'translate(0, -10%)'}} className=" fixed w-full h-full flex justify-center content-center">
+      <div style={{ width: "fit-content", height: "fit-content", padding: 10, background: 'linear-gradient(to left,#eee 50%, #333 50%)' }}>
+          <div  className="logger loggerborder">
+            <div onClick={closeLogin} style={{float: "right", fontSize: 20, position: "relative", top: -16, right: -6}}>
+              <b> x </b>
+            </div>
+        {register ? (
+        <div >
+              <form onSubmit={handleSubmit(RegistersubmitHandler)} className={classes.form}>
+                  <Typography style={{textAlign: "center"}} component="h1" variant="h1">
+                     <Image
                        width={200}
                        height={40}
                        alt="register"
                        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679073683/signup_diyk7v.png"
                       />
-      			      </Typography>
-      			      <List>
-        			      <ListItem>
-        			        <Controller
-        			          name="name"
-        			          control={control}
-        			          defaultValue=""
-        			          rules={{
-        			            required: true,
-        			            minLength: 2,
-        			          }}
-        			          render={({ field }) => (
-        			            <TextField
-        			              variant="outlined"
-        			              fullWidth
-        			              id="name"
-        			              label="Name"
-        			              inputProps={{ type: 'name' }}
-        			              error={Boolean(errors.name)}
-        			              helperText={
-        			                errors.name
-    			                      ? errors.name.type === 'minLength'
-    			                        ? 'Name length is more than 1'
-    			                        : 'Name is required'
-    			                      : ''
-    			                  }
-    			                  {...field}
-    			                ></TextField>
-    			              )}
-    			            ></Controller>
-    			          </ListItem>
-    			          <ListItem>
-    			            <Controller
-    			              name="email"
-    			              control={control}
-    			              defaultValue=""
-    			              rules={{
-    			                required: true,
-    			                pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-    			              }}
-        			          render={({ field }) => (
-        			            <TextField
-        			              variant="outlined"
-        			              fullWidth
-        			              id="email"
-        			              label="Email"
-        			              inputProps={{ type: 'email' }}
-        			              error={Boolean(errors.email)}
-        			              helperText={
-        			                errors.email
-        			                  ? errors.email.type === 'pattern'
-        			                    ? 'Email is not valid'
-        			                    : 'Email is required'
-        			                  : ''
-        			              }
-        			              {...field}
-        			            ></TextField>
-        			          )}
-        			        ></Controller>
-    			          </ListItem>
+                  </Typography>
+                  <List>
+                    <ListItem>
+                      <Controller
+                        name="name"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          minLength: 2,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="name"
+                            label="Name"
+                            inputProps={{ type: 'name' }}
+                            error={Boolean(errors.name)}
+                            helperText={
+                              errors.name
+                                ? errors.name.type === 'minLength'
+                                  ? 'Name length is more than 1'
+                                  : 'Name is required'
+                                : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="email"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="email"
+                            label="Email"
+                            inputProps={{ type: 'email' }}
+                            error={Boolean(errors.email)}
+                            helperText={
+                              errors.email
+                                ? errors.email.type === 'pattern'
+                                  ? 'Email is not valid'
+                                  : 'Email is required'
+                                : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
                     <ListItem>
                       <Controller
                         name="phone"
@@ -235,67 +236,67 @@ function Logger() {
                         )}
                       ></Controller>
                     </ListItem>
-    			          <ListItem>
-    			            <Controller
-    			              name="password"
-    			              control={control}
-    			              defaultValue=""
-    			              rules={{
-    			                required: true,
-    			                minLength: 6,
-    			              }}
-    			              render={({ field }) => (
-    			                <TextField
-    			                  variant="outlined"
-    			                  fullWidth
-    			                  id="password"
-    			                  label="Password"
-    			                  inputProps={{ type: 'password' }}
-    			                  error={Boolean(errors.password)}
-    			                  helperText={
-        			                errors.password
-        			                  ? errors.password.type === 'minLength'
-        			                    ? 'Password length is more than 5'
-        			                    : 'Password is required'
-        			                  : ''
-        			              }
-        			              {...field}
-        			            ></TextField>
-        			          )}
-        			        ></Controller>
-        			      </ListItem>
-        			      <ListItem>
-        			        <Controller
-        			          name="confirmPassword"
-        			          control={control}
-        			          defaultValue=""
-        			          rules={{
-        			            required: true,
-        			            minLength: 6,
-        			          }}
-        			          render={({ field }) => (
-        			            <TextField
-        			              variant="outlined"
-        			              fullWidth
-        			              id="confirmPassword"
-        			              label="Confirm Password"
-        			              inputProps={{ type: 'password' }}
-        			              error={Boolean(errors.confirmPassword)}
-        			              helperText={
-        			                errors.confirmPassword
-        			                  ? errors.confirmPassword.type === 'minLength'
-        			                    ? 'Confirm Password length is more than 5'
-        			                    : 'Confirm  Password is required'
-        			                  : ''
-        			              }
-        			              {...field}
-        			            ></TextField>
-        			          )}
-        			        ></Controller>
-        			      </ListItem>
-        			      <ListItem>
-        			        <Button variant="contained" type="submit" fullWidth color="primary">
-        			          {!waiting ? (
+                    <ListItem>
+                      <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          minLength: 6,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="password"
+                            label="Password"
+                            inputProps={{ type: 'password' }}
+                            error={Boolean(errors.password)}
+                            helperText={
+                              errors.password
+                                ? errors.password.type === 'minLength'
+                                  ? 'Password length is more than 5'
+                                  : 'Password is required'
+                                : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Controller
+                        name="confirmPassword"
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          minLength: 6,
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="confirmPassword"
+                            label="Confirm Password"
+                            inputProps={{ type: 'password' }}
+                            error={Boolean(errors.confirmPassword)}
+                            helperText={
+                              errors.confirmPassword
+                                ? errors.confirmPassword.type === 'minLength'
+                                  ? 'Confirm Password length is more than 5'
+                                  : 'Confirm  Password is required'
+                                : ''
+                            }
+                            {...field}
+                          ></TextField>
+                        )}
+                      ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Button variant="contained" type="submit" fullWidth color="primary">
+                        {!waiting ? (
                           <Image
                             width={110}
                             height={22}
@@ -304,157 +305,157 @@ function Logger() {
                           />) :
                           (<CircularProgress style={{color: 'white'}}/>)
                         }
-        			        </Button>
-        			      </ListItem>
-          			    <ListItem>
-          			      Already have an account? &nbsp;
-          			      <a style={{cursor: "pointer"}} onClick={handleLogin}>
-    			            <b style={{ fontSize: 14 }}>Login</b>
-    			          </a>
-          			    </ListItem>
-      				  </List>			    
-      				</form>
-				</div>
-				) : passReset ? (
-				<div>
-      			{!divSc && <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
-      			  <Typography style={{textAlign: "center"}} component="h1" variant="h1">
-      			    Reset Password
-      			  </Typography>
-      			  <List>
-      			      <ListItem>
-      			        <Controller
-      			        name="email"
-      			        control={control}
-      			        defaultValue=""
-      			        rules={{
-      			          required: true,
-      			          pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-      			        }}
-      			        render={({ field }) => (
-      			          <TextField
-      			            variant="outlined"
-      			            fullWidth
-      			            id="email"
-      			            label="Email"
-      			            inputProps={{ type: 'email' }}
-      			            error={Boolean(errors.email)}
-      			            helperText={
-      			              errors.email
-      			                ? errors.email.type === 'pattern'
-      			                  ? 'Email is not valid'
-      			                  : 'Email is required'
-      			                : ''
-    			              }
-    			              {...field}
-    			            ></TextField>
-    			          )}
-    			        ></Controller>
-    			      </ListItem>
-    			      <ListItem>
-    			        <Button variant="contained" type="submit" fullWidth color="primary">
-    			          Reset password
-    			        </Button>
-    			      </ListItem>
-    			      <ListItem>
-    			        Don&apos;t have an account? &nbsp;
-    			        <a style={{cursor: "pointer"}} onClick={handleRegister}>
-    			          <b style={{ fontSize: 14 }}>Register</b>
-    			        </a>
-    			      </ListItem>
-    			    </List>
-    			  </form>}
-    			  {divSc && 
-    			  <div>
-            	  	<div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
-           	  	       A Link Has Been Sent To Your Email
-           	  	    </div>
-           	  	    <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-           	  	      <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-           	  	      <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-           	  	    </svg>
-           	        <div className="mb-12">
-            	    </div>
-           	  	  </div>}
-    			</div>
-	  		    ) : (
-				<div>
-      			    <form onSubmit={handleSubmit(LoginsubmitHandler)} className={classes.form}>
-    			      <Typography style={{textAlign: "center"}} component="h1" variant="h1">
-    			        <Image
+                      </Button>
+                    </ListItem>
+                    <ListItem>
+                      Already have an account? &nbsp;
+                      <a style={{cursor: "pointer"}} onClick={handleLogin}>
+                      <b style={{ fontSize: 14 }}>Login</b>
+                    </a>
+                    </ListItem>
+                </List>         
+              </form>
+        </div>
+        ) : passReset ? (
+        <div>
+            {!divSc && <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+              <Typography style={{textAlign: "center"}} component="h1" variant="h1">
+                Reset Password
+              </Typography>
+              <List>
+                  <ListItem>
+                    <Controller
+                    name="email"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        inputProps={{ type: 'email' }}
+                        error={Boolean(errors.email)}
+                        helperText={
+                          errors.email
+                            ? errors.email.type === 'pattern'
+                              ? 'Email is not valid'
+                              : 'Email is required'
+                            : ''
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Button variant="contained" type="submit" fullWidth color="primary">
+                    Reset password
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  Don&apos;t have an account? &nbsp;
+                  <a style={{cursor: "pointer"}} onClick={handleRegister}>
+                    <b style={{ fontSize: 14 }}>Register</b>
+                  </a>
+                </ListItem>
+              </List>
+            </form>}
+            {divSc && 
+            <div>
+                  <div style={{color: "#7ac142"}} className="home-ft w-full justify-self-stretch mt-8">
+                       A Link Has Been Sent To Your Email
+                    </div>
+                    <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                      <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                      <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                    <div className="mb-12">
+                  </div>
+                  </div>}
+          </div>
+            ) : (
+        <div>
+                <form onSubmit={handleSubmit(LoginsubmitHandler)} className={classes.form}>
+                <Typography style={{textAlign: "center"}} component="h1" variant="h1">
+                  <Image
                     width={200}
                     height={40}
                     alt="register"
                     src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679073912/login_banner_vtuzyp.png"
                   />
-    			      </Typography>
-    			      <List>
-    			        <ListItem>
-    			          <Controller
-    			            name="email"
-    			            control={control}
-    			            defaultValue=""
-    			            rules={{
-    			              required: true,
-    			              pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-    			            }}
-    			            render={({ field }) => (
-    			              <TextField
-    			                variant="outlined"
-    			                fullWidth
-    			                id="email"
-    			                label="Email"
-    			                inputProps={{ type: 'email' }}
-    			                error={Boolean(errors.email)}
-    			                helperText={
-    			                  errors.email
-    			                    ? errors.email.type === 'pattern'
-    			                      ? 'Email is not valid'
-    			                      : 'Email is required'
-    			                    : ''
-    			                }
-    			                {...field}
-    			              ></TextField>
-    			            )}
-    			          ></Controller>
-    			        </ListItem>
-    			        <ListItem>
-    			            <div style={{cursor: "pointer"}} onClick={handlePassreset}>
-    			              Forgot Password?
-    			            </div>
-    			        </ListItem>
-    			        <ListItem>
-    			          <Controller
-    			            name="password"
-    			            control={control}
-    			            defaultValue=""
-    			            rules={{
-    			              required: true,
-    			              minLength: 6,
-    			            }}
-    			            render={({ field }) => (
-    			              <TextField
-    			                variant="outlined"
-    			                fullWidth
-    			                id="password"
-    			                label="Password"
-    			                inputProps={{ type: 'password' }}
-    			                error={Boolean(errors.password)}
-    			                helperText={
-    			                  errors.password
-    			                    ? errors.password.type === 'minLength'
-    			                      ? 'Password length is more than 5'
-    			                      : 'Password is required'
-    			                    : ''
-    			                }
-    			                {...field}
-    			              ></TextField>
-    			            )}
-    			          ></Controller>
-    			        </ListItem>
-    			        <ListItem>
-    			          <Button variant="contained" type="submit" fullWidth color="primary">
-    			            {!waiting ? (
+                </Typography>
+                <List>
+                  <ListItem>
+                    <Controller
+                      name="email"
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: true,
+                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="email"
+                          label="Email"
+                          inputProps={{ type: 'email' }}
+                          error={Boolean(errors.email)}
+                          helperText={
+                            errors.email
+                              ? errors.email.type === 'pattern'
+                                ? 'Email is not valid'
+                                : 'Email is required'
+                              : ''
+                          }
+                          {...field}
+                        ></TextField>
+                      )}
+                    ></Controller>
+                  </ListItem>
+                  <ListItem>
+                      <div style={{cursor: "pointer"}} onClick={handlePassreset}>
+                        Forgot Password?
+                      </div>
+                  </ListItem>
+                  <ListItem>
+                    <Controller
+                      name="password"
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: true,
+                        minLength: 6,
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="password"
+                          label="Password"
+                          inputProps={{ type: 'password' }}
+                          error={Boolean(errors.password)}
+                          helperText={
+                            errors.password
+                              ? errors.password.type === 'minLength'
+                                ? 'Password length is more than 5'
+                                : 'Password is required'
+                              : ''
+                          }
+                          {...field}
+                        ></TextField>
+                      )}
+                    ></Controller>
+                  </ListItem>
+                  <ListItem>
+                    <Button variant="contained" type="submit" fullWidth color="primary">
+                      {!waiting ? (
                         <Image
                           width={110}
                           height={22}
@@ -463,23 +464,23 @@ function Logger() {
                         /> ) :
                         (<CircularProgress style={{color: 'white'}}/>)
                       }
-    			          </Button>
-    			        </ListItem>
-    			        <ListItem>
-    			          Don&apos;t have an account? &nbsp;
-    			            <a style={{cursor: "pointer"}} onClick={handleRegister}>
-    			              <b style={{ fontSize: 14 }}>Register</b>
-    			            </a>
-    			        </ListItem>
-    			      </List>
-    			    </form>
-				</div>
-				)
-		      }
-		    </div>
-		  </div>
-		</div>
-	)
+                    </Button>
+                  </ListItem>
+                  <ListItem>
+                    Don&apos;t have an account? &nbsp;
+                      <a style={{cursor: "pointer"}} onClick={handleRegister}>
+                        <b style={{ fontSize: 14 }}>Register</b>
+                      </a>
+                  </ListItem>
+                </List>
+              </form>
+        </div>
+        )
+          }
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default Logger			    			    			    
+export default Logger               

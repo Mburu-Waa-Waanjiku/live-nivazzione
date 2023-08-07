@@ -1,143 +1,50 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
-import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
-import { getError } from '../../utils/error';
 import Link from 'next/link';
-import { useStateContext } from '../../utils/StateContext';
-import { useRouter } from 'next/router';
 
-function Notes({ viewCloseHandler, axios, classes, notification, Cookies, userInfo, dispatch, notifications }) {
+function Notes({ notification }) {
   
-  const router = useRouter();
-  const { setPage, openId, setOpenId, handeOpenId } = useStateContext();
-	const [openNotes, setOpenNotes] = useState(false);
-	const handleOpen = () => {
-		setOpenNotes(true)
-	}
-	const handleClose = () => {
-    setOpenNotes(false)
-	}
-  
-  const updateView = async () => {
-    try {
-      dispatch({ type: 'FETCH_NOTIFICATIONS' });
-      const { data } = await axios.post(`/api/users/${userInfo._id}/${notification._id}`);
-      dispatch({ type: 'FETCH_NOTIFICATIONS_SUCCESS', payload: data });
-      Cookies.set('notifications', data)
-    } catch (err) {
-      dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
-    }
-  };
+  const [viewMessage, setViewMessage] = useState(false);
 
-  const updateHundler = async () => {
-  	if ( !notification.isViewed ) {
-  		 await updateView();
-  		 handleOpen()
-  	} else {
-  		handleOpen()
-  	}
-  }
-  
-  const viewOrder = async () => {
-    await viewCloseHandler();
-    await router.push('/me');
-    setPage("My Orders")
-  }
   return (
-  <>
-	  <div onClick={updateHundler} style={{maxHeight: 58, overflow: 'hidden', width: '100%', padding: 10, display: !openNotes ? 'grid' : 'none', gap: 3, gridTemplateColumns: '50px 1fr'}}>
-	    <div style={{width: 130, height: 'auto', display: notification.isProduct ? 'none' : 'bolck'}}>
-	      <Image
-	        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679409410/shopping-bags-removebg-preview_xckkh1.png"
-	        width={40}
-	        alt="Orders"
-	        height={40}
-	      />
-	    </div>
-	    <div style={{width: 130, height: 'auto', display: notification.isProduct ? 'block' : 'none'}} >
-	      <Image
-	        src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679410586/2198323_oyldct.png"
-	        width={40}
-          className="bg-gray-100"
-	        alt="Product"
-	        height={40}
-	      />
-	    </div>
-      <div style={{  borderBottom: '2px solid #ececec', height: 48, fontSize: 17, fontWeight: !notification.isViewed ? 'bold' : 400, lineHeight: 2.3}}>
+  <div className='px-4 py-4'>
+    <div className='flex relative h-fit w-full px-3 text-lg'>
+      <div className={'overflow-hidden pb-3 relative flex-grow font-medium '.concat(!viewMessage && 'whitespace-nowrap text-ellipsis')}>
+        <div className={'absolute right-0 top-0 bottom-0 w-32 notesshade '.concat(viewMessage && 'hidden')}></div>
         {notification.message}
       </div>
-	  </div>
-	  <div style={{position: "fixed", zIndex: 1310, top: 0, display: openNotes ? 'block' : 'none', background: 'white',  width: "100vw", height: "100vh"}}>
-      <div className={classes.reviewTopTab} style={{zIndex: 1}}
-       >
-        <ArrowBackIosIcon onClick={handleClose} sx={{ float:"left",}} /> 
-        <div style={{maxHeight: 27}} className="flex justify-center">
-          <div style={{position: 'relative', top: '-10px'}}>
-            <Image 
-              height={45}
-              width={135}
-              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679399348/notifications_mfkuep.png"
-            />
-          </div>
-          <div style={{position: "relative", height: 30}}>
-            <IoNotificationsSharp style={{fontSize: 25, position: "relative", top: 0, marginLeft: 10}}/>                
-          </div> 
-        </div>
+      <div onClick={() => setViewMessage(true)} className={'font-medium '.concat(viewMessage && 'hidden')}>
+        <div className='flex gap-1'><b>View </b><b>more</b></div>
       </div>
-      <div style={{ display: 'grid', padding: 6 }}>
-        <div className="flex justify-center">
-          <div style={{ maxWidth: 700 }} className="grid gap-3 grid-cols-2 sm:grid-cols-4" >
-            <div style={{ alignSelf: 'center', display: notification.isProduct ? 'block' : 'none'}} >
-              <Image
-                style={{borderRadius: 15}}
-                width={364}
-                height={484}
-                alt="Promo Image"
-                className="bg-gray-100"
-                src={notification.product[0]?.image[0].item}
-              />
-            </div>
-            <div style={{ alignSelf: 'center', display: notification.isProduct ? 'none' : 'block'}} >
-              <Image
-                width={364}
-                height={484}
-                alt="Orders"
-                src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679409410/shopping-bags-removebg-preview_xckkh1.png"
-              />
-            </div>
-            <div className="sm:col-span-3 sm:col-start-2" style={{fontSize: 15, alignSelf: 'center'}} >
-              {notification.message}
-            </div>
-          </div>
-        </div>
-        {notification.isProduct ? 
-          (<div className="flex justify-center">
-            <Link href={notification.isProduct ? `https://www.shiglam.com/${notification.product[0].category}/${notification.product[0].slug}` : notification.orderLink } >
-              <div onClick={{viewCloseHandler}} className=" flex gap-1 justify-center" style={{ maxWidth: 700, width: '100%', fontWeight: 'bold', borderRadius: 10, boxShadow: '0 2px 5px 1px rgb(64 60 67 / 15%)', margin: 10, padding: 5, fontSize: 18}} >
-                <div>
-                  View
-                </div>
-                <div style={{display: notification.isProduct ? 'block' : 'none'}}>
-                  Product
-                </div>
-              </div>
-            </Link>
-          </div>) : (
-          <div style={{display: !notification.isProduct ? 'flex' : 'none'}} className="flex justify-center">
-            <div onClick={viewOrder} className=" flex gap-1 justify-center" style={{ maxWidth: 700, width: '100%', fontWeight: 'bold', borderRadius: 10, boxShadow: '0 2px 5px 1px rgb(64 60 67 / 15%)', margin: 10, padding: 5, fontSize: 18}} >
-              <div>
-                View
-              </div>
-              <div style={{display: notification.isProduct ? 'block' : 'none'}}>
-                Order
-              </div>
-            </div>
-          </div>)
+      <div onClick={() => setViewMessage(false)} className={'font-medium absolute bottom-0 right-0 '.concat(!viewMessage && 'hidden')}>
+        <div className='flex gap-1'><b>View </b><b>less</b></div>
+      </div>
+    </div>
+    <div  className='w-full max-w-sm pulse relative h-48 overflow-hidden  rounded-3xl  '>
+      <div className='w-full h-full flex justify-center items-center'>
+        {notification.isProduct ?
+          <Link href={`https://www.shiglam.com/${notification.product[0].category}/${notification.product[0].slug}`}>
+            <Image 
+              className='w-full h-auto min-w-full'
+              width={364}
+              height={484}
+              alt="" 
+              src={notification.product[0]?.image[0].item}
+            /> 
+          </Link> :
+          <Link href='https://www.shiglam.com/me'>
+            <Image 
+              className='w-full h-auto min-w-full'
+              width={364}
+              height={484}
+              alt="" 
+              src="https://res.cloudinary.com/dddx5qpji/image/upload/v1679409410/shopping-bags-removebg-preview_xckkh1.png"
+            />
+          </Link>
         }
       </div>
-	  </div>
-	</>
+    </div>
+	</div>
   )
 }
 

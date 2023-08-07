@@ -7,95 +7,26 @@ import HeadersContainer from './HeadersContainer';
 import { useRouter } from 'next/router';
 
 export default function ProductNocart({ product }) {
-  const router = useRouter();
-
-  const { handleClickSearchf } = useStateContext();
-  const HandleSearch = async () => {
-    await router.push(`https://www.shiglam.com/${product.category}/${product.slug}`);
-    handleClickSearchf();
-  }
-  
-  const URL = `https://shiglam.com/${product.category}/${product.slug}`;
-  let revCount;
-  if(product.numReviews < 1){
-    revCount = 16
-  } else{
-    revCount = product.numReviews
-  }
-  const offerStock = Math.floor(Math.random() * 20) + 1;
-
-  const jsdschema = {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      name: product.name,
-      image: [ 
-                product.image[0].item,
-                product.image[1]?.item 
-              ],
-      description: product.description,
-      brand: {
-        "@type": "Brand",
-        name: product.brand
-      },
-      review: {
-        "@type": "Review",
-        reviewRating: {
-          "@type": "Rating",
-          ratingValue: 5,
-          bestRating: 5
-        },
-        author: {
-          "@type": "Person",
-          name: product.reviews?.name || "Diane"
-        }
-      },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: product.rating,
-        reviewCount: revCount
-      },
-      offers: {
-        "@type": "Offer",
-        url: URL,
-        offerCount: offerStock,
-        priceCurrency: "KES",
-        price: product.price,
-        priceValidUntil: "2023-2-14",
-        itemCondition: "https://schema.org/NewCondition",
-        availability: "https://schema.org/InStock"
-      }
-    };
-    
-    function addProductJsonLd() {
-    return {
-      __html: JSON.stringify(jsdschema),
-      };
-    }
-
 
   return (
-    <div className="card">
-    <HeadersContainer data={addProductJsonLd()} />
-    <div className="gallery">
-      <a>
-        <Image
-          width={364}
-          height={484}
-          onClick={HandleSearch}
-          src={product.image && product.image[0].item}
-          alt={product.name}
-          className="shadow bg-gray-100 object-cover h-auto w-100"
-          style={{borderRadius:10, backgroundColor: '#f3f4f6', overflow:"hidden"}}
-        />
-      </a>
-      <div className="heart-ck" style={{height:27, backgroundColor: 'transparent'}}>
-      </div>
-      <div className="flex ">
-       <p className="desc price">Ksh{product.price}</p>
-      </div>
-      </div>
-
-      
-    </div>
+    <>
+      <Link href={`https://www.shiglam.com/${product.category}/${product.slug}`}>
+        <div className="flex items-center gap-1">
+          <div style={{ minWidth: '40px', maxWidth: '40px'}}>
+            <Image
+              width={40}
+              height={40}
+              src={product.image && product.image[0].item}
+              alt={product.name}
+              className="shadow bg-gray-100 object-cover h-auto w-100"
+              style={{borderRadius:10, backgroundColor: '#f3f4f6', overflow:"hidden"}}
+            />
+          </div>
+          <div className='overflow-hidden font-medium whitespace-nowrap text-ellipsis'>
+            {product.description}
+          </div>
+        </div>
+      </Link>
+    </>
   );
 }

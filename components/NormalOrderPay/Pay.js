@@ -40,26 +40,26 @@ function Pay() {
 
     const round0 = (num) => Math.round(num * 1 + Number.EPSILON) / 1; // 123.456 => 123
     const itemsPrice = round0(
-      cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
+      cartItems.reduce((a, c) => a + c.csize.price * c.quantity, 0)
     );
     const bundleRate = 15 * cartItems.length /1000;
     const ratePrice = itemsPrice * bundleRate
     const bundlePrice = round0(itemsPrice - ratePrice);
     let shippingPrice;
-    if (itemsPrice < 699 && county != 'CBD' ) {
+    if (itemsPrice < 7000 && county != 'CBD' ) {
         shippingPrice = 119;
-      } else if (itemsPrice < 699 && county === 'CBD' ) {
+      } else if (itemsPrice < 7000 && county === 'CBD' ) {
           shippingPrice = 20
-        } else if (itemsPrice < 999 && county != 'CBD' ) {
+        } else if (itemsPrice < 10000 && county != 'CBD' ) {
           shippingPrice = 59
-      } else if (itemsPrice < 999 && county === 'CBD' ) {
+      } else if (itemsPrice < 10000 && county === 'CBD' ) {
           shippingPrice = 10
       }  else {
           shippingPrice = 0
       }
     const taxPrice = 0;
     const oldTotalPrice = round0(itemsPrice + shippingPrice + taxPrice);
-    const totalPrice = cartItems.length > 2 ? round0(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
+    const totalPrice = cartItems.length > 20 ? round0(bundlePrice + shippingPrice + taxPrice) : oldTotalPrice;
 
     const [confirming, setConfirming] = useState(false);
     const [completing, setCompleting] = useState(false);
@@ -81,82 +81,82 @@ function Pay() {
         dispatch({ type: 'UPDATE_STOCK' });
         console.log('stock updated successfuly');
       } catch (err) {
-        console.log('error updating  stock');
+        //console.log('error updating  stock');
       }
     };
 
     const placeOrderHandler = async () => {
-    if (cartItems.length > 2) {
-    closeSnackbar();
-    try {
-      const { data } = await axios.post(
-        '/api/orders',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          bundlePrice,
-          shippingPrice,
-          taxPrice,
-          oldTotalPrice,
-          totalPrice,
-          isPaid : true,
-          paidAt : Date.now(),
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
+      if (cartItems.length > 20) {
+      closeSnackbar();
+      try {
+        const { data } = await axios.post(
+          '/api/orders',
+          {
+            orderItems: cartItems,
+            shippingAddress,
+            paymentMethod,
+            itemsPrice,
+            bundlePrice,
+            shippingPrice,
+            taxPrice,
+            oldTotalPrice,
+            totalPrice,
+            isPaid : true,
+            paidAt : Date.now(),
           },
-        } 
-      );
-      dispatch({ type: 'CART_CLEAR' });
-      Cookies.remove('cartItems');
-      enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
-      setCompleting(true); 
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      await router.push(`/me`);
-      setPage("My Orders");
-      handleCloseNormalOP();
-      handleCartclose();
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
-    }
-   }else {
-     closeSnackbar();
-    try {
-      const { data } = await axios.post(
-        '/api/orders',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          shippingPrice,
-          taxPrice,
-          totalPrice,
-          isPaid : true,
-          paidAt : Date.now(),
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-      dispatch({ type: 'CART_CLEAR' });
-      Cookies.remove('cartItems');
-      enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
-      setCompleting(true); 
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      await router.push(`/me`);
-      setPage("My Orders");
-      handleCloseNormalOP();
-      handleCartclose();
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
+          {
+            headers: {
+              authorization: `Bearer ${userInfo.token}`,
+            },
+          } 
+        );
+        dispatch({ type: 'CART_CLEAR' });
+        Cookies.remove('cartItems');
+        enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
+        setCompleting(true); 
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        await router.push(`/me`);
+        setPage("My Orders");
+        handleCloseNormalOP();
+        handleCartclose();
+      } catch (err) {
+        enqueueSnackbar(getError(err), { variant: 'error' });
       }
-     }
+      }else {
+        closeSnackbar();
+        try {
+          const { data } = await axios.post(
+            '/api/orders',
+            {
+              orderItems: cartItems,
+              shippingAddress,
+              paymentMethod,
+              itemsPrice,
+              shippingPrice,
+              taxPrice,
+              totalPrice,
+              isPaid : true,
+              paidAt : Date.now(),
+            },
+            {
+              headers: {
+                authorization: `Bearer ${userInfo.token}`,
+              },
+            }
+          );
+          dispatch({ type: 'CART_CLEAR' });
+          Cookies.remove('cartItems');
+          enqueueSnackbar('Your Order has been placed succesfully', { variant: 'success' });
+          setCompleting(true); 
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          await router.push(`/me`);
+          setPage("My Orders");
+          handleCloseNormalOP();
+          handleCartclose();
+        } catch (err) {
+          enqueueSnackbar(getError(err), { variant: 'error' });
+          }
+        }
     };
 
     const [cphone, setCphone] = useState();
@@ -298,14 +298,14 @@ function Pay() {
             dropstation,
             phoneNumber,
           },
-        })
+        }), { expires: 365 }
       );
       closeSnackbar();
       if (!paymentMethod) {
         enqueueSnackbar('Payment method is required', { variant: 'error' });
       } else {
         dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethod });
-        Cookies.set('paymentMethod', paymentMethod);
+        Cookies.set('paymentMethod', paymentMethod, { expires: 365 });
         setAfterShippinginfo(true);
       }
     };
@@ -370,7 +370,7 @@ function Pay() {
                       </div>
                     </div>}
                   </div>
-                  {cartItems.length > 2 && view && <div className="flex justify-between ml-2 mr-2">
+                  {cartItems.length > 20 && view && <div className="flex justify-between ml-2 mr-2">
                       <div style={{fontFamily: "monospace"}} >
                         Total
                       </div>
@@ -381,7 +381,7 @@ function Pay() {
                     </div>}
                   <div className="flex justify-between ml-2 mr-2">
                     <div style={{fontFamily: "monospace"}} >
-                      {cartItems.length > 2 ? (
+                      {cartItems.length > 20 ? (
                           <>
                             <div> Amount</div>
                           </>
@@ -401,71 +401,71 @@ function Pay() {
               </div>
               {afterShippinginfo ? (
                 <div className="w-full flex justify-center">
-                <div style={{maxWidth: 300}}>
-                  <form
-                    className="mx-auto max-w-screen-md mt-4"
-                    onSubmit={handleSubmit(p4bPaymentHandler)}
-                   >
-                    <div style={{display: "block"}}>
-                      <div className="flex justify-between gap-3">
-                        <div className="w-5/12 mb-4 mt-3 grow">
-                          <input
-                            className="block w-full"
-                            placeholder="Mpesa Number 0724.."
-                            type="number"
-                            id="phone"
-                            pattern= "07[0-9]{8}"
-                            autoFocus
-                            {...register('phone', {
-                              required: 'Please enter Phone Number',
-                              length: { value: 10, message: 'Phone number is 10 chars' },              
-                            })}
-                          />
-                          {errors.phone && (
-                            <div className="text-red-500">{errors.phone.message}</div>
-                          )}
+                  <div style={{maxWidth: 300}}>
+                    <form
+                      className="mx-auto max-w-screen-md mt-4"
+                      onSubmit={handleSubmit(p4bPaymentHandler)}
+                    >
+                      <div style={{display: "block"}}>
+                        <div className="flex justify-between gap-3">
+                          <div className="w-5/12 mb-4 mt-3 grow">
+                            <input
+                              className="block w-full"
+                              placeholder="Mpesa Number 0724.."
+                              type="number"
+                              id="phone"
+                              pattern= "07[0-9]{8}"
+                              autoFocus
+                              {...register('phone', {
+                                required: 'Please enter Phone Number',
+                                length: { value: 10, message: 'Phone number is 10 chars' },              
+                              })}
+                            />
+                            {errors.phone && (
+                              <div className="text-red-500">{errors.phone.message}</div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex justify-between gap-3 hidden">
+                          <div className="w-5/12 mb-4 grow">
+                            <label htmlFor="amount">Amount</label>
+                            <input
+                              className="block w-full"
+                              id="amount"
+                              readOnly="readonly"
+                              autoFocus
+                              {...register('amount', {
+                                required: 'Please enter Amount',
+                              })}
+                            />
+                            {errors.amount && (
+                              <div className="text-red-500">{errors.amount.message}</div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-between gap-3 hidden">
-                        <div className="w-5/12 mb-4 grow">
-                          <label htmlFor="amount">Amount</label>
-                          <input
-                            className="block w-full"
-                            id="amount"
-                            readOnly="readonly"
-                            autoFocus
-                            {...register('amount', {
-                              required: 'Please enter Amount',
-                            })}
-                          />
-                          {errors.amount && (
-                            <div className="text-red-500">{errors.amount.message}</div>
-                          )}
-                        </div>
+                      <div className="flex justify-center mt-3" >
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          style={{fontFamily: "monospace", borderRadius: '50px', backgroundColor: '#222', padding: "8px 35px"}}
+                        >
+                          {confirming ? (<div> RESEND </div>) : (<div> SEND </div>)}
+                        </Button>
                       </div>
-                    </div>
-                    <div className="flex justify-center mt-3" >
+                    </form>
+                    <div className="flex justify-center">
                       <Button
-                        type="submit"
+                        onClick={checkPayment}
                         variant="contained"
                         color="primary"
-                        style={{fontFamily: "monospace", borderRadius: '50px', backgroundColor: '#222', padding: "8px 35px"}}
-                       >
-                        {confirming ? (<div> RESEND </div>) : (<div> SEND </div>)}
+                        style={{fontFamily: "monospace", borderRadius: '50px', marginTop: 20, display: confirming ? "block" : "none", backgroundColor: '#222', padding: "8px 35px", marginBottom: "10px"}}
+                      >
+                        CONFIRM
                       </Button>
                     </div>
-                  </form>
-                  <div className="flex justify-center">
-                    <Button
-                      onClick={checkPayment}
-                      variant="contained"
-                      color="primary"
-                      style={{fontFamily: "monospace", borderRadius: '50px', marginTop: 20, display: confirming ? "block" : "none", backgroundColor: '#222', padding: "8px 35px", marginBottom: "10px"}}
-                     >
-                      CONFIRM
-                    </Button>
                   </div>
-                </div>
                 </div>) : (
                 <div>
                   <form

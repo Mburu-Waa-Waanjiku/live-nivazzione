@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Product from './Product';
- 
+import Shop from './Shop';
+
 const notificationsSchema = new mongoose.Schema(
   {
     isViewed : { type: Boolean, required: true, default: false },
@@ -20,7 +21,11 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     phone: { type: Number, required: true },    
     password: { type: String, required: true },
+    shopsFollowed: { type: Array },
     isAdmin: { type: Boolean, required: true, default: false },
+    isAffiliate: { type: Boolean, required: true, default: false },
+    isSeller: { type: Boolean, required: true, default: false },
+    shopId: { type: mongoose.Schema.Types.ObjectId, ref: Shop },
     favourites: { type: Array },
     shiglamPoints: { type: Number, required: true, default: 0},
     totalBuys: { type: Number, required: true, default: 0 },

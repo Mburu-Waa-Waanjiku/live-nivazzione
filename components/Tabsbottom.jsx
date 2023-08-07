@@ -1,33 +1,22 @@
-import SearchIcon from '@material-ui/icons/Search';
-import React, { useContext } from 'react';
-import {  
-  Badge, 
-} from '@material-ui/core';
-import { Store } from '../utils/Store';
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useStateContext } from '../utils/StateContext';
 import tabsStyles from '../styles/Tabs.module.css';
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import HomeIcon from '@mui/icons-material/HomeOutlined';
-import PersonIcon from '@mui/icons-material/PersonOutlined';
-import { BsHeartFill } from 'react-icons/bs';
-import useStyles from '../utils/styles';
+import { RiHome5Line } from 'react-icons/ri';
+import { FiShoppingBag } from 'react-icons/fi';
+import { BiCategoryAlt } from 'react-icons/bi';
+import { GiHanger } from 'react-icons/gi';
 import { debounce } from '../utils/helpers';
-import { IoNotificationsSharp, IoNotificationsOutline } from 'react-icons/io5';
+import { Store } from '../utils/Store';
+import CategoriesPage from './CategoriesPage';
 
 export default function Tabsbottom() {
-  const classes = useStyles();
-  const { handleSearchBtn, openLogin, handleOpenBag , handleCartopen, viewOpenHandler } = useStateContext();
-
-  const router = useRouter();
+  const { route, setRoute, handleOpenBag , handleCartopen, openCategory, SetOpenCategory } = useStateContext();
   const { state } = useContext(Store);
-  const { cart, userInfo, bagitems, notifications } = state;
-  const routes = ["/", "/myBag", "/cart", "/me", "/"];
-  
-  const history = router.pathname;
-  
+  const { cart } = state;
+  const router = useRouter();
+      
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
 
@@ -46,49 +35,45 @@ export default function Tabsbottom() {
 
   }, [prevScrollPos, visible, handleScroll]);
 
-  const notesLength = [...notifications.filter((notification) => !notification.isViewed )];
 
   return (
-    <div className="tabb">
-       <div className={tabsStyles.backgcoverticalcenter}>
-         
-          <Tabs className={tabsStyles.bottomnav} sx={{"& .MuiTabs-flexContainer": {justifyContent:"space-evenly"},"& .MuiTab-root.Mui-selected": {color:"black"}, bottom: visible ? '280px' : '210px',}} classes={{ indicator:classes.ndicatenone}} value={history !== "/b" ? history : false} fullWidth   >
-            
-            <Tab value={routes[0]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={() => router.push("/")} icon={<HomeIcon sx={{ fontSize: 28 }} />} />
-                        
-            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleSearchBtn} icon={
-                <SearchIcon style={{ fontSize: 24 }}/>
-              }
-            />
-
-            <Tab value={routes[1]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={handleOpenBag}  icon={<BsHeartFill style={{ fontSize: 23 }}/>}  />
-            
-            <Tab value={routes[2]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={viewOpenHandler} icon={notesLength.length > 0 ? (
-                      <Badge
-                        classes={{ badge: classes.badgeLg }}
-                        badgeContent={notesLength.length}
-                      >
-                        <IoNotificationsSharp style={{ fontSize: 24 }}/>
-                      </Badge>
-                    ) : (
-                      <Badge
-                        classes={{ badge: classes.badgetab }}
-                        badgeContent={''}
-                      >
-                        <IoNotificationsOutline style={{ fontSize: 24 }}/>
-                      </Badge>
-                    )}  />
-                                 
-            {userInfo ? (<Tab 
-                            value={routes[3]} 
-                            sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} 
-                            onClick={() => router.push("/me")} 
-                            icon={
-                              <b style={{ width: 24, height:24, lineHeight: 0.2, borderRadius: 50, color: "white"}} className="themecolor p-4 "><a style={{left: "-4px", position: "relative"}}>{userInfo.name.slice(0,1)}</a></b>
-                            } />) : (<Tab value={routes[3]} sx={{"&.MuiButtonBase-root": {minWidth:0, padding:"1px 10px"},}} onClick={openLogin} icon={<PersonIcon sx={{ fontSize: 28 }} />} />) }            
-            
-          </Tabs>
-         </div>
+    <>
+      <div className={tabsStyles.backgcoverticalcenter}>
+        <div className={tabsStyles.bottomnav} style={{bottom: visible ? '10px' : '-60px',}} >
+          {route == "home" ? 
+            <div onClick={ async () => {await router.push('/');}} className='grid gap-0.5 justify-center items-center text-sm'>
+              <div className='w-1.5 h-1.5 justify-self-center bg-amber-500 rounded-full'></div>
+              <div> HOME </div>
+            </div>
+            : route == "categories" &&
+            <div style={{minWidth:0, padding:"1px 10px"}} onClick={() => {setRoute("home"); router.push("/"); SetOpenCategory(false)}}>
+              <RiHome5Line/>
+            </div>
+          }
+          {route == "categories" ? 
+            <div onClick={() => SetOpenCategory(true)} className='grid gap-0.5 justify-center items-center text-sm'>
+              <div className='w-1.5 h-1.5 justify-self-center bg-amber-500 rounded-full'></div>
+              <div> CATEGORIES </div>
+            </div>
+            : route == "home" &&
+            <div style={{minWidth:0, padding:"1px 10px"}} onClick={() => {setRoute("categories"); SetOpenCategory(true)}}>
+              <BiCategoryAlt/>
+            </div>
+          }
+          <div style={{minWidth:0, padding:"1px 10px"}} className='relative' onClick={handleOpenBag}>
+            <GiHanger style={{left: '-1.5px'}} className='scale-x-125 absolute'/>
+          </div>
+          <div style={{minWidth:0, padding:"1px 10px"}} className='relative' onClick={handleCartopen}>
+            <FiShoppingBag/>
+            {cart.cartItems.length > 0 && <div style={{transform: 'translateY(-5px)'}} className='top-0.5 right-0.5 absolute text-xs border-2 text-amber-500 border-amber-500 bg-tabb w-5 h-5 flex justify-center items-center rounded-full'> {cart.cartItems.length} </div>}
+          </div>
         </div>
+      </div>
+      <CategoriesPage 
+        SetOpenCategory={SetOpenCategory} 
+        openCategory={openCategory} 
+        setRoute={setRoute}
+      />
+    </>
   );
 }

@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import Pendingps from './AdminPendingPs';
 import AdminProds from './AdminProduct';
 import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { 
   IconButton,
   InputBase,
-  CircularProgress,
 } from '@material-ui/core';
-import axios from 'axios';
 
-function Products({ createHandler, fetchProducts, showSearch, setSearch, setShowSearch, search, filteredData, debounce, filterData, setProducts, setFetchProgres, setShow, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, products, Tabs, Tab, TabPanel, TabContext, current}) {
+function Products({ fetchProducts, fetchPendingPs, pendingProducts, showSearch, setSearch, setShowSearch, filteredData, debounce, filterData, setProducts, setFetchProgres, setShow, admin, Navigation, FreeMode, Thumbs, Pagination, Autoplay, Swiper, SwiperSlide, classes, products, Tabs, Tab, TabPanel, TabContext, current}) {
   
-  const [showCreate, setshowCreate] = useState(false);
-  const producttabs = [ 'All Products', 'Out of Stock', 'Less Than Five', 'Best Selling', 'Least Selling', 'Most Loved', 'On Offer', 'Editors Pics'];
+  const producttabs = [ 'All Products', 'Pending products', 'Out of Stock', 'Less Than Five', 'Best Selling', 'Least Selling', 'Most Loved', 'On Offer', 'Editors Pics'];
   const [currenttab,  setTab] = useState('All Products');
-  const [fetchingp, setFetching] =  useState(false);
   const setCurrentTab = ( event, newPage ) => {
   	setTab(newPage)
   }
@@ -38,7 +35,8 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <Tabs onChange={setCurrentTab} variant="scrollable" scrollButtons="auto"  value={currenttab} classes={{ indicator:classes.ndicatenone}} sx={{"& .MuiTab-root.Mui-selected": {color:"white", backgroundColor:"#222"},"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} >
             {producttabs.map((tab)=>(
               <Tab 
-                value={tab} 
+                value={tab}
+                key={tab} 
                 label={tab == 'Out of Stock' ? tab + " " + OutofStock.length 
                        : tab == 'Less Than Five' ? tab + " " +  LessthanFive.length 
                        : tab == 'On Offer' ? tab + " " +  offers.length : tab } 
@@ -49,9 +47,9 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           </Tabs>
         </div>
         <div>
-          {!showSearch ? <div onClick={() => {setShowSearch(true)}} className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 1200, left: 0, height: 'fit-content' }}> <SearchIcon sx={{fontSize:10}} /></div> :
+          {!showSearch ? <div onClick={() => {setShowSearch(true)}} className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 40, left: 0, height: 'fit-content' }}> <SearchIcon sx={{fontSize:10}} /></div> :
             <div className={classes.smseachbg + " " + admin.searchheight} 
-              style={{ position: "fixed", zIndex: 1210, left: showSearch ? '0' : '120vw', background: 'white',  width: "100vw"}}
+              style={{ position: "fixed", zIndex: 40, left: showSearch ? '0' : '120vw', background: 'white',  width: "100vw"}}
              >
               <div className={classes.reviewTopTab}>
                 <ArrowBackIosIcon onClick={() => {setShowSearch(false)}} sx={{fontSize:10, float:"left", marginTop: 1.5}} />
@@ -84,6 +82,7 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
                   {filteredData.products.map((product) => {
                     return (
                       <AdminProds
+                        key={product}
                         product={product}
                         Navigation={Navigation}
                         FreeMode={FreeMode}
@@ -93,7 +92,6 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
                         Swiper={Swiper}
                         admin={admin}
                         SwiperSlide={SwiperSlide}
-                        deleteHandler={deleteHandler}
                         setFetchProgres={setFetchProgres}
                         setShow={setShow}
                         setProducts={setProducts}
@@ -105,27 +103,47 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
             </div>
           }
         </div>
-        <>
-          { fetchingp ? <CircularProgress className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 1200, right: 0, height: 'fit-content', fontWeight: 700 }}/> : 
-            <div onClick={createHandler} className={admin.searchbtn} style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 10 , zIndex: 1200, right: 0, height: 'fit-content', fontWeight: 700 }}> Create </div>
-          }
-        </>
         <TabPanel value='All Products' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
           <div className={admin.productsgridding}>
            {products.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
+             />
+             ))
+            }
+          </div>
+        </TabPanel>
+        <TabPanel value='Pending products' style={{ backgroundColor: 'rgba(209, 214, 224, 0.4)', padding: 16, width: '100%'}}>
+          <div className={admin.productsgridding}>
+           {pendingProducts.map((product) =>(
+              <Pendingps
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
+                Swiper={Swiper}
+                fetchProducts={fetchProducts}
+                fetchPendingPs={fetchPendingPs}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -135,18 +153,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {OutofStock.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -156,18 +175,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {LessthanFive.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -177,18 +197,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {bestSelling.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -198,18 +219,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {leastSelling.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -219,18 +241,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {mostLoved.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -240,18 +263,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {offers.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
@@ -261,18 +285,19 @@ function Products({ createHandler, fetchProducts, showSearch, setSearch, setShow
           <div className={admin.productsgridding}>
            {editorspics.map((product) =>(
               <AdminProds
-               product={product}
-               Navigation={Navigation}
-               FreeMode={FreeMode}
-               Thumbs={Thumbs}
-               Pagination={Pagination}
-               Autoplay={Autoplay}
+                key={product}
+                product={product}
+                Navigation={Navigation}
+                FreeMode={FreeMode}
+                Thumbs={Thumbs}
+                Pagination={Pagination}
+                Autoplay={Autoplay}
                 Swiper={Swiper}
-               admin={admin}
-               SwiperSlide={SwiperSlide}
-               setFetchProgres={setFetchProgres}
-               setShow={setShow}
-               setProducts={setProducts}
+                admin={admin}
+                SwiperSlide={SwiperSlide}
+                setFetchProgres={setFetchProgres}
+                setShow={setShow}
+                setProducts={setProducts}
              />
              ))
             }
