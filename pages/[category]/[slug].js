@@ -74,7 +74,7 @@ const Home = ({ products, shop }) => {
 };
 export async function getServerSideProps() {
   await db.connect();
-  const products = await Product.find({}, { reviews: 0, color: 0, distinctCateg: 0, gallery: 0, favourites: 0, carts: 0, views: 0, pageViews: 0, ordered: 0, description: 0 }).lean(24);
+  const products = await Product.find({}, { reviews: 0, color: 0, distinctCateg: 0, gallery: 0, favourites: 0, carts: 0, views: 0, pageViews: 0, ordered: 0, description: 0 }).lean().limit(24);
   const shop = await Shop.find({}, { user: 0, orderedItems: 0, message: 0, sales: 0 }).lean();
   await db.disconnect();
   
