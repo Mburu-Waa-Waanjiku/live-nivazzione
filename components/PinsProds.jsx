@@ -105,7 +105,7 @@ export default function ProductItem({ product }) {
     <HeadersContainer data={addProductJsonLd()} />
     <div className="gallery">
       <div className='flex justify-end w-fitdiv'>
-        <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck relative text-lg heart-anim bg-grayb text-white m-2 z-30 float-right" >
+        <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck text-lg heart-anim bg-grayb text-white m-2 z-30 float-right" >
           {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
         </div>
       </div>

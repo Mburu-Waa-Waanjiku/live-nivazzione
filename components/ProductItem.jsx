@@ -131,7 +131,7 @@ export default function ProductItem({ product }) {
           }
         </div>
         <div className='flex justify-end w-fitdiv'>
-          <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck relative text-lg heart-anim bg-grayb text-white mt-4 mx-2 z-30 float-right" >
+          <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck text-lg heart-anim bg-grayb text-white mt-4 mx-2 z-30 float-right" >
             {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
           </div>
         </div>
@@ -147,10 +147,10 @@ export default function ProductItem({ product }) {
         </Link>
         <div className='flex px-2 pb-2 w-full justify-between'>
           <div className="flex flex-col" >
-            <div className=" text-base font-bold ">Ksh{product.price}</div>
-            {product.isOnoffer && <div className="text-sm font-semibold " style={{ color: 'orangered'}}><s>Ksh.{product.prevprice}</s></div>}
+            <div className=" text-base font-bold ">Ksh{product.sizes[0].price}</div>
+            {product.isOnoffer && <div className="text-sm hidden font-semibold " style={{ color: 'orangered'}}><s>Ksh.{product.prevprice}</s></div>}
           </div>
-          <div className="pr-2 text-xl" >
+          <div style={{ transform:'translate(-7px, 3px)'}} className=" text-xl" >
             { product.countInStock < 1 ? <BsBagX/> : existItem ? <BsBagDashFill onClick={() => removeItemHandler(product)} className='c-grayb'/> : <BsBagPlus onClick={() => addToCartHandler(product)}/> }
           </div>
         </div>
