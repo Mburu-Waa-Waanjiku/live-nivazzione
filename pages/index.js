@@ -2,7 +2,6 @@ import React from 'react';
 import db from '../utils/db'; 
 import Product from '../models/Product';
 import Shop from '../models/Shop';
-import Banner from '../models/Banner';
 import Tabsbottom from '../components/Tabsbottom';
 import Headers from '../components/HeadersContainer';
 import PinsProds from '../components/PinsProds'
