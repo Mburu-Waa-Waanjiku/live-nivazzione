@@ -77,16 +77,12 @@ export async function getServerSideProps() {
   await db.connect();
   const products = await Product.find({}, { reviews: 0, color: 0, distinctCateg: 0, gallery: 0, favourites: 0, carts: 0, views: 0, pageViews: 0, ordered: 0, description: 0 }).lean();
   const shop = await Shop.find({}, { user: 0, orderedItems: 0, message: 0, sales: 0 }).lean();
-  const banner = await Banner.find().lean();
-  const categories = await Product.find().distinct('category');
   await db.disconnect();
   
   return {
     props: {
       products: products.map(db.convertDocToObj),
       shop: shop.map(db.convertDocToObj),
-      banner: banner.map(db.convertDocToObj),
-      categories,
     },
   };
 }
