@@ -47,10 +47,10 @@ const shopSchema = new mongoose.Schema(
   { 
     shopName: { type: String, required: true, unique: true },
     logo: { type: String, required: true },
-    follows: [FollowersDate],
     coverPhoto: { type: String, required: true},
     user: { type: mongoose.Schema.Types.ObjectId, required: true },
     orderedItems: [shopOrders],
+    follows: [FollowersDate],
     ratings: { type: Number, required: true, default: 4.5 },
     message: [Shopmessages],
     sales: { type: Number, required: true, default: 241}

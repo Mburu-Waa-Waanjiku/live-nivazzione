@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import Shop from './Shop';
+import User from './User';
 
 const reviewSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: User, required: true },
     name: { type: String, required: true },
     rating: { type: Number, default: 0 },
     comment: { type: String, required: true },
@@ -14,7 +15,7 @@ const reviewSchema = new mongoose.Schema(
 );
 const favsData = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: User, required: true },
     name: { type: Number, required: true, default: 1 },
   },
   {

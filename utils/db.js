@@ -41,12 +41,13 @@ function convertSizeToObj(sz) {
 }
 function convertDocToObj(doc) {
   doc._id = doc._id.toString();
-  doc.createdAt = doc.createdAt.toString();
+  doc.createdAt = doc.createdAt?.toString() || null;
   doc.shopId = doc.shopId?.toString() || null;
+  doc.logo = doc.logo?.toString() || null;
   doc.sizes = doc.sizes?.map(convertSizeToObj) || null;
   doc.color = doc.color?.map(convertSizeToObj) || null;
   doc.favourites = doc.favourites?.map(convertSizeToObj) || null;
-  doc.updatedAt = doc.updatedAt.toString();
+  doc.updatedAt = doc.updatedAt?.toString() || null;
   return doc;
 } 
 function convertRevDocToObj(doc) {
@@ -58,5 +59,5 @@ function convertRevDocToObj(doc) {
   return doc;
 }
 
-const db = { connect, disconnect, convertDocToObj, convertRevDocToObj };
+const db = { connect, disconnect, convertDocToObj, convertRevDocToObj, };
 export default db;
