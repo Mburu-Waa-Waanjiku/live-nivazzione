@@ -15,13 +15,6 @@ const Home = ({ products, shop }) => {
 
   return (
     <Layout>
-      <Headers 
-        title="SHIGLAM KENYA ,Get Exclusive offers on Latest trends in  Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelry in NAIROBI & its enirons."
-        desc="SHIGLAM offers Exclusive discounts and the latest trends at SHIGLAM KENYA — NAIROBI — Women's Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more. ✓ Free Shipping On Orders ..." 
-        socialtitle="SHIGLAM KENYA ,Get Exclusive offers on Latest trends in Fashon & Jewelry | Women's Earrings, Waist beads, Rings, Makeup products, Anclets — Ancle Bracelets and more on jewelty in NAIROBI & its enirons." 
-        socialdesc="Get Exclusive discounts on the latest trends in Women's Jewelry — Earrings, Waist beads, Finger rings, Glam-Makeup products, Anclets and more Jewelries at SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
-        socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
-      />
       <div className='flex gap-3 p-4'>
         <div onClick={() => setHomeTab("Trending")} className={' font-medium text-center flex-grow text-base rounded-full px-8 pt-3 pb-3.5 '.concat(hometab == "Trending" ? 'bg-grayb text-white' : 'bg-grayw text-black')}>
           Trending
