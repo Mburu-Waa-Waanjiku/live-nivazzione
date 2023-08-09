@@ -4,11 +4,6 @@ import Head from 'next/head'
 export default function HeadersContainer({ data, title, desc, socialtitle, socialimages, socialdesc, scdinfo }) {
 	return (
 		<Head>
-      <script
-        key="product-jsonld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={data}
-      />
       <title>{title ? `${title} - shiglam` : 'shiglam '}</title>
         {desc && <meta 
           name="description" 
@@ -36,6 +31,11 @@ export default function HeadersContainer({ data, title, desc, socialtitle, socia
         />}
         <link rel="icon" href="/shiglama.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
+        <script
+          key="product-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={data}
+        />
     </Head>
 	)
 }

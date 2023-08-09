@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useContext } from 'react';
 import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
-import useStyles from '../utils/styles';
 import HeadersContainer from './HeadersContainer';
 import { Store } from '../utils/Store';
 import home from '../styles/Home.module.css';
@@ -10,11 +9,10 @@ import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import axios from 'axios';
 
 export default function ProductItem({ product }) {
-  const classes = useStyles();
   const [fill, setFill] = useState(false);
   const [fillFav, setFillFav] = useState(false);
   const { state, dispatch } = useContext(Store);
-  const {userInfo, favourites } = state;
+  const {userInfo } = state;
   const existItem = state.cart.cartItems.find((x) => x._id === product._id);
   const existFav = state.favourites.find((x) => x._id === product._id);
  
@@ -41,14 +39,14 @@ export default function ProductItem({ product }) {
       return;
     }
     dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
-    const { data } = await axios.post(`/api/products/${product._id}/${userInfo?._id}`);
+    await axios.post(`/api/products/${product._id}/${userInfo?._id}`);
 
   };
   
   const removeFavHandler = async (product) => {
     setFillFav(false);
     dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
-    const { data } = await axios.delete(`/api/products/${product._id}/${userInfo?._id}`);
+    await axios.delete(`/api/products/${product._id}/${userInfo?._id}`);
   };
 
 
@@ -121,8 +119,8 @@ export default function ProductItem({ product }) {
           </div>
         )
       }
-      <Link href={`${product.category}/${product.slug}`}>
-        <a className="bg-gray-100 rounded-xl">
+      <Link href={`${product.category}/${product.slug}`} legacyBehavior>
+        <div className="bg-gray-100 rounded-xl">
           <Image
             width={364}
             height={484}
@@ -131,7 +129,7 @@ export default function ProductItem({ product }) {
             style={{borderRadius: 22}}
             className=" shadow object-cover bg-gray-100 h-auto w-100"
           />
-        </a>
+        </div>
       </Link>
       <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={() => addToCartHandler(product)}>
         {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }

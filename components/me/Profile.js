@@ -71,7 +71,7 @@ function Profile({ dispatch, userInfo, classes }) {
   };
 
   return (
-	<div style={{borderTop: '1px solid rgba(0, 0, 0, 0.12)'}} className="grid sm:grid-cols-2">
+    <div style={{borderTop: '1px solid rgba(0, 0, 0, 0.12)'}} className="grid sm:grid-cols-2">
 	  <div className="grid justify-center profileborder ">
 	    <div className="w-full text-center text-xl p-4">
 	      {userInfo.name}
@@ -395,7 +395,7 @@ function Profile({ dispatch, userInfo, classes }) {
       </div>
 	  </div>
 	</div>
-  )
+  );
 }
 
 export default Profile

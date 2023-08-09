@@ -477,7 +477,7 @@ function Logger() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Logger               

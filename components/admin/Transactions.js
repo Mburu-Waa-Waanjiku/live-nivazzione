@@ -14,8 +14,8 @@ function Orders({ userInfo, admin, classes, transactions, Tabs, Tab, TabPanel, T
 	  <TabContext value={currenttab}>
         <div className={admin.tabsfloat + " " + "grid justify-center"}>
           <Tabs onChange={setCurrentTab} variant="scrollable" scrollButtons="auto"  value={currenttab} classes={{ indicator:classes.ndicatenone}} sx={{"& .MuiTab-root.Mui-selected": {color:"white", backgroundColor:"#222"},"& .MuiButtonBase-root": {textTransform: "none", minInlineSize: "max-content" }, }} >
-            {orderTabs.map((tab)=>(
-              <Tab value={tab} label={tab +' '+transactions.length} classes={{ root: classes.roundedTab }} style={{ fontWeight: 'bold', maxWidth:360, border: '2px solid #222', transform: 'translateX(4px)', margin:3}}/>
+            {orderTabs.map((tab, index)=>(
+              <Tab key={index} value={tab} label={tab +' '+transactions.length} classes={{ root: classes.roundedTab }} style={{ fontWeight: 'bold', maxWidth:360, border: '2px solid #222', transform: 'translateX(4px)', margin:3}}/>
               ))
             }
           </Tabs>

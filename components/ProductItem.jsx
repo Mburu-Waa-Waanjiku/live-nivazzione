@@ -117,7 +117,10 @@ export default function ProductItem({ product }) {
             {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
           </div>
         </div>
-        <Link href={`https://www.shiglam.com/${product.category}/${product.slug}`}>
+        <Link
+          href={`https://www.shiglam.com/${product.category}/${product.slug}`}
+          legacyBehavior>
+          <a>
           <Image
             width={364}
             height={484}
@@ -126,6 +129,7 @@ export default function ProductItem({ product }) {
             alt={product.name}
             className="shadow  object-cover h-auto w-100 pulse"
           />
+          </a>
         </Link>
         <div className='flex px-2 pb-2 w-full justify-between'>
           <div className="flex flex-col" >

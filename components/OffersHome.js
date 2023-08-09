@@ -71,24 +71,24 @@ function OffersHome({product}) {
     }
 
 	return (
-		<div>
-          <HeadersContainer data={addProductJsonLd()} />
-            <div className={classes.newpost} style={{backgroundColor: '#ffdf00'}}>{percent}%<CgBolt style={{fontSize:16}} /></div>
-            <Link href={`${product.category}/${product.slug}`}>
-                <Image
-                    width={364}
-                    height={484}
-                    src={product.image[0].item}
-                    alt={product.name}
-                    className="shadow object-cover h-auto w-100 bg-gray-100"
-                />
-            </Link> 
-            <div style={{display: 'flex', gap: 10}}>
-                    <div className={classes.price}>Ksh.{product.price}</div>
-                    <div className={classes.prevprice}><s>Ksh.{product.prevprice}</s></div>
-            </div>
-		</div>
-	)
+      <div>
+        <HeadersContainer data={addProductJsonLd()} />
+          <div className={classes.newpost} style={{backgroundColor: '#ffdf00'}}>{percent}%<CgBolt style={{fontSize:16}} /></div>
+          <Link href={`${product.category}/${product.slug}`} legacyBehavior>
+              <Image
+                  width={364}
+                  height={484}
+                  src={product.image[0].item}
+                  alt={product.name}
+                  className="shadow object-cover h-auto w-100 bg-gray-100"
+              />
+          </Link> 
+          <div style={{display: 'flex', gap: 10}}>
+                  <div className={classes.price}>Ksh.{product.price}</div>
+                  <div className={classes.prevprice}><s>Ksh.{product.prevprice}</s></div>
+          </div>
+      </div>
+    );
 }
 
 export default OffersHome

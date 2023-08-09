@@ -451,7 +451,7 @@ function Pay() {
                           color="primary"
                           style={{fontFamily: "monospace", borderRadius: '50px', backgroundColor: '#222', padding: "8px 35px"}}
                         >
-                          {confirming ? (<div> RESEND </div>) : (<div> SEND </div>)}
+                          {confirming ? (<span> RESEND </span>) : (<span> SEND </span>)}
                         </Button>
                       </div>
                     </form>
@@ -1058,7 +1058,9 @@ function Pay() {
                         </Button>
                       </ListItem>
                       <div className="fixed p-5" style={{bottom:'2vh', right:'2vh'}}>
-                        <Link href="https://wa.me/254103477957?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20...." >
+                        <Link
+                          href="https://wa.me/254103477957?text=Hello,%20I'm%20Jane.I'd%20like%20your%20help%20...."
+                          legacyBehavior>
                           <i style={{color:"white", padding:"10px 11px", fontSize:"40px", borderRadius:"50px", margin:"4px", backgroundColor:"#30d04a"}} className="fa fa-whatsapp whatsapp-icon"></i>
                         </Link>
                       </div>
@@ -1072,7 +1074,7 @@ function Pay() {
         </div> 
       </div>
     </div>
-  )
+  );
 }
 
 export default Pay

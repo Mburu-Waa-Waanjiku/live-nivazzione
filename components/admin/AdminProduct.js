@@ -77,7 +77,7 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
   };
 
   return (
-	<div style={{ height: 'fit-content', border: '8px solid white', boxShadow: '0 1px 2px rgba(0,0,0,.2)' }}>
+    <div style={{ height: 'fit-content', border: '8px solid white', boxShadow: '0 1px 2px rgba(0,0,0,.2)' }}>
 	  <div style={{display: 'grid', backgroundColor: 'white', gridTemplateRows: '1fr 80px'}}>
         <Swiper   
           breakpoints={{
@@ -94,7 +94,9 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
         >
           {product.image.map((img) => (
             <SwiperSlide style={{borderRadius: 15, height: 'calc(100% - 5px)', overflow: 'hidden'}} key={img} >
-              <Link href={`https://www.shiglam.com/${product.category}/${product.slug}`}>
+              <Link
+                href={`https://www.shiglam.com/${product.category}/${product.slug}`}
+                legacyBehavior>
                 <Image
                   src={img.item}
                   width={180}
@@ -196,7 +198,7 @@ function AdminProduct({ setProducts, setFetchProgres, setShow, admin, product, N
         </div>
 	  </div>
 	</div>
-  )
+  );
 }
 
 export default AdminProduct

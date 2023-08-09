@@ -111,36 +111,34 @@ function BestSeller({ product }) {
   const percent = round0(sales/product.initialStock * 100);
 
 	return (
-		<div className="card">
-      <HeadersContainer data={addProductJsonLd()} />
-      <div className="gallery" style={{borderRadius: 0}}>
-        <div>
-          <div style={{ margin: '8px 4px', padding: 6, width: 40,  backgroundColor: '#222', color: 'white', borderRadius: 50 }} className="salesticker"><div>{percent}%</div><div>SOLD</div></div>
-        </div>
-        <Link href={`${product.category}/${product.slug}`}>
-          <a>
-            <Image
-              width={364}
-              height={484}
-              src={product.image && product.image[0].item}
-              alt={product.name}
-              className="shadow object-cover bg-gray-100 h-auto w-100"
-            />
-          </a>
-        </Link>
-        <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={() => addToCartHandler(product)}>
-          {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }
-        </div>
-        <div className="flex justify-end">
-          <div style={{position: "relative", right: "-20px" }} className="flex justify-end">
-            <div style={{animation: fillFav ? 'scaler 1.5s' : 'none', transform:'translate(8px, 40px)', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.4)'}} className="heart-ck heart-anim" >
-              {existFav ? <BsHeartFill onClick={() => removeFavHandler(product)} /> : <BsHeart onClick={() => addToFavsHandler(product)} /> }
-            </div>
+      <div className="card">
+    <HeadersContainer data={addProductJsonLd()} />
+    <div className="gallery" style={{borderRadius: 0}}>
+      <div>
+        <div style={{ margin: '8px 4px', padding: 6, width: 40,  backgroundColor: '#222', color: 'white', borderRadius: 50 }} className="salesticker"><div>{percent}%</div><div>SOLD</div></div>
+      </div>
+      <Link href={`${product.category}/${product.slug}`} legacyBehavior>
+          <Image
+            width={364}
+            height={484}
+            src={product.image && product.image[0].item}
+            alt={product.name}
+            className="shadow object-cover bg-gray-100 h-auto w-100"
+          />
+      </Link>
+      <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck heart-anim"  onClick={() => addToCartHandler(product)}>
+        {existItem ? <HiShoppingCart/> : <HiOutlineShoppingCart/> }
+      </div>
+      <div className="flex justify-end">
+        <div style={{position: "relative", right: "-20px" }} className="flex justify-end">
+          <div style={{animation: fillFav ? 'scaler 1.5s' : 'none', transform:'translate(8px, 40px)', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.4)'}} className="heart-ck heart-anim" >
+            {existFav ? <BsHeartFill onClick={() => removeFavHandler(product)} /> : <BsHeart onClick={() => addToFavsHandler(product)} /> }
           </div>
         </div>
       </div>
     </div>
-	)
+  </div>
+    );
 }
 
 export default BestSeller

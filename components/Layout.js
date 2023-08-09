@@ -33,6 +33,7 @@ export default function Layout({ children }) {
   const router = useRouter();
   const { divstick, login, openLogin, handleOpenBag, viewOpenHandler, handleCartopen, setRoute, route } = useStateContext();
   const { state, dispatch } = useContext(Store);
+  const [view, setView] = useState(false);
   const { userInfo, cart, notifications } = state;
   const notesLength = [...notifications.filter((notification) => !notification.isViewed )];
   
@@ -58,6 +59,7 @@ export default function Layout({ children }) {
   };
   
   useEffect(() => {
+    setView(true)
     fetchNotes();
   }, []);
   
@@ -105,9 +107,10 @@ export default function Layout({ children }) {
           <div className='flex-grow hidden slg:block'>
             <Search/>
           </div>
-          <IconButton onClick={viewOpenHandler} className='justify-items-end'>
+          <IconButton onClick={notesLength.length > 0 ? viewOpenHandler : viewOpenHandler} className='justify-items-end'>
             {notesLength.length > 0 ? (
               <Badge
+                overlap="rectangular"
                 classes={{ badge: classes.badgeLg }}
                 badgeContent={notesLength.length}
               >
@@ -115,10 +118,11 @@ export default function Layout({ children }) {
               </Badge>
             ) : (
               <Badge
+                overlap="rectangular"
                 classes={{ badge: classes.badgetab }}
                 badgeContent={''}
               >
-                <IoNotificationsOutline onClick={viewOpenHandler} style={{ fontSize: 28, color:' black' }}/>
+                <IoNotificationsOutline  style={{ fontSize: 28, color:' black' }}/>
               </Badge>
             )}
           </IconButton>
@@ -127,21 +131,33 @@ export default function Layout({ children }) {
               <GiHanger className='text-black'/>
             </IconButton>
           </div>
-          <div className='hidden xsm:block'>
-            <IconButton >
-              <div className='relative text-black' onClick={handleCartopen}>
+          <div className='hidden relative xsm:block'>
+            {view &&
+              <>
+                {cart.cartItems.length > 0 && 
+                  <div 
+                    style={{transform: 'translate(-4px, 5px)'}} 
+                    className='top-0 right-0 absolute text-xs z-10 border-2 text-white border-white bg-tabb w-5 h-5 flex justify-center items-center rounded-full'> 
+                    {cart.cartItems.length} 
+                  </div>
+                }
+              </>
+            }
+            <IconButton onClick={handleCartopen} >
                 <FiShoppingBag/>
-                {cart.cartItems.length > 0 && <div style={{transform: 'translate(9px, -5px)'}} className='top-0 right-0 absolute text-xs border-2 text-white border-white bg-tabb w-5 h-5 flex justify-center items-center rounded-full'> {cart.cartItems.length} </div>}
-              </div>
             </IconButton>
           </div>
-          {userInfo ? (
-              <b className='w-12 h-12 text-xl ml-2 bg-grayb rounded-full text-white flex justify-center items-center' onClick={() => setUserlinks(true)}>{userInfo.name.slice(0,1)}</b>
-            ) : (
-              <IconButton>
-                <FiUser onClick={openLogin} className='text-3xl ml-2' />
-              </IconButton>
-            )
+          {view &&
+            <>
+              {userInfo ? (
+                  <b className='w-12 h-12 text-xl ml-2 bg-grayb rounded-full text-white flex justify-center items-center' onClick={() => setUserlinks(true)}>{userInfo.name.slice(0,1)}</b>
+                ) : (
+                  <IconButton onClick={openLogin}>
+                    <FiUser  className='text-3xl ml-2' />
+                  </IconButton>
+                )
+              }
+            </>
           }
         </div>
       </div>
@@ -161,33 +177,41 @@ export default function Layout({ children }) {
           </div>
           <div className="flex items-center" onClick={() => {logoutClickHandler(); setUserlinks(false)}} >
             <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="flex text-lg justify-center items-center themecolor p-4 font-black">
-              {userInfo?.name.toUpperCase().slice(0,1)}
+            {view &&
+              <>{userInfo?.name.toUpperCase().slice(0,1)}</>
+            }
             </div>
             <div className="p-2 text-base font-black">
               Log Out
             </div>
           </div>
-          {userInfo?.isAffiliate && 
-            <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center"  >
-              <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
-                <GiReceiveMoney />
-              </div>
-              <div className="p-2 text-base font-black">
-                Affiliate
-              </div>
-            </div>
-          }
-          {userInfo?.isSeller &&
-            <Link href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" } >
-              <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
-                <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
-                  <BsShop />
+          {view &&
+            <>
+              {userInfo?.isAffiliate && 
+                <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center"  >
+                  <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                    <GiReceiveMoney />
+                  </div>
+                  <div className="p-2 text-base font-black">
+                    Affiliate
+                  </div>
                 </div>
-                <div className="p-2 text-base font-black">
-                  My Shop
-                </div>
-              </div>
-            </Link>
+              }
+              {userInfo?.isSeller &&
+                <Link
+                  href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" }
+                  legacyBehavior>
+                  <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
+                    <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                      <BsShop />
+                    </div>
+                    <div className="p-2 text-base font-black">
+                      My Shop
+                    </div>
+                  </div>
+                </Link>
+              }
+            </>
           }
         </div>
       </div>
@@ -195,7 +219,9 @@ export default function Layout({ children }) {
         <div className='relative z-10 box-border gap-2 flex-col justify-center items-center w-full h-full flex'>
           <div className="flex items-center" onClick={() => {logoutClickHandler(); setUserlinks(false)}} >
             <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="flex text-lg justify-center items-center themecolor p-4 font-black">
-              {userInfo?.name.toUpperCase().slice(0,1)}
+            {view &&
+              <>{userInfo?.name.toUpperCase().slice(0,1)}</>
+            }
             </div>
             <div className="p-2 text-base font-black">
               Log Out
@@ -212,27 +238,33 @@ export default function Layout({ children }) {
           <div onClick={() => setUserlinks(false)} className='absolute text-xl top-0 right-3'>
             <IoIosArrowDown/>
           </div>
-          {userInfo?.isAffiliate && 
-            <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center"  >
-              <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
-                <GiReceiveMoney />
-              </div>
-              <div className="p-2 text-base font-black">
-                Affiliate
-              </div>
-            </div>
-          }
-          {userInfo?.isSeller &&
-            <Link href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" } >
-              <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
-                <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
-                  <BsShop />
+          {view &&
+            <>
+              {userInfo?.isAffiliate && 
+                <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center"  >
+                  <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                    <GiReceiveMoney />
+                  </div>
+                  <div className="p-2 text-base font-black">
+                    Affiliate
+                  </div>
                 </div>
-                <div className="p-2 text-base font-black">
-                  My Shop
-                </div>
-              </div>
-            </Link>
+              }
+              {userInfo?.isSeller &&
+                <Link
+                  href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" }
+                  legacyBehavior>
+                  <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
+                    <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                      <BsShop />
+                    </div>
+                    <div className="p-2 text-base font-black">
+                      My Shop
+                    </div>
+                  </div>
+                </Link>
+              }
+            </>
           }
         </div>
       </div>

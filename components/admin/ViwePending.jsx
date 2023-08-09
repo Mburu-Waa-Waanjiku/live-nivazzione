@@ -10,7 +10,6 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { PiCoatHangerFill } from 'react-icons/pi';
 import Image from 'next/image';
 import { VscVerifiedFilled } from 'react-icons/vsc';
-import { BiMessageRounded } from 'react-icons/bi';
 import UpdateProds from './UpdateProds';
 import Texter from './Texter';
 

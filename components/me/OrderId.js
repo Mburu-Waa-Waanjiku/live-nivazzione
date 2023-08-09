@@ -3,7 +3,6 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import {
   Grid,
   Typography,
-  TextField,
   CircularProgress,
   Button,
   List,
@@ -29,20 +28,20 @@ function OrderId({ order, classes, userInfo }) {
     setOpenId(true);
     console.log("opened");
   }
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [load, setLoad] = useState(false);
   
   async function deliverOrderHandler() {
     setLoad(true);
     try {
-      const { data } = await axios.put(
+      await axios.put(
         `/api/orders/${order._id}/deliver`,
         {},
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
-      const { message } = await axios.put(
+      await axios.put(
         `/api/orders/${order._id}/${userInfo._id}`,
         {},
         {

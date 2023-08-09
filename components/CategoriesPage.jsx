@@ -34,8 +34,8 @@ function CategoriesPage({ openCategory }) {
         <div className='flex pb-20 justify-center'>
           {banner ? 
             <div className='columns-1 sm:columns-2 sm:max-w-xl md:columns-3 md:max-w-4xl lg:columns-4 lg:max-w-7xl'>
-              {banner.map((categ) => (
-                <Link key={categ} href={`/${categ.midText.replace(" ", "-")}`}>
+              {banner.map((categ, index) => (
+                <Link key={index} href={`/${categ.midText.replace(" ", "-")}`} legacyBehavior>
                   <div  className='px-1 py-1'>
                     <Mycategs
                       categ={categ}
@@ -51,7 +51,7 @@ function CategoriesPage({ openCategory }) {
         </div>
       </Layout>
     </div>
-  )
+  );
 }
 
 export default CategoriesPage

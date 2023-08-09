@@ -34,9 +34,9 @@ function View() {
               <Loader/>
             </div>
           }
-          {sortedNotes?.map((notification) =>( 
+          {sortedNotes?.map((notification, index) =>( 
             <Notes
-              key={notification}
+              key={index}
               notification = {notification}
               classes={classes}
               dispatch = {dispatch}
