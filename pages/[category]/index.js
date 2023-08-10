@@ -157,7 +157,7 @@ export async function getStaticPaths() {
  
   // Get the paths we want to pre-render based on posts
   const paths = categs.map((categ) => ({
-    params: { category: changeCateg(shop._id) },
+    params: { category: changeCateg(categ.midText) },
   }))
  
   return { paths, fallback: 'blocking' }
