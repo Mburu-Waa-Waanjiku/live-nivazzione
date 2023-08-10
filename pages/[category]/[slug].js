@@ -388,15 +388,15 @@ export default function ProductScreen(props) {
     <div className='w-full flex text-xl justify-center pt-10 pb-4 font-bold title-font'>
       You may also like
     </div>
-    <div className='flex px-4 justify-center'>
-      <div className='columns-2 pb-4 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-4xl lg:columns-5 lg:max-w-7xl'>
-        {similarProds.map((product) => (
-          <div key={product} className='px-1 py-1'>
+    <div className='w-full px-1.5'>
+      <div className='columns-2 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-5xl '>
+        {similarProds.map((product, index) => (
+          <div key={index} className='px-1 py-1'>
             <ProductItems
               product={product}
             />
           </div>
-          ))}
+        ))}
       </div>
     </div>
     {login && <DynamicLogger/>}
