@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useContext } from 'react';
-import HeadersContainer from './HeadersContainer';
 import { BsBagDashFill, BsBagPlus } from 'react-icons/bs';
-import { Store } from '../utils/Store';
-import axios from 'axios';
+import HeadersContainer from './HeadersContainer';
 import { PiCoatHangerFill } from 'react-icons/pi';
 import { GiHanger } from 'react-icons/gi';
+import { Store } from '../utils/Store';
+import axios from 'axios';
 
-export default function ProductItem({ product }) {
+export default function ProductItem({ product, shop }) {
 
   const { state, dispatch } = useContext(Store);
   const {userInfo} = state;
@@ -53,94 +53,90 @@ export default function ProductItem({ product }) {
   const offerStock = Math.floor(Math.random() * 20) + 1;
 
   const jsdschema = {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    name: product.name,
-    image: [ 
-              product.image[0].item,
-              product.image[1]?.item 
-            ],
-    description: product.description,
-    brand: {
-      "@type": "Brand",
-      name: product.brand
-    },
-    review: {
-      "@type": "Review",
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: 5,
-        bestRating: 5
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      name: product.name,
+      image: [ 
+                product.image[0].item,
+                product.image[1]?.item 
+              ],
+      description: product.description,
+      brand: {
+        "@type": "Brand",
+        name: product.brand
       },
-      author: {
-        "@type": "Person",
-        name: "Diane"
+      review: {
+        "@type": "Review",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: 5,
+          bestRating: 5
+        },
+        author: {
+          "@type": "Person",
+          name: "Diane"
+        }
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: product.rating,
+        reviewCount: revCount
+      },
+      offers: {
+        "@type": "Offer",
+        url: URL,
+        offerCount: offerStock,
+        priceCurrency: "KES",
+        price: product.price,
+        priceValidUntil: "2023-2-14",
+        itemCondition: "https://schema.org/NewCondition",
+        availability: "https://schema.org/InStock"
       }
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: revCount
-    },
-    offers: {
-      "@type": "Offer",
-      url: URL,
-      offerCount: offerStock,
-      priceCurrency: "KES",
-      price: product.price,
-      priceValidUntil: "2023-2-14",
-      itemCondition: "https://schema.org/NewCondition",
-      availability: "https://schema.org/InStock"
-    }
-  };
-    
-  function addProductJsonLd() {
-  return {
-    __html: JSON.stringify(jsdschema),
     };
-  }
+    
+    function addProductJsonLd() {
+    return {
+      __html: JSON.stringify(jsdschema),
+      };
+    }
 
   return (
     <div className="card">
       <HeadersContainer data={addProductJsonLd()} />
       <div className="gallery">
-        <div className='flex absolute w-fitdiv'>
-          { product.isNeww && (
-              <div className='px-2 rounded-2xl py-1 bg-lime-500'>
-                NEW
-              </div>
-            )
-          }
-        </div>
         <div className='flex justify-end w-fitdiv'>
-          <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck text-lg heart-anim bg-grayb text-white mt-4 mx-2 z-30 float-right" >
+          <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck text-lg heart-anim bg-grayb text-white m-2 z-30 float-right" >
             {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
           </div>
         </div>
-        <Link
-          href={`https://www.shiglam.com/${product.category}/${product.slug}`}
-          legacyBehavior>
-          <a>
-          <Image
-            width={364}
-            height={484}
-            style={{borderRadius: 20}}
-            src={product.image && product.image[0].item}
-            alt={product.name}
-            className="shadow  object-cover h-auto w-100 pulse"
-          />
-          </a>
-        </Link>
-        <div className='flex px-2 pb-2 w-full justify-between'>
-          <div className="flex flex-col" >
-            <div className=" text-base font-semibold ">KES {product.sizes[0]?.price}</div>
-            {product.isOnoffer && <div className="text-sm hidden font-semibold " style={{ color: 'orangered'}}><s>Ksh.{product.prevprice}</s></div>}
-          </div>
-          <div style={{ transform:'translate(-7px, 3px)'}} className=" text-xl" >
-            { existItem ? <BsBagDashFill onClick={() => removeItemHandler(product)} className='c-grayb'/> : <BsBagPlus onClick={() => addToCartHandler(product)}/> }
+          <Link
+            href={`https://www.shiglam.com/${product.category}/${product.slug}`}
+            >
+            <a>
+            <Image
+              style={{borderRadius: 20, width:'100%  !important', height: '100% !important', position: 'relative'}}
+              src={product.image && product.image[0].item}
+              alt={product.name}
+              layout='fill'
+              className="shadow  object-contain h-fit w-full pulse"
+              />
+            </a>
+          </Link>
+        <div className='w-full p-1'>
+          <div className='overflow-hidden font-medium whitespace-nowrap text-ellipsis'> {product.description} </div>
+          <div className='flex pt-2 w-full justify-between'>
+            <div className='flex gap-2 items-center'>
+              <div className='w-7 h-7 rounded-full overflow-hidden'>
+                <Image width={40} className='shadow' height={40} alt="" src={shop?.logo} />
+              </div>
+              <div className='font-medium hidden xxsm:block'> {shop?.shopName} </div>
+            </div>
+            <div style={{ transform:'translate(-7px, 3px)'}} className=" text-xl" >
+              { existItem ? <BsBagDashFill onClick={() => removeItemHandler(product)} className='c-grayb'/> : <BsBagPlus onClick={() => addToCartHandler(product)}/> }
+            </div>
           </div>
         </div>
-      </div>
+      </div>      
     </div>
   );
 }
