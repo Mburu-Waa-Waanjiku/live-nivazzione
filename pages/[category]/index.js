@@ -42,8 +42,8 @@ const Jewelry = (props) => {
         desc="Get the latest trends in Wemen's Jewelry AND hot Fashon Accessories in kenya - nairobi at prices you'll just love."
       />
       <Layout> 
-        {banner.map((categ) => (
-          <div key={categ} className='max-w-sm pulse relative h-32 w-fit overflow-hidden  rounded-3xl  '>
+        {banner.map((categ, index) => (
+          <div key={index} className='max-w-sm pulse relative h-32 w-fit overflow-hidden  rounded-3xl  '>
             <div className='fit h-full flex justify-center items-center'>
               <Image 
                 className='w-fullmax-w-sm  h-auto min-w-full'
@@ -89,8 +89,8 @@ const Jewelry = (props) => {
             navigation= {true}
             centeredSlides={false  }
             >
-            {banner[0].discount?.map((categs) =>(
-              <SwiperSlide style={{maxWidth: '230px'}} key={categs}>
+            {banner[0].discount?.map((categs, index) =>(
+              <SwiperSlide style={{maxWidth: '230px'}} key={index}>
                 <div onClick={() => handleParams(categs)} className={'rounded-full text-base font-bold text-center w-full px-4 py-3 '.concat(tabParam == categs ? 'bg-tabb text-white' : 'bg-grayw')}>
                   {categs}
                 </div>                        
@@ -101,8 +101,8 @@ const Jewelry = (props) => {
         </div>
         <div className='flex px-4 justify-center'>
           <div className='columns-2 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-5xl '>
-            {products.map((product) => (
-              <div key={product} className='px-1 py-1'>
+            {products?.filter((p) => p.subcategs.includes(tabParam)).map((product, index) => (
+              <div key={index} className='px-1 py-1'>
                 <ProductItems
                   product={product}
                 />
@@ -121,7 +121,7 @@ export async function getStaticProps(context) {
   const { params } = context;
   const { category } = params;
   let prods
-  if(category.includes("-")) {
+  if(category.includes("-") && category != "T-shirts") {
     prods = category.toString().replace("-", " ");
   } else {
     prods = category
