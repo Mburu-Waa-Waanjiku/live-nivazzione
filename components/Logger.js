@@ -2,7 +2,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemButton,
+  Button,
   Typography,
   TextField,
   CircularProgress,
@@ -296,7 +296,7 @@ function Logger() {
                       ></Controller>
                     </ListItem>
                     <ListItem>
-                      <ListItemButton variant="contained" type="submit" fullWidth color="primary">
+                      <Button variant="contained" type="submit" fullWidth color="primary">
                         {!waiting ? (
                           <Image
                             width={110}
@@ -306,7 +306,7 @@ function Logger() {
                           />) :
                           (<CircularProgress style={{color: 'white'}}/>)
                         }
-                      </ListItemButton>
+                      </Button>
                     </ListItem>
                     <ListItem>
                       <ListItemText primary="Already have an account?"></ListItemText>
@@ -352,9 +352,9 @@ function Logger() {
                   ></Controller>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton variant="contained" type="submit" fullWidth color="primary">
+                  <Button variant="contained" type="submit" fullWidth color="primary">
                     Reset password
-                  </ListItemButton>
+                  </Button>
                 </ListItem>
                 <ListItem>
                   Don&apos;t have an account? &nbsp;
@@ -419,7 +419,7 @@ function Logger() {
                     ></Controller>
                   </ListItem>
                   <ListItem>
-                    <ListItemText onClick={handlePassreset} primary="Forgot Password?"></ListItemText>
+                    <div onClick={handlePassreset} primary="Forgot Password?"></div>
                   </ListItem>
                   <ListItem>
                     <Controller
@@ -451,7 +451,7 @@ function Logger() {
                     ></Controller>
                   </ListItem>
                   <ListItem>
-                    <ListItemButton variant="contained" type="submit" fullWidth color="primary">
+                    <Button variant="contained" type="submit" fullWidth color="primary">
                       {!waiting ? (
                         <Image
                           width={110}
@@ -461,13 +461,13 @@ function Logger() {
                         /> ) :
                         (<CircularProgress style={{color: 'white'}}/>)
                       }
-                    </ListItemButton>
+                    </Button>
                   </ListItem>
                   <ListItem>
                     Don&apos;t have an account? &nbsp;
-                      <a style={{cursor: "pointer"}} onClick={handleRegister}>
+                      <span style={{cursor: "pointer"}} onClick={handleRegister}>
                         <b style={{ fontSize: 14 }}>Register</b>
-                      </a>
+                      </span>
                   </ListItem>
                 </List>
               </form>
