@@ -104,7 +104,7 @@ export default function ProductItem({ product, shop }) {
     <div className="card">
       <HeadersContainer data={addProductJsonLd()} />
       <div className="gallery">
-        <div className='flex justify-end w-fitdiv'>
+        <div className='flex justify-end'>
           <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck text-lg heart-anim bg-grayb text-white m-2 z-30 float-right" >
             {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
           </div>
@@ -112,7 +112,7 @@ export default function ProductItem({ product, shop }) {
           <Link
             href={`https://www.shiglam.com/${product.category}/${product.slug}`}
             >
-            <a>
+            <div className='a'>
             <Image
               style={{borderRadius: 20, width:'100%  !important', height: '100% !important', position: 'relative'}}
               src={product.image && product.image[0].item}
@@ -120,14 +120,14 @@ export default function ProductItem({ product, shop }) {
               layout='fill'
               className="shadow  object-contain h-fit w-full pulse"
               />
-            </a>
+            </div>
           </Link>
         <div className='w-full p-1'>
           <div className='overflow-hidden font-medium whitespace-nowrap text-ellipsis'> {product.description} </div>
           <div className='flex pt-2 w-full justify-between'>
-            <div className='flex gap-2 items-center'>
-              <div className='w-7 h-7 rounded-full overflow-hidden'>
-                <Image width={40} className='shadow' height={40} alt="" src={shop?.logo} />
+            <div className='flex items-center'>
+              <div className='w-7 h-7 mr-2 rounded-full overflow-hidden'>
+                <Image width={40} className='pulse' height={40} alt="" src={shop?.logo} />
               </div>
               <div className='font-medium hidden xxsm:block'> {shop?.shopName} </div>
             </div>

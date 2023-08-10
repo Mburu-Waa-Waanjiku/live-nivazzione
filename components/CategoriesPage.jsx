@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Headers from './HeadersContainer';
 import Mycategs from './Categories';
 import Link from 'next/link';
 import axios from 'axios';
 import Loader from './Loader';
 import Layout from './Layout';
+import { useStateContext } from '../utils/StateContext';
 
-function CategoriesPage({ openCategory }) {
+function CategoriesPage( ) {
+
+  const { setRoute, openCategory, SetOpenCategory } = useStateContext();
+  const handleLinks = async () => {
+    SetOpenCategory(false);
+    setRoute("home")
+  }
   const [banner, setBanners] = useState(null);
   const fetchBanners = async () =>{
     try {
@@ -24,19 +30,12 @@ function CategoriesPage({ openCategory }) {
   return (
     <div style={{zIndex: 110}} className={'fixed left-0 h-fit h-screen overflow-y-scroll overflow-x-hidden top-0 w-screen bg-white '.concat(openCategory ? '' : 'hidden')}>
       <Layout>
-        <Headers 
-          title="SHIGLAM CATEGORIES"
-          desc="Browse all Shopping categories made just for you in SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ..." 
-          socialtitle="SHIGLAM CATEGORIES" 
-          socialdesc="Browse all Shopping categories made just for you in SHIGLAM KENYA — NAIROBI — ✓ Free Shipping On Orders ... "
-          socialimages="https://res.cloudinary.com/dddx5qpji/image/upload/v1674473371/offerbanner1_3_yo5p97.jpg"
-        />
         <div className='flex pb-20 justify-center'>
           {banner ? 
             <div className='columns-1 sm:columns-2 sm:max-w-xl md:columns-3 md:max-w-4xl lg:columns-4 lg:max-w-7xl'>
               {banner.map((categ, index) => (
                 <Link key={index} href={`/${categ.midText.replace(" ", "-")}`} legacyBehavior>
-                  <div  className='px-1 py-1'>
+                  <div onClick={handleLinks} className='px-1 py-1'>
                     <Mycategs
                       categ={categ}
                     />

@@ -24,25 +24,25 @@ function Footer() {
 	return (
 		<div className={classes.footer}>
       <div className={classes.smbrandh}>
-        <div onClick={handleOpeninfos} style={{color: 'white', justifyContent: 'space-between', padding: '10px 30px'}}>
+        <div onClick={handleOpeninfos} style={{color: 'white', display: 'flex', justifyContent: 'space-between', padding: '10px 30px'}}>
           <div style={{fontWeight: 'bolder', fontSize: 14}}>About shiglam</div>
           <div style={{ alignSelf: 'right'}}>
             <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
           </div>
         </div>
-        <div onClick={handleOpeninfosHelp} style={{justifyContent: 'space-between', padding: '10px 30px', color: 'white'}}>
+        <div onClick={handleOpeninfosHelp} style={{justifyContent: 'space-between', display: 'flex', padding: '10px 30px', color: 'white'}}>
           <div style={{fontWeight: 'bolder', fontSize: 14}}>Help desk</div>
           <div style={{ alignSelf: 'right'}}>
             <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
           </div>
         </div>
-        <div onClick={handleOpeninfosReturn} style={{color: 'white', justifyContent: 'space-between', padding: '10px 30px'}}>
+        <div onClick={handleOpeninfosReturn} style={{color: 'white', justifyContent: 'space-between', display: 'flex', padding: '10px 30px'}}>
           <div style={{fontWeight: 'bolder', fontSize: 14}}>Return policy</div>
           <div style={{ alignSelf: 'right'}}>
             <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>
           </div>
         </div>
-        <div onClick={handleOpeninfosShipping} style={{color: 'white', justifyContent: 'space-between', padding: '10px 30px 30px 30px'}}>
+        <div onClick={handleOpeninfosShipping} style={{color: 'white', justifyContent: 'space-between', display: 'flex', padding: '10px 30px 30px 30px'}}>
           <div style={{fontWeight: 'bolder', fontSize: 14}}>Shipping</div>
           <div style={{ alignSelf: 'right'}}>
             <div className=" self-center"><ArrowForwardIosIcon style={{fontSize:15, fontWeight: 'bolder'}}/></div>

@@ -117,7 +117,7 @@ function CartItems({item, removeItemHandler, isCart, index, dispatch }) {
                 <div onClick={handleDel} className='w-6 flex justify-center items-center h-6 rounded-full border-2'>
                   <AiOutlineMinus/>
                 </div>
-                <div>
+                <div className='px-1.5'>
                   {item.quantity}
                 </div>
                 <div onClick={handleAdd} className='w-6 h-6 flex justify-center items-center rounded-full border-2'>
@@ -128,7 +128,7 @@ function CartItems({item, removeItemHandler, isCart, index, dispatch }) {
                 <div className='flex text-base font-semibold justify-center items-center pr-2 '>
                   Qty
                 </div>
-                <div className=' font-semibold'>
+                <div className='pl-1.5 font-semibold'>
                   {item.quantity}
                 </div>
               </>

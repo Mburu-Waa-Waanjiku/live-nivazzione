@@ -18,6 +18,7 @@ import { useSnackbar } from 'notistack';
 import { getError } from '../utils/error';
 import { useStateContext } from '../utils/StateContext';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 function Logger() {
   
@@ -480,4 +481,4 @@ function Logger() {
   );
 }
 
-export default Logger               
+export default dynamic(() => Promise.resolve(Logger), { ssr: false });
