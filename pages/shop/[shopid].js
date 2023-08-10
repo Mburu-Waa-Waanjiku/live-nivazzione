@@ -137,7 +137,7 @@ export async function getStaticPaths() {
  
   // Get the paths we want to pre-render based on posts
   const paths = shops.map((shop) => ({
-    params: { shopid: shop._id },
+    params: { shopid: shop._id.toString() },
   }))
  
   return { paths, fallback: 'blocking' }
