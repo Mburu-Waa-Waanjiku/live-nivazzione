@@ -152,7 +152,7 @@ export async function getStaticPaths() {
   }
   
   await db.connect();
-    const categs = await Banner.find({ midText: prods }).lean();
+    const categs = await Banner.find({ largeText1: category }).lean();
   await db.disconnect();
  
   // Get the paths we want to pre-render based on posts
