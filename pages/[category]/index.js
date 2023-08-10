@@ -117,7 +117,7 @@ const Jewelry = (props) => {
 )
  
 };
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const { params } = context;
   const { category } = params;
   let prods
@@ -130,7 +130,7 @@ export async function getServerSideProps(context) {
   await db.connect();
   
   const banner = await Banner.find({ midText: prods }).lean();
-  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).lean().limit(24);
+  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).sort( {createdAt: -1} ).lean().limit(24);
   
   await db.disconnect();
   return {
@@ -140,4 +140,27 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+export async function getStaticPaths() {
+  
+  const changeCateg = (categ) => {
+    if(categ.includes(" ")) {
+      return categ.toString().replace(" ", "-");
+    } else {
+      return categ
+    }
+  }
+  
+  await db.connect();
+    const categs = await Banner.find({ midText: prods }).lean();
+  await db.disconnect();
+ 
+  // Get the paths we want to pre-render based on posts
+  const paths = categs.map((categ) => ({
+    params: { category: changeCateg(shop._id) },
+  }))
+ 
+  return { paths, fallback: 'blocking' }
+}
+
 export default Jewelry 

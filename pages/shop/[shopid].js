@@ -109,7 +109,7 @@ function Shopid({ shops, products, distinctCategs }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
 
   const { params } = context;
   const { shopid } = params;
@@ -128,4 +128,19 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+export async function getStaticPaths() {
+  
+  await db.connect();
+    const shops = await Shop.find().lean();
+  await db.disconnect();
+ 
+  // Get the paths we want to pre-render based on posts
+  const paths = shops.map((shop) => ({
+    params: { shopid: shop._id },
+  }))
+ 
+  return { paths, fallback: 'blocking' }
+}
+
 export default Shopid

@@ -459,7 +459,7 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid white',
     width: '4px',
     fontSize: '10px',
-    backgroundColor: '#222',
+    backgroundColor: 'rgb(245 158 11)',
   },
   badgetab: {
     color: 'white',

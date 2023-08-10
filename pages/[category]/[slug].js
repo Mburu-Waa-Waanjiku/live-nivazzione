@@ -406,7 +406,7 @@ export default function ProductScreen(props) {
   </>;
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const { params } = context;
   const { slug } = params;
 
@@ -427,4 +427,18 @@ export async function getServerSideProps(context) {
 
   },
  };
+}
+
+export async function getStaticPaths() {
+  
+  await db.connect();
+    const products = await Product.find().lean();
+  await db.disconnect();
+ 
+  // Get the paths we want to pre-render based on posts
+  const paths = products.map((product) => ({
+    params: { slug: product.slug, category: product.category },
+  }))
+ 
+  return { paths, fallback: 'blocking' }
 }

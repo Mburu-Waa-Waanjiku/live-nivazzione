@@ -15,11 +15,11 @@ const Home = ({ products, shop }) => {
 
   return (
     <Layout>
-      <div className='flex gap-3 p-4'>
+      <div className='flex  p-4'>
         <div onClick={() => setHomeTab("Trending")} className={' font-medium text-center flex-grow text-base rounded-full px-8 pt-3 pb-3.5 '.concat(hometab == "Trending" ? 'bg-grayb text-white' : 'bg-grayw text-black')}>
           Trending
         </div>
-        <div onClick={() => setHomeTab("Apparel")} className={' font-medium text-center flex-grow text-base rounded-full px-8 pt-3 pb-3.5 '.concat(hometab == "Apparel" ? 'bg-grayb text-white' : 'bg-grayw text-black')}>
+        <div onClick={() => setHomeTab("Apparel")} className={'ml-3 font-medium text-center flex-grow text-base rounded-full px-8 pt-3 pb-3.5 '.concat(hometab == "Apparel" ? 'bg-grayb text-white' : 'bg-grayw text-black')}>
           Shops
         </div>
       </div>
@@ -48,8 +48,8 @@ const Home = ({ products, shop }) => {
                   />
                 </div>
                 <div className='absolute px-2 py-4 flex justify-end items-center xxsm:items-start xsm:justify-center xsm:items-center h-fitdiv flex-col z-10 bottom-0 w-fitdiv categshade-full'>
-                  <div className='flex  flex flex-col xxsm:flex-row bg-white-parent rounded-full px-6 py-2 md:px-16 gap-2 items-center'>
-                    <div className='w-14 h-14 rounded-full overflow-hidden'>
+                  <div className='flex  flex flex-col xxsm:flex-row bg-white-parent rounded-full px-6 py-2 md:px-16  items-center'>
+                    <div className='w-14 h-14 mr-2 rounded-full overflow-hidden'>
                       <Image className='rounded-full object-contain' width={100} height={100} alt="" src={shop.logo} />
                     </div>
                     <div className='text-lg sm:text-2xl whitespace-nowrap xxsm:whitespace-normal font-medium title-font text-white'> {shop.shopName} </div>
