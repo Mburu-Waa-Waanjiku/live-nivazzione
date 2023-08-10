@@ -130,7 +130,7 @@ export async function getServerSideProps(context) {
   await db.connect();
   
   const banner = await Banner.find({ midText: prods }).lean();
-  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).sort( {createdAt: -1} ).lean().limit(24);
+  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).lean().limit(24);
   
   await db.disconnect();
   return {
