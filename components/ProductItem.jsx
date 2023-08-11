@@ -103,10 +103,10 @@ export default function ProductItem({ product }) {
   return (
     <div className="card">
       <HeadersContainer data={addProductJsonLd()} />
-      <div className="gallery">
+      <div className="gallery relative box-border">
         <div className='flex absolute'>
           { product.isNeww && (
-              <div className='px-2 rounded-2xl py-1 bg-lime-500'>
+              <div className='px-2 z-10 rounded-2xl py-1 bg-lime-500'>
                 NEW
               </div>
             )

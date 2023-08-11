@@ -79,10 +79,10 @@ function Products({ fetchProducts, fetchPendingPs, pendingProducts, showSearch, 
                   {filteredData.isSearch && !filteredData.resultFound && (
                     <p>No results found..</p>
                   )}
-                  {filteredData.products.map((product) => {
+                  {filteredData.products.map((product, index) => {
                     return (
                       <AdminProds
-                        key={product}
+                        key={index}
                         product={product}
                         Navigation={Navigation}
                         FreeMode={FreeMode}
