@@ -99,7 +99,7 @@ const Jewelry = (props) => {
             }
           </Swiper>
         </div>
-        <div className='flex px-4 justify-center'>
+        <div className='w-full px-1.5'>
           <div className='columns-2 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-5xl '>
             {products?.filter((p) => p.subcategs.includes(tabParam)).map((product, index) => (
               <div key={index} className='px-1 py-1'>
@@ -130,7 +130,7 @@ export async function getStaticProps(context) {
   await db.connect();
   
   const banner = await Banner.find({ midText: prods }).lean();
-  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).sort( {createdAt: -1} ).lean().limit(24);
+  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).sort( {createdAt: -1} ).lean();
   
   await db.disconnect();
   return {
@@ -140,6 +140,8 @@ export async function getStaticProps(context) {
     },
   };
 }
+
+export default Jewelry 
 
 export async function getStaticPaths() {
   
@@ -163,4 +165,3 @@ export async function getStaticPaths() {
   return { paths, fallback: 'blocking' }
 }
 
-export default Jewelry 
