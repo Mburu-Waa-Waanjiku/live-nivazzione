@@ -185,6 +185,14 @@ export default function Layout({ children }) {
               Log Out
             </div>
           </div>
+          <div onClick={() => router.push('https://www.shiglam.com/me')} className="flex my-1 items-center"  >
+            <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+              <FiUser className='text-2xl'/>
+            </div>
+            <div className="p-2 text-base font-black">
+              Account
+            </div>
+          </div>
           {view &&
             <>
               {userInfo?.isAffiliate && 
