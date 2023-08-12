@@ -9,7 +9,8 @@ const handler = nc({
 
 handler.get(async (req, res) => {
   await db.connect();
-  const banner = await Banner.find({ largeText1: "category"}).lean();
+  //tis api is no in use
+  //const banner = await Banner.find({ largeText1: "category"}).lean();
   res.status(201).send(banner);
 });
 
