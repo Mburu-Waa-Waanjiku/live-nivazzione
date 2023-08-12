@@ -9,10 +9,9 @@ import { BiCategoryAlt } from 'react-icons/bi';
 import { GiHanger } from 'react-icons/gi';
 import { debounce } from '../utils/helpers';
 import { Store } from '../utils/Store';
-import CategoriesPage from './CategoriesPage';
 
 export default function Tabsbottom() {
-  const { route, setRoute, handleOpenBag , handleCartopen, openCategory, SetOpenCategory } = useStateContext();
+  const { route, setRoute, handleOpenBag , handleCartopen } = useStateContext();
   const { state } = useContext(Store);
   const { cart } = state;
   const router = useRouter();
@@ -41,22 +40,22 @@ export default function Tabsbottom() {
       <div className={tabsStyles.backgcoverticalcenter}>
         <div className={tabsStyles.bottomnav} style={{bottom: visible ? '10px' : '-60px',}} >
           {route == "home" ? 
-            <div onClick={ async () => {await router.push('/');}} className='grid gap-0.5 justify-center items-center text-sm'>
+            <div className='grid gap-0.5 justify-center items-center text-sm'>
               <div className='w-1.5 h-1.5 justify-self-center bg-amber-500 rounded-full'></div>
               <div> HOME </div>
             </div>
             : route == "categories" &&
-            <div style={{minWidth:0, padding:"1px 10px"}} onClick={() => {setRoute("home"); router.push("/"); SetOpenCategory(false)}}>
+            <div style={{minWidth:0, padding:"1px 10px"}} onClick={() => {router.push("/"); setRoute("home");}}>
               <RiHome5Line/>
             </div>
           }
           {route == "categories" ? 
-            <div onClick={() => SetOpenCategory(true)} className='grid gap-0.5 justify-center items-center text-sm'>
+            <div className='grid gap-0.5 justify-center items-center text-sm'>
               <div className='w-1.5 h-1.5 justify-self-center bg-amber-500 rounded-full'></div>
               <div> CATEGORIES </div>
             </div>
             : route == "home" &&
-            <div style={{minWidth:0, padding:"1px 10px"}} onClick={() => {setRoute("categories"); SetOpenCategory(true)}}>
+            <div style={{minWidth:0, padding:"1px 10px"}} onClick={() => {setRoute("categories"); router.push("/categories")}}>
               <BiCategoryAlt/>
             </div>
           }
@@ -69,11 +68,6 @@ export default function Tabsbottom() {
           </div>
         </div>
       </div>
-      <CategoriesPage 
-        SetOpenCategory={SetOpenCategory} 
-        openCategory={openCategory} 
-        setRoute={setRoute}
-      />
     </>
   );
 }

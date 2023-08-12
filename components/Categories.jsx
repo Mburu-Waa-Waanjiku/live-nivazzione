@@ -8,9 +8,10 @@ export default function Categories({ categ }) {
         <Image
           style={{borderRadius: 20}}
           src={categ.image[0]}
+          width={categ.buttonText}
+          height={categ.desc}
           alt={categ.midText}
-          layout='fill'
-          className="shadow  object-cover h-fit w-full pulse"
+
         />
       </div>
       <div className='absolute flex justify-end items-start xsm:justify-center xsm:items-center h-fitdiv flex-col z-10 bottom-0 w-fitdiv categshade'>
