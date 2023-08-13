@@ -29,7 +29,7 @@ handler.post(async (req, res) => {
   }
 
   const points = total / 25;
-  // console.log(points);
+  console.log(points);
   await db.connect();
     const user = await User.findById(req.user._id);
     const buys = user.totalBuys + total ;

@@ -27,7 +27,7 @@ handler.post(async (req, res) => {
     await db.connect();
       const id = req.query["id"];
       const user = await User.findOne({ _id: id });
-      const notes = user.notifications.reverse();
+      const notes = user.notifications;
     await db.disconnect();
     res.status(200).send(notes);
   } 

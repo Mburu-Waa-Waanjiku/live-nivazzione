@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     phone: { type: Number, required: true },    
     password: { type: String, required: true },
-    shopsFollowed: { type: Array },
     isAdmin: { type: Boolean, required: true, default: false },
     isAffiliate: { type: Boolean, required: true, default: false },
     isSeller: { type: Boolean, required: true, default: false },

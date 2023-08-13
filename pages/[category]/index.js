@@ -1,136 +1,204 @@
 import React from 'react';
 import { useState } from "react";
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
+import { Store } from '../../utils/Store';
 import db from '../../utils/db';
 import Product from '../../models/Product';
 import Banner from '../../models/Banner';
 import ProductItems from '../../components/ProductItem';
+import axios from 'axios';
 import Tabsbottom from '../../components/Tabsbottom';
+import Loader from '../../components/Loader';
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useInfiniteQuery } from "react-query";
 import Image from 'next/image';
 import Footer from '../../components/Footer';
 import Headers from '../../components/HeadersContainer';
-import Layout from '../../components/Layout'
-import { Navigation, FreeMode } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-import 'swiper/css'
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import CategoryBanner from '../../components/BannersHON';
+import home from '../../styles/Home.module.css';
 
 const Jewelry = (props) => {
  
   const {  products, banner } = props;
+
+  const necklace = [...products.filter((product) => product.category.toLowerCase().indexOf('necklace') != -1 && !product.isCollectn).slice(0, 24)];
+  const anclets = [...products.filter((product) => product.category.toLowerCase().indexOf('anklet') != -1 && !product.isCollectn).slice(0, 24)];
+  const earrings = [...products.filter((product) => product.category.toLowerCase().indexOf('earring') != -1 && !product.isCollectn).slice(0, 24)];
+  const Collections = [...products.filter((product) => product.isCollectn ).slice(0, 24)];
+
   const router = useRouter();
-  const category = router.query.category;
-  let prods
-  if(category.includes("-")) {
-    prods = category.toString().replace("-", " ");
-  } else {
-    prods = category
-  }
+  const { category } = router.query;
 
-  const [tabParam, setParam] = useState(banner[0].discount[0]);
-  const handleParams = (categ) => {
-    setParam(categ);
-  }
+  const { state, dispatch } = useContext(Store);
+  const {userInfo, favourites } = state;
 
+  const mylink = category ;
+  const [Anclets, setAnclets] = useState('Anklets');
+  const [Earrings, setEarrings] = useState('Earrings');
+  const [Necklaces, setNeclaces] = useState('Necklaces');
+  const [collections, setCollections] = useState('collections');
+  const [categs, setCategs] = useState(true);
+
+ const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    "infiniteCharacters",
+    async ({ pageParam = 2 }) =>
+      await fetch(
+        `/api/products/earrings?page=${pageParam}`
+      ).then((result) => result.json()),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if ((pages.length + 16) < pages[0].maxPage) {
+          return pages.length + 1;
+        } else {
+          return undefined
+        }
+      },
+    }
+  );
+  
+    const addToCartHandler = async (product) => {
+
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (existItem) {
+      window.alert('Already added');
+    } else if (data.countInStock < quantity ) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+  };
+
+  const addToFavsHandler = async (product) => {
+    const existFav = state.favourites.find((x) => x._id === product._id);
+    if (existFav) {
+      window.alert('Already a Favourite');
+      return;
+    }
+    dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
+    const { data } = await axios.post(`/api/products/${product._id}/${userInfo._id}`);
+
+  };
+  
+  const removeFavHandler = async (product) => {
+    dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
+    const { data } = await axios.delete(`/api/products/${product._id}/${userInfo._id}`);
+  };
+  
   return (
-    <>
+    <> 
       <Headers 
         title="Shop The Latest and Most Trendy on Jewelry and Fashion Accessories whith SHIGLAM at prices as low as KES 10...."
         desc="Get the latest trends in Wemen's Jewelry AND hot Fashon Accessories in kenya - nairobi at prices you'll just love."
       />
-      <Layout> 
-        {banner.map((categ, index) => (
-          <div key={index} className='max-w-sm pulse relative h-32 w-fit overflow-hidden  rounded-3xl  '>
-            <div className='fit h-full flex justify-center items-center'>
-              <Image 
-                className='w-fullmax-w-sm  h-auto min-w-full'
-                width={Number(categ.buttonText)} 
-                height={Number(categ.desc)} 
-                alt={categ.midText} 
-                src={categ.image[0]}
+      <CategoryBanner
+        banner={banner}
+        mylink={mylink}
+        categs={categs}
+        Earrings={Earrings}
+        Necklaces={Necklaces}
+        Anclets={Anclets}
+        collections={collections}
+      />
+      <div className="pt-10 grid justify-center">
+        {collections == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+          {Collections.slice(0, 24).map((product) => ( 
+            <div className={home.you + " " + home.newb}>
+              <ProductItems
+                product={product}
+                key={product}
+                addToCartHandler = {addToCartHandler}
+                addToFavsHandler = {addToFavsHandler}
+                removeFavHandler = {removeFavHandler}
               />
             </div>
-            <div className='absolute flex justify-end items-start xsm:justify-center xsm:items-center h-fitdiv flex-col z-10 bottom-0 w-fitdiv categshade'>
-              <div className='text-white p-4 title-font text-3xl'>
-                <div className='text-left sm:text-center font-semibold'>{categ.midText.toUpperCase()}</div>
-                <div className='text-left text-xl sm:text-center'>{categ.smallText[0]}</div>
-              </div>
+          ))}
+        </div>}
+        {Anclets == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+          {anclets.map((product) => ( 
+            <div className={home.you + " " + "newb"}>
+              <ProductItems
+                product={product}
+                key={product}
+                addToCartHandler = {addToCartHandler}
+                addToFavsHandler = {addToFavsHandler}
+                removeFavHandler = {removeFavHandler}
+              />
             </div>
-          </div>
-        ))}
-        <div className='py-3'>
-          <Swiper                    
-            breakpoints={{
-              100: {
-                slidesPerView: 1.6,
-              },
-              300: {                  
-                slidesPerView: 2.3,
-              },
-              450: {
-                slidesPerView: 2.8,
-              }, 
-              520: {
-                slidesPerView: 3.2,
-              }, 
-              850: {
-                slidesPerView: 4.1,
-              },
-              1600: {
-                slidesPerView: 4.6,
-              },             
-            }}
-            modules={[FreeMode, Navigation ]}
-            spaceBetween={10}   
-            loop={false}
-            navigation= {true}
-            centeredSlides={false  }
+          ))}
+        </div>}
+        {Earrings == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+          {earrings.slice(0, 24).map((product) => ( 
+            <div className={home.you + " " + home.newb}>
+              <ProductItems
+                product={product}
+                key={product}
+                addToCartHandler = {addToCartHandler}
+                addToFavsHandler = {addToFavsHandler}
+                removeFavHandler = {removeFavHandler}
+              />
+            </div>
+          ))}
+        </div>}
+        {Earrings == mylink && <div className="pt-2">
+          {status === "success" ? (
+            <InfiniteScroll
+              dataLength={data?.pages.length * 20}
+              next={fetchNextPage}
+              hasMore={hasNextPage}
+              loader={<Loader/>}
             >
-            {banner[0].discount?.map((categs, index) =>(
-              <SwiperSlide style={{maxWidth: '230px'}} key={index}>
-                <div onClick={() => handleParams(categs)} className={'rounded-full text-base font-bold text-center w-full px-4 py-3 '.concat(tabParam == categs ? 'bg-tabb text-white' : 'bg-grayw')}>
-                  {categs}
-                </div>                        
-              </SwiperSlide>
-              ))
-            }
-          </Swiper>
-        </div>
-        <div className='w-full px-1.5'>
-          <div className='columns-2 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-5xl '>
-            {products?.filter((p) => p.subcategs.includes(tabParam)).map((product, index) => (
-              <div key={index} className='px-1 py-1'>
-                <ProductItems
-                  product={product}
-                />
+              <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+                {data?.pages.map((page) => (
+                  <>
+                    {page.earrings.map((product) => (
+                      <div className={home.you + " " + home.newb}>
+                        <ProductItems
+                          product={product}
+                          key={product}
+                          addToCartHandler = {addToCartHandler}
+                          addToFavsHandler = {addToFavsHandler}
+                          removeFavHandler = {removeFavHandler}
+                        />
+                      </div>
+                    ))}
+                  </>
+                ))}
               </div>
-              ))}
+            </InfiniteScroll>
+          ) : (
+          <div>
+            <Loader/>
           </div>
-        </div>
-        <Tabsbottom/>
-        <Footer/>
-      </Layout>
+          )}
+        </div>}
+        {Necklaces == mylink && <div className='grid grid-cols-2 gap-col-4 gap-y-3 md:grid-cols-3 lg:grid-cols-4'>
+          {necklace.map((product) => ( 
+            <div className={home.you + " " + home.newb}>
+              <ProductItems
+                product={product}
+                key={product}
+                addToCartHandler = {addToCartHandler}
+                addToFavsHandler = {addToFavsHandler}
+                removeFavHandler = {removeFavHandler}
+              />
+            </div>
+          ))}
+        </div>}
+      </div>
+      <Tabsbottom/>
+      <Footer/>
     </>
 )
  
 };
-export async function getStaticProps(context) {
-  const { params } = context;
-  const { category } = params;
-  let prods
-  if(category.includes("-") && category != "T-shirts") {
-    prods = category.toString().replace("-", " ");
-  } else {
-    prods = category
-  }
-  
+export async function getServerSideProps() {
   await db.connect();
   
-  const banner = await Banner.find({ midText: prods }).lean();
-  const products = await Product.find({ category: prods }, {name:1, slug:1, category:1, image:1, subcategs:1, isEditorsChoice: 1, isOnoffer: 1, sizes: 1 }).sort( {createdAt: -1} ).lean();
+  const banner = await Banner.find().lean();
+  const products = await Product.find({}, '-reviews').sort( {createdAt: -1} ).lean();
   
   await db.disconnect();
   return {
@@ -140,28 +208,4 @@ export async function getStaticProps(context) {
     },
   };
 }
-
 export default Jewelry 
-
-export async function getStaticPaths() {
-  
-  const changeCateg = (categ) => {
-    if(categ.includes(" ")) {
-      return categ.toString().replace(" ", "-");
-    } else {
-      return categ
-    }
-  }
-  
-  await db.connect();
-    const categs = await Banner.find({ largeText1: "category" }).lean();
-  await db.disconnect();
- 
-  // Get the paths we want to pre-render based on posts
-  const paths = categs.map((categ) => ({
-    params: { category: changeCateg(categ.midText) },
-  }))
- 
-  return { paths, fallback: 'blocking' }
-}
-

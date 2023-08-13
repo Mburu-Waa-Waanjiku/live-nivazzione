@@ -1,34 +1,28 @@
 import axios from 'axios'; 
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useContext, useState } from 'react';
-import { VscVerifiedFilled } from 'react-icons/vsc';
 import Product from '../../models/Product';
-import Shop from '../../models/Shop';
 import db from '../../utils/db';
-import { GiHanger } from 'react-icons/gi';
 import { Store } from '../../utils/Store';
+import ClearIcon from '@mui/icons-material/Clear';
+import useStyles from '../../utils/styles';
 import Rating from '@material-ui/lab/Rating';
+import ProductNocart from '../../components/ProductNocart';
 import ProductItems from '../../components/ProductItem';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { FaTruckMoving } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Download from '../../components/downloader';
-import { HiArrowNarrowLeft } from 'react-icons/hi';
-import Layout from '../../components/Layout';
-import Tabsbottom from '../../components/Tabsbottom'
+import { IconButton } from '@material-ui/core';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { HiShoppingCart, HiOutlineShoppingCart } from 'react-icons/hi';
+
+import { Typography, ListItem, List, TextField, Button, CircularProgress, Grid, } from '@material-ui/core';
 import { Navigation, FreeMode, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSnackbar } from 'notistack';
 import Headers from '../../components/HeadersContainer';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
-import { PiCoatHangerFill } from 'react-icons/pi';
-import { useStateContext } from '../../utils/StateContext';
-import Cart from '../../components/mycart/Cart';
-import Notification from '../../components/notifications/view';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-const DynamicLogger = dynamic(() => import('../../components/Logger'), {
-  loading: () => " ",
-})
 
 import 'swiper/css'
 
@@ -37,23 +31,21 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 export default function ProductScreen(props) {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const [openSizes, setOpensizes] = useState(false);
-  const [openDescribe, setOpendescribe] = useState(false);
-  const [openShopping, setOpenshopping] = useState(false);
-  const [controlSize, setControlsize] = useState(null);
-  const [openColor, setOpenColor] = useState(false);
-  const [openSizedesc, setOpenSizedesc] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const classes = useStyles();
   const router = useRouter();
-  const { openLogin, login } = useStateContext();
+  const [fillFav, setFillFav] = useState(false);
+  const [fill, setFill] = useState(false);
 
-  const { product, similarProds, Reviews, shop } = props;
+  const { product, similarProds, Reviews } = props;
   const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, favourites } = state;
   const { enqueueSnackbar } = useSnackbar();
 
+  const [loading, setLoading] = useState(false);
   const existFav = state.favourites.find((x) => x._id === product._id);
   const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+
 
   if (!product) {
     return  <div> 
@@ -62,22 +54,23 @@ export default function ProductScreen(props) {
             </div>
   }
 
-  const addToCartHandler = async (product) => {
+  const addToCartHandler = async () => {
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    const val = data.sizes.filter((s) => s.count > 0 );
-    if (val.length < 1 ) {
-      window.alert('Sorry,  All sizes are out of stock');
+
+    if (existItem) {
+      window.alert('Product Already added');
       return;
-    } else {
-      dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1, csize: val[0] } });
-      enqueueSnackbar('Product added to Cart', { variant: 'success' });  
+    } else if(data.countInStock < quantity) {
+      window.alert('Sorry. Product is Out of stock');
+      return;
     }
+
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+    enqueueSnackbar('Product added to Cart', { variant: 'success' });    
   };
   
-  const removeItemHandler = (item) => {
-    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
-  };
-
   const addToFavsHandler = async (product) => {
     const existFav = state.favourites.find((x) => x._id === product._id);
     if (existFav) {
@@ -85,22 +78,28 @@ export default function ProductScreen(props) {
       return;
     }
     dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
-    await axios.post(`/api/products/${product._id}/${userInfo?._id}`);
+    const { data } = await axios.post(`/api/products/${product._id}/${userInfo._id}`);
 
   };
   
-  const followHandler = async (shop) => {
-    if(userInfo) {
-      dispatch({ type: 'FETCH_SHOP_SUCCESS', payload: { ...shop } });
-      await axios.put(`/api/${shop._id}/${userInfo._id}`,{ user: userInfo._id});
-    } else {
-      openLogin();
-    }
-  }
   const removeFavHandler = async (product) => {
     dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
-    await axios.delete(`/api/products/${product._id}/${userInfo?._id}`);
+    const { data } = await axios.delete(`/api/products/${product._id}/${userInfo._id}`);
   };
+
+  const addToCartWithAnimation = async () => {
+    await addToCartHandler(product);
+    setFill(true);
+  }
+
+  const addToFavWithAnimation = async () => {
+    await addToFavsHandler(product);
+    setFillFav(true);
+  }
+  const removeFavWithAnimation = async () => {
+    setFillFav(false);
+    await removeFavHandler(product);
+  }
 
   const URL = `https://shiglam.com/${product.category}/${product.slug}`;
   let revCount;
@@ -157,288 +156,359 @@ export default function ProductScreen(props) {
     };
   }
 
-  return <>
-    <Headers title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
-      desc={product.description}
-      socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
-      socialdesc={product.description}
-      socialimages={'https://www.shiglam.com' + product.image[0].item}
-      scdinfo={addProductJsonLd()}
-    />
-    <div className='hidden xsm:block'>
-      <Layout/>
-    </div>
-    <div className='flex color-slug justify-center px-0 md:px-8'>
-      <div className='fixed bg-white rounded-full w-11 h-11 flex justify-center items-center z-10 left-3 p-3 text-6xl top-12 xsm:top-48 slg:top-40' onClick={() => router.back()}><HiArrowNarrowLeft /></div>
-      <div className='grid relative max-h-slug grid-cols-1 md:grid-cols-2 max-w-lg md:max-w-4xl prod-shadow overflow-hidden'>
-        <div className='justify-self-center relative block md:flex items-center scale-102 sm:p-0 w-full max-w-lg sm:max-h-none'>
-          <Swiper
-            style={{
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
-            }}
-            pagination={{
-              type: "fraction",
-            }}
-            breakpoints={{
-              100: {
-                slidesPerView: 1,
-              }
-            }}     
-            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }} 
-            modules={[Pagination, FreeMode, Thumbs]}
-            spaceBetween={8}
-            loop={false}
-          >
-            {product.image?.map((img) => ( 
-              <SwiperSlide key={img} >
-                <Image 
-                  className="bg-gray-100" 
-                  objectFit='cover'
-                  width={600} 
-                  height={797} 
-                  alt={product.name} 
-                  src={img.item}
-                />
-                <Download
-                  original = {img.item}
-                  name = {product.name}
-                />
-              </SwiperSlide >
-            ))}
-          </Swiper>
-          <div className='z-10 bg-white md:max-h-full thumb-position h-32 md:h-2/3 flex justify-center border-box py-3 px-1.5 w-full md:w-16 relative md:absolute rounded-3xl'>
-            <Swiper
-              spaceBetween={8}
-              slidesPerView={product.image.length}
-              breakpoints={{
-                768: {
-                  direction:"vertical"
-                }
-              }} 
-              freeMode={true}
-              onSwiper={setThumbsSwiper}
-              watchSlidesProgress={true}
-              modules={[FreeMode, Navigation, Thumbs]}
-            >
+  return (
+    <>
+      <Headers title={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
+        desc={product.description}
+        socialtitle={product.name.concat(" ", "and more from as low as", " ", "KES", product.price, " ", "IN KENYA | NAIROBI")}
+        socialdesc={product.description}
+        socialimages={'https://www.shiglam.com' + product.image[0].item}
+        scdinfo={addProductJsonLd()}
+      />
+      <div className="margintopFix grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
+        <div className="col-span-1 ">
+          <div layout="responsive" className={classes.mideaSmallBannerResp} style={{maxWidth:600, marginTop: 0}} >
+            <div onClick={() => router.back()} className="top-8 sm:top-12" style={{backgroundColor: "white", position: "fixed", boxShadow: "0 2px 5px 1px rgb(64 60 67 / 50%)", padding: 7 , borderRadius: 50, zIndex: 1200, left: 25 }}> <ArrowBackIosIcon sx={{fontSize:10}} /></div>
+            <>
+             <Swiper
+               style={{
+               "--swiper-navigation-color": "#fff",
+               "--swiper-pagination-color": "#fff",
+                }}
+                pagination={{
+                  type: "fraction",
+                }}
+                breakpoints={{
+                  100: {
+                    slidesPerView: 1,
+                  },
+                  641: {
+                    slidesPerView: 1,
+                  }
+                }}      
+                modules={[Pagination, FreeMode, Navigation, Thumbs]}
+                spaceBetween={8}
+                loop={false}
+                navigation={true}
+              onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={() => console.log('slide change')}
+             >
               {product.image?.map((img) => ( 
-                <SwiperSlide className='flex items-start md:items-center' style={{ maxWidth: 73 }} key={img}>
-                  <Image  
-                    width={73} 
-                    height={97} 
-                    alt={product.name} 
-                    className="rounded-2xl bg-gray-100 g-images-child"
+                <SwiperSlide key={img} style={{maxWidth: 420}} >
+                  <Image className="rounded-none sm:rounded-3xl" key={img} width={420} height={520} alt={product.name} className="bg-gray-100 g-images-child"
+                    src={img.item}
+                  />
+                  <Download
+                    original = {img.item}
+                    name = {product.name}
+                  />
+                </SwiperSlide >
+              ))}
+             </Swiper>
+             <Swiper
+               spaceBetween={8}
+               slidesPerView={5}
+               className="hidden sm:block"
+               freeMode={true}
+               watchSlidesProgress={true}
+               modules={[FreeMode, Navigation, Thumbs]}
+               style={{marginTop: 5}}
+        
+             >
+               {product.image?.map((img) => ( 
+                <SwiperSlide style={{ maxWidth: 73 }} key={img}>
+                  <Image key={img} width={364} height={484} alt={product.name} className="bg-gray-100 g-images-child"
                     src={img.item}
                   />
                 </SwiperSlide >
               ))}
-            </Swiper>
+             </Swiper>
+           </>
+           </div>
+        </div>
+        <div className="col-span-1">
+        <div>
+          <div className="flex justify-between mb-3">
+            {product.name.length > 20 ? (<h3 style={{fontSize: 17, fontWeight: 600, marginTop: 20}}>{product.name.slice(0, 17).concat(" ", ". .")}</h3>) : (<h3 style={{fontSize: 16, fontWeight: 500, marginTop: 20}}>{product.name}</h3>)}
+            <div className="grid">
+              <div className="text-lg md:text-2xl" style={{padding:"19px 0 0", fontWeight: 600,}}>Ksh.{product.price}</div>
+              {product.isOnoffer && <div className="text-sm md:text-lg justify-self-end" style={{padding:"0 0 10px 0 ", fontWeight: 600, color:"orangered"}}><s>Ksh.{product.prevprice}</s></div>}
+            </div>
+          </div>
+         <div className={classes.textSml}>
+           <b style={{flexGrow: "inherit", fontSize: 15}}>Details</b>
+           <div className="reviews">
+              <Rating className={classes.textSmla} value={product.rating} readOnly></Rating>
+              <Typography className={classes.textSml} >({product.numReviews} reviews)</Typography>
+           </div>
+         </div>
+        <div className="pl-5">
+          <div className="mt-2 mb-2">  <b className="mr-1">Brand:</b> {product.brand}</div>
+          <div className="mb-2 flex"> <b className="mr-1">Description:</b> <p>{product.description}</p></div>
+          </div> 
+        </div>
+        <div style={{ backgroundColor: "rgba(255, 255, 255, 0.7", boxShadow: "none"}} className="hidden sm:block bs p-5">
+          <button
+            className="primary-button w-full"
+            style={{borderRadius: 50, backgroundColor: "black", height: 55}}
+           >
+            <div className="flex justify-between ml-2 mr-2">
+              <div style={{fontFamily: "monospace"}} >
+                <div style={{lineHeight: "38px"}}>
+                  {product.countInStock > 0 ? 'In stock' : 'Out of Stock'}
+                </div>
+              </div>
+              <div>
+                <IconButton onClick={addToCartWithAnimation} style={{animation: fill ? 'scaler 1.5s' : 'none', border: "3px solid white", top: -6, padding: 10}} className="heart-anim">
+                  {existItem ? <HiShoppingCart style={{color: "white"}}/> : <HiOutlineShoppingCart style={{color: "white"}}/> }
+                </IconButton>
+              </div>
+              <div style={{border: "3px solid white", fontSize:24,  top: -6, padding: 10, animation: fillFav ? 'scaler 1.5s' : 'none', backgroundColor:"black"}} className="heart-ck heart-anim" >
+                {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
+              </div>
+            </div>
+          </button>
+        </div>
+        <div className="bannerwidth block sm:hidden mt-4">
+          <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
           </div>
         </div>
-        <div className=' max-h-slug bg-white  pl-4 md:pl-20 pr-4 md:pr-4 gap-4 justify-center items-center w-full h-full'>
-          <div className='flex py-4 md:pr-4 w-full justify-between'>
-            <Link href={`https://www.shiglam.com/shop/${shop[0]?._id}`} legacyBehavior>
-              <div className='flex cursor-pointer gap-2 items-center'>
-                <div className='w-11 h-11 rounded-full overflow-hidden'>
-                  <Image width={50} height={50} alt="" src={shop[0]?.logo}/>
-                </div>
-                <div className='flex-grow'>
-                  <div className='font-medium  w-full overflow-hidden whitespace-nowrap text-ellipsis'> {shop[0].shopName} </div>
-                  <div className='w-full flex items-center gap-2 pt-1'>
-                    <div className='w-3 transform-y-3 text-xl'>
-                      <VscVerifiedFilled className={shop[0]?.sales.toString().length == 4 ? 'text-cyan-600' : shop[0].sales.toString().length == 5 ? 'text-amber-500' : 'text-slate-950' }/>
-                    </div>
-                    <div className='font-medium  w-full overflow-hidden whitespace-nowrap text-ellipsis'>{shop[0].sales.toString().length == 4 ? shop[0].sales.toString().slice(0, 1) + '.' + shop[0].sales.toString().slice(1, 3) : shop[0].sales.toString().length == 5 ? shop[0].sales.toString().slice(0, 2) + '.' + shop[0].sales.toString().slice(2,3) : shop[0].sales} Sales</div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            {shop.map((shop, index) => (
-              <div key={index} onClick={() => followHandler(shop)} style={{ transform:'translate(-7px, 3px)'}} className={" cursor-pointer rounded-3xl px-4 py-2 text-xl ".concat(state.followedShops.find((x) => x._id === shop._id) ?  "bg-grayb font-semibold text-white" : "darklucent ")} >
-                Follow
-              </div>
-            ))}
+        <div className="mt-4" style={{backgroundColor: "#eeeeee", borderRadius: 25, paddingTop:10}} >
+          <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
+            Shipping 
           </div>
-          <div className='max-h-slugchild md:pr-4 h-slug overflow-y-hidden md:overflow-y-scroll'>
-            <div className='grid pt-4 grid-cols-2 grow justify-between'>
-              <div className='text-base font-bold'>
-                {product.brand}
-              </div>
-              <div className="text-lg md:text-2xl font-bold justify-self-end " >Ksh.{controlSize ? controlSize.price : product.sizes[0].price}</div>
-            </div>
-            <div className='grid grid-cols-2 grow justify-between'>
-              <div className='text-2xl w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold'>
-                {product.name}
-              </div>
-              <div className="text-sm font-bold justify-self-end self-end md:text-base">
-                {product.isOnoffer && <div  style={{color:"orangered"}}><s>{''}</s></div>}
-              </div>
-            </div>
-            <div className='grid pt-2 grid-cols-2 grow justify-between'>
-              <div className='flex items-center'>
-                <Rating style={{fontSize: 15}} className="grow-0 pr-2" value={product.rating} readOnly></Rating> 
-                <div className='text-xl font-bold'>{product.numReviews}</div>
-              </div>
-              <div className='flex xxsm:hidden justify-self-end mdb:flex xmd:hidden justify-center'>
-                <div className='flex text-xl font-bold w-fit border-4 border-black py-2 px-3 rounded-2xl items-center justify-between'>
-                  <div style={{backgroundColor: product.color[0].color[0]}} className='w-4 h-4 rounded-full'></div> 
-                  {openSizes ? <IoIosArrowUp onClick={() => setOpensizes(false)} /> : <IoIosArrowDown onClick={() => setOpensizes(true)}/> }
-                </div>
-              </div>
-            </div>
-            <div className='flex justify-between pt-10 grow items-center gap-3'>
-              <div className='flex border-4 text-3xl border-black rounded-full w-14 h-14 items-center justify-center'>
-                {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
-              </div>
-              <div className='xxsm:flex hidden mdb:hidden xmd:flex grow justify-center'>
-                <div className='flex relative text-xl font-bold w-fit border-4 border-black py-2 px-3 rounded-2xl items-center justify-between'>
-                  <div style={{backgroundColor: product.color[0].color[0]}} className='w-4 h-4 rounded-full'></div> 
-                  {openColor ? <IoIosArrowUp onClick={() => setOpenColor(false)} /> : <IoIosArrowDown onClick={() => setOpenColor(true)}/> }
-                  <div className={'absolute bg-white top-0 translate-y-10 bshadow rounded-xl px-4 py-2 text-sm '.concat(!openColor && 'hidden' )}>
-                    {product.color.map((color, index) => (
-                      <div onClick={() => { color != product.color[0] ? router.push(`/${color.slug}`) : setOpenColor(false)}} key={index} style={{backgroundColor: product.color[0].color[0]}} className='w-4 py-1 flex flex-col h-4 rounded-full'></div> 
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className='flex relative gap-3 text-base font-bold w-28 border-4 border-black py-2 px-3 rounded-2xl items-center justify-between'>
-                {controlSize ? controlSize.psize : product.sizes[0].psize}  {openSizes ? <IoIosArrowUp onClick={() => setOpensizes(false)} /> : <IoIosArrowDown onClick={() => setOpensizes(true)}/> }
-                <div className={'absolute bg-white top-0 translate-y-10 bshadow rounded-xl px-4 py-2 text-sm '.concat(!openSizes && 'hidden' )}>
-                  {product.sizes.map((size, index) => (
-                    <div onClick={() => {setControlsize(size); setOpensizes(false)}} key={index} className='py-1 flex flex-col'> {size.psize} </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div onClick={existItem ? ()=> removeItemHandler(product) : ()=> addToCartHandler(product) } className={'w-full mt-6 pt-2.5 pb-3 rounded-2xl text-xl flex justify-center items-center '.concat(existItem ? 'bg-tabb text-white ' : 'bg-grayw font-bold')}>
-              Add to cart
-            </div>
-            <div className='mt-10 pt-8 text-base  font-bold flex justify-between items-center '>
-              <div>Desctiption</div>
-              {openDescribe ? <IoIosArrowUp onClick={() => setOpendescribe(false)} /> : <IoIosArrowDown onClick={() => setOpendescribe(true)}/> }
-            </div>
-            <div className='py-4 border-b-2 border-gray-300'>
-              {openDescribe && <p className='text-base px-2'>{product.description}</p>}
-            </div>
-            <div className='pt-8 text-base  font-bold flex justify-between items-center '>
-              <div>Size & fit</div>
-              {openSizedesc ? <IoIosArrowUp onClick={() => setOpenSizedesc(false)} /> : <IoIosArrowDown onClick={() => setOpenSizedesc(true)}/> }
-            </div>
-            <div className='py-4 px-2 border-b-2 border-gray-300'>
-              {product.sizes[0].psize != "NOSIZE" &&
-                <>
-                  {openSizedesc && 
-                    <div className='text-base inline-block'>
-                      {controlSize ? 
-                        <>
-                          {controlSize.bust && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Bust:</b> {controlSize.bust} </div>}
-                          {controlSize.shoulder && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Shoulder:</b> {controlSize.shoulder} </div>}
-                          {controlSize.sleave && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Sleave:</b> {controlSize.sleave} </div>}
-                          {controlSize.length && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Length:</b> {controlSize.length} </div>}
-                          {controlSize.cuff && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Cuff:</b> {controlSize.cuff} </div>}
-                          {controlSize.bicep && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Shoulder:</b> {controlSize.bicep} </div>}
-                          {controlSize.thigh && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Thigh:</b> {controlSize.thigh} </div>}
-                          {controlSize.inseam && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Inseam:</b> {controlSize.inseam} </div>}
-                        </> :
-                        <>
-                          {product.sizes[0].bust && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Bust:</b> {product.sizes[0].bust} </div>}
-                          {product.sizes[0].shoulder && <div className='flex pr-4'><b  className='pr-2 text-gray-700'>Shoulder:</b> {product.sizes[0].shoulder} </div>}
-                          {product.sizes[0].sleave && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Sleave:</b> {product.sizes[0].sleave} </div>}
-                          {product.sizes[0].length && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Length:</b> {product.sizes[0].length} </div>}
-                          {product.sizes[0].cuff && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Cuff:</b> {product.sizes[0].cuff} </div>}
-                          {product.sizes[0].bicep && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Shoulder:</b> {product.sizes[0].bicep} </div>}
-                          {product.sizes[0].thigh && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Thigh:</b> {product.sizes[0].thigh} </div>}
-                          {product.sizes[0].inseam && <div className='flex pr-4'><b className='pr-2 text-gray-700'>Inseam:</b> {product.sizes[0].inseam} </div>}
-                        </>
-                      }
-                    </div>
-                  }
-                </>
-              }
-            </div>
-            <div className=' pt-8 text-base font-bold flex justify-between items-center '>
-              <div>Shipping</div>
-              {openShopping ? <IoIosArrowUp onClick={() => setOpenshopping(false)} /> : <IoIosArrowDown onClick={() => setOpenshopping(true)}/> }
-            </div>
-            <div className='py-4 border-b-2 border-gray-300'>
-              {openShopping && 
-                <div style={{backgroundColor: "#eeeeee", borderRadius: 25, paddingTop:10}} >
-                  <div className="flex justify-between mx-6 py-1">
-                    <div className="flex">
-                      <FaTruckMoving style={{fontSize:20}}/>
-                      <div className="ml-3 self-center">Our shipping is done by Pickup Mtaan & it takes from same day to 3 days max.</div>
-                    </div>
-                  </div>
-                  <div className="mx-6 my-3 flex justify-center">
-                    <Image width={500} height={83} alt="" className="bg-gray-100 rounded-2xl" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667233530/ezgif.com-gif-maker_1_fx3ey6.gif"></Image>
-                  </div>
-                  <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
-                    Return 
-                  </div>
-                  <div className="flex justify-start mx-6 py-1 pb-2">
-                    {product.isOnoffer ? (<div>Products on promotion are not eligible to be returned.</div>) : (<div>This product can be returned if it is defective on delivery</div>)}
-                  </div>
-                </div> 
-              }
+          <div className="flex justify-between mx-6 py-1">
+            <div className="flex">
+              <FaTruckMoving style={{fontSize:20}}/>
+              <div className="ml-3 self-center">Our shipping is done by Pickup Mtaan & it takes from same day to 3 days max.</div>
             </div>
           </div>
+          <div className="mx-6 my-3 flex justify-center">
+            <Image width={500} height={83} alt="" className="bg-gray-100 rounded-2xl" src="https://res.cloudinary.com/dddx5qpji/image/upload/v1667233530/ezgif.com-gif-maker_1_fx3ey6.gif"></Image>
+          </div>
+          <div className=" mt-4 mx-6" style={{fontSize:"0.875rem", fontWeight:"1000", padding:"5px 0"}}>
+            Return 
+          </div>
+          <div className="flex justify-start mx-6 py-1 pb-2">
+            {product.isOnoffer ? (<div>Products on promotion are not eligible to be returned.</div>) : (<div>This product can be returned if it is defective on delivery</div>)}
+          </div>
+        </div>  
         </div>
       </div>
-    </div>
-    <div className='w-full flex text-xl justify-center pt-10 pb-4 font-bold title-font'>
-      You may also like
-    </div>
-    <div className='w-full px-1.5'>
-      <div className='columns-2 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-5xl '>
-        {similarProds.map((product, index) => (
-          <div key={index} className='px-1 py-1'>
-            <ProductItems
-              product={product}
-            />
-          </div>
+      {product.gallery.length > 0 && <div>
+      <div className="slug-gallery">Style Gallery</div>
+       <div className="g-images">
+          {product.gallery?.map((item) => ( 
+            <Image key={item} width={182} height={242} alt="Style Gallery" className="bg-gray-100 g-images-child"
+                  onClick={() => setShowOverlay(true)}
+                  
+                  src={(item)}
+                  />
+                  ))}
+                 {showOverlay && <div className="cart-wrapper">
+                             <div className="Overlay-wrapper">
+                                 <div className="cancel-m p-2 absolute right-2 top-2">
+                                    <ClearIcon  onClick={() => setShowOverlay(false)}/>
+                                 </div>
+                            
+                             <div className="pt-16 pb-16 ">
+                                
+                                <Swiper
+                                   style={{
+                                   "--swiper-navigation-color": "#fff",
+                                   "--swiper-pagination-color": "#fff",
+                                    }}
+
+      
+                                   modules={[FreeMode, Navigation, Thumbs]}
+                                   spaceBetween={2}
+                                   slidesPerView={1}
+                                   navigation={true}
+                                   pagination={true}
+                                   className="bg-gray-100"
+                                   onSwiper={(swiper) => console.log(swiper)}
+                                   onSlideChange={() => console.log('slide change')}
+                                >
+                                  {product.gallery?.map((item) => (
+                                    <SwiperSlide key={item}><Image width={6} height={8} layout="responsive" alt="Style Gallery" src={(item)}/></SwiperSlide> 
+                                  ))}
+                                </Swiper>
+                                
+                             </div>
+                          </div> 
+                      </div>
+                  }
+       </div>
+      </div>}
+      <div className="bannerwidth block sm:hidden mt-4">
+        <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+        </div>
+      </div>
+      {Reviews.length > 0 &&
+      <>
+        <div>
+         <div className="slug-gallery">Customer Reviews({product.numReviews}) </div>
+        </div>
+        <div className={classes.reviewBody}>
+        {Reviews.slice(-2).map((review, index) => (
+          <ListItem key={index}>
+            <Grid container>
+              <Grid item className={classes.reviewItem}>
+                <div className="flex justify-between">
+                  <Typography>
+                    <strong>{review.name}</strong>
+                  </Typography>
+                  <div>
+                    <Rating value={review.rating} readOnly></Rating>
+                  </div>
+                </div>
+                <div className="pb-1"> <b>{review.createdAt.substring(0, 10)}</b> </div>
+              </Grid>
+              <Grid item>
+                {review.comment.length > 80 ? (<Typography>{review.comment.slice(0, 60).concat(" ", ".", " ", ".", " ", ".", " ", ".")}</Typography>) : (<Typography>{review.comment}</Typography>)}
+              </Grid>
+            </Grid>
+          </ListItem>
         ))}
       </div>
-    </div>
-    {login && <DynamicLogger/>}
-    <Notification/>
-    <Cart/>
-    <Tabsbottom/>
-  </>;
+      {Reviews.length > 2 && <div className={classes.reviewSeeMore} onClick={() => setShowOverlay(true)}>See More</div>}
+      <div className={showOverlay ? classes.reviewAllBody : classes.ndicatenone}>
+         <div className={classes.reviewTopTab}>
+          <ArrowBackIosIcon onClick={() => setShowOverlay(false)} sx={{fontSize:10, float:"left",}} /> Reviews
+         </div>
+         {Reviews.map((review) => (
+          <ListItem key={review._id}>
+            <Grid container>
+              <Grid item className={classes.reviewItem}>
+                <Typography>
+                  <strong>{review.name}</strong>
+                </Typography>
+                <Typography>{review.createdAt.substring(0, 10)}</Typography>
+              </Grid>
+              <Grid item>
+                <Rating value={review.rating} readOnly></Rating>
+                <Typography>{review.comment}</Typography>
+              </Grid>
+            </Grid>
+          </ListItem>
+        ))}
+      </div>
+      <div className="bannerwidth block sm:hidden mt-8">
+        <div className="border-t-gray-200 bg-white border-t-8 sm:border-t-white sm:border-t-0 sm:bg-slate-100">
+        </div>
+      </div>
+      </>}
+      <div>
+         <div className="slug-gallery">You May Also Like </div>
+      </div>
+      {similarProds.length > 0 &&
+      <div className="bannerwidth hidden sm:block"> 
+        <div 
+          className="swipereactor"
+          style={{borderRadius: 20, marginLeft: 16, marginRight: 16 }}
+          >
+          <Swiper                    
+             breakpoints={{
+               100: {
+                  slidesPerView: 1.6,
+                },
+               300: {                  
+                  slidesPerView: 2.1,
+               },
+               390: {
+                  slidesPerView: 2.8,
+               }, 
+               450: {
+                  slidesPerView: 3.2,
+               }, 
+               850: {
+                  slidesPerView: 4.1,
+               },
+               1600: {
+                  slidesPerView: 4.6,
+               },             
+             }}
+      
+               modules={[FreeMode, Navigation, Pagination, Thumbs]}
+               spaceBetween={10}           
+               loop={false}
+               navigation= {true}
+               centeredSlides={false}
+               style={{ maxWidth: 1100 }}
+
+           onSwiper={(swiper) => console.log(swiper)}
+           onSlideChange={() => console.log('slide change')}
+           >
+            {similarProds.slice(0, 5).map((product) =>(
+              <SwiperSlide key={product}>
+                <ProductItems
+                  addToCartHandler = {addToCartHandler}
+                  addToFavsHandler = {addToFavsHandler}
+                  removeFavHandler = {removeFavHandler}
+                  product={product}
+                  key={product}
+                />                         
+              </SwiperSlide>
+             ))
+            }
+          </Swiper>
+        </div>
+      </div>}
+      <div className="mb-24 md:mb-5 grid grid-cols-2 gap-4 sm:hidden">
+        {similarProds.map((product) => (
+          <ProductItems
+           product={product}
+           key={product.slug}
+           addToCartHandler={addToCartHandler}
+           ></ProductItems>
+        ))}
+      </div>
+      <div style={{ zIndex: 1, bottom: 0, position: "fixed", width: "100%", left: 0, backgroundColor: "rgba(255, 255, 255, 0.7"}} className="block sm:hidden card bs p-5">
+        <button
+          className="primary-button w-full"
+          style={{borderRadius: 50, backgroundColor: "black", height: 55}}
+        >
+          <div className="flex justify-between ml-2 mr-2 md:justify-center">
+            <div style={{fontFamily: "monospace"}} >
+              <div style={{lineHeight: "38px"}}>
+                {product.countInStock > 0 ? 'In stock' : 'Out of Stock'}
+              </div>
+            </div>
+            <div>
+              <IconButton onClick={addToCartWithAnimation} style={{animation: fill ? 'scaler 1.5s' : 'none', border: "3px solid white", top: -6, padding: 10}} className="heart-anim">
+                {existItem ? <HiShoppingCart style={{color: "white"}}/> : <HiOutlineShoppingCart style={{color: "white"}}/> }
+              </IconButton>
+            </div>
+            <div style={{marginLeft:"7px", border: "3px solid white", fontSize:24,  top: -6, padding: 10, animation: fillFav ? 'scaler 1.5s' : 'none', backgroundColor:"black"}} className="heart-ck heart-anim" >
+              {existFav ? <BsHeartFill onClick={removeFavWithAnimation} /> : <BsHeart onClick={addToFavWithAnimation} /> }
+            </div>
+          </div>
+        </button>
+      </div>
+    </> 
+
+  );
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const { params } = context;
   const { slug } = params;
 
   await db.connect();
   const product = await Product.findOne({ slug }, '-reviews').lean();
   const Reviews = await Product.find({ slug }).distinct('reviews');
-  const shop = await Shop.find({_id: product.shopId}).lean();
-  const similarProds = await Product.find({slug: product.distinctCateg} , '-reviews').lean();
+  const similar = await Product.find({slug}).distinct('distinctCateg');
+  const similarProds = await Product.find({slug: similar} , '-reviews').lean();
   
   await db.disconnect();
+
 
   return {
   props: { 
           product: product && db.convertDocToObj(product),
-          shop: shop.map(db.convertRevDocToObj),
           Reviews: Reviews.map(db.convertRevDocToObj), 
           similarProds: similarProds.map(db.convertDocToObj),
 
   },
  };
-}
-
-export async function getStaticPaths() {
-  
-  await db.connect();
-    const products = await Product.find().lean();
-  await db.disconnect();
- 
-  // Get the paths we want to pre-render based on posts
-  const paths = products.map((product) => ({
-    params: { slug: product.slug, category: product.category },
-  }))
- 
-  return { paths, fallback: 'blocking' }
 }

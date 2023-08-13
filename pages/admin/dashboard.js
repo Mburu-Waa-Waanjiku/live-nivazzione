@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState, useEffect, useContext } from 'react';
+import NextLink from 'next/link';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { getError } from '../../utils/error';
 import { Store } from '../../utils/Store';
 import useStyles from '../../utils/styles';
@@ -32,7 +33,6 @@ export default function AdminDashboard() {
   const [show, setShow] = useState(false);
 
   const [products, setProducts] = useState([]);
-  const [pendingProducts, setpendingProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [banners, setBanners] = useState([]);
@@ -50,6 +50,24 @@ export default function AdminDashboard() {
     }
   };
 
+  const createHandler = async () => {
+    if (!window.confirm('Are you sure?')) {
+      return;
+    }
+    try {
+      const { data } = await axios.post(
+        `/api/admin/products`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      fetchProducts();
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
   const fetchBanner = async () => {
     try {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -57,18 +75,6 @@ export default function AdminDashboard() {
         headers: { authorization: `Bearer ${userInfo.token}` },
       });
       setBanners(data);
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
-    }
-  };
-
-  const fetchPendingPs = async () => {
-    try {
-      dispatch({ type: 'FETCH_REQUEST' });
-      const { data } = await axios.get(`/api/admin/products/shopproducts`, {
-        headers: { authorization: `Bearer ${userInfo.token}` },
-      });
-      setpendingProducts(data);
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
@@ -139,7 +145,7 @@ export default function AdminDashboard() {
   const filterData = () => {
     let fData = [];
     let resultFound = false;
-    //console.log(fData);
+    console.log(fData);
     if (search) {
       fData = [...products.filter((product) => product.description.toLowerCase().indexOf(search.toLowerCase()) != -1)];
       console.log('new fdata is' + ' ' + fData);
@@ -155,32 +161,32 @@ export default function AdminDashboard() {
     });
   };
 
+
   useEffect(() => {
     if (!userInfo) {
       router.push('/login');
     }
     const fetcherfc = async () => {
-      await fetchProducts();
-      setShow(true);
-      await setFetchProgres(30);
-      await fetchBanner();
-      await setFetchProgres(38);
-      await fetchUsers();
-      await setFetchProgres(52);
-      await fetchTransactions();
-      await setFetchProgres(59);
-      await fetchBags();
-      await setFetchProgres(65);
-      await fetchOrders();
-      await fetchPendingPs();
-      await new Promise(resolve => setTimeout(resolve, 1500));        
-      await setFetchProgres(79);
-      await new Promise(resolve => setTimeout(resolve, 800));        
-      await setFetchProgres(100);
-      await new Promise(resolve => setTimeout(resolve, 200));        
-      setShow(false);
-    };
-  fetcherfc();
+        await fetchProducts();
+        setShow(true);
+        await setFetchProgres(30);
+        await fetchBanner();
+        await setFetchProgres(38);
+        await fetchUsers();
+        await setFetchProgres(52);
+        await fetchTransactions();
+        await setFetchProgres(59);
+        await fetchBags();
+        await setFetchProgres(65);
+        await fetchOrders();
+        await new Promise(resolve => setTimeout(resolve, 1500));        
+        await setFetchProgres(79);
+        await new Promise(resolve => setTimeout(resolve, 800));        
+        await setFetchProgres(100);
+        await new Promise(resolve => setTimeout(resolve, 200));        
+        setShow(false);
+      };
+    fetcherfc();
   }, []);
 
   const pages = ["Products", "Orders", "Bags", "Transactions", "Banners", "Users"];
@@ -188,9 +194,6 @@ export default function AdminDashboard() {
  
   return (
     <>
-      <div className='w-full z-50 fixed top-0 text-3xl bg-amber-500 text-center p-3 title-font'>
-        SHIGLAM ADMIN
-      </div>
       <div className={classes.liaderadmin} style={{ left: 0, width: '100%', position: 'absolute', display: show ? 'block' : 'none', zIndex: 3}}>
         <ProgressLoad
           percent={FetchProgres}
@@ -220,105 +223,101 @@ export default function AdminDashboard() {
         getError={getError}
         userInfo={userInfo}
       />
-      <div className='mt-20'>
-        <Products
-          Tabs={Tabs}
-          Tab={Tab}
-          TabPanel={TabPanel}
-          TabContext={TabContext}
-          current={current}
-          products={products}
-          pendingProducts={pendingProducts}
-          fetchPendingPs={fetchPendingPs}
-          admin={admin}
-          fetchProducts={fetchProducts}
-          classes={classes}
-          Navigation={Navigation}
-          FreeMode={FreeMode}
-          Thumbs={Thumbs}
-          Pagination={Pagination}
-          Autoplay={Autoplay}
-          Swiper={Swiper}
-          SwiperSlide={SwiperSlide}
-          setFetchProgres={setFetchProgres}
-          setShow={setShow}
-          setProducts={setProducts}
-          showSearch={showSearch}
-          setShowSearch={setShowSearch}
-          search={search}
-          filteredData={filteredData}
-          debounce={debounce}
-          filterData={filterData}
-          setSearch={setSearch}
-        />
-        <Orders
-          admin={admin}
-          orders={orders}
-          Tabs={Tabs}
-          Tab={Tab}
-          TabPanel={TabPanel}
-          TabContext={TabContext}
-          current={current}
-          userInfo={userInfo}
-          classes={classes}
-        />
-        <Bags
-          admin={admin}
-          bags={bags}
-          Tabs={Tabs}
-          Tab={Tab}
-          TabPanel={TabPanel}
-          TabContext={TabContext}
-          current={current}
-          userInfo={userInfo}
-          classes={classes}
-          fetchBags={fetchBags}
-        />
-        <Transactions
-          admin={admin}
-          transactions={transactions}
-          Tabs={Tabs}
-          Tab={Tab}
-          TabPanel={TabPanel}
-          TabContext={TabContext}
-          current={current}
-          userInfo={userInfo}
-          classes={classes}
-        />
-        <Banners
-          Tabs={Tabs}
-          Tab={Tab}
-          TabPanel={TabPanel}
-          TabContext={TabContext}
-          current={current}
-          banners={banners}
-          admin={admin}
-          setBanners={setBanners}
-          classes={classes}
-          Navigation={Navigation}
-          FreeMode={FreeMode}
-          Thumbs={Thumbs}
-          Pagination={Pagination}
-          Autoplay={Autoplay}
-          Swiper={Swiper}
-          SwiperSlide={SwiperSlide}
-          setFetchProgres={setFetchProgres}
-          setShow={setShow}
-        />
-        <Users
-          admin={admin}
-          users={users}
-          Tabs={Tabs}
-          Tab={Tab}
-          TabPanel={TabPanel}
-          TabContext={TabContext}
-          current={current}
-          userInfo={userInfo}
-          classes={classes}
-          orders={orders}
-          bags={bags}
-        />
-      </div>
+      <Products
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        products={products}
+        admin={admin}
+        classes={classes}
+        Navigation={Navigation}
+        FreeMode={FreeMode}
+        Thumbs={Thumbs}
+        Pagination={Pagination}
+        Autoplay={Autoplay}
+        createHandler={createHandler}
+        Swiper={Swiper}
+        SwiperSlide={SwiperSlide}
+        setFetchProgres={setFetchProgres}
+        setShow={setShow}
+        setProducts={setProducts}
+        showSearch={showSearch}
+        setShowSearch={setShowSearch}
+        search={search}
+        filteredData={filteredData}
+        debounce={debounce}
+        filterData={filterData}
+        setSearch={setSearch}
+      />
+      <Orders
+        admin={admin}
+        orders={orders}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+      />
+      <Bags
+        admin={admin}
+        bags={bags}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+        fetchBags={fetchBags}
+      />
+      <Transactions
+        admin={admin}
+        transactions={transactions}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+      />
+      <Banners
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        banners={banners}
+        admin={admin}
+        setBanners={setBanners}
+        classes={classes}
+        Navigation={Navigation}
+        FreeMode={FreeMode}
+        Thumbs={Thumbs}
+        Pagination={Pagination}
+        Autoplay={Autoplay}
+        Swiper={Swiper}
+        SwiperSlide={SwiperSlide}
+        setFetchProgres={setFetchProgres}
+        setShow={setShow}
+      />
+      <Users
+        admin={admin}
+        users={users}
+        Tabs={Tabs}
+        Tab={Tab}
+        TabPanel={TabPanel}
+        TabContext={TabContext}
+        current={current}
+        userInfo={userInfo}
+        classes={classes}
+        orders={orders}
+        bags={bags}
+      />
     </>
   );
 }

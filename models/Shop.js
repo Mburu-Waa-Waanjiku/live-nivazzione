@@ -1,13 +1,5 @@
 import mongoose from 'mongoose';
-
-const FollowersDate = new mongoose.Schema(
-  { 
-    user: { type: mongoose.Schema.Types.ObjectId, required: true },
-  },
-  {
-    timestamps: true,
-  }
-);
+import User from './User';
 
 const Shopmessages = new mongoose.Schema(
   { 
@@ -26,34 +18,27 @@ const Shopmessages = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-const shopOrders = new mongoose.Schema(
-  { 
-    name: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    size: { type:Number, required: true },
-    image: { type: Array, required: true },
-    price: { type: Number, required: true },
-    productId: { type: String, required: true },
-    checked: { type: Boolean, required: true, default: false },
-    confirmed: { type: Boolean, required: true, default: false },
-  },
-  {
-    timestamps: true,
-  }
-);
  
 const shopSchema = new mongoose.Schema(
   { 
     shopName: { type: String, required: true, unique: true },
     logo: { type: String, required: true },
     coverPhoto: { type: String, required: true},
-    user: { type: mongoose.Schema.Types.ObjectId, required: true },
-    orderedItems: [shopOrders],
-    follows: [FollowersDate],
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    orderedItems: [
+      { 
+        name: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        size: { type:Number, required: true },
+        image: { type: Array, required: true },
+        price: { type: Number, required: true },
+        productId: { type: String, required: true },
+        checked: { type: Boolean, required: true, default: false },
+        confirmed: { type: Boolean, required: true, default: false },
+      },
+    ],
     ratings: { type: Number, required: true, default: 4.5 },
     message: [Shopmessages],
-    sales: { type: Number, required: true, default: 241}
   },
   {
     timestamps: true,
