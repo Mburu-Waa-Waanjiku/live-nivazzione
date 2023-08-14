@@ -33,14 +33,11 @@ export default function ProductItem({ product }) {
   const addToFavsHandler = async (product) => {
     setFill(true);
     dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
-    await axios.post(`/api/products/${product._id}/${userInfo?._id}`);
-
   };
   
   const removeFavHandler = async (product) => {
     setFill(false);
     dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
-    await axios.delete(`/api/products/${product._id}/${userInfo?._id}`);
   };
 
   const URL = `https://shiglam.com/`;

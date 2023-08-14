@@ -132,9 +132,9 @@ function Logger() {
   };
 
   return (
-    <div style={{zIndex: 1220, flexWrap: 'wrap', transform: 'translate(0, -10%)'}} className=" fixed w-full h-full flex justify-center content-center">
-      <div style={{ width: "fit-content", height: "fit-content", padding: 10, background: 'linear-gradient(to left,#eee 50%, #333 50%)' }}>
-          <div  className="logger loggerborder">
+    <div style={{zIndex: 1220, flexWrap: 'wrap' }} className=" fixed top-0 w-full h-screen flex justify-center items-center">
+      <div className='rounded-3xl' style={{ width: "fit-content", height: "fit-content", padding: 10, background: 'linear-gradient(to left,#eee 50%, #333 50%)' }}>
+          <div  className="logger rounded-3xl loggerborder">
             <div onClick={closeLogin} style={{float: "right", fontSize: 20, position: "relative", top: -16, right: -6}}>
               <b> x </b>
             </div>
@@ -297,7 +297,7 @@ function Logger() {
                       ></Controller>
                     </ListItem>
                     <ListItem>
-                      <Button variant="contained" type="submit" fullWidth color="primary">
+                      <Button style={{backgroundColor:'rgb(51, 51, 51)'}} variant="contained" type="submit" fullWidth color="primary">
                         {!waiting ? (
                           <Image
                             width={110}
@@ -353,7 +353,7 @@ function Logger() {
                   ></Controller>
                 </ListItem>
                 <ListItem>
-                  <Button variant="contained" type="submit" fullWidth color="primary">
+                  <Button style={{backgroundColor:'rgb(51, 51, 51)'}} variant="contained" type="submit" fullWidth color="primary">
                     Reset password
                   </Button>
                 </ListItem>
@@ -452,7 +452,7 @@ function Logger() {
                     ></Controller>
                   </ListItem>
                   <ListItem>
-                    <Button variant="contained" type="submit" fullWidth color="primary">
+                    <Button style={{backgroundColor:'rgb(51, 51, 51)'}} variant="contained" type="submit" fullWidth color="primary">
                       {!waiting ? (
                         <Image
                           width={110}

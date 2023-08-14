@@ -33,14 +33,11 @@ export default function ProductItem({ product, shop }) {
   const addToFavsHandler = async (product) => {
     setFill(true);
     dispatch({ type: 'FAVOURITES_ADD_ITEM', payload: { ...product } });
-    await axios.post(`/api/products/${product._id}/${userInfo?._id}`);
-
   };
   
   const removeFavHandler = async (product) => {
     setFill(false);
     dispatch({ type: 'FAVOURITES_REMOVE_ITEM', payload: product });
-    await axios.delete(`/api/products/${product._id}/${userInfo?._id}`);
   };
 
   const URL = `https://shiglam.com/`;
@@ -103,7 +100,7 @@ export default function ProductItem({ product, shop }) {
   return (
     <div className="card">
       <HeadersContainer data={addProductJsonLd()} />
-      <div className="gallery">
+      <div className="gallery relative box-border">
         <div className='flex justify-end'>
           <div style={{animation: fill ? 'scaler 1.5s' : 'none'}} className="heart-ck text-lg heart-anim bg-grayb text-white m-2 z-30 float-right" >
             {existFav ? <GiHanger className='scale-125' onClick={() => removeFavHandler(product)} /> : <PiCoatHangerFill  onClick={() => addToFavsHandler(product)} /> }
