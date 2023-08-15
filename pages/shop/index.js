@@ -114,10 +114,9 @@ export default function Shop() {
       },
       { headers: { authorization: `Bearer ${userInfo.token}` } }
     );
-    dispatch({ type: 'USER_LOGIN', payload: data });
-    enqueueSnackbar('Your shop is now ready', { variant: 'success' });
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    router.push(`shop/seller/${userInfo.shopId}`);
+    await dispatch({ type: 'USER_LOGIN', payload: data });
+    enqueueSnackbar('Your shop is now ready, Please wait as we redirect you to your shop', { variant: 'success' });
+    router.push(userInfo.shopId && `shop/seller/${userInfo.shopId}`);
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }

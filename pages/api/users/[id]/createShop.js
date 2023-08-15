@@ -12,16 +12,18 @@ const handler = nc({
 handler.use(isAuth, isSeller);
 
 handler.post(async (req, res) => {
-    //console.log('starting');
+    console.log('starting');
     await db.connect();
       const newShop = new Shop({
         ...req.body,
         user: req.query.id,
+        slug: Math.random().toString,
       });
-      //console.log(newShop);
+      console.log(newShop);
+      console.log('creating');
       const shop = await newShop.save();
-      //console.log('shop is');
-      //console.log(shop);
+      console.log('shop is');
+      console.log(shop);
       await User.updateOne(
         { _id: req.query.id},
         {
@@ -31,7 +33,7 @@ handler.post(async (req, res) => {
         }
       );
       const user = await User.findOne({ _id: req.query.id });
-      //console.log('found user');
+      console.log('found user');
     await db.disconnect();
     if (user) {
       const token = signToken(user);
@@ -46,7 +48,7 @@ handler.post(async (req, res) => {
         shopId: user.shopId
       };
       res.send(info);
-      //console.log('we are done');
+      console.log('we are done');
     } else {
       res.status(401).send({ message: 'Invalid user' });
     }

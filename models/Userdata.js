@@ -1,20 +1,22 @@
 import mongoose from 'mongoose';
 
 const history = new mongoose.Schema(
-    {
-      isViewed : { type: Boolean, required: true, default: false },
-      isProduct : { type: Boolean, required: true, default: false },
-      message : { type: String, required: true},
-      product : { type: Array },
-      orderLink : { type: String },
-    },
-    {
-      timestamps: true,
-    }
+  {
+    productId : { type: Boolean, required: true, default: false },
+    view : { type: Boolean, required: true, default: false },
+    pageView : { type: String, required: true},
+    wardrobed: {type: Number},
+    carted : { type: Array },
+    ordered : { type: String },
+  },
+  {
+    timestamps: true,
+  }
 );
 
 const userdataSchema = new mongoose.Schema(
   {
+    dataId: {type: String, required: true },
     products: {history},
     userId: { type: String, required: true, unique: true },
     phoneInfo: { type: Number, required: true },    

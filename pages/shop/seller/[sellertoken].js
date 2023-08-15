@@ -232,7 +232,9 @@ function Seller({ shops }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export default Seller
+
+export async function getStaticProps(context) {
 
   const { params } = context;
   const { sellertoken } = params;
@@ -247,4 +249,17 @@ export async function getServerSideProps(context) {
     },
   };
 }
-export default Seller
+
+export async function getStaticPaths() {
+  
+  await db.connect();
+    const shops = await Shop.find().lean();
+  await db.disconnect();
+ 
+  // Get the paths we want to pre-render based on posts
+  const paths = shops.map((shop) => ({
+    params: { sellertoken: shop._id.toString() },
+  }))
+ 
+  return { paths, fallback: 'blocking' }
+}

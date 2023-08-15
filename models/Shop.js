@@ -45,7 +45,8 @@ const shopOrders = new mongoose.Schema(
  
 const shopSchema = new mongoose.Schema(
   { 
-    shopName: { type: String, required: true, unique: true },
+    shopName: { type: String, required: true },
+    slug: {type: String, unique: false },
     logo: { type: String, required: true },
     coverPhoto: { type: String, required: true},
     user: { type: mongoose.Schema.Types.ObjectId, required: true },
