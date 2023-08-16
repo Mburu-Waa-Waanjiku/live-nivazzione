@@ -352,7 +352,7 @@ export default function SizesArr({ useFormContext, useFieldArray, useForm, TextF
           </div>
         </div>
       ))}
-      <div className={'flex pb-4 '.concat(fields.length > 0 && 'absolute')}>
+      <div className={'flex pb-4 '.concat(fields.length > 0 && '')}>
         <div onClick={() => handleAppend(sizes)} style={{ transform:  fields.length > 0 ? 'translateY(-60px)' : 'translateY(0px)'}} className='p-3 bg-grayb text-white text-2xl rounded'>
           <AiOutlinePlus/>
         </div>

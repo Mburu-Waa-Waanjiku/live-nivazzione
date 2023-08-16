@@ -11,10 +11,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-function Pendingps({ product, fetchProducts, gallery, setGallery, gallery1, setGallery1, image1, setImage1, image2, setImage2, image3, setImage3 }) {
+function Pendingps({ key, product, fetchProducts, gallery, setGallery, gallery1, setGallery1, image1, setImage1, image2, setImage2, image3, setImage3 }) {
 
   return (
-	<div style={{ height: 'fit-content', width: '100%', border: '8px solid white', boxShadow: '0 1px 2px rgba(0,0,0,.2)' }}>
+	<div key={key} style={{ height: 'fit-content', width: '100%', border: '8px solid white', boxShadow: '0 1px 2px rgba(0,0,0,.2)' }}>
 	  <div style={{display: 'grid', backgroundColor: 'white', gridTemplateRows: '1fr 80px'}}>
       <Swiper   
         breakpoints={{

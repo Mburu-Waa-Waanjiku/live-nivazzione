@@ -64,7 +64,7 @@ export default function Layout({ children }) {
   }, []);
   
   const fetchPs = async() => {
-    await axios.post('/api/products/categories', {})
+    await axios.post('/api/categories', {})
   }
 
   return (

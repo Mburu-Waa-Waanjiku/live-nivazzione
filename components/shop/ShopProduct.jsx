@@ -59,7 +59,7 @@ export default function ShopProduct({ product }) {
               <b>{myPerformance}%</b>
             </div>
           </div>
-          <div className='flex flex-col overflow-y-scroll overflow-x-hidden font-semibold gap-2 justify-center  items-center'>
+          <div className='flex flex-col overflow-y-scroll h-36 overflow-x-hidden font-semibold gap-2 justify-center  items-center'>
             {product.sizes.map((size) => (
               <div key={size} className='flex gap-1 xxsm:gap-2 font-semibold items-center'>
                 <div className='font-bold'>{size.psize}</div>

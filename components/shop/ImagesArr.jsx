@@ -103,7 +103,7 @@ export default function ImagesArr({ image1, setImage1, image2, setImage2, image3
           </div>
         </div>
       ))}
-      <div className={'flex pb-4 '.concat( fields.length == 3 ? 'hidden' : fields.length > 0 ? 'absolute' : '')}>
+      <div className={'flex pb-4 '.concat( fields.length == 3 ? 'hidden' : fields.length > 0 ? '' : '')}>
         <div onClick={() => { handleAppend(image)}} style={{ transform:  fields.length > 0 ? 'translateY(-60px)' : 'translateY(0px)'}} className='p-3 bg-grayb text-white text-2xl rounded'>
           <AiOutlinePlus/>
         </div>
