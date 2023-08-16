@@ -8,17 +8,20 @@ const handler = nc({
 });
 
 handler.post(async (req, res) => {
-  /*await db.connect();
+  await db.connect();
   //tis api is no in use
+  console.log('starting');
   await Product.updateMany(
     {},
     {
       $set: {
-        "shopId" : "64db4836469adb04c9ad6a7d",
+        shopId : "64db4836469adb04c9ad6a7d",
       }
     },
   );
-  res.status(201).send(banner);*/
+  await db.disconnect();
+  console.log('done');
+  res.status(201);
 });
 
 export default handler;

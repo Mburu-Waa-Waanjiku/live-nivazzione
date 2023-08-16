@@ -13,6 +13,7 @@ import { useSnackbar } from 'notistack';
 import Pendingps from '../../../components/shop/Pendingps';
 import CartItems from '../../../components/galleryComponents/CartItems';
 import Head from 'next/head';
+import { IndeterminateCheckBox } from '@material-ui/icons';
 
 function Seller({ shops }) {
   
@@ -181,9 +182,9 @@ function Seller({ shops }) {
                               You don't Have Live Products
                             </div> :
                             <div className={"grid place-items-center gap-3 grid-cols-1 w-full xmd:grid-cols-2 "}>
-                              {LiveProducts.map((product) => (
+                              {LiveProducts.map((product, index) => (
                                 <ShopProduct
-                                  key={product}
+                                  key={index}
                                   product={product}
                                 />
                               ))}
@@ -192,9 +193,9 @@ function Seller({ shops }) {
                         </div> :
                         <div style={{minHeight: 'calc(100vh - 312px)'}} className='w-full flex bg-gray-100'>
                           <div className={"grid place-items-center grid-cols-1 gap-3 pt-4 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"}>
-                            {products.map((product) => (
+                            {products.map((product, index) => (
                               <Pendingps
-                                key={product}
+                                key={index}
                                 product={product}
                                 fetchProducts={fetchProducts}
                                 gallery={gallery}
