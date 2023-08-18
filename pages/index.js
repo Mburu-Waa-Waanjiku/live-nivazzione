@@ -28,7 +28,7 @@ const Home = ({ products, shop }) => {
           <div key={product._id} className='px-1 py-1'>
             <PinsProds
               key={product}
-              shop={shop.find((x) => x._id == product.shopId)}
+              shop={shop}
               product={product}
             />
           </div>
