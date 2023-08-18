@@ -1,5 +1,6 @@
 import nc from 'next-connect';
 import Order from '../../../../models/Order';
+import Shop from '../../../../models/Shop';
 import User from '../../../../models/User'
 import db from '../../../../utils/db';
 import onError from '../../../../utils/error';
@@ -12,6 +13,16 @@ handler.use(isAuth);
 handler.put(async (req, res) => {
   await db.connect();
   const order = await Order.findById(req.query.id);
+  for( const x of order.orderItems ) {
+    await Shop.updateOne(
+      {_id: x.shopId},
+      {
+        $push: {
+          orderedItems: x
+        }
+      }
+    )
+  }
   const userid = order.user;
   const user = await User.findById(userid);
   if (user) {

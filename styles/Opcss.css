@@ -1,5 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@300&display=swap');
 
+#dots #dot1{
+    animation: load 1s infinite;
+  }
+  
+  #dots #dot2{
+    animation: load 1s infinite;
+    animation-delay: 0.2s;
+  }
+  
+  #dots #dot3{
+    animation: load 1s infinite;
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes load{
+    0%{
+      opacity: 0;
+    }
+    50%{
+      opacity: 1;
+    }
+    100%{
+      opacity: 0;
+    }
+  }
+  
 .select-h {
     height: 100% !important;
 }

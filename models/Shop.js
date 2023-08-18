@@ -28,14 +28,13 @@ const Shopmessages = new mongoose.Schema(
 );
 
 const shopOrders = new mongoose.Schema(
-  { 
+  {
     name: { type: String, required: true },
     quantity: { type: Number, required: true },
-    size: { type:Number, required: true },
     image: { type: Array, required: true },
-    price: { type: Number, required: true },
-    productId: { type: String, required: true },
-    checked: { type: Boolean, required: true, default: false },
+    collected: {type: Boolean, required: true, default: false},
+    csize: { type: Object, required: true },
+    productId: { type: String },
     confirmed: { type: Boolean, required: true, default: false },
   },
   {

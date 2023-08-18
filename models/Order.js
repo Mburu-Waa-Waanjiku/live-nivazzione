@@ -12,6 +12,8 @@ const orderSchema = new mongoose.Schema(
         image: { type: Array, required: true },
         collected: {type: Boolean, required: true, default: false},
         csize: { type: Object, required: true },
+        productId: { type: String, required: true },
+        confirmed: { type: Boolean, required: true, default: false },
         shopId: { type: mongoose.Schema.Types.ObjectId, ref: Shop, required: true }      
       },
     ],
@@ -34,6 +36,7 @@ const orderSchema = new mongoose.Schema(
     isDelivered: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
     deliveredAt: { type: Date },
+    isCollected: { type: Boolean, required: true, default:false },
     wasBag: { type: Boolean, required: true, default: false }
   },
   {
