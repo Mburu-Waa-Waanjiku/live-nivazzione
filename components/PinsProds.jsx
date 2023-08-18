@@ -15,6 +15,7 @@ export default function ProductItem({ product, shop }) {
   const [fill, setFill] = useState(false);
   const existItem = state.cart.cartItems.find((x) => x._id === product._id);
   const existFav = state.favourites.find((x) => x._id === product._id);
+  const pshop = shop.find((x) => x._id == product.shopId)
 
   const addToCartHandler = async (product) => {
     const { data } = await axios.get(`/api/products/${product._id}`);
@@ -112,7 +113,7 @@ export default function ProductItem({ product, shop }) {
             <div className='a'>
             <Image
               style={{borderRadius: 20, width:'100%  !important', height: '100% !important', position: 'relative'}}
-              src={product.gallery[0]?.item ? product.gallery[0].item : product.image[0].item}
+              src={product.gallery?.length > 0 ? product.gallery[0].item : product.image[0].item}
               alt={product.name}
               layout='fill'
               className="shadow  object-contain h-fit w-full pulse"
@@ -126,7 +127,7 @@ export default function ProductItem({ product, shop }) {
               <div className='w-7 h-7 mr-2 rounded-full overflow-hidden'>
                 <Image width={40} className='pulse' height={40} alt="" src={shop?.logo} />
               </div>
-              <div className='font-medium hidden xxsm:block'> {shop?.shopName} </div>
+              <div className='font-medium hidden xxsm:block'> {pshop?.shopName} </div>
             </div>
             <div style={{ transform:'translate(-7px, 3px)'}} className=" text-xl" >
               { existItem ? <BsBagDashFill onClick={() => removeItemHandler(product)} className='c-grayb'/> : <BsBagPlus onClick={() => addToCartHandler(product)}/> }

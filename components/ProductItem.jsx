@@ -120,7 +120,7 @@ export default function ProductItem({ product }) {
             <div className='a'>
               <Image
                 style={{borderRadius: 20, width:'100%  !important', height: '100% !important', position: 'relative'}}
-                src={product.gallery[0].item ? product.gallery[0].item : product.image[0].item}
+                src={product.gallery?.length > 0 ? product.gallery[0].item : product.image[0].item}
                 alt={product.name}
                 layout='fill'
                 className="shadow  object-contain h-fit w-full pulse"

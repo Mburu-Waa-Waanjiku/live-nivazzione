@@ -73,7 +73,7 @@ export default function Layout({ children }) {
         <div className='hidden xsm:block pr-3'>
           <Image className='rounded-full' width={40} height={40} alt='logo' src='/icon-256x256.png'/>
         </div>
-        <div onClick={fetchPs} className='text-left text-3xl block xsm:hidden sm:text-center font-semibold'>
+        <div  className='text-left text-3xl block xsm:hidden sm:text-center font-semibold'>
           SHIGLAM
         </div>
         <div className=' mt-2' style={{zIndex: 120}}>
