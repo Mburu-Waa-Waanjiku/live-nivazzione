@@ -16,7 +16,7 @@ function Categories({banner}) {
           <div className='columns-1 grow sm:columns-2 sm:max-w-xl md:columns-3 md:max-w-4xl lg:columns-4 lg:max-w-7xl'>
             {banner.map((categ, index) => (
               <Link key={index} href={`/${categ.midText.replace(" ", "-")}`} legacyBehavior>
-                <div className='px-1 py-1'>
+                <div className='px-1 flex justify-center py-1'>
                   <Mycategs
                     categ={categ}
                   />
