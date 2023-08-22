@@ -125,7 +125,7 @@ export default function ProductItem({ product, shop }) {
           <div className='flex pt-2 w-full justify-between'>
             <div className='flex items-center'>
               <div className='w-7 h-7 mr-2 rounded-full overflow-hidden'>
-                <Image width={40} className='pulse' height={40} alt="" src={shop?.logo} />
+                <Image width={40} className='pulse' height={40} alt="" src={pshop?.logo} />
               </div>
               <div className='font-medium hidden xxsm:block'> {pshop?.shopName} </div>
             </div>
