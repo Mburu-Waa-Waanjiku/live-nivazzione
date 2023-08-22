@@ -28,6 +28,7 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
 import {GiReceiveMoney, GiHanger} from 'react-icons/gi';
 import {BsShop} from 'react-icons/bs';
 import Link from 'next/link';
+import Loader from './Loader';
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -39,6 +40,8 @@ export default function Layout({ children }) {
   
   const [homeLinks, setHomelinks] = useState(false);
   const [userLinks, setUserlinks] = useState(false);
+  const [allshops, setAllshops] = useState(false);
+  const [shops, setShops] = useState(null);
   
   const logoutClickHandler = () => {
     dispatch({ type: 'USER_LOGOUT' });
@@ -57,6 +60,16 @@ export default function Layout({ children }) {
       dispatch({ type: 'FETCH_FAVOURITES_FAIL', payload: getError(err) });
     }
   };
+
+  const fetchShops = async () => {
+    setAllshops(true);
+    const { data } = await axios.post(
+      'api/admin/shopproducts/shoporders', 
+      { shops: userInfo.shopId}, 
+      { headers: { authorization: `Bearer ${userInfo.token}` } }
+    );
+    await setShops(data)
+  }
   
   useEffect(() => {
     setView(true)
@@ -206,18 +219,14 @@ export default function Layout({ children }) {
                 </div>
               }
               {userInfo?.isSeller &&
-                <Link
-                  href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" }
-                  legacyBehavior>
-                  <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
-                    <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
-                      <BsShop />
-                    </div>
-                    <div className="p-2 text-base font-black">
-                      My Shop
-                    </div>
+                <div onClick={async () => {typeof userInfo.shopId == 'array' && userInfo.shopId.length < 2  ? router.push(`/shop/seller/${userInfo.shopId[0]}`) : typeof userInfo.shopId == 'array' && userInfo.shopId?.length > 1 ? fetchShops()  : router.push("/shop") ; setUserlinks(false)}} className="flex my-1 items-center" >
+                  <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                    <BsShop />
                   </div>
-                </Link>
+                  <div className="p-2 text-base font-black">
+                    My Shop
+                  </div>
+                </div>
               }
             </>
           }
@@ -227,9 +236,9 @@ export default function Layout({ children }) {
         <div className='relative z-10 box-border gap-2 flex-col justify-center items-center w-full h-full flex'>
           <div className="flex items-center" onClick={() => {logoutClickHandler(); setUserlinks(false)}} >
             <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="flex text-lg justify-center items-center themecolor p-4 font-black">
-            {view &&
-              <>{userInfo?.name.toUpperCase().slice(0,1)}</>
-            }
+              {view &&
+                <>{userInfo?.name.toUpperCase().slice(0,1)}</>
+              }
             </div>
             <div className="p-2 text-base font-black">
               Log Out
@@ -259,23 +268,41 @@ export default function Layout({ children }) {
                 </div>
               }
               {userInfo?.isSeller &&
-                <Link
-                  href={typeof userInfo.shopId == 'string' ? `/shop/seller/${userInfo.shopId}`  : "/shop" }
-                  legacyBehavior>
-                  <div onClick={() => {setUserlinks(false)}} className="flex my-1 items-center" >
-                    <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
-                      <BsShop />
-                    </div>
-                    <div className="p-2 text-base font-black">
-                      My Shop
-                    </div>
+                <div onClick={async () => {Array.isArray(userInfo.shopId) && userInfo.shopId.length < 2  ? router.push(`/shop/seller/${userInfo.shopId[0]}`) : Array.isArray(userInfo.shopId) && userInfo.shopId?.length > 1 ? fetchShops()  : router.push("/shop") ; setUserlinks(false)}} className="flex my-1 items-center" >
+                  <div style={{ width: 35, height:35, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon flex text-lg justify-center items-center themecolor p-4 font-black">
+                    <BsShop />
                   </div>
-                </Link>
+                  <div className="p-2 text-base font-black">
+                    My Shop
+                  </div>
+                </div>
               }
             </>
           }
         </div>
       </div>
+      {allshops && view &&
+        <div style={{zIndex: 1280}} className='w-screen  overflow-hidden absolute top-0 bg-white rounded-3xl flex flex-col justify-center p-4 items-center h-screen'>
+          <div onClick={() => setAllshops(false)} className='absolute text-xl top-3 right-3'>
+            <IoIosArrowDown/>
+          </div>
+          {shops ? 
+            <>
+              {shops.map((shop, index) => (
+                <div key={index} onClick={async () => { await router.push(`/shop/seller/${shop._id}`)  ; setAllshops(false)}} className="flex my-1 justify-center rounded-full bg-grayw py-3  w-52 items-center" >
+                  <div style={{ width: 50, height: 50, borderRadius: 50, backgroundColor: "#222", color: "white",}} className="DrawerIcon overflow-hidden flex text-lg relative justify-center items-center themecolor p-4 font-black">
+                    <Image layout='fill' objectFit='cover' alt="" src={shop.logo} />
+                  </div>
+                  <div className="p-2 text-base font-black">
+                    {shop.shopName}
+                  </div>
+                </div>
+              ))}
+            </> :
+            <Loader/>
+          }
+        </div>
+      }
       <div className='w-full p-2 xsm-4'>
         {children}
       </div>

@@ -10,7 +10,7 @@ function Orders({ currenttab, classes, userInfo, orderslist }) {
 	  {currenttab != 'Shop Orders' &&
 		<div style={{marginBottom: 10, borderRadius: 20, backgroundColor: 'white', justifyContent: 'center', display: 'grid', gap: 10, gridTemplateColumns: 'repeat(7, minmax(80px, 150px))'}}>
 			<div className="flex place-items-center p-4">
-			<b className="ml-5"> ID</b>
+			<b onClick={() => console.log(orderslist)} className="ml-5"> ID</b>
 			</div>
 			<div className="flex place-items-center p-4">
 			<b className="ml-5"> Name</b>
