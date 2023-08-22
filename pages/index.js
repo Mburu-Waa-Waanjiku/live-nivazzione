@@ -71,7 +71,7 @@ export default Home
 
 export async function getStaticProps() {
   await db.connect();
-  const products = await Product.find({}, {name:1, slug:1, category:1, image:1, gallery:1, isEditorsChoice: 1, isOnoffer: 1, shopId: 1 }).lean();
+  const products = await Product.find({ isEditorsChoice: true }, {name:1, slug:1, category:1, image:1, gallery:1, isEditorsChoice: 1, isOnoffer: 1, shopId: 1 }).lean().sort({ createdAt: -1 });
   const shop = await Shop.find({}, { shopName: 1, logo:1, coverPhoto: 1 }).lean();
   await db.disconnect();
   
