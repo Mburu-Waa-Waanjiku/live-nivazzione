@@ -17,7 +17,7 @@ handler.post(async (req, res) => {
       const newShop = new Shop({
         ...req.body,
         user: req.query.id,
-        slug: Math.random().toString,
+        slug: Math.random().toString(),
       });
       console.log(newShop);
       console.log('creating');
@@ -28,7 +28,7 @@ handler.post(async (req, res) => {
         { _id: req.query.id},
         {
           $set: {
-            'shopId': shop._id,
+            'shopId.0': shop._id.toString(),
           },
         }
       );

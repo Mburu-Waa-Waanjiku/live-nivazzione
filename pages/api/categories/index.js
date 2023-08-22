@@ -12,10 +12,10 @@ handler.post(async (req, res) => {
   //tis api is no in use
   console.log('starting');
   await Product.updateMany(
-    {},
+    {category: "Sneakers"},
     {
       $set: {
-        shopId : "64db4836469adb04c9ad6a7d",
+        shopId : "64db3611b595447c18560071",
       }
     },
   );

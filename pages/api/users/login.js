@@ -10,10 +10,10 @@ handler.post(async (req, res) => {
   console.log('start');
   await db.connect();
   const user = await User.findOne({ email: req.body.email });
-  console.log('user found');
+  //console.log(user.shopId);
   await db.disconnect();
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
-    console.log('user found');
+    //console.log('user found');
     const token = signToken(user);
     const info = {
       token,
@@ -26,10 +26,10 @@ handler.post(async (req, res) => {
       shopId: user.shopId
     };
     res.send(info);
-    console.log('userinfo ready');
+    //console.log('userinfo ready');
   } else {
     res.status(401).send({ message: 'Invalid email or password' });
-    console.log('userinfo code red');
+    //console.log('userinfo code red');
   }
 });
 
