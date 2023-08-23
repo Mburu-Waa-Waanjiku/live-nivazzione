@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, required: true, default: false },
     isAffiliate: { type: Boolean, required: true, default: false },
     isSeller: { type: Boolean, required: true, default: false },
-    shopId: { type: mongoose.Schema.Types.ObjectId },
+    shopId: { type: Array },
     favourites: { type: Array },
     shiglamPoints: { type: Number, required: true, default: 0},
     totalBuys: { type: Number, required: true, default: 0 },
