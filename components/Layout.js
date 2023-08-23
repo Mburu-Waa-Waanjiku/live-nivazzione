@@ -77,8 +77,15 @@ export default function Layout({ children }) {
   }, []);
   
   const fetchPs = async() => {
-    await axios.post('/api/categories', {})
-  }
+    await axios.post(`/api/users/${userInfo._id}/createShop`, 
+      {
+        shopName: "Sandals & Slides",
+        logo: "https://res.cloudinary.com/dddx5qpji/image/upload/v1692687488/S74d410ed28d0413a8e36af9d30ac6834x.jpg_720x720q80_an2b2e.jpg",
+        coverPhoto: "https://res.cloudinary.com/dddx5qpji/image/upload/v1692687488/S74d410ed28d0413a8e36af9d30ac6834x.jpg_720x720q80_an2b2e.jpg"
+      },
+      { headers: { authorization: `Bearer ${userInfo.token}` } }
+    )
+  } 
 
   return (
     <div className={divstick ? "fixed top-0 w-full" : ""}>
