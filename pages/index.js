@@ -1,5 +1,5 @@
 import React from 'react'; 
-import db from '../utils/db'; 
+import db from '../utils/db';
 import Product from '../models/Product';
 import Shop from '../models/Shop';
 import Tabsbottom from '../components/Tabsbottom';
