@@ -1,5 +1,5 @@
 import React from 'react'; 
-import db from '../utils/db';
+import db from '../utils/db'; 
 import Product from '../models/Product';
 import Shop from '../models/Shop';
 import Tabsbottom from '../components/Tabsbottom';
@@ -35,7 +35,7 @@ const Home = ({ products, shop }) => {
           ))}
       </div>
       <div className='flex justify-center'>
-        <div className={hometab == "Apparel" ? "grid w-fitdiv grid-cols-2 gap-2 pb-4 md:grid-cols-3 md:max-w-7xl" : "hidden"}>
+        <div className={hometab == "Apparel" ? "grid w-fitdiv grid-cols-1 xsm:grid-cols-2 gap-2 pb-4 mdb:grid-cols-3 mdb:max-w-7xl" : "hidden"}>
           {shop.map((shop, index) => (
             <Link key={index} href={`/shop/${shop._id}`}>
               <div className='w-full pulse relative h-40 sm:h-48 overflow-hidden  rounded-3xl  '>
