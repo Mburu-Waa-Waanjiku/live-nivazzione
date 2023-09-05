@@ -100,6 +100,11 @@ const Jewelry = (props) => {
           </Swiper>
         </div>
         <div className='w-full px-1.5'>
+          {products?.filter((p) => p.subcategs.includes(tabParam)).length < 1 &&
+            <div style={{ height: '40vh'}} className='text-3xl flex flex-col p-3 text-center w-full items-center justify-center title-font'>
+              Not Yet Stocked
+            </div> 
+          }
           <div className='columns-2 sm:columns-3 sm:max-w-xl md:columns-4 md:max-w-5xl '>
             {products?.filter((p) => p.subcategs.includes(tabParam)).map((product, index) => (
               <div key={index} className='px-1 py-1'>
