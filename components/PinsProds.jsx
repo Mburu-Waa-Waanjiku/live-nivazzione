@@ -15,7 +15,7 @@ export default function ProductItem({ product, shop }) {
   const [fill, setFill] = useState(false);
   const existItem = state.cart.cartItems.find((x) => x._id === product._id);
   const existFav = state.favourites.find((x) => x._id === product._id);
-  const pshop = shop.find((x) => x._id == product.shopId)
+  const pshop = shop?.find((x) => x._id == product.shopId)
 
   const addToCartHandler = async (product) => {
     const { data } = await axios.get(`/api/products/${product._id}`);
