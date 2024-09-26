@@ -1,0 +1,77 @@
+.title-color{
+    background-color: #3e2f5b;
+}
+.news-bg {
+    background: url('/hospitality.jpg') no-repeat center;
+}
+.topbar-webkit::-webkit-scrollbar {
+    height: 0;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+}
+/* Define the scrollbar style */
+.order-thumb::-webkit-scrollbar {
+    width: 7px;
+}
+/* Define the thumb style */
+.order-thumb::-webkit-scrollbar-thumb {
+background: #989a9c;
+border-radius: 5px;
+}
+/* Define the button style */
+.order-thumb::-webkit-scrollbar-button {
+display: none;
+}
+.title-text{
+    color: #3e2f5b;
+}
+.title-gradien{
+    background-image: linear-gradient(to right, #3e2f5b , #e7632f)
+}
+.border-gradien{
+    border-color: linear-gradient(to right, #3e2f5b , #e7632f)
+}
+.short-coursebg {
+    background: linear-gradient(hsla(235, 62%, 73%, 0), #3e2f5b );
+}
+.school-banner-shadow {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.school-banner-height {
+    height: 28rem;
+}
+.bg-transparent{
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.bg-highlight{
+    background-color: rgba(63, 48, 93, 0.06);
+}
+.trapezoid {
+	border-top: 35px solid #ffffff8e;
+	border-left: 25px solid transparent;
+	height: 0;
+}
+.logo {
+    transform: translate(10vw);
+}
+.image-width {
+    width: 40vw;
+}
+.h-96 {
+    height: 400;
+}
+@media only screen and ( max-width: 745px) {
+    .image-width {
+        width: 90vw;
+    }
+}
+@media only screen and ( max-width: 601px) {
+    .logo {
+        transform: translate(6vw);
+    }
+}
+@media only screen and ( max-width: 350px) {
+    .scaler {
+        transform: scale(.65);
+    }
+}
